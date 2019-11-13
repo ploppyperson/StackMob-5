@@ -1,0 +1,11 @@
+name: StackMob
+main: uk.antiperson.stackmob.StackMob
+version: ${project.version}
+api-version: 1.13
+softdepend: [WorldGuard, MythicMobs]
+commands:
+  stackmob:
+    aliases: [sm]
+    permission: stackmob.admin
+    description: The main command of stackmob, which allows for maniplulation of stacks.
+    permission-message: No permission!

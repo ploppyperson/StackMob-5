@@ -1,0 +1,199 @@
+# StackMob 5.0
+#
+# Options with a (*) in the comment preceding cannot be overridden in the 'custom' section.
+# For more details about the 'custom' section, see the end of this file.
+
+stack:
+  # The maximum size that a stack can have.
+  max-size: 30
+  # How often entities should be checked for stacking (in ticks. 20 ticks = 1 second) (*)
+  interval: 100
+  # The area around an entity for which applicable stacks should be found.
+  # Format: [(x cord),(y cord),(z cord)]
+  merge-range: [10,10,10]
+  # Only begin to stack entities when this amount of entities are nearby.
+  threshold:
+    enabled: true
+    amount: 5
+
+worlds-blacklist: []
+worlds-blacklist-invert: false
+types-blacklist: []
+types-blacklist-invert: false
+reason-blacklist: []
+reason-blacklist-invert: false
+
+display-name:
+  # The formatting of the display name above the entity
+  format: '%size%x %type%'
+  # Whether the display tag can only be seen when the player targets the entity.
+  # Mode:
+  # ALWAYS - The tag will always be visible as long as the entity is loaded.
+  # HOVER - The tag will only be visible when the player hovers their crosshair on the entity.
+  # NEARBY - The tag will only be visible when the player is in range of the entity. (more resource intensive)
+  visibility: NEARBY
+  # Options for when 'NEARBY' is used above. (*)
+  nearby:
+    # The range from which the tag should be visible.
+    # Format: [(x cord),(y cord),(z cord)]
+    range: [12,6,12]
+    # How often (in ticks) the tag visibility status of an entity should be updated. (20 ticks = 1 second)
+    interval: 20
+  # Don't show the tag if the stack size of this entity if it is equal to or below the value specified.
+  threshold: 1
+
+# Whether entity specific traits (eg. profession, colour) should be segregated (*)
+traits:
+  sheep-color: true
+  sheep-sheared: true
+  slime-size: true
+  horse-color: true
+  llama-color: true
+  parrot-variant: true
+  drowned-hand-item: true
+  age: true
+  breed-mode: true
+  love-mode: true
+  cat-type: true
+  mooshroom-variant: true
+  fox-type: true
+
+# What should be done when these entity actions occur. (*)
+events:
+  # When an entity is feed its food.
+  breed:
+    enabled: true
+    # MULTIPLY - spawn as many baby entities possible providing there is enough food fed.
+    # SPLIT - slice off an entity to that it can be bred normally.
+    mode: MULTIPLY
+  # When an entity is dyed.
+  dye:
+    enabled: true
+    # MULTIPLY - dye as many entities possible providing there is enough dye.
+    # SPLIT - slice off an entity to that it can be dyed normally.
+    mode: MULTIPLY
+  # When an entity is sheared.
+  shear:
+    enabled: true
+    # MULTIPLY - shear as many entities possible providing the shears have enough durability.
+    # SPLIT - slice off an entity to that it can be sheared normally.
+    mode: MULTIPLY
+  multiply:
+    # Chicken eggs and turtle scutes.
+    drops: true
+    explosion: true
+    slime-split: true
+  divide:
+    nametag: true
+    tame: true
+
+death:
+  # The amount of entities which should die on kill.
+  # Modes:
+  # SINGLE - Only one entity dies.
+  # ALL - Every entity dies.
+  # STEP - A random amount dies.
+  # STEP_DAMAGE - An amount that depends on the damage done dies.
+  #
+  # The priority 1 is highest and 4 is lowest.
+  # If the killed entity is blacklisted by the highest priority method, then it will attempt to use the next highest priority etc.
+  SINGLE:
+    priority: 4
+    reason-blacklist: []
+    reason-blacklist-invert: false
+    type-blacklist: []
+    type-blacklist-invert: false
+  ALL:
+    priority: 3
+    reason-blacklist: []
+    reason-blacklist-invert: false
+    type-blacklist: []
+    type-blacklist-invert: false
+  STEP:
+    priority: 2
+    reason-blacklist: []
+    reason-blacklist-invert: false
+    type-blacklist: []
+    type-blacklist-invert: false
+    max-step: 5
+    min-step: 1
+  STEP_DAMAGE:
+    priority: 1
+    reason-blacklist: []
+    reason-blacklist-invert: false
+    type-blacklist: []
+    type-blacklist-invert: false
+
+# Multiply entity drops on entity death.
+drops:
+  enabled: true
+  use-loot-tables: true
+  # If each mob should only drop one of the items in the list.
+  one-per-stack: []
+  one-per-stack-invert: false
+  # Items that should not be dropped.
+  item-blacklist: []
+  item-blacklist-invert: false
+  # Death reasons that should not mean that drops are multiplied.
+  reason-blacklist: []
+  reason-blacklist-invert: false
+  # Types of entity for which drops should not be dropped for.
+  type-blacklist: []
+  type-blacklist-invert: false
+
+# Multiply entity experience on entity death.
+experience:
+  enabled: true
+  # The bounds that should be used for the random multiplier.
+  multiplier-min: 0.5
+  multiplier-max: 0.8
+  # Types of entity for which exp should not be dropped for.
+  type-blacklist: []
+  type-blacklist-invert: false
+
+# If specific entities should have a waiting time before their first stack.
+# Designed for monster grinders etc.
+wait-to-stack:
+  enabled: true
+  # For (x) times the stack task fires after spawn, don't stack this entity.
+  wait-time: 5
+  # Entity types that this should work for.
+  types-whitelist:
+    - ZOMBIE
+    - SKELETON
+    - PIG_ZOMBIE
+  types-whitelist-invert: false
+  # Spawn reasons that this should work for.
+  reasons-whitelist:
+    - SPAWNER
+  reasons-whitelist-invert: false
+
+# Enable/disable integration with other plugins. (*)
+hooks:
+  # Allows the custom 'entity-stacking' flag to be used in worldguard regions.
+  worldguard: true
+  mythicmobs:
+    enabled: true
+    blacklist: []
+    blacklist-invert: false
+  # Prevent citizens npcs from stacking.
+  citizens: true
+  # Prevent stacked entities from giving mcmmo experience.
+  mcmmo: true
+
+## Some options can be modified for specific entity types. An example is shown below. Remove comments to see this in action.
+## Options and sections with a (*) in the comment preceding cannot be overridden.
+#custom:
+#  # The entity type
+#  CREEPER:
+#    # The option to override. This should be the same as it appears above.
+#    stack:
+#      max-size: 30
+#  SKELETON:
+#    # Entities can also inherit options from other entities, using the 'clone' option preceded by the entity type to clone.
+#    clone: CREEPER
+#    # The cloned custom options can still be overridden.
+#    stack:
+#      max-size: 5
+
+
