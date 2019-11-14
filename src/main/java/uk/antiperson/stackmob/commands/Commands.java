@@ -29,6 +29,11 @@ public class Commands implements CommandExecutor, TabCompleter {
             return false;
         }
         for (SubCommand subCommand : subCommands) {
+            if (strings.length == 0) {
+                commandSender.sendMessage("Commands: ");
+                commandSender.sendMessage("/sm " + subCommand.getCommand());
+                continue;
+            }
             if (!subCommand.getCommand().equalsIgnoreCase(strings[0])) {
                 continue;
             }
