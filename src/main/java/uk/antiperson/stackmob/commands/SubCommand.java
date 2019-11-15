@@ -3,17 +3,8 @@ package uk.antiperson.stackmob.commands;
 public abstract class SubCommand implements Command {
 
     private ArgumentType[] arguments;
-    private String command;
-    private boolean playerRequired;
-    public SubCommand(String command, boolean playerRequired, ArgumentType... arguments) {
+    public SubCommand(ArgumentType... arguments) {
         this.arguments = arguments;
-        this.command = command;
-        this.playerRequired = playerRequired;
-    }
-
-    public SubCommand(String command, ArgumentType... arguments) {
-        this.arguments = arguments;
-        this.command = command;
     }
 
     public ArgumentType[] getArguments() {
@@ -21,11 +12,19 @@ public abstract class SubCommand implements Command {
     }
 
     public String getCommand() {
-        return command;
+        return getCommandMetadata().command();
+    }
+
+    public String getDescription() {
+        return getCommandMetadata().desc();
     }
 
     public boolean isPlayerRequired() {
-        return playerRequired;
+        return getCommandMetadata().playerReq();
+    }
+
+    private CommandMetadata getCommandMetadata() {
+        return getClass().getAnnotation(CommandMetadata.class);
     }
 
     enum ArgumentType {

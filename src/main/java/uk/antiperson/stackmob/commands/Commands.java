@@ -18,6 +18,9 @@ public class Commands implements CommandExecutor, TabCompleter {
     public Commands(StackMob sm) {
         this.sm = sm;
         this.subCommands = new HashSet<>();
+    }
+
+    public void registerSubCommands() {
         subCommands.add(new About(sm));
         subCommands.add(new SpawnStack(sm));
     }
@@ -28,12 +31,18 @@ public class Commands implements CommandExecutor, TabCompleter {
             commandSender.sendMessage("You do not have permission!");
             return false;
         }
-        for (SubCommand subCommand : subCommands) {
-            if (strings.length == 0) {
-                commandSender.sendMessage("Commands: ");
-                commandSender.sendMessage("/sm " + subCommand.getCommand());
-                continue;
+        if (strings.length == 0) {
+            commandSender.sendMessage("Commands: ");
+            for (SubCommand subCommand : subCommands) {
+                StringBuilder args = new StringBuilder();
+                for (SubCommand.ArgumentType argumentType : subCommand.getArguments()) {
+                    args.append("[").append(argumentType).append("] ");
+                }
+                commandSender.sendMessage("/sm " + subCommand.getCommand() + " " + args + "- " + subCommand.getDescription());
             }
+            return false;
+        }
+        for (SubCommand subCommand : subCommands) {
             if (!subCommand.getCommand().equalsIgnoreCase(strings[0])) {
                 continue;
             }
@@ -48,9 +57,6 @@ public class Commands implements CommandExecutor, TabCompleter {
             subCommand.onCommand(commandSender, strings);
         }
         /*switch (strings[0]){
-            case "about" :
-                player.sendMessage("StackMob Reborn " + sm.getDescription().getVersion());
-                break;
             case "remove":
                 Function<Entity, Boolean> function;
                 switch (strings[1]) {
@@ -74,13 +80,6 @@ public class Commands implements CommandExecutor, TabCompleter {
                     entity.remove();
                 }
                 break;
-            case "spawn":
-                if (strings.length < 3) {
-                    return false;
-                }
-                Entity entity = player.getWorld().spawnEntity(player.getLocation(), EntityType.valueOf(strings[1]));
-                StackEntity stackEntity = sm.getEntityManager().getStackEntity((LivingEntity) entity);
-                stackEntity.setSize(Integer.valueOf(strings[2]));
         }*/
         return false;
     }

@@ -83,6 +83,7 @@ public class StackMob extends JavaPlugin {
         Commands commands = new Commands(this);
         command.setExecutor(commands);
         command.setTabCompleter(commands);
+        commands.registerSubCommands();
         new Updater(this).checkUpdate().whenComplete(((updateResult, throwable) -> {
             switch (updateResult.getResult()) {
                 case NONE:
