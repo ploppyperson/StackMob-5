@@ -106,7 +106,6 @@ public class Drops {
         }
         double minMulti = sm.getMainConfig().getExpMinBound(dead.getType());
         double maxMulti = sm.getMainConfig().getExpMaxBound(dead.getType());
-        sm.getLogger().info(minMulti + "," + maxMulti);
         double randMulti = ThreadLocalRandom.current().nextDouble(minMulti, maxMulti);
         return exp + (int) Math.round(deadCount * randMulti * exp);
     }
