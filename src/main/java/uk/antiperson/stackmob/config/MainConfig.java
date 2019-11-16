@@ -1,6 +1,5 @@
 package uk.antiperson.stackmob.config;
 
-import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -9,10 +8,7 @@ import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.death.DeathType;
 import uk.antiperson.stackmob.entity.TagMode;
 import uk.antiperson.stackmob.listeners.ListenerMode;
-import uk.antiperson.stackmob.utils.Utilities;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.*;
 
 public class MainConfig extends ConfigFile{
@@ -101,12 +97,12 @@ public class MainConfig extends ConfigFile{
         return getList(type, "experience.type-blacklist");
     }
 
-    public int getExpMinBound(EntityType type) {
-        return getInt(type, "experience.multiplier-min");
+    public double getExpMinBound(EntityType type) {
+        return getDouble(type, "experience.multiplier-min");
     }
 
-    public int getExpMaxBound(EntityType type) {
-        return getInt(type, "experience.multiplier-max");
+    public double getExpMaxBound(EntityType type) {
+        return getDouble(type, "experience.multiplier-max");
     }
 
     public boolean isWaitingEnabled(EntityType type) {

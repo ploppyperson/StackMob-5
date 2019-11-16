@@ -41,6 +41,14 @@ public class ConfigFile {
         return fileCon.getInt(path);
     }
 
+    public double getDouble(EntityType type, String path) {
+        return fileCon.getDouble(getPath(type, path));
+    }
+
+    public double getDouble(String path) {
+        return fileCon.getDouble(path);
+    }
+
     public boolean getBoolean(EntityType type, String path) {
         return fileCon.getBoolean(getPath(type, path));
     }
