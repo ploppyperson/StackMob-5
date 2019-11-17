@@ -1,4 +1,4 @@
-package uk.antiperson.stackmob.commands;
+package uk.antiperson.stackmob.commands.subcommands;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
@@ -6,6 +6,8 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import uk.antiperson.stackmob.StackMob;
+import uk.antiperson.stackmob.commands.CommandMetadata;
+import uk.antiperson.stackmob.commands.SubCommand;
 import uk.antiperson.stackmob.entity.StackEntity;
 
 @CommandMetadata(command = "spawn", playerReq = true, desc = "Spawn a new stack.")

@@ -9,6 +9,8 @@ import org.bukkit.entity.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import uk.antiperson.stackmob.StackMob;
+import uk.antiperson.stackmob.commands.subcommands.About;
+import uk.antiperson.stackmob.commands.subcommands.SpawnStack;
 
 import java.util.*;
 

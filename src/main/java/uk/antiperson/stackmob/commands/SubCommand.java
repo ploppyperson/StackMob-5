@@ -34,7 +34,7 @@ public abstract class SubCommand implements Command {
         return null;
     }
 
-    enum ArgumentType {
+    public enum ArgumentType {
         BOOLEAN,
         STRING,
         INTEGER,
