@@ -112,6 +112,26 @@ public class Commands implements CommandExecutor, TabCompleter {
         return true;
     }
 
+    private List<String> getApplicableArgs(SubCommand.ArgumentType type) {
+        List<String> strings = new ArrayList<>();
+        switch (type) {
+            case ENTITY_TYPE:
+                for (EntityType etype : EntityType.values()) {
+                    if (etype.getEntityClass() == null) {
+                        continue;
+                    }
+                    if (!Mob.class.isAssignableFrom(etype.getEntityClass())) {
+                        continue;
+                    }
+                    strings.add(etype.toString());
+                }
+                return strings;
+            case BOOLEAN:
+                return Arrays.asList("true", "false");
+        }
+        return null;
+    }
+
     @Nullable
     @Override
     public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
@@ -121,6 +141,15 @@ public class Commands implements CommandExecutor, TabCompleter {
                 args.add(subCommand.getCommand());
             }
             return args;
+        }
+        for (SubCommand subCommand : subCommands) {
+            if (!subCommand.getCommand().equalsIgnoreCase(strings[0])) {
+                continue;
+            }
+            if (subCommand.getArguments().length < strings.length - 1) {
+                return null;
+            }
+            return getApplicableArgs(subCommand.getArguments()[strings.length - 2]);
         }
         /*if (!(commandSender instanceof Player)) {
             return null;
