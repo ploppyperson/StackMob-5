@@ -1,5 +1,6 @@
 package uk.antiperson.stackmob.commands;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -54,7 +55,7 @@ public class Commands implements CommandExecutor, TabCompleter {
                 commandSender.sendMessage("Invalid arguments!");
                 return false;
             }
-            subCommand.onCommand(commandSender, strings);
+            subCommand.onCommand(commandSender, (String[]) ArrayUtils.remove(strings, 0));
         }
         /*switch (strings[0]){
             case "remove":
