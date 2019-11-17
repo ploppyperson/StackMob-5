@@ -30,6 +30,7 @@ public class TraitManager {
         registerTrait(BreedMode.class);
         registerTrait(LoveMode.class);
         registerTrait(DrownedItem.class);
+        registerTrait(MobAi.class);
     }
 
     /**
@@ -42,7 +43,7 @@ public class TraitManager {
      */
     private void registerTrait(Class<? extends Trait> trait) throws IllegalAccessException, InstantiationException {
         TraitMetadata traitMetadata = trait.getAnnotation(TraitMetadata.class);
-        if (sm.getMainConfig().isTraitEnabled(traitMetadata.path())) {
+        if (sm.getMainConfig().isTraitEnabled(traitMetadata.path()) || sm.getMainConfig().getBoolean(traitMetadata.path())) {
             traits.add(trait.newInstance());
         }
     }

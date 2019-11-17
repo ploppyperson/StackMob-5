@@ -47,7 +47,10 @@ public class SpawnListener implements Listener {
                 }
             }
             original.setSize(1);
-            sm.getHookManager().onSpawn(event.getEntity());
+            sm.getHookManager().onSpawn(original);
+            if (sm.getMainConfig().isAiDisabled(event.getEntity().getType(), event.getSpawnReason())) {
+                event.getEntity().setAI(false);
+            }
         });
     }
 }

@@ -133,6 +133,16 @@ public class MainConfig extends ConfigFile{
         return getBoolean("events." + eventKey);
     }
 
+    public boolean isAiDisabled(EntityType type, CreatureSpawnEvent.SpawnReason spawnReason) {
+        if (getList(type, "disable-ai.type-blacklist").contains(type.toString())) {
+            return false;
+        }
+        if (getList(type, "disable-ai.reason-blacklist").contains(spawnReason.toString())) {
+            return false;
+        }
+        return getBoolean(type, "disable-ai.enabled");
+    }
+
     public ListenerMode getListenerMode(EntityType type, String eventKey) {
         return ListenerMode.valueOf(getString(type, "events." + eventKey + ".mode"));
     }

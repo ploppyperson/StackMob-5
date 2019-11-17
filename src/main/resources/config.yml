@@ -58,6 +58,14 @@ traits:
   mooshroom-variant: true
   fox-type: true
 
+# Disable the AI of stacked mobs.
+disable-ai:
+  enabled: true
+  type-blacklist: []
+  type-blacklist-invert: false
+  reason-blacklist: []
+  reason-blacklist-invert: false
+
 # What should be done when these entity actions occur. (*)
 events:
   # When an entity is feed its food.

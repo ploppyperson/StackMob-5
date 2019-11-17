@@ -193,10 +193,13 @@ public class StackEntity {
      * @return a clone of this entity.
      */
     public StackEntity duplicate() {
-        StackEntity spawned = sm.getEntityManager().getStackEntity(spawnEntity());
-        spawned.setSize(1);
-        sm.getTraitManager().applyTraits(spawned, this);
-        return spawned;
+        LivingEntity entity = sm.getHookManager().spawnClone(getEntity().getLocation(), this);
+        entity = entity == null ? (LivingEntity) getWorld().spawnEntity(getEntity().getLocation(), getEntity().getType()) : entity;
+        StackEntity stackEntity = sm.getEntityManager().getStackEntity(entity);
+        stackEntity.setSize(1);
+        sm.getTraitManager().applyTraits(stackEntity, this);
+        sm.getHookManager().onSpawn(stackEntity);
+        return stackEntity;
     }
 
     public boolean isSingle() {
@@ -215,19 +218,6 @@ public class StackEntity {
         duplicate.setSize(getSize() - 1);
         setSize(1);
         return duplicate;
-    }
-
-    /**
-     * Spawns another entity of the same type.
-     * @return entity of same type.
-     */
-    private LivingEntity spawnEntity() {
-        LivingEntity entity = sm.getHookManager().spawnClone(getEntity().getLocation(), this);
-        if (entity == null) {
-            entity = (LivingEntity) getWorld().spawnEntity(getEntity().getLocation(), getEntity().getType());
-        }
-        sm.getHookManager().onSpawn(entity);
-        return entity;
     }
 
 }

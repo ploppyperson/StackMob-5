@@ -120,11 +120,11 @@ public class HookManager {
         return false;
     }
 
-    public void onSpawn(LivingEntity entity) {
+    public void onSpawn(StackEntity entity) {
         for (Hook hook : hooks) {
             if (hook instanceof SpawnHook) {
                 SpawnHook spawnHook = (SpawnHook) hook;
-                spawnHook.onSpawn(entity);
+                spawnHook.onSpawn(entity.getEntity());
             }
         }
     }
