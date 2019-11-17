@@ -149,22 +149,12 @@ public class Commands implements CommandExecutor, TabCompleter {
             if (subCommand.getArguments().length < strings.length - 1) {
                 return null;
             }
-            return getApplicableArgs(subCommand.getArguments()[strings.length - 2]);
+            List<String> args = subCommand.onTabComplete(strings[strings.length - 2], strings.length - 2);
+            if (args == null) {
+                args = getApplicableArgs(subCommand.getArguments()[strings.length - 2]);
+            }
+            return args;
         }
-        /*if (!(commandSender instanceof Player)) {
-            return null;
-        }
-        if (!(commandSender.hasPermission("stackmob.admin"))) {
-            return null;
-        }
-        switch (strings.length - 1) {
-            case 0:
-                return Arrays.asList("about", "remove");
-            case 1:
-                if (strings[0].equalsIgnoreCase("remove")) {
-                    return Arrays.asList("animals", "hostile");
-                }
-        }*/
         return null;
     }
 }
