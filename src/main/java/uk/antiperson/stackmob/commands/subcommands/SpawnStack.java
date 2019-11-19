@@ -6,6 +6,8 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import uk.antiperson.stackmob.StackMob;
+import uk.antiperson.stackmob.commands.ArgumentType;
+import uk.antiperson.stackmob.commands.CommandArgument;
 import uk.antiperson.stackmob.commands.CommandMetadata;
 import uk.antiperson.stackmob.commands.SubCommand;
 import uk.antiperson.stackmob.entity.StackEntity;
@@ -15,7 +17,7 @@ public class SpawnStack extends SubCommand {
 
     private StackMob sm;
     public SpawnStack(StackMob sm) {
-        super(ArgumentType.ENTITY_TYPE, ArgumentType.INTEGER);
+        super(CommandArgument.construct(ArgumentType.ENTITY_TYPE), CommandArgument.construct(ArgumentType.INTEGER));
         this.sm = sm;
     }
 

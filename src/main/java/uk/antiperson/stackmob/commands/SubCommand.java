@@ -4,12 +4,12 @@ import java.util.List;
 
 public abstract class SubCommand implements Command {
 
-    private ArgumentType[] arguments;
-    public SubCommand(ArgumentType... arguments) {
+    private CommandArgument[] arguments;
+    public SubCommand(CommandArgument... arguments) {
         this.arguments = arguments;
     }
 
-    public ArgumentType[] getArguments() {
+    public CommandArgument[] getArguments() {
         return arguments;
     }
 
@@ -34,11 +34,5 @@ public abstract class SubCommand implements Command {
         return null;
     }
 
-    public enum ArgumentType {
-        BOOLEAN,
-        STRING,
-        INTEGER,
-        ENTITY_TYPE
-    }
 
 }

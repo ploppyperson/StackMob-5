@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.commands.subcommands.About;
+import uk.antiperson.stackmob.commands.subcommands.Remove;
 import uk.antiperson.stackmob.commands.subcommands.SpawnStack;
 
 import java.util.*;
@@ -26,6 +27,7 @@ public class Commands implements CommandExecutor, TabCompleter {
     public void registerSubCommands() {
         subCommands.add(new About(sm));
         subCommands.add(new SpawnStack(sm));
+        subCommands.add(new Remove(sm));
     }
 
     @Override
@@ -38,8 +40,8 @@ public class Commands implements CommandExecutor, TabCompleter {
             commandSender.sendMessage("Commands: ");
             for (SubCommand subCommand : subCommands) {
                 StringBuilder args = new StringBuilder();
-                for (SubCommand.ArgumentType argumentType : subCommand.getArguments()) {
-                    args.append("[").append(argumentType).append("] ");
+                for (CommandArgument argumentType : subCommand.getArguments()) {
+                    args.append("[").append(argumentType.getType()).append("] ");
                 }
                 commandSender.sendMessage("/sm " + subCommand.getCommand() + " " + args + "- " + subCommand.getDescription());
             }
@@ -53,7 +55,7 @@ public class Commands implements CommandExecutor, TabCompleter {
                 commandSender.sendMessage("You are not a player");
                 return false;
             }
-            if (!validateArgs(subCommand.getArguments(), strings)) {
+            if (!validateArgs(subCommand.getArguments(), (String[]) ArrayUtils.remove(strings, 0))) {
                 commandSender.sendMessage("Invalid arguments!");
                 return false;
             }
@@ -87,26 +89,30 @@ public class Commands implements CommandExecutor, TabCompleter {
         return false;
     }
 
-    public boolean validateArgs(SubCommand.ArgumentType[] argumentTypes, String[] args) {
-        if (args.length - 1 != argumentTypes.length) {
+    public boolean validateArgs(CommandArgument[] argumentTypes, String[] args) {
+        if (args.length < argumentTypes.length) {
+            if (argumentTypes.length == (args.length + 1)) {
+                CommandArgument argument = argumentTypes[argumentTypes.length - 1];
+                return argument.isOptional();
+            }
             return false;
         }
         for (int i = 0; i < argumentTypes.length; i++) {
-            SubCommand.ArgumentType type = argumentTypes[i];
-            switch (type) {
+            CommandArgument argument = argumentTypes[i];
+            switch (argument.getType()) {
                 case BOOLEAN:
-                    if (!(args[i + 1].equals("true") || args[i+1].equals("false"))) return false;
+                    if (!(args[i].equals("true") || args[i+1].equals("false"))) return false;
                     break;
                 case INTEGER:
                     try {
-                        Integer.valueOf(args[i + 1]);
+                        Integer.valueOf(args[i]);
                     } catch (NumberFormatException e) {
                         return false;
                     }
                     break;
                 case ENTITY_TYPE:
                     try {
-                        EntityType.valueOf(args[i + 1]);
+                        EntityType.valueOf(args[i]);
                     } catch (IllegalArgumentException e) {
                         return false;
                     }
@@ -115,7 +121,7 @@ public class Commands implements CommandExecutor, TabCompleter {
         return true;
     }
 
-    private List<String> getApplicableArgs(SubCommand.ArgumentType type) {
+    private List<String> getApplicableArgs(ArgumentType type) {
         List<String> strings = new ArrayList<>();
         switch (type) {
             case ENTITY_TYPE:
@@ -154,7 +160,7 @@ public class Commands implements CommandExecutor, TabCompleter {
             }
             List<String> args = subCommand.onTabComplete(strings[strings.length - 2], strings.length - 2);
             if (args == null) {
-                args = getApplicableArgs(subCommand.getArguments()[strings.length - 2]);
+                args = getApplicableArgs(subCommand.getArguments()[strings.length - 2].getType());
             }
             return args;
         }
