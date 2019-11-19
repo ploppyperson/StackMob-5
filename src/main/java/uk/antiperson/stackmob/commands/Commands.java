@@ -61,31 +61,6 @@ public class Commands implements CommandExecutor, TabCompleter {
             }
             subCommand.onCommand(commandSender, (String[]) ArrayUtils.remove(strings, 0));
         }
-        /*switch (strings[0]){
-            case "remove":
-                Function<Entity, Boolean> function;
-                switch (strings[1]) {
-                    case "animals":
-                        function = entity -> entity instanceof Animals;
-                        break;
-                    case "hostile":
-                        function = entity -> entity instanceof Monster;
-                        break;
-                    default:
-                        function = entity -> entity instanceof Mob;
-                }
-                List<LivingEntity> entities = player.getWorld().getLivingEntities();
-                for (LivingEntity entity : entities) {
-                    if (!function.apply(entity)) {
-                        continue;
-                    }
-                    if (!sm.getEntityManager().isStackedEntity(entity)) {
-                        continue;
-                    }
-                    entity.remove();
-                }
-                break;
-        }*/
         return false;
     }
 
