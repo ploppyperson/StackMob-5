@@ -1,10 +1,9 @@
 package uk.antiperson.stackmob.utils;
 
-import uk.antiperson.stackmob.StackMob;
+import org.bukkit.plugin.Plugin;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -12,10 +11,11 @@ import java.util.concurrent.CompletableFuture;
 
 public class Updater {
 
-    private final int resourceId = 29999;
-    private StackMob sm;
-    public Updater(StackMob sm) {
+    private int resourceId;
+    private Plugin sm;
+    public Updater(Plugin sm, int resourceId) {
         this.sm = sm;
+        this.resourceId = resourceId;
     }
 
     public CompletableFuture<UpdateResult> checkUpdate() {

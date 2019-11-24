@@ -31,6 +31,7 @@ public class StackMob extends JavaPlugin {
     private TraitManager traitManager;
     private HookManager hookManager;
     private EntityManager entityManager;
+    private Updater updater;
 
     @Override
     public void onLoad() {
@@ -84,7 +85,8 @@ public class StackMob extends JavaPlugin {
         command.setExecutor(commands);
         command.setTabCompleter(commands);
         commands.registerSubCommands();
-        new Updater(this).checkUpdate().whenComplete(((updateResult, throwable) -> {
+        updater = new Updater(this, 29999);
+        getUpdater().checkUpdate().whenComplete(((updateResult, throwable) -> {
             switch (updateResult.getResult()) {
                 case NONE:
                     getLogger().info("No update is currently available.");
@@ -93,7 +95,7 @@ public class StackMob extends JavaPlugin {
                     getLogger().info("There was an error while getting the latest update.");
                     break;
                 case AVAILABLE:
-                    getLogger().info("A new version is currently available. (" + updateResult.getNewVersion() + ", you are currently running " + getDescription().getVersion() + ")");
+                    getLogger().info("A new version is currently available. (" + updateResult.getNewVersion() + ")");
                     break;
             }
         }));
@@ -160,6 +162,10 @@ public class StackMob extends JavaPlugin {
 
     public HookManager getHookManager() {
         return hookManager;
+    }
+
+    public Updater getUpdater() {
+        return updater;
     }
 
     public NamespacedKey getStackKey() {
