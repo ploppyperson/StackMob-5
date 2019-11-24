@@ -9,9 +9,7 @@ import org.bukkit.entity.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import uk.antiperson.stackmob.StackMob;
-import uk.antiperson.stackmob.commands.subcommands.About;
-import uk.antiperson.stackmob.commands.subcommands.Remove;
-import uk.antiperson.stackmob.commands.subcommands.SpawnStack;
+import uk.antiperson.stackmob.commands.subcommands.*;
 
 import java.util.*;
 
@@ -28,6 +26,8 @@ public class Commands implements CommandExecutor, TabCompleter {
         subCommands.add(new About(sm));
         subCommands.add(new SpawnStack(sm));
         subCommands.add(new Remove(sm));
+        subCommands.add(new CheckUpdate(sm));
+        subCommands.add(new Upgrade(sm));
     }
 
     @Override
