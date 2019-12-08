@@ -24,7 +24,6 @@ public class TransformListener implements Listener {
         }
         StackEntity stackEntity = sm.getEntityManager().getStackEntity((LivingEntity) event.getEntity());
         StackEntity transformed = sm.getEntityManager().getStackEntity((LivingEntity) event.getTransformedEntity());
-        sm.getLogger().info(stackEntity.getSize() + "");
         transformed.setSize(stackEntity.getSize());
     }
 }
