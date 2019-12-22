@@ -1,5 +1,7 @@
 package uk.antiperson.stackmob;
 
+import org.bstats.bukkit.Metrics;
+import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.event.Listener;
@@ -99,6 +101,11 @@ public class StackMob extends JavaPlugin {
                     break;
             }
         }));
+        Metrics metrics = new Metrics(this);
+        metrics.addCustomChart(new Metrics.SimplePie("stackmobbridge", () -> String.valueOf(Bukkit.getPluginManager().isPluginEnabled("StackMobBridge"))));
+        if (metrics.isEnabled()) {
+            getLogger().info("bStats anonymous data collection has been enabled!");
+        }
     }
 
     private void registerEvents() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
