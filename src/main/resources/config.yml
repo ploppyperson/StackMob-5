@@ -58,11 +58,12 @@ traits:
   mooshroom-variant: true
   fox-type: true
 
-# Disable the AI of stacked mobs.
-disable-ai:
-  enabled: true
+# Prevent stacked mobs from targeting players.
+disable-targeting:
+  enabled: false
   type-blacklist: []
   type-blacklist-invert: false
+  # The following requires the use of Paper (https://papermc.io) because the API needed is not in Spigot!
   reason-blacklist: []
   reason-blacklist-invert: false
 

@@ -1,6 +1,7 @@
 package uk.antiperson.stackmob.config;
 
 import org.bukkit.World;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.CreatureSpawnEvent;
@@ -133,14 +134,16 @@ public class MainConfig extends ConfigFile{
         return getBoolean("events." + eventKey);
     }
 
-    public boolean isAiDisabled(EntityType type, CreatureSpawnEvent.SpawnReason spawnReason) {
-        if (getList(type, "disable-ai.type-blacklist").contains(type.toString())) {
-            return false;
-        }
-        if (getList(type, "disable-ai.reason-blacklist").contains(spawnReason.toString())) {
-            return false;
-        }
-        return getBoolean(type, "disable-ai.enabled");
+    public boolean isTargetingDisabled(EntityType type) {
+        return getBoolean(type, "disable-targeting.enabled");
+    }
+
+    public ConfigList getTargetingDisabledTypes(EntityType type) {
+        return getList(type, "disable-targeting.type-blacklist");
+    }
+
+    public ConfigList getTargetingDisabledReasons(EntityType type) {
+        return getList(type, "disable-targeting.reason-blacklist");
     }
 
     public ListenerMode getListenerMode(EntityType type, String eventKey) {

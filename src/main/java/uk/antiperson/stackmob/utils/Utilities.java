@@ -26,6 +26,10 @@ public class Utilities {
         });
     }
 
+    public static boolean isPaper() {
+        return Package.getPackage("com.destroystokyo.paper") != null;
+    }
+
     public enum DownloadResult {
         SUCCESSFUL,
         ERROR

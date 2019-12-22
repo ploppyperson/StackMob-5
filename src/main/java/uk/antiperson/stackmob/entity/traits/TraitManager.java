@@ -30,7 +30,6 @@ public class TraitManager {
         registerTrait(BreedMode.class);
         registerTrait(LoveMode.class);
         registerTrait(DrownedItem.class);
-        registerTrait(MobAi.class);
     }
 
     /**
