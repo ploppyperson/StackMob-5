@@ -9,6 +9,7 @@ import org.bukkit.plugin.InvalidPluginException;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import uk.antiperson.stackmob.commands.Commands;
+import uk.antiperson.stackmob.config.EntityTranslation;
 import uk.antiperson.stackmob.config.MainConfig;
 import uk.antiperson.stackmob.entity.EntityManager;
 import uk.antiperson.stackmob.entity.traits.TraitManager;
@@ -30,6 +31,7 @@ public class StackMob extends JavaPlugin {
     private NamespacedKey waitKey = new NamespacedKey(this, "wait-key");
 
     private MainConfig config;
+    private EntityTranslation entityTranslation;
     private TraitManager traitManager;
     private HookManager hookManager;
     private EntityManager entityManager;
@@ -52,7 +54,8 @@ public class StackMob extends JavaPlugin {
         traitManager = new TraitManager(this);
         entityManager = new EntityManager(this);
         config = new MainConfig(this);
-        getLogger().info("Loading config file...");
+        entityTranslation = new EntityTranslation(this);
+        getLogger().info("Loading config files...");
         try {
             getMainConfig().load();
             if (getMainConfig().isSet("check-area.x")) {
@@ -60,6 +63,7 @@ public class StackMob extends JavaPlugin {
                 getMainConfig().makeOld();
                 downloadBridge();
             }
+            getEntityTranslation().load();
         } catch (IOException e) {
             getLogger().log(Level.SEVERE, "There was a problem loading the configuration file. Features won't work.");
             e.printStackTrace();
@@ -159,6 +163,10 @@ public class StackMob extends JavaPlugin {
                 e.printStackTrace();
             }
         }));
+    }
+
+    public EntityTranslation getEntityTranslation() {
+        return entityTranslation;
     }
 
     public EntityManager getEntityManager() {
