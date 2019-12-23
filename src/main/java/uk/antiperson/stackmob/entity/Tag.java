@@ -23,14 +23,14 @@ public class Tag {
             entity.setCustomName(null);
             return;
         }
-        String displayName = sm.getMainConfig().getTagFormat(entity.getType());
-        String typeString = entity.getType().toString();
-        StackableMobHook smh = sm.getHookManager().getApplicableHook(stackEntity);
-        if (smh != null) {
-            typeString = smh.getDisplayName(entity);
+        String typeString = sm.getEntityTranslation().getTranslatedName(entity.getType());
+        if (typeString.length() == 0) {
+            StackableMobHook smh = sm.getHookManager().getApplicableHook(stackEntity);
+            typeString = smh != null ? smh.getDisplayName(entity) : entity.getType().toString();
+            typeString = WordUtils.capitalizeFully(typeString.replaceAll("[^A-Za-z0-9]", " "));
         }
-        String formatted = WordUtils.capitalizeFully(typeString.replaceAll("[^A-Za-z0-9]", " "));
-        displayName = StringUtils.replace(displayName, "%type%", formatted);
+        String displayName = sm.getMainConfig().getTagFormat(entity.getType());
+        displayName = StringUtils.replace(displayName, "%type%", typeString);
         displayName = StringUtils.replace(displayName, "%size%", stackEntity.getSize() + "");
         displayName = ChatColor.translateAlternateColorCodes('&', displayName);
         entity.setCustomName(displayName);
