@@ -1,7 +1,6 @@
 package uk.antiperson.stackmob.config;
 
 import org.bukkit.World;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.CreatureSpawnEvent;
@@ -12,7 +11,7 @@ import uk.antiperson.stackmob.listeners.ListenerMode;
 
 import java.util.*;
 
-public class MainConfig extends ConfigFile{
+public class MainConfig extends SpecialConfigFile {
 
     public MainConfig(StackMob sm) {
         super(sm, "config.yml");

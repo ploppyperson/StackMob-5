@@ -3,21 +3,18 @@ package uk.antiperson.stackmob.config;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.EntityType;
 import uk.antiperson.stackmob.StackMob;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.CopyOption;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 public class ConfigFile {
 
-    private File file;
-    private FileConfiguration fileCon;
+    File file;
+    FileConfiguration fileCon;
     private StackMob sm;
     private String filePath;
     public ConfigFile(StackMob sm, String filePath) {
@@ -25,48 +22,24 @@ public class ConfigFile {
         this.filePath = filePath;
     }
 
-    public String getString(EntityType type, String path) {
-        return fileCon.getString(getPath(type, path));
-    }
-
     public String getString(String path) {
         return fileCon.getString(path);
-    }
-
-    public int getInt(EntityType type, String path) {
-        return fileCon.getInt(getPath(type, path));
     }
 
     public int getInt(String path) {
         return fileCon.getInt(path);
     }
 
-    public double getDouble(EntityType type, String path) {
-        return fileCon.getDouble(getPath(type, path));
-    }
-
     public double getDouble(String path) {
         return fileCon.getDouble(path);
-    }
-
-    public boolean getBoolean(EntityType type, String path) {
-        return fileCon.getBoolean(getPath(type, path));
     }
 
     public boolean getBoolean(String path) {
         return fileCon.getBoolean(path);
     }
 
-    public ConfigList getList(EntityType type, String path) {
-        return new ConfigList(fileCon, getPath(type, path));
-    }
-
     public ConfigList getList(String path) {
         return new ConfigList(fileCon, path);
-    }
-
-    public ConfigurationSection getConfigurationSection(EntityType type, String path) {
-        return fileCon.getConfigurationSection(getPath(type, path));
     }
 
     public ConfigurationSection getConfigurationSection(String path) {
@@ -75,30 +48,6 @@ public class ConfigFile {
 
     public boolean isSet(String path) {
         return fileCon.isSet(path);
-    }
-
-    /**
-     * Gets the custom config path for this entity if it has been specified. If not this will just be the normal value.
-     * @param type the entity type
-     * @param path the config path.
-     * @return the path for this config path and entity.
-     */
-    private String getPath(EntityType type, String path) {
-        if (fileCon == null) {
-            throw new UnsupportedOperationException("Configuration file has not been loaded!");
-        }
-        // Check if the specified general config path is overridden by an entity specific equivalent.
-        String customPath = "custom." + type + "." + path;
-        if (fileCon.isSet(customPath)) {
-            return customPath;
-        }
-        // Check if this entity specific path is specified to clone another path.
-        String clone = "custom." + type + ".clone";
-        String clonePath = "custom." + fileCon.getString(clone) + "." + path;
-        if (fileCon.isString(clonePath)) {
-            return clonePath;
-        }
-        return path;
     }
 
     /**
