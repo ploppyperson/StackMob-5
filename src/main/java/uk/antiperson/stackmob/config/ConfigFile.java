@@ -58,6 +58,10 @@ public class ConfigFile {
         return fileCon != null;
     }
 
+    public void set(String path, Object value) {
+        fileCon.set(path, value);
+    }
+
     /**
      * Loads the config so that it can be read.
      * @throws IOException when an I/O error occurs if a new file is made.
