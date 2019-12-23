@@ -13,8 +13,8 @@ import java.nio.file.StandardCopyOption;
 
 public class ConfigFile {
 
-    File file;
-    FileConfiguration fileCon;
+    private File file;
+    private FileConfiguration fileCon;
     private StackMob sm;
     private String filePath;
     public ConfigFile(StackMob sm, String filePath) {
@@ -48,6 +48,14 @@ public class ConfigFile {
 
     public boolean isSet(String path) {
         return fileCon.isSet(path);
+    }
+
+    public boolean isString(String path) {
+        return fileCon.isString(path);
+    }
+
+    public boolean isFileLoaded() {
+        return fileCon != null;
     }
 
     /**
