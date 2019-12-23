@@ -89,4 +89,13 @@ public class ConfigFile {
         load();
     }
 
+    /**
+     * Saves the config to file.
+     * NOTE: Comments will be removed!
+     * @throws IOException when I/O error occurs
+     */
+    public void save() throws IOException {
+        fileCon.save(file);
+    }
+
 }
