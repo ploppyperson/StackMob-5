@@ -19,7 +19,7 @@ public class Remove extends SubCommand {
 
     @Override
     public boolean onCommand(User sender, String[] args) {
-        Player player = (Player) sender;
+        Player player = (Player) sender.getSender();
         Function<Entity, Boolean> function = entity -> entity instanceof Mob;
         if (args.length == 1) {
             switch (args[0]) {

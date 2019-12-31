@@ -27,6 +27,10 @@ public class User {
         sendMessage(MessageType.SUCCESS, message);
     }
 
+    public CommandSender getSender() {
+        return sender;
+    }
+
     private void sendMessage(MessageType type, String rawMessage) {
         StringBuilder message = new StringBuilder(Utilities.PREFIX);
         switch (type) {

@@ -19,7 +19,7 @@ public class SpawnStack extends SubCommand {
 
     @Override
     public boolean onCommand(User sender, String[] args) {
-        Player player = (Player) sender;
+        Player player = (Player) sender.getSender();
         Entity entity = player.getWorld().spawnEntity(player.getLocation(), EntityType.valueOf(args[0].toUpperCase()));
         StackEntity stackEntity = sm.getEntityManager().getStackEntity((LivingEntity) entity);
         stackEntity.setSize(Integer.valueOf(args[1]));
