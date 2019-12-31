@@ -1,12 +1,8 @@
 package uk.antiperson.stackmob.commands.subcommands;
 
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.*;
 import uk.antiperson.stackmob.StackMob;
-import uk.antiperson.stackmob.commands.ArgumentType;
-import uk.antiperson.stackmob.commands.CommandArgument;
-import uk.antiperson.stackmob.commands.CommandMetadata;
-import uk.antiperson.stackmob.commands.SubCommand;
+import uk.antiperson.stackmob.commands.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,7 +18,7 @@ public class Remove extends SubCommand {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, String[] args) {
+    public boolean onCommand(User sender, String[] args) {
         Player player = (Player) sender;
         Function<Entity, Boolean> function = entity -> entity instanceof Mob;
         if (args.length == 1) {

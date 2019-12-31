@@ -1,10 +1,10 @@
 package uk.antiperson.stackmob.commands.subcommands;
 
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.commands.CommandMetadata;
 import uk.antiperson.stackmob.commands.SubCommand;
+import uk.antiperson.stackmob.commands.User;
 
 @CommandMetadata(command = "tool", playerReq = true, desc = "Gives you the stacking tool.")
 public class GiveTool extends SubCommand {
@@ -15,7 +15,7 @@ public class GiveTool extends SubCommand {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, String[] args) {
+    public boolean onCommand(User sender, String[] args) {
         sm.getItemTools().giveStackingTool((Player) sender);
         return false;
     }

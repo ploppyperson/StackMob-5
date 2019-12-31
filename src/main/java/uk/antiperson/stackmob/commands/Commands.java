@@ -60,7 +60,7 @@ public class Commands implements CommandExecutor, TabCompleter {
                 commandSender.sendMessage("Invalid arguments!");
                 return false;
             }
-            subCommand.onCommand(commandSender, (String[]) ArrayUtils.remove(strings, 0));
+            subCommand.onCommand(new User(commandSender), (String[]) ArrayUtils.remove(strings, 0));
         }
         return false;
     }
