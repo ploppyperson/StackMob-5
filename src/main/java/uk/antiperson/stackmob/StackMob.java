@@ -17,6 +17,7 @@ import uk.antiperson.stackmob.hook.HookManager;
 import uk.antiperson.stackmob.listeners.*;
 import uk.antiperson.stackmob.tasks.MergeTask;
 import uk.antiperson.stackmob.tasks.TagTask;
+import uk.antiperson.stackmob.utils.ItemTools;
 import uk.antiperson.stackmob.utils.Updater;
 import uk.antiperson.stackmob.utils.Utilities;
 
@@ -29,6 +30,7 @@ public class StackMob extends JavaPlugin {
 
     private NamespacedKey stackKey = new NamespacedKey(this, "stack-size");
     private NamespacedKey waitKey = new NamespacedKey(this, "wait-key");
+    private NamespacedKey toolKey = new NamespacedKey(this, "stack-tool");
 
     private MainConfig config;
     private EntityTranslation entityTranslation;
@@ -36,6 +38,7 @@ public class StackMob extends JavaPlugin {
     private HookManager hookManager;
     private EntityManager entityManager;
     private Updater updater;
+    private ItemTools itemTools;
 
     @Override
     public void onLoad() {
@@ -110,6 +113,7 @@ public class StackMob extends JavaPlugin {
         if (metrics.isEnabled()) {
             getLogger().info("bStats anonymous data collection has been enabled!");
         }
+        itemTools = new ItemTools(this);
     }
 
     private void registerEvents() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
@@ -125,6 +129,7 @@ public class StackMob extends JavaPlugin {
         registerEvent(SlimeListener.class);
         registerEvent(SpawnListener.class);
         registerEvent(TargetListener.class);
+        registerEvent(PlayerListener.class);
     }
 
     private void registerEvent(Class<? extends Listener> clazz) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
@@ -195,5 +200,13 @@ public class StackMob extends JavaPlugin {
 
     public NamespacedKey getWaitKey() {
         return waitKey;
+    }
+
+    public NamespacedKey getToolKey() {
+        return toolKey;
+    }
+
+    public ItemTools getItemTools() {
+        return itemTools;
     }
 }

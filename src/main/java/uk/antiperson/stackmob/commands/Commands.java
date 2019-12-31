@@ -28,6 +28,7 @@ public class Commands implements CommandExecutor, TabCompleter {
         subCommands.add(new Remove(sm));
         subCommands.add(new CheckUpdate(sm));
         subCommands.add(new Upgrade(sm));
+        subCommands.add(new GiveTool(sm));
     }
 
     @Override
