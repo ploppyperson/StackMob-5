@@ -23,6 +23,7 @@ public class SpawnStack extends SubCommand {
         Entity entity = player.getWorld().spawnEntity(player.getLocation(), EntityType.valueOf(args[0].toUpperCase()));
         StackEntity stackEntity = sm.getEntityManager().getStackEntity((LivingEntity) entity);
         stackEntity.setSize(Integer.valueOf(args[1]));
+        sender.sendSuccess("A new stack has been spawned.");
         return false;
     }
 }

@@ -41,6 +41,7 @@ public class Remove extends SubCommand {
             }
             entity.remove();
         }
+        sender.sendSuccess("Entities matching your criteria have been removed.");
         return false;
     }
 

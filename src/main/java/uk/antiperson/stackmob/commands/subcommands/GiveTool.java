@@ -17,6 +17,7 @@ public class GiveTool extends SubCommand {
     @Override
     public boolean onCommand(User sender, String[] args) {
         sm.getItemTools().giveStackingTool((Player) sender);
+        sender.sendInfo("The stacking tool has been added to your inventory.");
         return false;
     }
 }
