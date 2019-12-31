@@ -34,6 +34,11 @@ public class StackEntity {
         }
     }
 
+    public void removeStackData() {
+        entity.getPersistentDataContainer().remove(sm.getStackKey());
+        getTag().update();
+    }
+
     public boolean shouldWait(CreatureSpawnEvent.SpawnReason spawnReason) {
         if (!sm.getMainConfig().isWaitingEnabled(getEntity().getType())) {
             return false;
