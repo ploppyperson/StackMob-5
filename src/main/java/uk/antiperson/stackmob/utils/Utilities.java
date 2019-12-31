@@ -1,5 +1,7 @@
 package uk.antiperson.stackmob.utils;
 
+import org.bukkit.ChatColor;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,6 +11,8 @@ import java.nio.file.StandardCopyOption;
 import java.util.concurrent.CompletableFuture;
 
 public class Utilities {
+
+    public static final String PREFIX = ChatColor.DARK_GREEN + "StackMob " + ChatColor.GRAY + ">> " + ChatColor.RESET;
 
     public static CompletableFuture<DownloadResult> downloadFile(File filePath, String url) {
         return CompletableFuture.supplyAsync(() -> {
