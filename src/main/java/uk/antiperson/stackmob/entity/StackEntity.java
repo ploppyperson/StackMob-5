@@ -28,6 +28,12 @@ public class StackEntity {
      * @param newSize the size this stack should be changed to.
      */
     public void setSize(int newSize, boolean update) {
+        if (newSize < 1) {
+            throw new IllegalArgumentException("Stack size can not be less than one!");
+        }
+        if (newSize > getMaxSize()) {
+            throw new IllegalArgumentException("Stack size cannot be more than the configured stack size!");
+        }
         entity.getPersistentDataContainer().set(sm.getStackKey(), PersistentDataType.INTEGER, newSize);
         if (update) {
             getTag().update();
