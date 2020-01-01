@@ -59,18 +59,7 @@ public class StackMob extends JavaPlugin {
         config = new MainConfig(this);
         entityTranslation = new EntityTranslation(this);
         getLogger().info("Loading config files...");
-        try {
-            getMainConfig().load();
-            if (getMainConfig().isSet("check-area.x")) {
-                getLogger().info("Old config detected. Renaming to config.old and making a new one.");
-                getMainConfig().makeOld();
-                downloadBridge();
-            }
-            getEntityTranslation().load();
-        } catch (IOException e) {
-            getLogger().log(Level.SEVERE, "There was a problem loading the configuration file. Features won't work.");
-            e.printStackTrace();
-        }
+        loadConfig();
         getLogger().info("Registering hooks and trait checks...");
         try{
             getTraitManager().registerTraits();
@@ -85,15 +74,7 @@ public class StackMob extends JavaPlugin {
         } catch (InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
-        int stackInterval = getMainConfig().getStackInterval();
-        new MergeTask(this).runTaskTimer(this, 5, stackInterval);
-        int tagInterval = getMainConfig().getTagNearbyInterval();
-        new TagTask(this).runTaskTimer(this, 5, tagInterval);
-        PluginCommand command = getCommand("stackmob");
-        Commands commands = new Commands(this);
-        command.setExecutor(commands);
-        command.setTabCompleter(commands);
-        commands.registerSubCommands();
+        register();
         updater = new Updater(this, 29999);
         getUpdater().checkUpdate().whenComplete(((updateResult, throwable) -> {
             switch (updateResult.getResult()) {
@@ -114,6 +95,33 @@ public class StackMob extends JavaPlugin {
             getLogger().info("bStats anonymous data collection has been enabled!");
         }
         itemTools = new ItemTools(this);
+    }
+
+    private void loadConfig() {
+        try {
+            getMainConfig().load();
+            if (getMainConfig().isSet("check-area.x")) {
+                getLogger().info("Old config detected. Renaming to config.old and making a new one.");
+                getMainConfig().makeOld();
+                downloadBridge();
+            }
+            getEntityTranslation().load();
+        } catch (IOException e) {
+            getLogger().log(Level.SEVERE, "There was a problem loading the configuration file. Features won't work.");
+            e.printStackTrace();
+        }
+    }
+
+    private void register() {
+        int stackInterval = getMainConfig().getStackInterval();
+        new MergeTask(this).runTaskTimer(this, 5, stackInterval);
+        int tagInterval = getMainConfig().getTagNearbyInterval();
+        new TagTask(this).runTaskTimer(this, 5, tagInterval);
+        PluginCommand command = getCommand("stackmob");
+        Commands commands = new Commands(this);
+        command.setExecutor(commands);
+        command.setTabCompleter(commands);
+        commands.registerSubCommands();
     }
 
     private void registerEvents() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
