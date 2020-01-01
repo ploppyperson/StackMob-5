@@ -2,8 +2,8 @@
 
 # Most options can be customised for specific entity types, for details about this, see the end of this file.
 # Asterisk meaning:
-# (*) This option cannot be overridden in the 'custom' section.
-# (**) The following option requires the use of Paper (https://papermc.io) because the API needed is not in Spigot!
+# (*) This option cannot be overridden in the 'custom' section at the end of this file.
+# (**) The following option requires the use of Paper (https://papermc.io) because the API needed is not in Spigot.
 
 stack:
   # The maximum size that a stack can have.
@@ -29,8 +29,11 @@ reason-blacklist: []
 reason-blacklist-invert: false
 
 display-name:
-  # The formatting of the display name above the entity
-  format: '%size%x %type%'
+  # The formatting of the name tag which is shown when the stack size is above the threshold.
+  # Placeholders:
+  # %type% - the entity's type
+  # %size% - the size of the stack
+  format: '&a%type% &d(%size%)'
   # Whether the display tag can only be seen when the player targets the entity.
   # Mode:
   # ALWAYS - The tag will always be visible as long as the entity is loaded.
@@ -179,6 +182,8 @@ wait-to-stack:
     - ZOMBIE
     - SKELETON
     - PIG_ZOMBIE
+    - CREEPER
+    - ENDERMAN
   types-whitelist-invert: false
   # Spawn reasons that this should work for.
   reasons-whitelist:
