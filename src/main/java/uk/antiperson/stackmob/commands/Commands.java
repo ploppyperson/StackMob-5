@@ -45,10 +45,15 @@ public class Commands implements CommandExecutor, TabCompleter {
             for (SubCommand subCommand : subCommands) {
                 StringBuilder args = new StringBuilder();
                 for (CommandArgument argumentType : subCommand.getArguments()) {
+                    if (argumentType.isOptional()) {
+                        args.append("(").append(argumentType.getType()).append(") ");
+                        continue;
+                    }
                     args.append("[").append(argumentType.getType()).append("] ");
                 }
                 commandSender.sendMessage(ChatColor.AQUA + "/sm " + subCommand.getCommand() + " " + args + ChatColor.GRAY + "- " + ChatColor.YELLOW + subCommand.getDescription());
             }
+            commandSender.sendMessage(ChatColor.GOLD + "Key: () = Optional argument, [] = Mandatory argument.");
             return false;
         }
         for (SubCommand subCommand : subCommands) {
