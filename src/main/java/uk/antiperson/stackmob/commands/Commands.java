@@ -45,11 +45,18 @@ public class Commands implements CommandExecutor, TabCompleter {
             for (SubCommand subCommand : subCommands) {
                 StringBuilder args = new StringBuilder();
                 for (CommandArgument argumentType : subCommand.getArguments()) {
+                    StringBuilder options = new StringBuilder();
+                    if (argumentType.getExpectedArguments().size() <= 3 && argumentType.getExpectedArguments().size() > 0) {
+                        argumentType.getExpectedArguments().forEach(argument -> options.append(argument).append("/"));
+                        options.deleteCharAt(options.length() - 1);
+                    } else {
+                        options.append(argumentType.getType());
+                    }
                     if (argumentType.isOptional()) {
-                        args.append("(").append(argumentType.getType()).append(") ");
+                        args.append("(").append(options).append(") ");
                         continue;
                     }
-                    args.append("[").append(argumentType.getType()).append("] ");
+                    args.append("[").append(options).append("] ");
                 }
                 commandSender.sendMessage(ChatColor.AQUA + "/sm " + subCommand.getCommand() + " " + args + ChatColor.GRAY + "- " + ChatColor.YELLOW + subCommand.getDescription());
             }
@@ -101,28 +108,11 @@ public class Commands implements CommandExecutor, TabCompleter {
                         return false;
                     }
             }
+            if (!argument.getExpectedArguments().contains(args[i])) {
+                return false;
+            }
         }
         return true;
-    }
-
-    private List<String> getApplicableArgs(ArgumentType type) {
-        List<String> strings = new ArrayList<>();
-        switch (type) {
-            case ENTITY_TYPE:
-                for (EntityType etype : EntityType.values()) {
-                    if (etype.getEntityClass() == null) {
-                        continue;
-                    }
-                    if (!Mob.class.isAssignableFrom(etype.getEntityClass())) {
-                        continue;
-                    }
-                    strings.add(etype.toString());
-                }
-                return strings;
-            case BOOLEAN:
-                return Arrays.asList("true", "false");
-        }
-        return null;
     }
 
     @Nullable
@@ -142,11 +132,8 @@ public class Commands implements CommandExecutor, TabCompleter {
             if (subCommand.getArguments().length < strings.length - 1) {
                 return null;
             }
-            List<String> args = subCommand.onTabComplete(strings[strings.length - 2], strings.length - 2);
-            if (args == null) {
-                args = getApplicableArgs(subCommand.getArguments()[strings.length - 2].getType());
-            }
-            return args;
+            CommandArgument commandArgument = subCommand.getArguments()[strings.length - 2];
+            return commandArgument.getExpectedArguments();
         }
         return null;
     }

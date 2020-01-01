@@ -1,7 +1,5 @@
 package uk.antiperson.stackmob.commands;
 
-import java.util.List;
-
 public abstract class SubCommand implements Command {
 
     private CommandArgument[] arguments;
@@ -28,11 +26,5 @@ public abstract class SubCommand implements Command {
     private CommandMetadata getCommandMetadata() {
         return getClass().getAnnotation(CommandMetadata.class);
     }
-
-    @Override
-    public List<String> onTabComplete(String arg, int id) {
-        return null;
-    }
-
 
 }

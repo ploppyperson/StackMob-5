@@ -13,7 +13,7 @@ public class Remove extends SubCommand {
 
     private StackMob sm;
     public Remove(StackMob sm) {
-        super(CommandArgument.construct(ArgumentType.STRING, true));
+        super(CommandArgument.construct(ArgumentType.STRING, true, Arrays.asList("animals", "hostile")));
         this.sm = sm;
     }
 
@@ -45,8 +45,4 @@ public class Remove extends SubCommand {
         return false;
     }
 
-    @Override
-    public List<String> onTabComplete(String arg, int id) {
-        return Arrays.asList("animals", "hostile");
-    }
 }
