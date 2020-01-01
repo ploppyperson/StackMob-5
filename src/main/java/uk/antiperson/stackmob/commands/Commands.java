@@ -1,6 +1,7 @@
 package uk.antiperson.stackmob.commands;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -10,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.commands.subcommands.*;
+import uk.antiperson.stackmob.utils.Utilities;
 
 import java.util.*;
 
@@ -35,17 +37,17 @@ public class Commands implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         if (!(commandSender.hasPermission("stackmob.admin"))) {
-            commandSender.sendMessage("You do not have permission!");
+            commandSender.sendMessage(Utilities.PREFIX + ChatColor.RED + "You do not have permission!");
             return false;
         }
         if (strings.length == 0) {
-            commandSender.sendMessage("Commands: ");
+            commandSender.sendMessage(Utilities.PREFIX + ChatColor.GOLD + "Commands: ");
             for (SubCommand subCommand : subCommands) {
                 StringBuilder args = new StringBuilder();
                 for (CommandArgument argumentType : subCommand.getArguments()) {
                     args.append("[").append(argumentType.getType()).append("] ");
                 }
-                commandSender.sendMessage("/sm " + subCommand.getCommand() + " " + args + "- " + subCommand.getDescription());
+                commandSender.sendMessage(ChatColor.AQUA + "/sm " + subCommand.getCommand() + " " + args + ChatColor.GRAY + "- " + ChatColor.YELLOW + subCommand.getDescription());
             }
             return false;
         }
@@ -54,11 +56,11 @@ public class Commands implements CommandExecutor, TabCompleter {
                 continue;
             }
             if (subCommand.isPlayerRequired() && !(commandSender instanceof Player)) {
-                commandSender.sendMessage("You are not a player");
+                commandSender.sendMessage(Utilities.PREFIX + ChatColor.RED + "You are not a player!");
                 return false;
             }
             if (!validateArgs(subCommand.getArguments(), (String[]) ArrayUtils.remove(strings, 0))) {
-                commandSender.sendMessage("Invalid arguments!");
+                commandSender.sendMessage(Utilities.PREFIX + ChatColor.RED + "Invalid arguments!");
                 return false;
             }
             subCommand.onCommand(new User(commandSender), (String[]) ArrayUtils.remove(strings, 0));
