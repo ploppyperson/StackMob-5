@@ -54,26 +54,28 @@ public class MergeTask extends BukkitRunnable {
                         matches.add(nearbyStack);
                     }
                 }
-                if (sm.getMainConfig().getStackThresholdEnabled(entity.getType())) {
-                    int threshold = sm.getMainConfig().getStackThreshold(entity.getType()) - 1;
-                    int size = matches.size();
-                    if (size >= threshold) {
-                        matches.forEach(StackEntity::remove);
-                        if (size > original.getMaxSize()) {
-                            double divided = (double) size / (double) original.getMaxSize();
-                            double fullStacks = Math.floor(divided);
-                            double leftOver = divided - fullStacks;
-                            for (int i = 0; i < fullStacks; i++) {
-                                StackEntity stackEntity = original.duplicate();
-                                stackEntity.setSize(original.getMaxSize());
-                            }
-                            StackEntity stackEntity = original.duplicate();
-                            stackEntity.setSize((int) Math.round(leftOver * original.getMaxSize()));
-                            return;
-                        }
-                        original.incrementSize(size);
-                    }
+                if (!sm.getMainConfig().getStackThresholdEnabled(entity.getType())) {
+                    return;
                 }
+                int threshold = sm.getMainConfig().getStackThreshold(entity.getType()) - 1;
+                int size = matches.size();
+                if (size < threshold) {
+                    return;
+                }
+                matches.forEach(StackEntity::remove);
+                if (size > original.getMaxSize()) {
+                    double divided = (double) size / (double) original.getMaxSize();
+                    double fullStacks = Math.floor(divided);
+                    double leftOver = divided - fullStacks;
+                    for (int i = 0; i < fullStacks; i++) {
+                        StackEntity stackEntity = original.duplicate();
+                        stackEntity.setSize(original.getMaxSize());
+                    }
+                    StackEntity stackEntity = original.duplicate();
+                    stackEntity.setSize((int) Math.round(leftOver * original.getMaxSize()));
+                    return;
+                }
+                original.incrementSize(size);
             }
         }
     }
