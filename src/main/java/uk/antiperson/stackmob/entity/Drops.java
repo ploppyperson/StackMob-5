@@ -21,16 +21,16 @@ public class Drops {
     }
 
     public Map<ItemStack, Integer> calculateDrops(int deathAmount, List<ItemStack> originalDrops) {
+        Map<ItemStack, Integer> items = new HashMap<>();
         if (!sm.getMainConfig().isDropMultiEnabled(dead.getType())) {
-            return null;
+            return items;
         }
         if (sm.getMainConfig().getDropTypeBlacklist(dead.getType()).contains(dead.getType().toString())) {
-            return null;
+            return items;
         }
         if (sm.getMainConfig().getDropReasonBlacklist(dead.getType()).contains(dead.getLastDamageCause().getCause().toString())) {
-            return null;
+            return items;
         }
-        Map<ItemStack, Integer> items = new HashMap<>();
         for (int i = 0; i < deathAmount; i++) {
             for (ItemStack is : calculateLoot(originalDrops)) {
                 if (is == null || is.getType() == Material.AIR) {
