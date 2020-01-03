@@ -36,6 +36,9 @@ public class ItemTools {
     }
 
     public boolean isStackingTool(ItemStack is) {
+        if (is.getItemMeta() == null) {
+            return false;
+        }
         return is.getItemMeta().getPersistentDataContainer().has(sm.getToolKey(), PersistentDataType.INTEGER);
     }
 
