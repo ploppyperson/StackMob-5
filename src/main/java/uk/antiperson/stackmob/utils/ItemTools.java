@@ -19,7 +19,7 @@ public class ItemTools {
     }
 
     public ItemStack createStackingTool() {
-        ItemStack is = new ItemStack(Material.STICK, 1);
+        ItemStack is = new ItemStack(Material.BONE, 1);
         is.addUnsafeEnchantment(Enchantment.ARROW_KNOCKBACK, 100);
         ItemMeta itemMeta = is.getItemMeta();
         itemMeta.setDisplayName(ChatColor.GOLD + "The Stick Of Stacking");
