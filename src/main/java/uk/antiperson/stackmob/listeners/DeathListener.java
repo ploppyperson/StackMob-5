@@ -1,5 +1,6 @@
 package uk.antiperson.stackmob.listeners;
 
+import org.bukkit.Statistic;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -37,10 +38,16 @@ public class DeathListener implements Listener {
             deathMethod.onSpawn(spawned);
         }
         if (deathStep > 1) {
-            Map<ItemStack, Integer> drops = stackEntity.getDrops().calculateDrops(deathStep - 1, event.getDrops());
+            int toMultiply = deathStep - 1;
+            Map<ItemStack, Integer> drops = stackEntity.getDrops().calculateDrops(toMultiply, event.getDrops());
             Drops.dropItems(event.getEntity().getLocation(), drops);
-            int experience = stackEntity.getDrops().calculateExperience(deathStep - 1, event.getDroppedExp());
+            int experience = stackEntity.getDrops().calculateExperience(toMultiply, event.getDroppedExp());
             event.setDroppedExp(experience);
+            if (sm.getMainConfig().isPlayerStatMulti(event.getEntityType())) {
+                if (event.getEntity().getKiller() != null) {
+                    event.getEntity().getKiller().incrementStatistic(Statistic.KILL_ENTITY, toMultiply);
+                }
+            }
         }
     }
 

@@ -105,6 +105,10 @@ public class MainConfig extends SpecialConfigFile {
         return getDouble(type, "experience.multiplier-max");
     }
 
+    public boolean isPlayerStatMulti(EntityType type) {
+        return getBoolean(type, "player-stats");
+    }
+
     public boolean isWaitingEnabled(EntityType type) {
         return getBoolean(type, "wait-to-stack.enabled");
     }

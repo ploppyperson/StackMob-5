@@ -171,6 +171,9 @@ experience:
   type-blacklist: []
   type-blacklist-invert: false
 
+# Multiply the player stats which can be seen by the player from the game menu.
+player-stats: true
+
 # If specific entities should have a waiting time before their first stack.
 # Designed for monster grinders etc.
 wait-to-stack:
