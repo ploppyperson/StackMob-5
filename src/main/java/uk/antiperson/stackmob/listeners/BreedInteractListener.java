@@ -46,14 +46,18 @@ public class BreedInteractListener implements Listener {
                 stackEntity.slice();
                 break;
             case MULTIPLY:
-                stackEntity.splitIfNotEnough(event.getPlayer().getInventory().getItemInMainHand().getAmount());
+                int itemAmount = event.getPlayer().getInventory().getItemInMainHand().getAmount();
+                EntityUtils.removeHandItem(event.getPlayer(), stackEntity.getSize());
+                stackEntity.splitIfNotEnough(itemAmount);
+                if (itemAmount == 1) {
+                    return;
+                }
                 double kAmount = stackEntity.getSize() / 2D;
                 int kidAmount = (int) Math.floor(kAmount);
                 if (kAmount > kidAmount) {
                     stackEntity.duplicate();
                     stackEntity.incrementSize(-1);
                 }
-                EntityUtils.removeHandItem(event.getPlayer(), stackEntity.getSize());
                 // Spawn the kid
                 StackEntity kid = stackEntity.duplicate();
                 kid.setSize(kidAmount);
