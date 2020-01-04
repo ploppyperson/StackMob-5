@@ -63,7 +63,7 @@ public class MergeTask extends BukkitRunnable {
                     return;
                 }
                 matches.forEach(StackEntity::remove);
-                if (size > original.getMaxSize()) {
+                if (size >= original.getMaxSize()) {
                     double divided = (double) size / (double) original.getMaxSize();
                     double fullStacks = Math.floor(divided);
                     double leftOver = divided - fullStacks;
@@ -71,8 +71,10 @@ public class MergeTask extends BukkitRunnable {
                         StackEntity stackEntity = original.duplicate();
                         stackEntity.setSize(original.getMaxSize());
                     }
-                    StackEntity stackEntity = original.duplicate();
-                    stackEntity.setSize((int) Math.round(leftOver * original.getMaxSize()));
+                    if (leftOver > 0) {
+                        StackEntity stackEntity = original.duplicate();
+                        stackEntity.setSize((int) Math.round(leftOver * original.getMaxSize()));
+                    }
                     return;
                 }
                 original.incrementSize(size);
