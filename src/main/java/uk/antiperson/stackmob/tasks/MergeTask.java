@@ -29,7 +29,7 @@ public class MergeTask extends BukkitRunnable {
                     }
                     continue;
                 }
-                if (!original.checkFirst()) {
+                if (!original.isMaxSize()) {
                     continue;
                 }
                 Integer[] searchRadius = sm.getMainConfig().getStackRadius(entity.getType());

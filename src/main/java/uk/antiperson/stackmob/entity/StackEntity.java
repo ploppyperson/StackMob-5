@@ -137,26 +137,23 @@ public class StackEntity {
     }
 
     /**
-     * Check if the first looped entity can stack
-     * @return if the first looped can stack
+     * Check if the stack is at its maximum size.
+     * @return if the stack is at its maximum size.
      */
-    public boolean checkFirst() {
-        if (getSize() == getMaxSize()) {
-            return false;
-        }
-        return true;
+    public boolean isMaxSize() {
+        return getSize() == getMaxSize();
     }
 
     /**
-     * Check if the given entity and this entity are similar.
+     * Check if the given entity and this entity should stack.
      * @param nearby another entity
-     * @return if the given entity and this entity are similar.
+     * @return if the given entity and this entity should stack.
      */
     public boolean checkNearby(StackEntity nearby) {
         if (getEntity().getType() != nearby.getEntity().getType()) {
             return false;
         }
-        if (nearby.getSize() == nearby.getMaxSize()) {
+        if (nearby.isMaxSize()) {
             return false;
         }
         if (sm.getTraitManager().checkTraits(this, nearby)) {
