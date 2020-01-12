@@ -31,7 +31,7 @@ public class DeathListener implements Listener {
             return;
         }
         DeathMethod deathMethod = calculateDeath(stackEntity);
-        int deathStep = deathMethod.calculateStep();
+        int deathStep = Math.min(stackEntity.getSize(), deathMethod.calculateStep());
         if (deathStep < stackEntity.getSize()) {
             StackEntity spawned = stackEntity.duplicate();
             spawned.setSize(stackEntity.getSize() - deathStep);
