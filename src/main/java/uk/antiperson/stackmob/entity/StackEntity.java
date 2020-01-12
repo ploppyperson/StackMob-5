@@ -141,10 +141,10 @@ public class StackEntity {
      * @return if the entity can stack
      */
     public boolean isCandidate() {
-        if (getEntity().isDead()) {
+        if (getSize() == getMaxSize()) {
             return false;
         }
-        if (getSize() == getMaxSize()) {
+        if (getEntity().isDead()) {
             return false;
         }
         return true;

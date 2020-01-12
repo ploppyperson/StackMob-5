@@ -36,10 +36,10 @@ public class SpawnListener implements Listener {
                     continue;
                 }
                 StackEntity nearby = sm.getEntityManager().getStackEntity((LivingEntity) entity);
-                if (!nearby.isCandidate()) {
+                if (sm.getMainConfig().getStackThresholdEnabled(entity.getType()) && nearby.getSize() == 1) {
                     continue;
                 }
-                if (sm.getMainConfig().getStackThresholdEnabled(entity.getType()) && nearby.getSize() == 1) {
+                if (!nearby.isCandidate()) {
                     continue;
                 }
                 if (nearby.merge(original)) {
