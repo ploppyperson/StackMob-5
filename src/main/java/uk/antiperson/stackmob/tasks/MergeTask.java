@@ -55,12 +55,12 @@ public class MergeTask extends BukkitRunnable {
                     }
                 }
                 if (!sm.getMainConfig().getStackThresholdEnabled(entity.getType())) {
-                    return;
+                    continue;
                 }
                 int threshold = sm.getMainConfig().getStackThreshold(entity.getType()) - 1;
                 int size = matches.size();
                 if (size < threshold) {
-                    return;
+                    continue;
                 }
                 matches.forEach(StackEntity::remove);
                 if (size >= original.getMaxSize()) {
