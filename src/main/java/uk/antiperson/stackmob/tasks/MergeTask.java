@@ -29,7 +29,7 @@ public class MergeTask extends BukkitRunnable {
                     }
                     continue;
                 }
-                if (!original.isCandidate()) {
+                if (!original.checkFirst()) {
                     continue;
                 }
                 Integer[] searchRadius = sm.getMainConfig().getStackRadius(entity.getType());
@@ -42,7 +42,7 @@ public class MergeTask extends BukkitRunnable {
                         continue;
                     }
                     StackEntity nearbyStack = sm.getEntityManager().getStackEntity((LivingEntity) nearby);
-                    if (!nearbyStack.isCandidate()) {
+                    if (!original.checkNearby(nearbyStack)) {
                         continue;
                     }
                     if (nearbyStack.getSize() > 1 || original.getSize() > 1) {
@@ -50,9 +50,7 @@ public class MergeTask extends BukkitRunnable {
                             break;
                         }
                     }
-                    if (nearbyStack.canMerge(original)) {
-                        matches.add(nearbyStack);
-                    }
+                    matches.add(nearbyStack);
                 }
                 if (!sm.getMainConfig().getStackThresholdEnabled(entity.getType())) {
                     continue;

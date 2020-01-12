@@ -137,14 +137,11 @@ public class StackEntity {
     }
 
     /**
-     * Check if the entity can stack
-     * @return if the entity can stack
+     * Check if the first looped entity can stack
+     * @return if the first looped can stack
      */
-    public boolean isCandidate() {
+    public boolean checkFirst() {
         if (getSize() == getMaxSize()) {
-            return false;
-        }
-        if (getEntity().isDead()) {
             return false;
         }
         return true;
@@ -155,14 +152,20 @@ public class StackEntity {
      * @param nearby another entity
      * @return if the given entity and this entity are similar.
      */
-    public boolean canMerge(StackEntity nearby) {
+    public boolean checkNearby(StackEntity nearby) {
         if (getEntity().getType() != nearby.getEntity().getType()) {
+            return false;
+        }
+        if (nearby.getSize() == nearby.getMaxSize()) {
             return false;
         }
         if (sm.getTraitManager().checkTraits(this, nearby)) {
             return false;
         }
         if (sm.getHookManager().checkHooks(this, nearby)) {
+            return false;
+        }
+        if (nearby.getEntity().isDead() || getEntity().isDead()) {
             return false;
         }
         return true;
@@ -174,9 +177,6 @@ public class StackEntity {
      * @return whether the merge was successful
      */
     public boolean merge(StackEntity toMerge) {
-        if (!canMerge(toMerge)) {
-            return false;
-        }
         int totalSize = toMerge.getSize() + getSize();
         if (totalSize > getMaxSize()) {
             toMerge.setSize(totalSize - getMaxSize());

@@ -39,7 +39,7 @@ public class SpawnListener implements Listener {
                 if (sm.getMainConfig().getStackThresholdEnabled(entity.getType()) && nearby.getSize() == 1) {
                     continue;
                 }
-                if (!nearby.isCandidate()) {
+                if (!original.checkNearby(nearby)) {
                     continue;
                 }
                 if (nearby.merge(original)) {
