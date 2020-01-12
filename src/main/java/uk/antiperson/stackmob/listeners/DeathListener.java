@@ -45,7 +45,7 @@ public class DeathListener implements Listener {
             event.setDroppedExp(experience);
             if (sm.getMainConfig().isPlayerStatMulti(event.getEntityType())) {
                 if (event.getEntity().getKiller() != null) {
-                    event.getEntity().getKiller().incrementStatistic(Statistic.KILL_ENTITY, toMultiply);
+                    event.getEntity().getKiller().incrementStatistic(Statistic.KILL_ENTITY, event.getEntityType(), toMultiply);
                 }
             }
         }
