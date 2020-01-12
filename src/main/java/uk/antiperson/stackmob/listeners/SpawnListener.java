@@ -18,6 +18,9 @@ public class SpawnListener implements Listener {
 
     @EventHandler
     public void onSpawn(CreatureSpawnEvent event) {
+        if (!(event.getEntity() instanceof Mob)) {
+            return;
+        }
         sm.getServer().getScheduler().runTask(sm, () -> {
             if (sm.getMainConfig().isEntityBlacklisted(event.getEntity(), event.getSpawnReason())) {
                 return;
