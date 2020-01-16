@@ -174,14 +174,16 @@ public class StackEntity {
      * @return whether the merge was successful
      */
     public boolean merge(StackEntity toMerge) {
-        int totalSize = toMerge.getSize() + getSize();
+        StackEntity entity1 = toMerge.getSize() < getSize() ? toMerge : this;
+        StackEntity entity2 = toMerge.getSize() < getSize() ? this : toMerge;
+        int totalSize = entity1.getSize() + entity2.getSize();
         if (totalSize > getMaxSize()) {
-            toMerge.setSize(totalSize - getMaxSize());
-            setSize(getMaxSize());
+            toMerge.setSize(totalSize - entity2.getMaxSize());
+            setSize(entity2.getMaxSize());
             return true;
         }
-        incrementSize(toMerge.getSize());
-        toMerge.remove();
+        incrementSize(entity1.getSize());
+        entity1.remove();
         return true;
     }
 
