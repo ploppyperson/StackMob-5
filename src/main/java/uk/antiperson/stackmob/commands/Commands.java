@@ -107,9 +107,11 @@ public class Commands implements CommandExecutor, TabCompleter {
                     } catch (IllegalArgumentException e) {
                         return false;
                     }
-            }
-            if (!argument.getExpectedArguments().contains(args[i])) {
-                return false;
+                    break;
+                case STRING:
+                    if (!argument.getExpectedArguments().contains(args[i])) {
+                        return false;
+                    }
             }
         }
         return true;
