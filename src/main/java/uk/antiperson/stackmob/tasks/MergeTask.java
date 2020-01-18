@@ -38,7 +38,7 @@ public class MergeTask extends BukkitRunnable {
                     if (!(nearby instanceof Mob)) {
                         continue;
                     }
-                    if (!sm.getEntityManager().isStackedEntity(entity)) {
+                    if (!sm.getEntityManager().isStackedEntity((LivingEntity) nearby)) {
                         continue;
                     }
                     StackEntity nearbyStack = sm.getEntityManager().getStackEntity((LivingEntity) nearby);
