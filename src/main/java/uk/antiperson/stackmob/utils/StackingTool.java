@@ -127,6 +127,23 @@ public class StackingTool {
         public String getPromptText(@NotNull ConversationContext conversationContext) {
             return ChatColor.YELLOW +  "Enter stack size: ";
         }
+
+        @Nullable
+        @Override
+        protected String getFailedValidationText(@NotNull ConversationContext context, @NotNull String invalidInput) {
+            return Utilities.PREFIX + ChatColor.RED + "Invalid input. Accepted sizes: 1-" + stackEntity.getMaxSize();
+        }
+
+        @Override
+        protected boolean isNumberValid(@NotNull ConversationContext context, @NotNull Number input) {
+            if (input.intValue() > stackEntity.getMaxSize()) {
+                return false;
+            }
+            if (input.intValue() < 1) {
+                return false;
+            }
+            return true;
+        }
     }
 
     private class ExitPrompt implements ConversationAbandonedListener {
