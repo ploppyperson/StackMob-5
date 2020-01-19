@@ -182,7 +182,7 @@ public class StackEntity {
             setSize(entity2.getMaxSize());
             return true;
         }
-        incrementSize(entity1.getSize());
+        entity2.incrementSize(entity1.getSize());
         entity1.remove();
         return true;
     }
