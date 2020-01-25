@@ -23,7 +23,7 @@ public class DropListener implements Listener {
 
     @EventHandler
     public void onDropListener(EntityDropItemEvent event) {
-        if (!(event.getEntity() instanceof Chicken) || !(event.getEntity() instanceof Turtle)) {
+        if (!((event.getEntity() instanceof Chicken) || (event.getEntity() instanceof Turtle))) {
             return;
         }
         StackEntity entity = sm.getEntityManager().getStackEntity((LivingEntity) event.getEntity());

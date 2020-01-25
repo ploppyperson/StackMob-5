@@ -1,6 +1,7 @@
 package uk.antiperson.stackmob.utils;
 
 import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 
@@ -54,6 +55,8 @@ public class EntityUtils {
                 return type == Material.SWEET_BERRIES;
             case CAT:
                 return (type == Material.COD || type == Material.SALMON) && ((Cat) entity).isTamed();
+            case BEE:
+                return Tag.FLOWERS.isTagged(type);
         }
         return false;
     }
