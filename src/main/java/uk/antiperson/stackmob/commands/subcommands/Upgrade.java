@@ -1,6 +1,5 @@
 package uk.antiperson.stackmob.commands.subcommands;
 
-import org.bukkit.command.CommandSender;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.commands.CommandMetadata;
 import uk.antiperson.stackmob.commands.SubCommand;
