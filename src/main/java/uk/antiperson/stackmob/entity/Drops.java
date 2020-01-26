@@ -39,6 +39,9 @@ public class Drops {
                 if (dropIsArmor(is)) {
                     continue;
                 }
+                if (is.getType() == Material.LEAD && dead.isLeashed()) {
+                    continue;
+                }
                 if (sm.getMainConfig().getDropItemBlacklist(dead.getType())
                         .contains(is.getType().toString())) {
                     continue;
