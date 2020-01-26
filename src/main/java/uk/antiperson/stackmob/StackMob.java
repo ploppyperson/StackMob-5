@@ -1,19 +1,13 @@
 package uk.antiperson.stackmob;
 
-import com.sk89q.worldedit.bukkit.BukkitAdapter;
-import com.sk89q.worldguard.WorldGuard;
-import net.minecraft.server.v1_15_R1.ChunkCoordIntPair;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
 import org.bukkit.NamespacedKey;
-import org.bukkit.World;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.InvalidPluginException;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 import uk.antiperson.stackmob.commands.Commands;
 import uk.antiperson.stackmob.config.EntityTranslation;
 import uk.antiperson.stackmob.config.MainConfig;
@@ -30,9 +24,6 @@ import uk.antiperson.stackmob.utils.Utilities;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 
 public class StackMob extends JavaPlugin {
@@ -104,37 +95,6 @@ public class StackMob extends JavaPlugin {
             getLogger().info("bStats anonymous data collection has been enabled!");
         }
         itemTools = new ItemTools(this);
-
-        final List<ChunkCoordIntPair> chunkCoordIntPairs = new ArrayList<>();
-
-        final String worldName = "Minage";
-        final World world = Bukkit.getWorld(worldName);
-
-        WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(world)).getRegions().forEach((regionName, protectedRegion) -> {
-            if (regionName.startsWith(worldName.toLowerCase())) {
-                String[] regionNameSplited = regionName.split("_");
-                chunkCoordIntPairs.add(new ChunkCoordIntPair(Integer.parseInt(regionNameSplited[1]), Integer.parseInt(regionNameSplited[2])));
-            }
-        });
-
-        final int maxIndex = chunkCoordIntPairs.size() - 1;
-        final AtomicInteger index = new AtomicInteger(0);
-
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                for (int i = 0; i < 16; i++) {
-                    if (index.get() > maxIndex) {
-                        this.cancel();
-                        break;
-                    }
-                    ChunkCoordIntPair chunkCoordIntPair = chunkCoordIntPairs.get(index.get());
-                    Chunk chunk = world.getChunkAt(chunkCoordIntPair.x, chunkCoordIntPair.z);
-                    System.out.println("Chunk " + chunk.getX() + " ; " + chunk.getZ() + " converted ! (" + (float) (index.get() / maxIndex) * 100 + "%)");
-                    index.getAndIncrement();
-                }
-            }
-        }.runTaskTimer(this, 100, 1);
     }
 
     private void loadConfig() {
@@ -178,7 +138,6 @@ public class StackMob extends JavaPlugin {
         registerEvent(SpawnListener.class);
         registerEvent(TargetListener.class);
         registerEvent(PlayerListener.class);
-        registerEvent(BeeListener.class);
     }
 
     private void registerEvent(Class<? extends Listener> clazz) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
