@@ -35,6 +35,5 @@ public class TagInteractListener implements Listener {
             return;
         }
         stackEntity.slice();
-        stackEntity.removeStackData();
     }
 }

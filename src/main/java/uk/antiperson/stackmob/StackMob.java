@@ -138,7 +138,6 @@ public class StackMob extends JavaPlugin {
         registerEvent(SpawnListener.class);
         registerEvent(TargetListener.class);
         registerEvent(PlayerListener.class);
-        registerEvent(BeeListener.class);
     }
 
     private void registerEvent(Class<? extends Listener> clazz) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
