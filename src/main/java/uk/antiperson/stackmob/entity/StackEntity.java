@@ -43,6 +43,7 @@ public class StackEntity {
     public void removeStackData() {
         entity.getPersistentDataContainer().remove(sm.getStackKey());
         getTag().update();
+        entity.setCustomNameVisible(false);
     }
 
     public boolean shouldWait(CreatureSpawnEvent.SpawnReason spawnReason) {
