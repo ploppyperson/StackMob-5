@@ -21,6 +21,7 @@ public class Tag {
         int threshold = sm.getMainConfig().getTagThreshold(entity.getType());
         if (stackEntity.getSize() <= threshold) {
             entity.setCustomName(null);
+            entity.setCustomNameVisible(false);
             return;
         }
         String typeString = sm.getEntityTranslation().getTranslatedName(entity.getType());

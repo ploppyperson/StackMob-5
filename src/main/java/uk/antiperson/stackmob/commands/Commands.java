@@ -123,6 +123,11 @@ public class Commands implements CommandExecutor, TabCompleter {
         if (strings.length == 1) {
             List<String> args = new ArrayList<>();
             for (SubCommand subCommand : subCommands) {
+                String commandString = subCommand.getCommand();
+
+                if (!commandString.toLowerCase().startsWith(strings[0].toLowerCase())) {
+                    continue;
+                }
                 args.add(subCommand.getCommand());
             }
             return args;
@@ -135,7 +140,12 @@ public class Commands implements CommandExecutor, TabCompleter {
                 return null;
             }
             CommandArgument commandArgument = subCommand.getArguments()[strings.length - 2];
-            return commandArgument.getExpectedArguments();
+
+            List<String> expectedArguments = new LinkedList<>(commandArgument.getExpectedArguments());
+            expectedArguments.removeIf(possibleArgument -> !possibleArgument.toLowerCase().startsWith(strings[strings.length - 1].toLowerCase()));
+            Collections.sort(expectedArguments);
+
+            return expectedArguments;
         }
         return null;
     }

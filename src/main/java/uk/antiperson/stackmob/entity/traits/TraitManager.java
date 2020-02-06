@@ -31,6 +31,8 @@ public class TraitManager {
         registerTrait(LoveMode.class);
         registerTrait(DrownedItem.class);
         registerTrait(ZombieBaby.class);
+        registerTrait(BeeNectar.class);
+        registerTrait(BeeStung.class);
     }
 
     /**

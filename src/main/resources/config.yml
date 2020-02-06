@@ -65,6 +65,8 @@ traits:
   cat-type: true
   mooshroom-variant: true
   fox-type: true
+  bee-nectar: true
+  bee-stung: true
 
 # Prevent stacked mobs from targeting players.
 # Similar to no-ai, but allows for movement of entities.
