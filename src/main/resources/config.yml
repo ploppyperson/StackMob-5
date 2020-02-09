@@ -108,6 +108,7 @@ events:
     nametag: true
     tame: true
   make-entity-unstackable:
+    # Only works if 'events.divide.nametag' option is activated.
     nametag: true
 
 # How entities should die
