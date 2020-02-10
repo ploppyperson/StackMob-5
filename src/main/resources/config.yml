@@ -107,8 +107,9 @@ events:
   divide:
     nametag: true
     tame: true
-  make-entity-unstackable:
-    # Only works if 'events.divide.nametag' option is activated.
+  remove-stack-data:
+    # Should we remove the stack data of an entity that was unstacked as a result of nametag division/split?
+    # Setting this to false will cause entities that were nametagged to potentially become stacked again.
     nametag: true
 
 # How entities should die
