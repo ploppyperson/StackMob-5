@@ -22,7 +22,10 @@ public class DropListener implements Listener {
 
     @EventHandler
     public void onDropListener(EntityDropItemEvent event) {
-        if ((event.getItemDrop().getItemStack().getType() != Material.EGG) || (event.getItemDrop().getItemStack().getType() != Material.SCUTE)) {
+        if (event.getItemDrop().getItemStack().getType() != Material.EGG && event.getItemDrop().getItemStack().getType() != Material.SCUTE) {
+            return;
+        }
+        if (!sm.getEntityManager().isStackedEntity((LivingEntity) event.getEntity())) {
             return;
         }
         StackEntity entity = sm.getEntityManager().getStackEntity((LivingEntity) event.getEntity());
