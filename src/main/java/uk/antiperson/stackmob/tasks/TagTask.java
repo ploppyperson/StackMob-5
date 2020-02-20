@@ -37,6 +37,9 @@ public class TagTask extends BukkitRunnable {
         if (!(entity instanceof Mob)) {
             return;
         }
+        if (entity.isDead()) {
+            return;
+        }
         if (!sm.getEntityManager().isStackedEntity((LivingEntity) entity)) {
             return;
         }
