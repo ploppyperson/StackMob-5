@@ -22,7 +22,7 @@ stack:
 worlds-blacklist: []
 worlds-blacklist-invert: false
 # Types of entity which should not stack
-types-blacklist: []
+types-blacklist: [VILLAGER]
 types-blacklist-invert: false
 # If the entity's spawns reason is listed below, do not stack.
 reason-blacklist: []
