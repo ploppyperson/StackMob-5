@@ -49,6 +49,8 @@ public class DeathListener implements Listener {
                 }
             }
         }
+        event.getEntity().setCustomName("");
+        event.getEntity().setCustomNameVisible(false);
     }
 
     public DeathMethod calculateDeath(StackEntity entity){
