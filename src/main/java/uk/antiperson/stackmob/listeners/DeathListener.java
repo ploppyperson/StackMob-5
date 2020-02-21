@@ -30,9 +30,6 @@ public class DeathListener implements Listener {
         if (stackEntity.getSize() == 1) {
             return;
         }
-        event.getEntity().setCustomName("");
-        event.getEntity().setCustomNameVisible(false);
-
         DeathMethod deathMethod = calculateDeath(stackEntity);
         int deathStep = Math.min(stackEntity.getSize(), deathMethod.calculateStep());
         if (deathStep > 0 && deathStep < stackEntity.getSize()) {
@@ -52,6 +49,8 @@ public class DeathListener implements Listener {
                 }
             }
         }
+        event.getEntity().setCustomName("");
+        event.getEntity().setCustomNameVisible(false);
     }
 
     public DeathMethod calculateDeath(StackEntity entity){
