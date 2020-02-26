@@ -137,6 +137,8 @@ public class MainConfig extends SpecialConfigFile {
         return getBoolean("events." + eventKey);
     }
 
+    public boolean removeStackDataOnDivide(String reasonKey) { return getBoolean("events.remove-stack-data." + reasonKey); }
+
     public boolean isTargetingDisabled(EntityType type) {
         return getBoolean(type, "disable-targeting.enabled");
     }

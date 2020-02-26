@@ -32,10 +32,14 @@ public class TagInteractListener implements Listener {
         }
         StackEntity stackEntity = sm.getEntityManager().getStackEntity((LivingEntity) event.getRightClicked());
         if (stackEntity.isSingle()) {
-            stackEntity.removeStackData();
+            if (sm.getMainConfig().removeStackDataOnDivide("nametag")) {
+                stackEntity.removeStackData();
+            }
             return;
         }
         stackEntity.slice();
-        stackEntity.removeStackData();
+        if (sm.getMainConfig().removeStackDataOnDivide("nametag")) {
+            stackEntity.removeStackData();
+        }
     }
 }
