@@ -2,6 +2,8 @@ package uk.antiperson.stackmob.entity;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Mob;
 import org.bukkit.inventory.ItemStack;
@@ -100,7 +102,7 @@ public class Drops {
         return false;
     }
 
-    public int calculateExperience(int deadCount, int exp) {
+    public int calculateDeathExperience(int deadCount, int exp) {
         if (!sm.getMainConfig().isExpMultiEnabled(dead.getType())) {
             return exp;
         }
@@ -109,7 +111,19 @@ public class Drops {
         }
         double minMulti = sm.getMainConfig().getExpMinBound(dead.getType());
         double maxMulti = sm.getMainConfig().getExpMaxBound(dead.getType());
-        double randMulti = ThreadLocalRandom.current().nextDouble(minMulti, maxMulti);
-        return exp + (int) Math.round(deadCount * randMulti * exp);
+        return exp + calculateExperience(minMulti, maxMulti, deadCount);
     }
+
+    private int calculateExperience(double min, double max, int entities) {
+        double randRange = ThreadLocalRandom.current().nextDouble(min, max);
+        double randMultiplier = ThreadLocalRandom.current().nextDouble(0.5, 1);
+        return (int) Math.round(randRange * randMultiplier * entities);
+    }
+
+    public void dropExperience(Location location, int min, int max, int entities) {
+        ExperienceOrb exp = (ExperienceOrb) location.getWorld().spawnEntity(location, EntityType.EXPERIENCE_ORB);
+        exp.setExperience(calculateExperience(min, max, entities));
+    }
+
+
 }

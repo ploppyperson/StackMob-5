@@ -1,6 +1,8 @@
 package uk.antiperson.stackmob.listeners;
 
 import org.bukkit.entity.Animals;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
@@ -9,6 +11,8 @@ import org.bukkit.inventory.ItemStack;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.StackEntity;
 import uk.antiperson.stackmob.utils.EntityUtils;
+
+import java.util.concurrent.ThreadLocalRandom;
 
 @ListenerMetadata(config = "breed.enabled")
 public class BreedInteractListener implements Listener {
@@ -58,6 +62,7 @@ public class BreedInteractListener implements Listener {
                     stackEntity.duplicate();
                     stackEntity.incrementSize(-1);
                 }
+                stackEntity.getDrops().dropExperience(event.getRightClicked().getLocation(),1,7, kidAmount);
                 // Spawn the kid
                 StackEntity kid = stackEntity.duplicate();
                 kid.setSize(kidAmount);
