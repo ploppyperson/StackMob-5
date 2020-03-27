@@ -41,7 +41,7 @@ public class DeathListener implements Listener {
             int toMultiply = deathStep - 1;
             Map<ItemStack, Integer> drops = stackEntity.getDrops().calculateDrops(toMultiply, event.getDrops());
             Drops.dropItems(event.getEntity().getLocation(), drops);
-            int experience = stackEntity.getDrops().calculateExperience(toMultiply, event.getDroppedExp());
+            int experience = stackEntity.getDrops().calculateDeathExperience(toMultiply, event.getDroppedExp());
             event.setDroppedExp(experience);
             if (sm.getMainConfig().isPlayerStatMulti(event.getEntityType())) {
                 if (event.getEntity().getKiller() != null) {

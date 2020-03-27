@@ -32,7 +32,9 @@ public class StackEntity {
             throw new IllegalArgumentException("Stack size can not be less than one!");
         }
         if (newSize > getMaxSize()) {
-            throw new IllegalArgumentException("Stack size cannot be more than the configured stack size!");
+            sm.getLogger().info("New stack size for entity (with id: " + getEntity().getEntityId()
+                    + ") is bigger than the allowed maximum. Setting to the configured maximum value.");
+            newSize = getMaxSize();
         }
         entity.getPersistentDataContainer().set(sm.getStackKey(), PersistentDataType.INTEGER, newSize);
         if (update) {
