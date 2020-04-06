@@ -30,6 +30,13 @@ public class KillStepDamage extends DeathMethod {
         AttributeInstance maxHealthInstance = getEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH);
         double maxHealthWithModifiers = maxHealthInstance.getValue();
         double maxHealthWithoutModifiers = maxHealthInstance.getBaseValue();
-        spawned.getEntity().setHealth(Math.min(maxHealthWithModifiers - leftOverDamage, maxHealthWithoutModifiers));
+
+        AttributeInstance spawnedMaxHealthInstance = spawned.getEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH);
+        double spawnedNewHealth = Math.min(maxHealthWithModifiers - leftOverDamage, maxHealthWithoutModifiers);
+
+        if (spawnedNewHealth > spawnedMaxHealthInstance.getValue()) {
+            spawnedMaxHealthInstance.setBaseValue(spawnedNewHealth);
+        }
+        spawned.getEntity().setHealth(spawnedNewHealth);
     }
 }
