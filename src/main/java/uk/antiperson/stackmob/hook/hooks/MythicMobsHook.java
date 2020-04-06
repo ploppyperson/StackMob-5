@@ -34,7 +34,7 @@ public class MythicMobsHook extends Hook implements StackableMobHook {
         ActiveMob activeMob = mythicMobs.getMobManager().getMythicMobInstance(dead);
         ActiveMob clone = mythicMobs.getMobManager().spawnMob(activeMob.getType().getInternalName(), location);
         if(clone != null){
-            return clone.getLivingEntity();
+            return (LivingEntity) clone.getEntity().getBukkitEntity();
         }
         return null;
     }
