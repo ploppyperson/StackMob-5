@@ -41,12 +41,17 @@ public class MythicMobsHook extends Hook implements StackableMobHook {
 
     @Override
     public String getDisplayName(LivingEntity entity) {
-        return mythicMobs.getMobManager().getMythicMobInstance(entity).getDisplayName();
+        String displayName =  mythicMobs.getMobManager().getMythicMobInstance(entity).getDisplayName();
+        return displayName != null ? displayName : "MythicMob";
     }
 
     @Override
     public boolean isCustomMob(LivingEntity entity) {
-        return mythicMobs.getMobManager().isActiveMob(entity.getUniqueId());
+        if (mythicMobs.getMobManager().isActiveMob(entity.getUniqueId())) {
+            ActiveMob activeMob = mythicMobs.getMobManager().getMythicMobInstance(entity);
+            return !activeMob.getType().getConfig().getFile().getName().equals("VanillaMobs.yml");
+        }
+        return false;
     }
 
     @Override
