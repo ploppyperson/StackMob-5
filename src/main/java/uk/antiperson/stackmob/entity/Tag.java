@@ -28,6 +28,7 @@ public class Tag {
         if (typeString.length() == 0) {
             StackableMobHook smh = sm.getHookManager().getApplicableHook(stackEntity);
             typeString = smh != null ? smh.getDisplayName(entity) : entity.getType().toString();
+            typeString = typeString == null ? entity.getType().toString() : typeString;
             typeString = WordUtils.capitalizeFully(typeString.replaceAll("[^A-Za-z0-9]", " "));
         }
         String displayName = sm.getMainConfig().getTagFormat(entity.getType());
