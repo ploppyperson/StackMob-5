@@ -1,10 +1,12 @@
 package uk.antiperson.stackmob.listeners;
 
 import org.bukkit.Statistic;
+import org.bukkit.entity.Slime;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.death.DeathType;
 import uk.antiperson.stackmob.entity.Drops;
@@ -47,6 +49,9 @@ public class DeathListener implements Listener {
                 if (event.getEntity().getKiller() != null) {
                     event.getEntity().getKiller().incrementStatistic(Statistic.KILL_ENTITY, event.getEntityType(), toMultiply);
                 }
+            }
+            if (event.getEntity() instanceof Slime && sm.getMainConfig().isSlimeMultiEnabled(event.getEntityType())) {
+                event.getEntity().setMetadata("deathcount", new FixedMetadataValue(sm, toMultiply));
             }
         }
         event.getEntity().setCustomName("");

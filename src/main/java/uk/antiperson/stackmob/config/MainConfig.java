@@ -73,6 +73,10 @@ public class MainConfig extends SpecialConfigFile {
         return getBoolean(type, "drops.use-loot-tables");
     }
 
+    public boolean isSlimeMultiEnabled(EntityType type) {
+        return getBoolean(type, "multiply.slime-split");
+    }
+
     public ConfigList getDropTypeBlacklist(EntityType type) {
         return getList(type, "drops.type-blacklist");
     }
