@@ -22,9 +22,14 @@ public class SlimeListener implements Listener {
         if (stackEntity.isSingle()) {
             return;
         }
-        for (int i = 0; i < stackEntity.getSize(); i++) {
+        if (!event.getEntity().hasMetadata("deathcount")) {
+            return;
+        }
+        int deathAmount = event.getEntity().getMetadata("deathcount").get(0).asInt();
+        for (int i = 0; i < deathAmount; i++) {
             int randSlime = ThreadLocalRandom.current().nextInt(2,4);
             event.setCount(event.getCount() + randSlime);
         }
+        event.getEntity().removeMetadata("deathcount", sm);
     }
 }
