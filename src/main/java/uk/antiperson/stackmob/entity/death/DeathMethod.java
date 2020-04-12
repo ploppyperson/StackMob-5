@@ -6,7 +6,7 @@ import uk.antiperson.stackmob.entity.StackEntity;
 
 public abstract class DeathMethod implements DeathStep {
 
-    private StackMob sm;
+    StackMob sm;
     private StackEntity dead;
     public DeathMethod(StackMob sm, StackEntity dead) {
         this.sm = sm;
