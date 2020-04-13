@@ -4,6 +4,7 @@ import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.death.DeathType;
 import uk.antiperson.stackmob.entity.TagMode;
@@ -32,6 +33,10 @@ public class MainConfig extends SpecialConfigFile {
     public Integer[] getStackRadius(EntityType type) {
         return getList(type, "stack.merge-range").asIntList().toArray(new Integer[2]);
     }
+
+    public boolean isAutoCheckEnabled(){ return getBoolean("check-task.enable"); }
+
+    public int getAutoCheckInterval(){ return getInt("check-task.interval"); }
 
     public int getStackInterval() {
         return getInt("stack.interval");
@@ -172,6 +177,12 @@ public class MainConfig extends SpecialConfigFile {
         }
         return isWorldBlacklisted(entity.getType(), entity.getWorld());
     }
+    public boolean isEntityBlacklisted(LivingEntity entity) {
+        if (getList(entity.getType(), "types-blacklist").contains(entity.getType().toString())) {
+            return true;
+        }
+        return isWorldBlacklisted(entity.getType(), entity.getWorld());
+    }
 
     public DeathType getDeathType(LivingEntity dead) {
         for (String key : getDeathSection(dead)) {
@@ -186,6 +197,11 @@ public class MainConfig extends SpecialConfigFile {
             return DeathType.valueOf(key);
         }
         throw new UnsupportedOperationException("Configuration error - unable to determine death type!");
+    }
+    public boolean isInstantDamage(EntityDamageEvent.DamageCause dc)
+    {
+        ConfigList configDamage = this.getList("instant-death-cause");
+        return configDamage.contains(dc.name());
     }
 
     private Collection<String> getDeathSection(LivingEntity dead) {
