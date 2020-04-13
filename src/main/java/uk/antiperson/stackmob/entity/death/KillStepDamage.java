@@ -1,11 +1,11 @@
 package uk.antiperson.stackmob.entity.death;
 
 import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.scheduler.BukkitRunnable;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.StackEntity;
+import uk.antiperson.stackmob.hook.StackableMobHook;
+import uk.antiperson.stackmob.hook.hooks.MythicMobsHook;
 
 public class KillStepDamage extends DeathMethod {
 
@@ -28,14 +28,15 @@ public class KillStepDamage extends DeathMethod {
 
     @Override
     public void onSpawn(StackEntity spawned) {
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                AttributeInstance maxHealthInstance = getEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH);
-                double maxHealthWithModifiers = maxHealthInstance.getValue();
-                double maxHealthWithoutModifiers = maxHealthInstance.getBaseValue();
-                spawned.getEntity().setHealth(Math.min(maxHealthWithModifiers - leftOverDamage, maxHealthWithoutModifiers));
-            }
-        }.runTaskLater(getStackMob(), 1L);
+        double maxHealth = getEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
+        StackableMobHook smh = sm.getHookManager().getApplicableHook(spawned);
+        if (smh instanceof MythicMobsHook) {
+            sm.getServer().getScheduler().runTaskLater(sm, bukkitTask -> {
+                if (!spawned.getEntity().isDead()) {
+                    spawned.getEntity().setHealth(maxHealth - leftOverDamage);
+                }
+            }, 5);
+        }
+        spawned.getEntity().setHealth(maxHealth - leftOverDamage);
     }
 }
