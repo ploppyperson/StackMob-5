@@ -3,15 +3,21 @@ package uk.antiperson.stackmob;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
+import org.bukkit.World;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Mob;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.InvalidPluginException;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import uk.antiperson.stackmob.commands.Commands;
 import uk.antiperson.stackmob.config.EntityTranslation;
 import uk.antiperson.stackmob.config.MainConfig;
 import uk.antiperson.stackmob.entity.EntityManager;
+import uk.antiperson.stackmob.entity.StackEntity;
 import uk.antiperson.stackmob.entity.traits.TraitManager;
 import uk.antiperson.stackmob.hook.HookManager;
 import uk.antiperson.stackmob.listeners.*;
@@ -24,6 +30,7 @@ import uk.antiperson.stackmob.utils.Utilities;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 
 public class StackMob extends JavaPlugin {
@@ -94,7 +101,59 @@ public class StackMob extends JavaPlugin {
         if (metrics.isEnabled()) {
             getLogger().info("bStats anonymous data collection has been enabled!");
         }
+        if(getMainConfig().isAutoCheckEnabled())
+            this.checkMob();
         itemTools = new ItemTools(this);
+    }
+
+    private void checkMob()
+    {
+        StackMob plugin = this;
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                AtomicInteger n = new AtomicInteger();
+                for(World world:Bukkit.getWorlds())
+                {
+                    plugin.getLogger().info("Checking stack for mob in world " + world.getName());
+                    for (Entity entity : world.getEntities()) {
+                        if (!(entity instanceof Mob)) {
+                            continue;
+                        }
+                        LivingEntity livingEntity = (LivingEntity) entity;
+                        plugin.getServer().getScheduler().runTask(plugin, () -> {
+                            if (plugin.getMainConfig().isEntityBlacklisted(livingEntity)) {
+                                return;
+                            }
+                            if (plugin.getEntityManager().isStackedEntity(livingEntity)) {
+                                return;
+                            }
+                            StackEntity original = plugin.getEntityManager().getStackEntity(livingEntity);
+                            Integer[] searchRadius = plugin.getMainConfig().getStackRadius(entity.getType());
+                            for (Entity nearbyEntity : entity.getNearbyEntities(searchRadius[0], searchRadius[1], searchRadius[2])) {
+                                if (!(nearbyEntity instanceof Mob)) {
+                                    continue;
+                                }
+                                StackEntity nearby = plugin.getEntityManager().getStackEntity((LivingEntity) nearbyEntity);
+                                if (plugin.getMainConfig().getStackThresholdEnabled(nearbyEntity.getType()) && nearby.getSize() == 1) {
+                                    continue;
+                                }
+                                if (!original.checkNearby(nearby)) {
+                                    continue;
+                                }
+                                if (nearby.merge(original)) {
+                                    return;
+                                }
+                            }
+                            original.setSize(1);
+                            plugin.getHookManager().onSpawn(original);
+                            n.getAndIncrement();
+                        });
+                    }
+                }
+                plugin.getLogger().info(n.toString() + " entities found for stacking");
+            }
+        }.runTaskTimer(this, 0, getMainConfig().getAutoCheckInterval());
     }
 
     private void loadConfig() {
