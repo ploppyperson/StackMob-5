@@ -37,6 +37,7 @@ public class KillStepDamage extends DeathMethod {
                 }
             }, 5);
         }
+        spawned.getEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(maxHealth);
         spawned.getEntity().setHealth(maxHealth - leftOverDamage);
     }
 }
