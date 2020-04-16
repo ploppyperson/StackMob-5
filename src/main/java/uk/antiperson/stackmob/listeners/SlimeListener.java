@@ -8,7 +8,7 @@ import uk.antiperson.stackmob.entity.StackEntity;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-@ListenerMetadata(config = "multiply.slime-split")
+@ListenerMetadata(config = "events.multiply.slime-split")
 public class SlimeListener implements Listener {
 
     private StackMob sm;

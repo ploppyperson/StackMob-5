@@ -6,7 +6,7 @@ import org.bukkit.event.entity.EntityTameEvent;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.StackEntity;
 
-@ListenerMetadata(config = "divide.tame")
+@ListenerMetadata(config = "events.divide.tame")
 public class TameListener implements Listener {
 
     private StackMob sm;

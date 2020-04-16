@@ -14,7 +14,7 @@ import uk.antiperson.stackmob.utils.EntityUtils;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-@ListenerMetadata(config = "breed.enabled")
+@ListenerMetadata(config = "events.breed.enabled")
 public class BreedInteractListener implements Listener {
 
     private StackMob sm;

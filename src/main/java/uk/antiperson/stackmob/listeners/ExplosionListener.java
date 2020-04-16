@@ -9,7 +9,7 @@ import uk.antiperson.stackmob.entity.StackEntity;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-@ListenerMetadata(config = "multiply.explosion")
+@ListenerMetadata(config = "events.multiply.explosion")
 public class ExplosionListener implements Listener {
 
     private StackMob sm;

@@ -19,7 +19,7 @@ import uk.antiperson.stackmob.entity.StackEntity;
 import java.util.Collection;
 import java.util.concurrent.ThreadLocalRandom;
 
-@ListenerMetadata(config = "shear.enabled")
+@ListenerMetadata(config = "events.shear.enabled")
 public class ShearListener implements Listener {
 
     private StackMob sm;
