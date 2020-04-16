@@ -3,6 +3,9 @@ main: uk.antiperson.stackmob.StackMob
 version: ${project.version}
 api-version: 1.13
 softdepend: [WorldGuard, MythicMobs]
+author: antiPerson
+website: https://www.spigotmc.org/resources/stackmob-enhance-your-servers-performance-without-the-sacrifice.29999/
+description: A plugin that aims to improve performance by 'stacking' entities together, with attempts to perserve game mechanics.
 commands:
   stackmob:
     aliases: [sm]
