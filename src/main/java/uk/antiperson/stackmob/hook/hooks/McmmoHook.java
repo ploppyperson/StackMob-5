@@ -7,13 +7,12 @@ import uk.antiperson.stackmob.hook.Hook;
 import uk.antiperson.stackmob.hook.HookMetadata;
 import uk.antiperson.stackmob.hook.SpawnHook;
 
-@HookMetadata(name = "mcMMO", config = "")
+@HookMetadata(name = "mcMMO", config = "mcmmo")
 public class McmmoHook extends Hook implements SpawnHook {
 
     public McmmoHook(StackMob sm) {
         super(sm);
     }
-
 
     @Override
     public void onSpawn(LivingEntity spawned) {
