@@ -211,6 +211,8 @@ hooks:
   citizens: true
   # Prevent stacked entities from giving mcmmo experience.
   mcmmo: true
+  # Prevent stacked entities from giving job payments.
+  jobs: true
 
 ## Some options can be modified for specific entity types. An example is shown below. Remove comments to see this in action.
 ## Options and sections with a (*) in the comment preceding cannot be overridden.
