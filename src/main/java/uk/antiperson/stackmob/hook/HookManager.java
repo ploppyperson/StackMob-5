@@ -4,10 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.StackEntity;
-import uk.antiperson.stackmob.hook.hooks.CitizensHook;
-import uk.antiperson.stackmob.hook.hooks.McmmoHook;
-import uk.antiperson.stackmob.hook.hooks.MythicMobsHook;
-import uk.antiperson.stackmob.hook.hooks.WorldGuardHook;
+import uk.antiperson.stackmob.hook.hooks.*;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -47,6 +44,7 @@ public class HookManager {
         registerHook(MythicMobsHook.class);
         registerHook(McmmoHook.class);
         registerHook(CitizensHook.class);
+        registerHook(JobsHook.class);
     }
 
     /**

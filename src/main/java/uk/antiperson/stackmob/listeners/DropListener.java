@@ -11,7 +11,7 @@ import uk.antiperson.stackmob.entity.StackEntity;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-@ListenerMetadata(config = "multiply.drops")
+@ListenerMetadata(config = "events.multiply.drops")
 public class DropListener implements Listener {
 
     private StackMob sm;
