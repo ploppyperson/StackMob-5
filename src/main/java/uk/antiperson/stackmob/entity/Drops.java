@@ -109,8 +109,8 @@ public class Drops {
         if (sm.getMainConfig().getExpTypeBlacklist(dead.getType()).contains(dead.getType())) {
             return exp;
         }
-        double minMulti = sm.getMainConfig().getExpMinBound(dead.getType());
-        double maxMulti = sm.getMainConfig().getExpMaxBound(dead.getType());
+        double minMulti = sm.getMainConfig().getExpMinBound(dead.getType()) * exp;
+        double maxMulti = sm.getMainConfig().getExpMaxBound(dead.getType()) * exp;
         return exp + calculateExperience(minMulti, maxMulti, deadCount);
     }
 
