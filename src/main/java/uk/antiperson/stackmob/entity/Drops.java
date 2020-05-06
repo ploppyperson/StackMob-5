@@ -115,7 +115,7 @@ public class Drops {
     }
 
     private int calculateExperience(double min, double max, int entities) {
-        double randRange = ThreadLocalRandom.current().nextDouble(min, max);
+        double randRange = min == max ? max : ThreadLocalRandom.current().nextDouble(min, max);
         double randMultiplier = ThreadLocalRandom.current().nextDouble(0.5, 1);
         return (int) Math.round(randRange * randMultiplier * entities);
     }
