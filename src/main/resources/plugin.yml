@@ -1,7 +1,7 @@
 name: StackMob
 main: uk.antiperson.stackmob.StackMob
 version: ${project.version}
-api-version: 1.13
+api-version: 1.15
 softdepend: [WorldGuard, MythicMobs]
 author: antiPerson
 website: https://www.spigotmc.org/resources/stackmob-enhance-your-servers-performance-without-the-sacrifice.29999/
