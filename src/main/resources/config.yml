@@ -81,6 +81,9 @@ disable-targeting:
 
 # What should be done when these entity actions occur. (*)
 events:
+  # When a bee enters in a hive.
+  bee:
+    enabled: true
   # When an entity is feed its food.
   breed:
     enabled: true
