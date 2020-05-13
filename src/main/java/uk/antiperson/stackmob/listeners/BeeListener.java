@@ -7,7 +7,7 @@ import org.bukkit.event.entity.EntityEnterBlockEvent;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.StackEntity;
 
-@ListenerMetadata(config = "events.bee.enabled")
+@ListenerMetadata(config = "events.divide.enter-block")
 public class BeeListener implements Listener {
 
     private final StackMob sm;
