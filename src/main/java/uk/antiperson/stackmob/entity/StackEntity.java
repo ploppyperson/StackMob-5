@@ -1,10 +1,13 @@
 package uk.antiperson.stackmob.entity;
 
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.persistence.PersistentDataType;
 import uk.antiperson.stackmob.StackMob;
+import uk.antiperson.stackmob.events.EventHelper;
+import uk.antiperson.stackmob.events.StackMergeEvent;
 
 public class StackEntity {
 
@@ -179,6 +182,9 @@ public class StackEntity {
     public boolean merge(StackEntity toMerge) {
         StackEntity entity1 = toMerge.getSize() < getSize() ? toMerge : this;
         StackEntity entity2 = toMerge.getSize() < getSize() ? this : toMerge;
+        if (EventHelper.callStackMergeEvent(entity1, entity2).isCancelled()) {
+            return false;
+        }
         int totalSize = entity1.getSize() + entity2.getSize();
         if (totalSize > getMaxSize()) {
             toMerge.setSize(totalSize - entity2.getMaxSize());
