@@ -10,4 +10,10 @@ public class EventHelper {
         Bukkit.getPluginManager().callEvent(event);
         return event;
     }
+
+    public static StackDeathEvent callStackDeathEvent(StackEntity dead, int deathStep) {
+        StackDeathEvent event = new StackDeathEvent(dead, deathStep);
+        Bukkit.getPluginManager().callEvent(event);
+        return event;
+    }
 }

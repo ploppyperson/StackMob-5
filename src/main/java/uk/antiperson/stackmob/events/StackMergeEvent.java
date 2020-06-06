@@ -4,6 +4,9 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 import uk.antiperson.stackmob.entity.StackEntity;
 
+/**
+ * Event called when two stacks merge/combine together.
+ */
 public class StackMergeEvent extends StackEvent implements Cancellable {
 
     private static final HandlerList handlers = new HandlerList();
