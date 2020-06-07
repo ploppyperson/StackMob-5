@@ -28,9 +28,9 @@ import java.util.logging.Level;
 
 public class StackMob extends JavaPlugin {
 
-    private NamespacedKey stackKey = new NamespacedKey(this, "stack-size");
-    private NamespacedKey waitKey = new NamespacedKey(this, "wait-key");
-    private NamespacedKey toolKey = new NamespacedKey(this, "stack-tool");
+    private final NamespacedKey stackKey = new NamespacedKey(this, "stack-size");
+    private final NamespacedKey waitKey = new NamespacedKey(this, "wait-key");
+    private final NamespacedKey toolKey = new NamespacedKey(this, "stack-tool");
 
     private MainConfig config;
     private EntityTranslation entityTranslation;
@@ -53,7 +53,9 @@ public class StackMob extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        getLogger().info("StackMob v" + getDescription().getVersion() + " by antiPerson and contributors");
+        getLogger().info("StackMob v" + getDescription().getVersion() + " by antiPerson and contributors.");
+        getLogger().info("GitHub: " + Utilities.GITHUB);
+        getLogger().info("Discord: " + Utilities.DISCORD);
         traitManager = new TraitManager(this);
         entityManager = new EntityManager(this);
         config = new MainConfig(this);
