@@ -33,6 +33,7 @@ public class TraitManager {
         registerTrait(ZombieBaby.class);
         registerTrait(BeeNectar.class);
         registerTrait(BeeStung.class);
+        registerTrait(Leash.class);
     }
 
     /**
