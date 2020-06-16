@@ -16,7 +16,7 @@ public class BeeListener implements Listener {
         this.sm = sm;
     }
 
-    @EventHandler (ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true)
     public void onEntityEnterBlockEvent(EntityEnterBlockEvent event) {
         final LivingEntity bee = (LivingEntity) event.getEntity();
 

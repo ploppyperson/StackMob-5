@@ -20,11 +20,8 @@ public class DyeListener implements Listener {
         this.sm = sm;
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onDyeListener(PlayerInteractEntityEvent event) {
-        if (event.isCancelled()) {
-            return;
-        }
         if (!(event.getRightClicked() instanceof Sheep)) {
             return;
         }

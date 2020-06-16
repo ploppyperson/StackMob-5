@@ -28,11 +28,8 @@ public class ShearListener implements Listener {
         this.sm = sm;
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onShearSheep(PlayerShearEntityEvent event) {
-        if (event.isCancelled()) {
-            return;
-        }
         ItemStack is = shearLogic((LivingEntity) event.getEntity(), event.getPlayer().getInventory().getItemInMainHand());
         if (is == null) {
             return;
@@ -40,11 +37,8 @@ public class ShearListener implements Listener {
         event.getPlayer().getInventory().setItemInMainHand(is);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onShearSheep(BlockShearEntityEvent event) {
-        if (event.isCancelled()) {
-            return;
-        }
         ItemStack is = shearLogic((LivingEntity) event.getEntity(), event.getTool());
         if (is == null) {
             return;
@@ -85,16 +79,16 @@ public class ShearListener implements Listener {
                     Sheep sheared = (Sheep) entity;
                     LootContext lootContext = new LootContext.Builder(sheared.getLocation()).lootedEntity(sheared).build();
                     Collection<ItemStack> loot = sheared.getLootTable().populateLoot(ThreadLocalRandom.current(), lootContext);
-                    for(ItemStack itemStack : loot){
-                        if(itemStack.getData() instanceof Wool) {
-                            int woolAmount = (int) Math.round(stackEntity.getSize() * ThreadLocalRandom.current().nextDouble(1,2));
+                    for (ItemStack itemStack : loot) {
+                        if (itemStack.getData() instanceof Wool) {
+                            int woolAmount = (int) Math.round(stackEntity.getSize() * ThreadLocalRandom.current().nextDouble(1, 2));
                             Drops.dropItem(sheared.getLocation(), itemStack, woolAmount);
                         }
                     }
                     return item;
                 }
                 MushroomCow mushroomCow = (MushroomCow) entity;
-                ItemStack mushrooms = new ItemStack(Material.RED_MUSHROOM,1);
+                ItemStack mushrooms = new ItemStack(Material.RED_MUSHROOM, 1);
                 Drops.dropItem(mushroomCow.getLocation(), mushrooms, (stackEntity.getSize() - 1) * 5);
                 // Spawn separate normal cow for the rest of the stack.
                 Entity cow = mushroomCow.getWorld().spawnEntity(mushroomCow.getLocation(), EntityType.COW);

@@ -19,15 +19,12 @@ public class TagInteractListener implements Listener {
         this.sm = sm;
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onTagInteract(PlayerInteractEntityEvent event) {
         if (event.getHand() != EquipmentSlot.HAND) {
             return;
         }
         if (!(event.getRightClicked() instanceof Mob)) {
-            return;
-        }
-        if (event.isCancelled()) {
             return;
         }
         ItemStack handItem = event.getPlayer().getInventory().getItemInMainHand();
