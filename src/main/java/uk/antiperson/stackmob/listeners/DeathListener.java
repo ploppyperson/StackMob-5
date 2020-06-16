@@ -67,7 +67,4 @@ public class DeathListener implements Listener {
         }
     }
 
-
-
-
 }
