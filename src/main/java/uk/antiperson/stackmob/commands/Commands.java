@@ -104,7 +104,7 @@ public class Commands implements CommandExecutor, TabCompleter {
                     break;
                 case ENTITY_TYPE:
                     try {
-                        EntityType.valueOf(args[i]);
+                        EntityType.valueOf(args[i].toUpperCase());
                     } catch (IllegalArgumentException e) {
                         return false;
                     }
