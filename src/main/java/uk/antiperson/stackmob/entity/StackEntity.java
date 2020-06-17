@@ -12,9 +12,11 @@ public class StackEntity {
 
     private LivingEntity entity;
     private StackMob sm;
+    private int size;
     public StackEntity(StackMob sm, LivingEntity entity) {
         this.sm = sm;
         this.entity = entity;
+        this.size = entity.getPersistentDataContainer().getOrDefault(sm.getStackKey(), PersistentDataType.INTEGER, 1);
     }
 
     /**
@@ -38,6 +40,7 @@ public class StackEntity {
                     + ") is bigger than the allowed maximum. Setting to the configured maximum value.");
             newSize = getMaxSize();
         }
+        size = newSize;
         entity.getPersistentDataContainer().set(sm.getStackKey(), PersistentDataType.INTEGER, newSize);
         if (update) {
             getTag().update();
@@ -46,6 +49,7 @@ public class StackEntity {
 
     public void removeStackData() {
         entity.getPersistentDataContainer().remove(sm.getStackKey());
+        size = 0;
         getTag().update();
         entity.setCustomNameVisible(false);
     }
@@ -91,7 +95,7 @@ public class StackEntity {
      * @return the current stack size for this entity.
      */
     public int getSize() {
-        return entity.getPersistentDataContainer().getOrDefault(sm.getStackKey(), PersistentDataType.INTEGER, 1);
+        return size;
     }
 
     /**
