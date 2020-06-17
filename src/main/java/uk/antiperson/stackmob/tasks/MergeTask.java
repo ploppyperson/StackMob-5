@@ -62,16 +62,17 @@ public class MergeTask extends BukkitRunnable {
                 }
                 for (StackEntity match : matches) match.remove();
                 if (size >= original.getMaxSize()) {
-                    double divided = (double) size / (double) original.getMaxSize();
+                    int maxSize = original.getMaxSize();
+                    double divided = (double) size / (double) maxSize;
                     double fullStacks = Math.floor(divided);
                     double leftOver = divided - fullStacks;
                     for (int i = 0; i < fullStacks; i++) {
                         StackEntity stackEntity = original.duplicate();
-                        stackEntity.setSize(original.getMaxSize());
+                        stackEntity.setSize(maxSize);
                     }
                     if (leftOver > 0) {
                         StackEntity stackEntity = original.duplicate();
-                        stackEntity.setSize((int) Math.round(leftOver * original.getMaxSize()));
+                        stackEntity.setSize((int) Math.round(leftOver * maxSize));
                     }
                     return;
                 }
