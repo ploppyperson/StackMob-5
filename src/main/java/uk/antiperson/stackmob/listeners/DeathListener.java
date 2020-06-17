@@ -12,6 +12,7 @@ import uk.antiperson.stackmob.entity.death.DeathType;
 import uk.antiperson.stackmob.entity.Drops;
 import uk.antiperson.stackmob.entity.StackEntity;
 import uk.antiperson.stackmob.entity.death.DeathMethod;
+import uk.antiperson.stackmob.entity.death.KillAll;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
@@ -32,7 +33,11 @@ public class DeathListener implements Listener {
         if (stackEntity.getSize() == 1) {
             return;
         }
-        DeathMethod deathMethod = calculateDeath(stackEntity);
+        DeathMethod deathMethod;
+        if(sm.getMainConfig().isInstantDamage(stackEntity.getEntity().getLastDamageCause().getCause()))
+            deathMethod = new KillAll(sm, stackEntity);
+        else
+            deathMethod = calculateDeath(stackEntity);
         int deathStep = Math.min(stackEntity.getSize(), deathMethod.calculateStep());
         if (deathStep > 0 && deathStep < stackEntity.getSize()) {
             StackEntity spawned = stackEntity.duplicate();

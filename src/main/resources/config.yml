@@ -18,6 +18,12 @@ stack:
     enabled: true
     amount: 5
 
+check-task:
+  # Enable auto task check all entities on your map for stacking
+  enable: true
+  # Interval between each check in tick (20 Tick = 1 Second)
+  interval: 6000
+
 # Names of worlds where there should be no stacking
 worlds-blacklist: []
 worlds-blacklist-invert: false
@@ -152,6 +158,16 @@ death:
     reason-blacklist-invert: false
     type-blacklist: []
     type-blacklist-invert: false
+# All event instant kill mob stack (Less than default cause many bug in automatic farm)
+instant-death-cause:
+  - BLOCK_EXPLOSION
+  - SUICIDE
+  - FALL
+  - FALLING_BLOCK
+  - CONTACT
+  - LAVA
+  - MAGIC
+  - SUFFOCATION
 
 # Multiply entity drops on entity death.
 drops:
