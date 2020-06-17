@@ -49,7 +49,7 @@ public class StackEntity {
 
     public void removeStackData() {
         entity.getPersistentDataContainer().remove(sm.getStackKey());
-        size = 0;
+        size = 1;
         getTag().update();
         entity.setCustomNameVisible(false);
     }
