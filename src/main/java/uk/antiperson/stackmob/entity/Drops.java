@@ -73,7 +73,7 @@ public class Drops {
     }
 
     public static void dropItems(Location location, Map<ItemStack, Integer> items) {
-        items.forEach((stack, amount) -> dropItem(location, stack, amount));
+        for (Map.Entry<ItemStack, Integer> entry : items.entrySet()) dropItem(location, entry.getKey(),  entry.getValue());
     }
 
     public static void dropItem(Location location, ItemStack stack, int amount) {

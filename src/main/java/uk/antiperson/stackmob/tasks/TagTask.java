@@ -28,8 +28,8 @@ public class TagTask extends BukkitRunnable {
             List<Entity> furthest = player.getNearbyEntities(searchRadius[0] * 1.5, searchRadius[1] * 1.5, searchRadius[2] * 1.5);
             List<Entity> nearest = player.getNearbyEntities(searchRadius[0], searchRadius[1], searchRadius[2]);
             furthest.removeAll(nearest);
-            furthest.forEach(entity -> sendPacket(player, entity, false));
-            nearest.forEach(entity -> sendPacket(player, entity, true));
+            for (Entity entity : furthest) sendPacket(player, entity, false);
+            for (Entity entity : nearest) sendPacket(player, entity, true);
         }
     }
 

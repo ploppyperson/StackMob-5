@@ -48,7 +48,7 @@ public class Commands implements CommandExecutor, TabCompleter {
                 for (CommandArgument argumentType : subCommand.getArguments()) {
                     StringBuilder options = new StringBuilder();
                     if (argumentType.getExpectedArguments().size() <= 3 && argumentType.getExpectedArguments().size() > 0) {
-                        argumentType.getExpectedArguments().forEach(argument -> options.append(argument).append("/"));
+                        for (String argument : argumentType.getExpectedArguments()) options.append(argument).append("/");
                         options.deleteCharAt(options.length() - 1);
                     } else {
                         options.append(argumentType.getType());
