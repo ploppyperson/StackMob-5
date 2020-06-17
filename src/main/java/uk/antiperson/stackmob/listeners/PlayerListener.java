@@ -17,7 +17,7 @@ public class PlayerListener implements Listener {
         this.sm = sm;
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerInteract(PlayerInteractAtEntityEvent event) {
         if (event.getHand() == EquipmentSlot.OFF_HAND) {
             return;

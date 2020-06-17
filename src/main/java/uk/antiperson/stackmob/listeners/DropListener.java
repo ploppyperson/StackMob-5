@@ -15,12 +15,11 @@ import java.util.concurrent.ThreadLocalRandom;
 public class DropListener implements Listener {
 
     private StackMob sm;
-
     public DropListener(StackMob sm) {
         this.sm = sm;
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onDropListener(EntityDropItemEvent event) {
         if (event.getItemDrop().getItemStack().getType() != Material.EGG && event.getItemDrop().getItemStack().getType() != Material.SCUTE) {
             return;

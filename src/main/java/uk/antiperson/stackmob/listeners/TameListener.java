@@ -14,7 +14,7 @@ public class TameListener implements Listener {
         this.sm = sm;
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onTame(EntityTameEvent event) {
         StackEntity stackEntity = sm.getEntityManager().getStackEntity(event.getEntity());
         if (stackEntity.isSingle()) {

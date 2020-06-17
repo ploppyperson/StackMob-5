@@ -15,7 +15,6 @@ import uk.antiperson.stackmob.utils.EntityUtils;
 public class DyeListener implements Listener {
 
     private StackMob sm;
-
     public DyeListener(StackMob sm) {
         this.sm = sm;
     }

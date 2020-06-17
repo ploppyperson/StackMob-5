@@ -23,7 +23,7 @@ public class DeathListener implements Listener {
         this.sm = sm;
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onStackDeath(EntityDeathEvent event) {
         if (!sm.getEntityManager().isStackedEntity(event.getEntity())) {
             return;

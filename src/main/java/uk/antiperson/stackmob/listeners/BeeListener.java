@@ -11,7 +11,6 @@ import uk.antiperson.stackmob.entity.StackEntity;
 public class BeeListener implements Listener {
 
     private final StackMob sm;
-
     public BeeListener(StackMob sm) {
         this.sm = sm;
     }

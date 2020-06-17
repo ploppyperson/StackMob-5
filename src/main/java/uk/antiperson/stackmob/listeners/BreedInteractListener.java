@@ -14,7 +14,6 @@ import uk.antiperson.stackmob.utils.EntityUtils;
 public class BreedInteractListener implements Listener {
 
     private StackMob sm;
-
     public BreedInteractListener(StackMob sm) {
         this.sm = sm;
     }

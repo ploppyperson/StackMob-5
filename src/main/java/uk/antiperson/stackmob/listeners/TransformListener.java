@@ -14,7 +14,7 @@ public class TransformListener implements Listener {
         this.sm = sm;
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onTransform(EntityTransformEvent event){
         if (event.getTransformReason() != EntityTransformEvent.TransformReason.DROWNED) {
             return;

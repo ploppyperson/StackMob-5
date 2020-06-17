@@ -16,7 +16,7 @@ public class SpawnListener implements Listener {
         this.sm = sm;
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onSpawn(CreatureSpawnEvent event) {
         if (!(event.getEntity() instanceof Mob)) {
             return;

@@ -18,7 +18,7 @@ public class ExplosionListener implements Listener {
         this.sm = sm;
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onExplosion(EntityExplodeEvent event) {
         if (!(event.getEntity() instanceof LivingEntity)) {
             return;

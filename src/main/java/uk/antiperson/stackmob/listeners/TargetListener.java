@@ -15,7 +15,7 @@ public class TargetListener implements Listener {
         this.sm = sm;
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onMobTarget(EntityTargetEvent event) {
         if (!(event.getEntity() instanceof Monster)) {
             return;
