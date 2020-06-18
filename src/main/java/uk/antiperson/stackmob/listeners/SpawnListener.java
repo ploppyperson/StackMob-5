@@ -25,6 +25,9 @@ public class SpawnListener implements Listener {
             if (sm.getMainConfig().isEntityBlacklisted(event.getEntity(), event.getSpawnReason())) {
                 return;
             }
+            if (sm.getEntityManager().isStackedEntity(event.getEntity())) {
+                return;
+            }
             StackEntity original = sm.getEntityManager().getStackEntity(event.getEntity());
             if (original.shouldWait(event.getSpawnReason())) {
                 original.makeWait();
