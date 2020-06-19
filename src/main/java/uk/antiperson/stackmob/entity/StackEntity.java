@@ -17,6 +17,13 @@ public class StackEntity {
         this.sm = sm;
         this.entity = entity;
         this.size = entity.getPersistentDataContainer().getOrDefault(sm.getStackKey(), PersistentDataType.INTEGER, 1);
+        sm.getEntityManager().getSizeCache().put(entity.getUniqueId(), size);
+    }
+
+    public StackEntity(StackMob sm, LivingEntity entity, int size) {
+        this.sm = sm;
+        this.entity = entity;
+        this.size = size;
     }
 
     /**
@@ -42,6 +49,7 @@ public class StackEntity {
         }
         size = newSize;
         entity.getPersistentDataContainer().set(sm.getStackKey(), PersistentDataType.INTEGER, newSize);
+        sm.getEntityManager().getSizeCache().put(entity.getUniqueId(), size);
         if (update) {
             getTag().update();
         }
@@ -111,6 +119,7 @@ public class StackEntity {
      */
     public void remove() {
         entity.remove();
+        sm.getEntityManager().getSizeCache().remove(entity.getUniqueId());
         if (getEntity().isLeashed()) {
             ItemStack leash = new ItemStack(Material.LEAD, 1);
             getWorld().dropItemNaturally(entity.getLocation(), leash);
