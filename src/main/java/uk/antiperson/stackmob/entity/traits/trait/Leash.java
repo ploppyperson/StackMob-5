@@ -10,6 +10,9 @@ public class Leash implements Trait {
 
     @Override
     public boolean checkTrait(LivingEntity first, LivingEntity nearby) {
+        if (!first.isLeashed() || !nearby.isLeashed()) {
+            return false;
+        }
         if (first.getLeashHolder() != nearby.getLeashHolder()) {
             return true;
         }
