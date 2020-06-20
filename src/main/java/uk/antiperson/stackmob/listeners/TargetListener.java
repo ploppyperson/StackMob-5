@@ -20,14 +20,17 @@ public class TargetListener implements Listener {
         if (!(event.getEntity() instanceof Monster)) {
             return;
         }
-        if (!sm.getEntityManager().isStackedEntity((LivingEntity) event.getEntity())){
+        if (!sm.getEntityManager().isStackedEntity((LivingEntity) event.getEntity())) {
             return;
         }
-        if (sm.getMainConfig().getTargetingDisabledTypes(event.getEntityType()).contains(event.getEntityType().toString())) {
+        if (!sm.getMainConfig().isTargetingDisabled(event.getEntityType())) {
+            return;
+        }
+        if (sm.getMainConfig().isTargetingDisabledType(event.getEntityType())) {
             return;
         }
         if (Utilities.isPaper()) {
-            if (sm.getMainConfig().getTargetingDisabledReasons(event.getEntityType()).contains(event.getEntity().getEntitySpawnReason())){
+            if (sm.getMainConfig().isTargetingDisabledReason(event.getEntityType(), event.getReason())) {
                 return;
             }
         }

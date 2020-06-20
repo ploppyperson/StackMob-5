@@ -27,10 +27,10 @@ public class Drops {
         if (!sm.getMainConfig().isDropMultiEnabled(dead.getType())) {
             return items;
         }
-        if (sm.getMainConfig().getDropTypeBlacklist(dead.getType()).contains(dead.getType().toString())) {
+        if (sm.getMainConfig().isDropTypeBlacklisted(dead.getType())) {
             return items;
         }
-        if (sm.getMainConfig().getDropReasonBlacklist(dead.getType()).contains(dead.getLastDamageCause().getCause().toString())) {
+        if (sm.getMainConfig().isDropReasonBlacklisted(dead.getType(), dead.getLastDamageCause().getCause())) {
             return items;
         }
         for (int i = 0; i < deathAmount; i++) {
@@ -44,13 +44,11 @@ public class Drops {
                 if (is.getType() == Material.LEAD && dead.isLeashed()) {
                     continue;
                 }
-                if (sm.getMainConfig().getDropItemBlacklist(dead.getType())
-                        .contains(is.getType().toString())) {
+                if (sm.getMainConfig().idDropItemBlacklisted(dead.getType(), is.getType())) {
                     continue;
                 }
                 int dropAmount = is.getAmount();
-                if (sm.getMainConfig().getDropItemOnePer(dead.getType())
-                        .contains(is.getType().toString())) {
+                if (sm.getMainConfig().isDropItemOnePer(dead.getType(), is.getType())) {
                     dropAmount = 1;
                 }
                 is.setAmount(1);
@@ -106,7 +104,7 @@ public class Drops {
         if (!sm.getMainConfig().isExpMultiEnabled(dead.getType())) {
             return exp;
         }
-        if (sm.getMainConfig().getExpTypeBlacklist(dead.getType()).contains(dead.getType())) {
+        if (sm.getMainConfig().isExpTypeBlacklisted(dead.getType())) {
             return exp;
         }
         double minMulti = sm.getMainConfig().getExpMinBound(dead.getType()) * exp;

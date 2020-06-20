@@ -23,7 +23,7 @@ public class TagTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        Integer[] searchRadius = sm.getMainConfig().getTagNeabyRadius();
+        Integer[] searchRadius = sm.getMainConfig().getTagNearbyRadius();
         for (Player player : Bukkit.getOnlinePlayers()) {
             List<Entity> furthest = player.getNearbyEntities(searchRadius[0] * 1.5, searchRadius[1] * 1.5, searchRadius[2] * 1.5);
             List<Entity> nearest = player.getNearbyEntities(searchRadius[0], searchRadius[1], searchRadius[2]);

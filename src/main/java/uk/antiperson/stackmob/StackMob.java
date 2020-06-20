@@ -106,6 +106,7 @@ public class StackMob extends JavaPlugin {
                 downloadBridge();
             }
             getEntityTranslation().load();
+            getMainConfig().cache();
         } catch (IOException e) {
             getLogger().log(Level.SEVERE, "There was a problem loading the configuration file. Features won't work.");
             e.printStackTrace();

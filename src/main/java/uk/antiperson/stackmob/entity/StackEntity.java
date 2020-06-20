@@ -66,10 +66,10 @@ public class StackEntity {
         if (!sm.getMainConfig().isWaitingEnabled(getEntity().getType())) {
             return false;
         }
-        if (!sm.getMainConfig().getWaitingTypes(getEntity().getType()).contains(getEntity().getType().toString())) {
+        if (!sm.getMainConfig().isWaitingType(getEntity().getType())) {
             return false;
         }
-        if (!sm.getMainConfig().getWaitingReasons(getEntity().getType()).contains(spawnReason.toString())) {
+        if (!sm.getMainConfig().isWaitingReason(getEntity().getType(), spawnReason)) {
             return false;
         }
         return true;

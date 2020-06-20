@@ -20,6 +20,7 @@ public class Reload extends SubCommand {
         try {
             sm.getEntityTranslation().load();
             sm.getMainConfig().load();
+            sm.getMainConfig().cache();
             sender.sendSuccess("Reloaded config files successfully!");
             sender.sendInfo("Note: Some config changes may require a full server restart to take effect.");
         } catch (IOException e) {
