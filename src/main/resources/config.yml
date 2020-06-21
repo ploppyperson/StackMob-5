@@ -68,6 +68,7 @@ traits:
   bee-nectar: true
   bee-stung: true
   leashed: true
+  villager-profession: true
 
 # Prevent stacked mobs from targeting players.
 # Similar to no-ai, but allows for movement of entities.
