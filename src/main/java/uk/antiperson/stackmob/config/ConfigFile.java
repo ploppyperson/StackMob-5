@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 
 public class ConfigFile {
 
@@ -39,7 +40,7 @@ public class ConfigFile {
     }
 
     public ConfigList getList(String path) {
-        return new ConfigList(fileCon, path);
+        return ConfigList.getConfigList(this, new ConfigValue(path, get(path)));
     }
 
     public ConfigurationSection getConfigurationSection(String path) {
@@ -52,6 +53,14 @@ public class ConfigFile {
 
     public boolean isString(String path) {
         return fileCon.isString(path);
+    }
+
+    public Object get(String path) {
+        return fileCon.get(path);
+    }
+
+    public List<Integer> getIntegerList(String path) {
+        return fileCon.getIntegerList(path);
     }
 
     public boolean isFileLoaded() {
