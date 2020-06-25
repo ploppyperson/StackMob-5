@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class EntityUtils {
 
+
     public static boolean isCorrectFood(Entity entity, Material type) {
         switch (entity.getType()) {
             case COW:
@@ -57,6 +58,8 @@ public class EntityUtils {
                 return (type == Material.COD || type == Material.SALMON) && ((Cat) entity).isTamed();
             case BEE:
                 return Tag.FLOWERS.isTagged(type);
+            case HOGLIN:
+                return type == Material.CRIMSON_FUNGUS;
         }
         return false;
     }
