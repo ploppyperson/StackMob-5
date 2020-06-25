@@ -14,7 +14,7 @@ public class NMSHelper {
 
     public static void sendPacket(Player player, Entity entity, boolean tagVisible) throws NoSuchFieldException, IllegalAccessException {
         CraftEntity craftEntity = (CraftEntity) entity;
-        Field field = net.minecraft.server.v1_16_R1.Entity.class.getDeclaredField("aA");
+        Field field = net.minecraft.server.v1_16_R1.Entity.class.getDeclaredField("ay");
         field.setAccessible(true);
         DataWatcherObject<Boolean> datawatcherobject = (DataWatcherObject<Boolean>) field.get(null);
         DataWatcher watcher = craftEntity.getHandle().getDataWatcher();
