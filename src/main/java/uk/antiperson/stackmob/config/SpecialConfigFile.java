@@ -45,18 +45,13 @@ public abstract class SpecialConfigFile extends ConfigFile {
         if (!isFileLoaded()) {
             throw new UnsupportedOperationException("Configuration file has not been loaded!");
         }
+        // Check if this entity clones another entity.
+        String typeName = getString("custom." + type + ".clone", type.toString()).toUpperCase();
         // Check if the specified general config path is overridden by an entity specific equivalent.
-        String customPath = "custom." + type + "." + path;
+        String customPath = "custom." + typeName + "." + path;
         Object customValue = get(customPath);
         if (customValue != null) {
             return new ConfigValue(customPath, customValue);
-        }
-        // Check if this entity specific path is specified to clone another path.
-        String clone = "custom." + type + ".clone";
-        String clonePath = "custom." + getString(clone) + "." + path;
-        Object cloneValue = get(clonePath);
-        if (cloneValue != null) {
-            return new ConfigValue(clonePath, cloneValue);
         }
         return new ConfigValue(path, get(path));
     }

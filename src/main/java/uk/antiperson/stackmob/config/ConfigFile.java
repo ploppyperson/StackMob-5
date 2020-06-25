@@ -27,6 +27,10 @@ public class ConfigFile {
         return fileCon.getString(path);
     }
 
+    public String getString(String path, String defaultString) {
+        return fileCon.getString(path, defaultString);
+    }
+
     public int getInt(String path) {
         return fileCon.getInt(path);
     }
