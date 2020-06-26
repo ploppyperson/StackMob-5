@@ -1,6 +1,5 @@
 package uk.antiperson.stackmob.config;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
@@ -17,182 +16,304 @@ import java.util.*;
 
 public class MainConfig extends SpecialConfigFile {
 
+    private int default_stack_max_size;
     private final Map<EntityType, Integer> stack_max_size = new HashMap<>();
-    private final Map<EntityType, Integer[]> stack_radius = new HashMap<>();
-    private final List<EntityType> stack_threshold_enabled = new ArrayList<>();
-    private final Map<EntityType, Integer> stack_threshold = new HashMap<>();
+    private Integer[] default_stack_merge_range;
+    private final Map<EntityType, Integer[]> stack_merge_range = new HashMap<>();
+    private boolean default_stack_threshold_enabled;
+    private final Map<EntityType, Boolean> stack_threshold_enabled = new HashMap<>();
+    private int default_stack_threshold_amount;
+    private final Map<EntityType, Integer> stack_threshold_amount = new HashMap<>();
 
-    private final Map<EntityType, String> tag_format = new HashMap<>();
-    private final Map<EntityType, Integer> tag_threshold = new HashMap<>();
-    private final Map<EntityType, TagMode> tag_tag_mode = new HashMap<>();
-    private Integer[] tag_nearby_radius;
 
-    private final List<EntityType> drop_multi = new ArrayList<>();
-    private final List<EntityType> drop_loot_table = new ArrayList<>();
-    private final List<EntityType> drop_type_blacklist = new ArrayList<>();
-    private final Map<EntityType, List<EntityDamageEvent.DamageCause>> drop_reason_blacklist = new HashMap<>();
-    private final Map<EntityType, List<Material>> drop_item_blacklist = new HashMap<>();
-    private final Map<EntityType, List<Material>> drop_item_one_per = new HashMap<>();
+    private String default_display_name_format;
+    private final Map<EntityType, String> display_name_format = new HashMap<>();
+    private TagMode default_display_name_visibility;
+    private final Map<EntityType, TagMode> display_name_visibility = new HashMap<>();
+    private Integer[] default_display_name_nearby_range;
+    private Integer default_display_name_threshold;
+    private final Map<EntityType, Integer> display_name_threshold = new HashMap<>();
 
-    private final List<EntityType> exp_multi = new ArrayList<>();
-    private final List<EntityType> exp_type_blacklist = new ArrayList<>();
-    private final Map<EntityType, Double> exp_mult_min = new HashMap<>();
-    private final Map<EntityType, Double> exp_mult_max = new HashMap<>();
 
-    private final List<EntityType> player_stats = new ArrayList<>();
+    private final List<String> default_death_priority = new ArrayList<>();
+    private final Map<EntityType, List<String>> death_priority = new HashMap<>();
+    private final Map<String, Set<EntityType>> default_death_type_blacklist = new HashMap<>();
+    private final Map<String, Set<EntityDamageEvent.DamageCause>> default_death_reason_blacklist = new HashMap<>();
+    private final Map<EntityType, Map<String, Set<EntityDamageEvent.DamageCause>>> death_reason_blacklist = new HashMap<>();
+    private int default_death_step_min_step;
+    private final Map<EntityType, Integer> death_step_min_step = new HashMap<>();
+    private int default_death_step_max_step;
+    private final Map<EntityType, Integer> death_step_max_step = new HashMap<>();
 
-    private final List<EntityType> waiting_enabled = new ArrayList<>();
-    private final List<EntityType> waiting_type_blacklist = new ArrayList<>();
-    private final Map<EntityType, List<CreatureSpawnEvent.SpawnReason>> waiting_reason_blacklist = new HashMap<>();
-    private final Map<EntityType, Integer> waiting_time = new HashMap<>();
 
-    private final Map<EntityType, Integer> death_min_step = new HashMap<>();
-    private final Map<EntityType, Integer> death_max_step = new HashMap<>();
-    private final Map<EntityType, Map<String, List<EntityType>>> death_type_blacklist = new HashMap<>();
-    private final Map<EntityType, Map<String, List<EntityDamageEvent.DamageCause>>> death_reason_blacklist = new HashMap<>();
-    private final Map<EntityType, Collection<String>> death_priority = new HashMap<>();
+    private boolean default_drops_enabled;
+    private final Map<EntityType, Boolean> drops_enabled = new HashMap<>();
+    private boolean default_drops_use_loot_tables;
+    private final Map<EntityType, Boolean> drops_use_loot_tables = new HashMap<>();
+    private final Set<Material> default_drops_one_per_stack = new HashSet<>();
+    private final Map<EntityType, Set<Material>> drops_one_per_stack = new HashMap<>();
+    private final Set<Material> default_drops_item_blacklist = new HashSet<>();
+    private final Map<EntityType, Set<Material>> drops_item_blacklist = new HashMap<>();
+    private final Set<EntityDamageEvent.DamageCause> default_drops_reason_blacklist = new HashSet<>();
+    private final Map<EntityType, Set<EntityDamageEvent.DamageCause>> drops_reason_blacklist = new HashMap<>();
+    private final Set<EntityType> default_drops_type_blacklist = new HashSet<>();
 
-    private final List<EntityType> targeting_disabled = new ArrayList<>();
-    private final List<EntityType> targeting_type_blacklist = new ArrayList<>();
-    private final Map<EntityType, List<EntityTargetEvent.TargetReason>> targeting_reason_blacklist = new HashMap<>();
 
-    private final List<EntityType> entity_type_blacklist = new ArrayList<>();
-    private final Map<EntityType, List<CreatureSpawnEvent.SpawnReason>> entity_reason_blacklist = new HashMap<>();
-    private final Map<EntityType, List<World>> entity_world_blacklist = new HashMap<>();
+    private boolean default_experience_enabled;
+    private final Map<EntityType, Boolean> experience_enabled = new HashMap<>();
+    private double default_experience_multiplier_min;
+    private final Map<EntityType, Double> experience_multiplier_min = new HashMap<>();
+    private double default_experience_multiplier_max;
+    private final Map<EntityType, Double> experience_multiplier_max = new HashMap<>();
+    private final Set<EntityType> default_experience_type_blacklist = new HashSet<>();
 
-    private final Map<EntityType, Map<String, Boolean>> remove_stack_data = new HashMap<>();
-    private final Map<EntityType, Map<String, ListenerMode>> listener_mode = new HashMap<>();
 
-    private boolean multi_slime;
+    private boolean default_player_stats;
+    private final Map<EntityType, Boolean> player_stats = new HashMap<>();
+
+
+    private boolean default_wait_to_stack_enabled;
+    private final Map<EntityType, Boolean> wait_to_stack_enabled = new HashMap<>();
+    private int default_wait_to_stack_wait_time;
+    private final Map<EntityType, Integer> wait_to_stack_wait_time = new HashMap<>();
+    private final Set<CreatureSpawnEvent.SpawnReason> default_wait_to_stack_reasons_whitelist = new HashSet<>();
+    private final Map<EntityType, Set<CreatureSpawnEvent.SpawnReason>> wait_to_stack_reasons_whitelist = new HashMap<>();
+    private final Set<EntityType> default_wait_to_stack_types_whitelist = new HashSet<>();
+
+
+    private boolean default_disable_targeting_enabled;
+    private final Map<EntityType, Boolean> disable_targeting_enabled = new HashMap<>();
+    private final Set<EntityType> default_disable_targeting_type_blacklist = new HashSet<>();
+    private final Set<EntityTargetEvent.TargetReason> default_disable_targeting_reason_blacklist = new HashSet<>();
+    private final Map<EntityType, Set<EntityTargetEvent.TargetReason>> disable_targeting_reason_blacklist = new HashMap<>();
+
+
+    private final Set<EntityType> default_types_blacklist = new HashSet<>();
+    private final Set<CreatureSpawnEvent.SpawnReason> default_reason_blacklist = new HashSet<>();
+    private final Map<EntityType, Set<CreatureSpawnEvent.SpawnReason>> reason_blacklist = new HashMap<>();
+    private final Set<World> default_worlds_blacklist = new HashSet<>();
+    private final Map<EntityType, Set<World>> worlds_blacklist = new HashMap<>();
+
+
+    private final Map<String, Boolean> default_events_remove_stack_data = new HashMap<>();
+    private final Map<EntityType, Map<String, Boolean>> events_remove_stack_data = new HashMap<>();
+    private final Map<String, ListenerMode> default_events_mode = new HashMap<>();
+    private final Map<EntityType, Map<String, ListenerMode>> events_mode = new HashMap<>();
+
+
+    private boolean default_events_multiply_slime_split;
 
     public MainConfig(StackMob sm) {
         super(sm, "config.yml");
     }
 
     public void cache() {
-        for (EntityType type : EntityType.values()) {
-            stack_max_size.put(type, getInt(type, "stack.max-size"));
-            stack_radius.put(type, getList(type, "stack.merge-range").asIntList().toArray(new Integer[2]));
-            if (getBoolean(type, "stack.threshold.enabled")) stack_threshold_enabled.add(type);
-            stack_threshold.put(type, getInt(type, "stack.threshold.amount"));
+        default_stack_max_size = getInt("stack.max-size");
+        default_stack_merge_range = getList("stack.merge-range").asIntList().toArray(new Integer[2]);
+        default_stack_threshold_enabled = getBoolean("stack.threshold.enabled");
+        default_stack_threshold_amount = getInt("stack.threshold.amount");
 
-            tag_format.put(type, getString(type, "display-name.format"));
-            tag_threshold.put(type, getInt(type, "display-name.threshold"));
-            tag_tag_mode.put(type, TagMode.valueOf(getString(type, "display-name.visibility")));
 
-            if (getBoolean(type, "drops.enabled")) drop_multi.add(type);
-            if (getBoolean(type, "drops.use-loot-tables")) drop_loot_table.add(type);
-            if (getList("drops.type-blacklist").contains(type.toString())) drop_type_blacklist.add(type);
-            List<EntityDamageEvent.DamageCause> dropCauseList = new ArrayList<>();
-            for (EntityDamageEvent.DamageCause damageCause : EntityDamageEvent.DamageCause.values()) {
-                if (getList(type, "drops.reason-blacklist").contains(damageCause.toString()))
-                    dropCauseList.add(damageCause);
-            }
-            drop_reason_blacklist.put(type, dropCauseList);
-            List<Material> materialList = new ArrayList<>();
-            List<Material> oneMaterialList = new ArrayList<>();
-            for (Material material : Material.values()) {
-                if (getList(type, "drops.item-blacklist").contains(material.toString())) materialList.add(material);
-                if (getList(type, "drops.one-per-stack").contains(material.toString())) oneMaterialList.add(material);
-            }
-            drop_item_blacklist.put(type, materialList);
-            drop_item_one_per.put(type, oneMaterialList);
+        default_display_name_format = getString("display-name.format");
+        default_display_name_visibility = TagMode.valueOf(getString( "display-name.visibility"));
+        default_display_name_nearby_range = getList("display-name.nearby.range").asIntList().toArray(new Integer[2]);
+        default_display_name_threshold = getInt("display-name.threshold");
 
-            if (getBoolean(type, "experience.enabled")) exp_multi.add(type);
-            if (getList(type, "experience.type-blacklist").contains(type.toString())) exp_type_blacklist.add(type);
-            exp_mult_min.put(type, getDouble(type, "experience.multiplier-min"));
-            exp_mult_max.put(type, getDouble(type, "experience.multiplier-max"));
 
-            if (getBoolean(type, "player-stats")) player_stats.add(type);
+        final Collection<String> death_priorities = getDeathSection(null);
+        default_death_priority.addAll(death_priorities);
+        for (String defaultDeathOption : death_priorities) {
+            final Set<EntityType> entityTypes = default_death_type_blacklist.getOrDefault(defaultDeathOption, new HashSet<>());
+            entityTypes.addAll(getList("death." + defaultDeathOption + ".type-blacklist").asEntityTypeList());
+            default_death_type_blacklist.put(defaultDeathOption, entityTypes);
 
-            if (getBoolean(type, "wait-to-stack.enabled")) waiting_enabled.add(type);
-            if (getList("wait-to-stack.types-whitelist").contains(type.toString())) waiting_type_blacklist.add(type);
-            waiting_time.put(type, getInt(type, "wait-to-stack.wait-time"));
-
-            death_min_step.put(type, getInt(type, "death.STEP.min-step"));
-            death_max_step.put(type, getInt(type, "death.STEP.max-step"));
-            Collection<String> priorities = getDeathSection(type);
-            death_priority.put(type, priorities);
-            for (String key : priorities) {
-                Map<String, List<EntityType>> deathTypeMap = death_type_blacklist.getOrDefault(type, new HashMap<>());
-                List<EntityType> deathTypeList = new ArrayList<>();
-                for (EntityType entityType : EntityType.values()) {
-                    if (getList(type, "death." + key + ".type-blacklist").contains(entityType.toString()))
-                        deathTypeList.add(entityType);
-                }
-                deathTypeMap.put(key, deathTypeList);
-                death_type_blacklist.put(type, deathTypeMap);
-
-                Map<String, List<EntityDamageEvent.DamageCause>> deathCauseMap = death_reason_blacklist.getOrDefault(type, new HashMap<>());
-                List<EntityDamageEvent.DamageCause> deathCauseList = new ArrayList<>();
-                for (EntityDamageEvent.DamageCause damageCause : EntityDamageEvent.DamageCause.values()) {
-                    if (getList(type, "death." + key + ".reason-blacklist").contains(damageCause.toString()))
-                        deathCauseList.add(damageCause);
-                }
-                deathCauseMap.put(key, deathCauseList);
-                death_reason_blacklist.put(type, deathCauseMap);
-            }
-
-            if (getBoolean(type, "disable-targeting.enabled")) targeting_disabled.add(type);
-            if (getList(type, "disable-targeting.type-blacklist").contains(type.toString()))
-                targeting_type_blacklist.add(type);
-            List<EntityTargetEvent.TargetReason> targetReasonList = new ArrayList<>();
-            for (EntityTargetEvent.TargetReason targetReason : EntityTargetEvent.TargetReason.values()) {
-                if (getList(type, "disable-targeting.reason-blacklist").contains(targetReason.toString()))
-                    targetReasonList.add(targetReason);
-            }
-            targeting_reason_blacklist.put(type, targetReasonList);
-
-            if (getList(type, "types-blacklist").contains(type.toString())) entity_type_blacklist.add(type);
-            List<CreatureSpawnEvent.SpawnReason> stackReasonList = new ArrayList<>();
-            List<CreatureSpawnEvent.SpawnReason> waitReasonList = new ArrayList<>();
-            for (CreatureSpawnEvent.SpawnReason spawnReason : CreatureSpawnEvent.SpawnReason.values()) {
-                if (getList(type, "reason-blacklist").contains(spawnReason.toString()))
-                    stackReasonList.add(spawnReason);
-                if (getList(type, "wait-to-stack.reasons-whitelist").contains(spawnReason.toString()))
-                    waitReasonList.add(spawnReason);
-            }
-            entity_reason_blacklist.put(type, stackReasonList);
-            waiting_reason_blacklist.put(type, waitReasonList);
-            List<World> worldList = new ArrayList<>();
-            for (World world : Bukkit.getWorlds()) {
-                if (getList(type, "worlds-blacklist").contains(world.getName())) worldList.add(world);
-            }
-            entity_world_blacklist.put(type, worldList);
-
-            Map<String, Boolean> removeStackDataMap = remove_stack_data.getOrDefault(type, new HashMap<>());
-            for (String key : getConfigurationSection("events.remove-stack-data").getKeys(false)) {
-                removeStackDataMap.put(key, getBoolean(type, "events.remove-stack-data." + key));
-            }
-            remove_stack_data.put(type, removeStackDataMap);
-            Map<String, ListenerMode> listenerModeMap = listener_mode.getOrDefault(type, new HashMap<>());
-            for (String key : getConfigurationSection("events").getKeys(false)) {
-                String mode = getString(type, "events." + key + ".mode");
-                if (mode != null) {
-                    listenerModeMap.put(key, ListenerMode.valueOf(mode));
-                }
-            }
-            listener_mode.put(type, listenerModeMap);
+            final Set<EntityDamageEvent.DamageCause> damageCauses = default_death_reason_blacklist.getOrDefault(defaultDeathOption, new HashSet<>());
+            damageCauses.addAll(getList("death." + defaultDeathOption + ".reason-blacklist").asDamageCauseList());
+            default_death_reason_blacklist.put(defaultDeathOption, damageCauses);
         }
-        tag_nearby_radius = getList("display-name.nearby.range").asIntList().toArray(new Integer[2]);
+        default_death_step_max_step = getInt("death.STEP.max-step");
+        default_death_step_min_step = getInt("death.STEP.min-step");
 
-        multi_slime = getBoolean("events.multiply.slime-split");
+
+        default_drops_enabled = getBoolean("drops.enabled");
+        default_drops_use_loot_tables = getBoolean("drops.use-loot-tables");
+        default_drops_one_per_stack.addAll(getList("drops.one-per-stack").asMaterialList());
+        default_drops_item_blacklist.addAll(getList("drops.item-blacklist").asMaterialList());
+        default_drops_reason_blacklist.addAll(getList("drops.reason-blacklist").asDamageCauseList());
+        default_drops_type_blacklist.addAll(getList("drops.type-blacklist").asEntityTypeList());
+
+
+        default_experience_enabled = getBoolean("experience.enabled");
+        default_experience_multiplier_min = getDouble("experience.multiplier-min");
+        default_experience_multiplier_max = getDouble("experience.multiplier-max");
+        default_experience_type_blacklist.addAll(getList("experience.type-blacklist").asEntityTypeList());
+
+
+        default_player_stats = getBoolean("player-stats");
+
+
+        default_wait_to_stack_enabled = getBoolean("wait-to-stack.enabled");
+        default_wait_to_stack_wait_time = getInt("wait-to-stack.wait-time");
+        default_wait_to_stack_types_whitelist.addAll(getList("wait-to-stack.types-whitelist").asEntityTypeList());
+        default_wait_to_stack_reasons_whitelist.addAll(getList("wait-to-stack.reasons-whitelist").asSpawnReasonList());
+
+
+        default_disable_targeting_enabled = getBoolean("disable-targeting.enabled");
+        default_disable_targeting_type_blacklist.addAll(getList("disable-targeting.type-blacklist").asEntityTypeList());
+        default_disable_targeting_reason_blacklist.addAll(getList("disable-targeting.reason-blacklist").asTargetReasonList());
+
+
+        default_types_blacklist.addAll(getList("types-blacklist").asEntityTypeList());
+        default_reason_blacklist.addAll(getList("reason-blacklist").asSpawnReasonList());
+        default_worlds_blacklist.addAll(getList("worlds-blacklist").asWorldList());
+
+
+        for (String key : getConfigurationSection("events.remove-stack-data").getKeys(false)) {
+            default_events_remove_stack_data.put(key, getBoolean("events.remove-stack-data." + key));
+        }
+        for (String key : getConfigurationSection("events.").getKeys(false)) {
+            final String mode = getString("events." + key + ".mode");
+
+            if (mode != null) {
+                default_events_mode.put(key, ListenerMode.valueOf(mode));
+            }
+        }
+
+
+        default_events_multiply_slime_split = getBoolean("events.multiply.slime-split");
+
+        for (EntityType type : EntityType.values()) {
+            final int custom_stack_max_size = getInt(type, "stack.max-size");
+            if (custom_stack_max_size != default_stack_max_size) stack_max_size.put(type, custom_stack_max_size);
+
+            final Integer[] custom_stack_merge_range = getList(type, "stack.merge-range").asIntList().toArray(new Integer[2]);
+            if (!Arrays.equals(custom_stack_merge_range, default_stack_merge_range)) stack_merge_range.put(type, default_stack_merge_range);
+
+            final boolean custom_stack_threshold_enabled = getBoolean(type, "stack.threshold.enabled");
+            if (custom_stack_threshold_enabled != default_stack_threshold_enabled) stack_threshold_enabled.put(type, custom_stack_threshold_enabled);
+
+            final int custom_stack_threshold_amount = getInt(type, "stack.threshold.amount");
+            if (custom_stack_threshold_amount != default_stack_threshold_amount) stack_threshold_amount.put(type, custom_stack_threshold_amount);
+
+
+            final String custom_display_name_format = getString(type, "display-name.format");
+            if (!custom_display_name_format.equals(default_display_name_format)) display_name_format.put(type, custom_display_name_format);
+
+            final TagMode custom_display_name_visibility = TagMode.valueOf(getString(type, "display-name.visibility"));
+            if (custom_display_name_visibility != default_display_name_visibility) display_name_visibility.put(type, custom_display_name_visibility);
+
+            final int custom_display_name_threshold = getInt(type, "display-name.threshold");
+            if (custom_display_name_threshold != default_display_name_threshold) display_name_threshold.put(type, custom_display_name_threshold);
+
+
+            final List<String> custom_death_priorities = new ArrayList<>(getDeathSection(type));
+            if (!custom_death_priorities.equals(default_death_priority)) {
+                death_priority.put(type, custom_death_priorities);
+
+                for (String defaultDeathOption : custom_death_priorities) {
+                    final Map<String, Set<EntityDamageEvent.DamageCause>> damageCauses = death_reason_blacklist.getOrDefault(type, new HashMap<>());
+
+                    damageCauses.put(defaultDeathOption, new HashSet<>(getList(type, "death." + defaultDeathOption + ".reason-blacklist").asDamageCauseList()));
+                    death_reason_blacklist.put(type, damageCauses);
+                }
+            }
+            final int custom_death_step_max_step = getInt(type, "death.STEP.max-step");
+            if (custom_death_step_max_step != default_death_step_max_step) death_step_max_step.put(type, custom_death_step_max_step);
+
+            final int custom_death_step_min_step = getInt(type, "death.STEP.min-step");
+            if (custom_death_step_min_step != default_death_step_min_step) death_step_min_step.put(type, custom_death_step_min_step);
+
+
+            final boolean custom_drops_enabled = getBoolean(type, "drops.enabled");
+            if (custom_drops_enabled != default_drops_enabled) drops_enabled.put(type, custom_drops_enabled);
+
+            final boolean custom_drops_use_loot_tables = getBoolean(type, "drops.use-loot-tables");
+            if (custom_drops_use_loot_tables != default_drops_use_loot_tables) drops_use_loot_tables.put(type, custom_drops_use_loot_tables);
+
+            final Set<Material> custom_drops_one_per_stack = new HashSet<>(getList(type, "drops.one-per-stack").asMaterialList());
+            if (!custom_drops_one_per_stack.equals(default_drops_one_per_stack)) drops_one_per_stack.put(type, custom_drops_one_per_stack);
+
+            final Set<Material> custom_drops_item_blacklist = new HashSet<>(getList(type, "drops.item-blacklist").asMaterialList());
+            if (!custom_drops_item_blacklist.equals(default_drops_item_blacklist)) drops_item_blacklist.put(type, custom_drops_item_blacklist);
+
+            final Set<EntityDamageEvent.DamageCause> custom_drops_reason_blacklist = new HashSet<>(getList(type, "drops.reason-blacklist").asDamageCauseList());
+            if (!custom_drops_reason_blacklist.equals(default_drops_reason_blacklist)) drops_reason_blacklist.put(type, custom_drops_reason_blacklist);
+
+
+            final boolean custom_experience_enabled = getBoolean(type, "experience.enabled");
+            if (custom_experience_enabled != default_experience_enabled) experience_enabled.put(type, custom_experience_enabled);
+
+            final double custom_experience_multiplier_min = getDouble(type, "experience.multiplier-min");
+            if (custom_experience_multiplier_min != default_experience_multiplier_min) experience_multiplier_min.put(type, custom_experience_multiplier_min);
+
+            final double custom_experience_multiplier_max = getDouble(type, "experience.multiplier-max");
+            if (custom_experience_multiplier_max != default_experience_multiplier_max) experience_multiplier_max.put(type, custom_experience_multiplier_max);
+
+
+            final boolean custom_player_stats = getBoolean(type, "player-stats");
+            if (custom_player_stats != default_player_stats) player_stats.put(type, custom_player_stats);
+
+
+            final boolean custom_wait_to_stack_enabled = getBoolean(type, "wait-to-stack.enabled");
+            if (custom_wait_to_stack_enabled != default_wait_to_stack_enabled) wait_to_stack_enabled.put(type, custom_wait_to_stack_enabled);
+
+            final int custom_wait_to_stack_wait_time = getInt(type, "wait-to-stack.wait-time");
+            if (custom_wait_to_stack_wait_time != default_wait_to_stack_wait_time) wait_to_stack_wait_time.put(type, custom_wait_to_stack_wait_time);
+
+            final Set<CreatureSpawnEvent.SpawnReason> custom_wait_to_stack_reasons_whitelist = new HashSet<>(getList(type, "wait-to-stack.reasons-whitelist").asSpawnReasonList());
+            if (!custom_wait_to_stack_reasons_whitelist.equals(default_wait_to_stack_reasons_whitelist)) {
+                wait_to_stack_reasons_whitelist.put(type, custom_wait_to_stack_reasons_whitelist);
+            }
+
+
+            final boolean custom_disable_targeting_enabled = getBoolean(type, "disable-targeting.enabled");
+            if (custom_disable_targeting_enabled != default_disable_targeting_enabled) disable_targeting_enabled.put(type, custom_disable_targeting_enabled);
+
+            final Set<EntityTargetEvent.TargetReason> custom_disable_targeting_reason_blacklist = new HashSet<>(getList(type, "disable-targeting.reason-blacklist").asTargetReasonList());
+            if (!custom_disable_targeting_reason_blacklist.equals(default_disable_targeting_reason_blacklist)) disable_targeting_reason_blacklist.put(type, custom_disable_targeting_reason_blacklist);
+
+
+            final Set<CreatureSpawnEvent.SpawnReason> custom_reason_blacklist = new HashSet<>(getList(type, "reason-blacklist").asSpawnReasonList());
+            if (!custom_reason_blacklist.equals(default_reason_blacklist)) reason_blacklist.put(type, custom_reason_blacklist);
+
+            final Set<World> custom_worlds_blacklist = new HashSet<>(getList(type, "worlds-blacklist").asWorldList());
+            if (!custom_worlds_blacklist.equals(default_worlds_blacklist)) worlds_blacklist.put(type, custom_worlds_blacklist);
+
+
+            for (String key : getConfigurationSection(type, "events.remove-stack-data").getKeys(false)) {
+                final Map<String, Boolean> map = events_remove_stack_data.getOrDefault(type, new HashMap<>());
+                final boolean custom_events_remove_stack_data = getBoolean(type, "events.remove-stack-data." + key);
+                if (custom_events_remove_stack_data != default_events_remove_stack_data.get(key)) {
+                    map.put(key, custom_events_remove_stack_data);
+                    events_remove_stack_data.put(type, map);
+                }
+            }
+            for (String key : getConfigurationSection(type, "events.").getKeys(false)) {
+                final Map<String, ListenerMode> map = events_mode.getOrDefault(type, new HashMap<>());
+                final String custom_mode = getString(type, "events." + key + ".mode");
+
+                if (custom_mode != null && !custom_mode.equals(default_events_mode.get(key).toString())) {
+                    map.put(key, ListenerMode.valueOf(custom_mode));
+                    events_mode.put(type, map);
+                }
+            }
+        }
     }
 
     public int getMaxStack(EntityType type) {
-        return stack_max_size.get(type);
+        return stack_max_size.getOrDefault(type, default_stack_max_size);
     }
 
     public boolean getStackThresholdEnabled(EntityType type) {
-        return stack_threshold_enabled.contains(type);
+        return stack_threshold_enabled.getOrDefault(type, default_stack_threshold_enabled);
     }
 
     public int getStackThreshold(EntityType type) {
-        return stack_threshold.get(type);
+        return stack_threshold_amount.getOrDefault(type, default_stack_threshold_amount);
     }
 
     public Integer[] getStackRadius(EntityType type) {
-        return stack_radius.get(type);
+        return stack_merge_range.getOrDefault(type, default_stack_merge_range);
     }
 
     public int getStackInterval() {
@@ -200,19 +321,19 @@ public class MainConfig extends SpecialConfigFile {
     }
 
     public String getTagFormat(EntityType type) {
-        return tag_format.get(type);
+        return display_name_format.getOrDefault(type, default_display_name_format);
     }
 
     public int getTagThreshold(EntityType type) {
-        return tag_threshold.get(type);
+        return display_name_threshold.getOrDefault(type, default_display_name_threshold);
     }
 
     public TagMode getTagMode(EntityType type) {
-        return tag_tag_mode.get(type);
+        return display_name_visibility.getOrDefault(type, default_display_name_visibility);
     }
 
     public Integer[] getTagNearbyRadius() {
-        return tag_nearby_radius;
+        return default_display_name_nearby_range;
     }
 
     public int getTagNearbyInterval() {
@@ -228,113 +349,113 @@ public class MainConfig extends SpecialConfigFile {
     }
 
     public boolean isDropMultiEnabled(EntityType type) {
-        return drop_multi.contains(type);
+        return drops_enabled.getOrDefault(type, default_drops_enabled);
     }
 
     public boolean isDropLootTables(EntityType type) {
-        return drop_loot_table.contains(type);
+        return drops_use_loot_tables.getOrDefault(type, default_drops_use_loot_tables);
     }
 
     public boolean isSlimeMultiEnabled() {
-        return multi_slime;
+        return default_events_multiply_slime_split;
     }
 
     public boolean isDropTypeBlacklisted(EntityType type) {
-        return drop_type_blacklist.contains(type);
+        return default_drops_type_blacklist.contains(type);
     }
 
     public boolean isDropReasonBlacklisted(EntityType type, EntityDamageEvent.DamageCause cause) {
-        return drop_reason_blacklist.get(type).contains(cause);
+        return drops_reason_blacklist.getOrDefault(type, default_drops_reason_blacklist).contains(cause);
     }
 
     public boolean idDropItemBlacklisted(EntityType type, Material material) {
-        return drop_item_blacklist.get(type).contains(material);
+        return drops_item_blacklist.getOrDefault(type, default_drops_item_blacklist).contains(material);
     }
 
     public boolean isDropItemOnePer(EntityType type, Material material) {
-        return drop_item_one_per.get(type).contains(material);
+        return drops_one_per_stack.getOrDefault(type, default_drops_one_per_stack).contains(material);
     }
 
     public boolean isExpMultiEnabled(EntityType type) {
-        return exp_multi.contains(type);
+        return experience_enabled.getOrDefault(type, default_experience_enabled);
     }
 
     public boolean isExpTypeBlacklisted(EntityType type) {
-        return exp_type_blacklist.contains(type);
+        return default_experience_type_blacklist.contains(type);
     }
 
     public double getExpMinBound(EntityType type) {
-        return exp_mult_min.get(type);
+        return experience_multiplier_min.getOrDefault(type, default_experience_multiplier_min);
     }
 
     public double getExpMaxBound(EntityType type) {
-        return exp_mult_max.get(type);
+        return experience_multiplier_max.getOrDefault(type, default_experience_multiplier_max);
     }
 
     public boolean isPlayerStatMulti(EntityType type) {
-        return player_stats.contains(type);
+        return player_stats.getOrDefault(type, default_player_stats);
     }
 
     public boolean isWaitingEnabled(EntityType type) {
-        return waiting_enabled.contains(type);
+        return wait_to_stack_enabled.getOrDefault(type, default_wait_to_stack_enabled);
     }
 
     public boolean isWaitingType(EntityType type) {
-        return waiting_type_blacklist.contains(type);
+        return default_wait_to_stack_types_whitelist.contains(type);
     }
 
     public boolean isWaitingReason(EntityType type, CreatureSpawnEvent.SpawnReason reason) {
-        return waiting_reason_blacklist.get(type).contains(reason);
+        return wait_to_stack_reasons_whitelist.getOrDefault(type, default_wait_to_stack_reasons_whitelist).contains(reason);
     }
 
     public int getWaitingTime(EntityType type) {
-        return waiting_time.get(type);
+        return wait_to_stack_wait_time.getOrDefault(type, default_wait_to_stack_wait_time);
     }
 
     public int getMaxDeathStep(EntityType type) {
-        return death_max_step.get(type);
+        return death_step_max_step.getOrDefault(type, default_death_step_max_step);
     }
 
     public int getMinDeathStep(EntityType type) {
-        return death_min_step.get(type);
+        return death_step_min_step.getOrDefault(type, default_death_step_min_step);
     }
 
     public boolean removeStackDataOnDivide(EntityType type, String reasonKey) {
-        return remove_stack_data.get(type).get(reasonKey);
+        return events_remove_stack_data.getOrDefault(type, default_events_remove_stack_data).get(reasonKey);
     }
 
     public boolean isTargetingDisabled(EntityType type) {
-        return targeting_disabled.contains(type);
+        return disable_targeting_enabled.getOrDefault(type, default_disable_targeting_enabled);
     }
 
     public boolean isTargetingDisabledType(EntityType type) {
-        return targeting_type_blacklist.contains(type);
+        return default_disable_targeting_type_blacklist.contains(type);
     }
 
     public boolean isTargetingDisabledReason(EntityType type, EntityTargetEvent.TargetReason reason) {
-        return targeting_reason_blacklist.get(type).contains(reason);
+        return disable_targeting_reason_blacklist.getOrDefault(type, default_disable_targeting_reason_blacklist).contains(reason);
     }
 
     public ListenerMode getListenerMode(EntityType type, String eventKey) {
-        return listener_mode.get(type).get(eventKey);
+        return events_mode.getOrDefault(type, default_events_mode).get(eventKey);
     }
 
     public boolean isEntityBlacklisted(LivingEntity entity, CreatureSpawnEvent.SpawnReason reason) {
-        if (entity_type_blacklist.contains(entity.getType())) {
+        if (default_types_blacklist.contains(entity.getType())) {
             return true;
         }
-        if (entity_reason_blacklist.get(entity.getType()).contains(reason)) {
+        if (reason_blacklist.getOrDefault(entity.getType(), default_reason_blacklist).contains(reason)) {
             return true;
         }
-        return entity_world_blacklist.get(entity.getType()).contains(entity.getWorld());
+        return worlds_blacklist.getOrDefault(entity.getType(), default_worlds_blacklist).contains(entity.getWorld());
     }
 
     public DeathType getDeathType(LivingEntity entity) {
-        for (String key : death_priority.get(entity.getType())) {
-            if (death_reason_blacklist.get(entity.getType()).get(key).contains(entity.getLastDamageCause().getCause())) {
+        for (String key : death_priority.getOrDefault(entity.getType(), default_death_priority)) {
+            if (death_reason_blacklist.getOrDefault(entity.getType(), default_death_reason_blacklist).get(key).contains(entity.getLastDamageCause().getCause())) {
                 continue;
             }
-            if (death_type_blacklist.get(entity.getType()).get(key).contains(entity.getType())) {
+            if (default_death_type_blacklist.get(key).contains(entity.getType())) {
                 continue;
             }
             return DeathType.valueOf(key);
@@ -344,9 +465,17 @@ public class MainConfig extends SpecialConfigFile {
 
     private Collection<String> getDeathSection(EntityType type) {
         TreeMap<Integer, String> array = new TreeMap<>();
-        for (String key : getConfigurationSection("death").getKeys(false)) {
-            array.put(getInt(type, "death." + key + ".priority"), key);
+
+        if (type == null) {
+            for (String key : getConfigurationSection("death").getKeys(false)) {
+                array.put(getInt("death." + key + ".priority"), key);
+            }
+        } else {
+            for (String key : getConfigurationSection(type, "death").getKeys(false)) {
+                array.put(getInt(type, "death." + key + ".priority"), key);
+            }
         }
+
         return array.values();
     }
 
