@@ -1,40 +1,45 @@
-# StackMob 5.0 Configuration file - by antiPerson and contributors.
+# StackMob 5.2 Configuration file - by antiPerson and contributors.
 
 # Most options can be customised for specific entity types, for details about this, see the end of this file.
 # Asterisk meaning:
 # (*) This option cannot be overridden in the 'custom' section at the end of this file.
 # (**) The following option requires the use of Paper (https://papermc.io) because the API needed is not in Spigot.
 
+# Entity types list https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html
+# Spawn reasons list https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/CreatureSpawnEvent.SpawnReason.html
+# Target reasons list https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityTargetEvent.TargetReason.html
+# Damage causes list https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityDamageEvent.DamageCause.html
+
 stack:
-  # The maximum size that a stack can have.
+  # The maximum size that a stack can have. (*)
   max-size: 30
   # How often entities should be checked for stacking (in ticks. 20 ticks = 1 second) (*)
   interval: 100
-  # The area around an entity for which applicable stacks should be found.
+  # The area around an entity for which applicable stacks should be found. (*)
   # Format: [(x cord),(y cord),(z cord)]
   merge-range: [10,10,10]
-  # Only begin to stack entities when this amount of entities are nearby.
+  # Only begin to stack entities when this amount of entities are nearby. (*)
   threshold:
     enabled: true
     amount: 5
 
-# Names of worlds where there should be no stacking
+# Names of worlds where there should be no stacking  (*)
 worlds-blacklist: []
 worlds-blacklist-invert: false
 # Types of entity which should not stack
 types-blacklist: [VILLAGER]
 types-blacklist-invert: false
-# If the entity's spawns reason is listed below, do not stack.
+# If the entity's spawns reason is listed below, do not stack. (*)
 reason-blacklist: []
 reason-blacklist-invert: false
 
 display-name:
-  # The formatting of the name tag which is shown when the stack size is above the threshold.
+  # The formatting of the name tag which is shown when the stack size is above the threshold. (*)
   # Placeholders:
   # %type% - the entity's type
   # %size% - the size of the stack
   format: '&a%type% &d(%size%)'
-  # Whether the display tag can only be seen when the player targets the entity.
+  # Whether the display tag can only be seen when the player targets the entity. (*)
   # Mode:
   # ALWAYS - The tag will always be visible as long as the entity is loaded.
   # HOVER - The tag will only be visible when the player hovers their crosshair on the entity.
@@ -47,10 +52,10 @@ display-name:
     range: [12,6,12]
     # How often (in ticks) the tag visibility status of an entity should be updated. (20 ticks = 1 second)
     interval: 20
-  # Don't show the tag if the stack size of this entity if it is equal to or below the value specified.
+  # Don't show the tag if the stack size of this entity if it is equal to or below the value specified. (*)
   threshold: 1
 
-# Whether entity specific traits (eg. profession, colour) should be segregated (*)
+# Whether entity specific traits (eg. profession, colour) should be segregated
 traits:
   sheep-color: true
   sheep-sheared: true
@@ -73,15 +78,16 @@ traits:
 # Prevent stacked mobs from targeting players.
 # Similar to no-ai, but allows for movement of entities.
 disable-targeting:
+  # (*)
   enabled: false
   # If the entity's type is listed below, do not disable targeting.
   type-blacklist: []
   type-blacklist-invert: false
-  # If the entity's spawns reason is listed below, do not disable targeting (**)
+  # If the entity's spawns reason is listed below, do not disable targeting (*) (**)
   reason-blacklist: []
   reason-blacklist-invert: false
 
-# What should be done when these entity actions occur. (*)
+# What should be done when these entity actions occur.
 events:
   # When an entity is feed its food.
   breed:
@@ -116,7 +122,7 @@ events:
     # Setting this to false will cause entities that were nametagged to potentially become stacked again.
     nametag: true
 
-# How entities should die
+# How entities should die (*)
 death:
   # Death options:
   # SINGLE - Only one entity dies.
@@ -156,15 +162,16 @@ death:
 
 # Multiply entity drops on entity death.
 drops:
+  # (*)
   enabled: true
   use-loot-tables: true
-  # If each mob should only drop one of the items in the list.
+  # If each mob should only drop one of the items in the list. (*)
   one-per-stack: []
   one-per-stack-invert: false
-  # Items that should not be dropped.
+  # Items that should not be dropped. (*)
   item-blacklist: []
   item-blacklist-invert: false
-  # Death reasons that should not mean that drops are multiplied.
+  # Death reasons that should not mean that drops are multiplied. (*)
   reason-blacklist: []
   reason-blacklist-invert: false
   # Types of entity for which drops should not be dropped for.
@@ -173,22 +180,24 @@ drops:
 
 # Multiply entity experience on entity death.
 experience:
+  # (*)
   enabled: true
-  # The bounds that should be used for the random multiplier.
+  # The bounds that should be used for the random multiplier. (*)
   multiplier-min: 0.5
   multiplier-max: 0.8
   # Types of entity for which exp should not be dropped for.
   type-blacklist: []
   type-blacklist-invert: false
 
-# Multiply the player stats which can be seen by the player from the game menu.
+# Multiply the player stats which can be seen by the player from the game menu. (*)
 player-stats: true
 
 # If specific entities should have a waiting time before their first stack.
 # Designed for monster grinders etc.
 wait-to-stack:
+  # (*)
   enabled: true
-  # For (x) times the stack task fires after spawn, don't stack this entity.
+  # For (x) times the stack task fires after spawn, don't stack this entity. (*)
   wait-time: 5
   # Entity types that this should work for.
   types-whitelist:
@@ -198,7 +207,7 @@ wait-to-stack:
     - CREEPER
     - ENDERMAN
   types-whitelist-invert: false
-  # Spawn reasons that this should work for.
+  # Spawn reasons that this should work for. (*)
   reasons-whitelist:
     - SPAWNER
   reasons-whitelist-invert: false
@@ -232,5 +241,3 @@ hooks:
 #    # The cloned custom options can still be overridden.
 #    stack:
 #      max-size: 5
-
-
