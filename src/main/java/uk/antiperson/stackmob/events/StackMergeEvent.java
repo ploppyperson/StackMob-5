@@ -10,7 +10,7 @@ import uk.antiperson.stackmob.entity.StackEntity;
 public class StackMergeEvent extends StackEvent implements Cancellable {
 
     private static final HandlerList handlers = new HandlerList();
-    private StackEntity nearby;
+    private final StackEntity nearby;
     private boolean cancelled;
     public StackMergeEvent(StackEntity first, StackEntity nearby) {
         super(first);

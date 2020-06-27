@@ -1,18 +1,16 @@
 package uk.antiperson.stackmob.entity;
 
-import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.persistence.PersistentDataType;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.events.EventHelper;
-import uk.antiperson.stackmob.events.StackMergeEvent;
 
 public class StackEntity {
 
-    private LivingEntity entity;
-    private StackMob sm;
+    private final LivingEntity entity;
+    private final StackMob sm;
     public StackEntity(StackMob sm, LivingEntity entity) {
         this.sm = sm;
         this.entity = entity;

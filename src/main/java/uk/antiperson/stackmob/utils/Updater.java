@@ -11,8 +11,8 @@ import java.util.concurrent.CompletableFuture;
 
 public class Updater {
 
-    private int resourceId;
-    private Plugin sm;
+    private final int resourceId;
+    private final Plugin sm;
     public Updater(Plugin sm, int resourceId) {
         this.sm = sm;
         this.resourceId = resourceId;
@@ -59,7 +59,7 @@ public class Updater {
 
     public class UpdateResult {
 
-        private VersionResult result;
+        private final VersionResult result;
         private String newVersion;
         UpdateResult(VersionResult result, String newVersion) {
             this.result = result;

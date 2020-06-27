@@ -5,7 +5,7 @@ import uk.antiperson.stackmob.entity.StackEntity;
 
 public abstract class StackEvent extends Event {
 
-    private StackEntity stackEntity;
+    private final StackEntity stackEntity;
     public StackEvent(StackEntity stackEntity) {
         this.stackEntity = stackEntity;
     }

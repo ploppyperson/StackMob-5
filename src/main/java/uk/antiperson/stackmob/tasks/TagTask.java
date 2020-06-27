@@ -16,7 +16,7 @@ import java.util.logging.Level;
 
 public class TagTask extends BukkitRunnable {
 
-    private StackMob sm;
+    private final StackMob sm;
     public TagTask(StackMob sm) {
         this.sm = sm;
     }

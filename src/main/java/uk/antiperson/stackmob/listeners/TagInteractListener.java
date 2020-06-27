@@ -14,7 +14,7 @@ import uk.antiperson.stackmob.entity.StackEntity;
 @ListenerMetadata(config = "events.divide.nametag")
 public class TagInteractListener implements Listener {
 
-    private StackMob sm;
+    private final StackMob sm;
     public TagInteractListener(StackMob sm) {
         this.sm = sm;
     }
@@ -35,15 +35,12 @@ public class TagInteractListener implements Listener {
             return;
         }
         StackEntity stackEntity = sm.getEntityManager().getStackEntity((LivingEntity) event.getRightClicked());
-        if (stackEntity.isSingle()) {
-            if (sm.getMainConfig().removeStackDataOnDivide("nametag")) {
-                stackEntity.removeStackData();
-            }
-            return;
-        }
-        stackEntity.slice();
         if (sm.getMainConfig().removeStackDataOnDivide("nametag")) {
             stackEntity.removeStackData();
         }
+        if (stackEntity.isSingle()) {
+            return;
+        }
+        stackEntity.slice();
     }
 }

@@ -16,8 +16,8 @@ public class ConfigFile {
 
     private File file;
     private FileConfiguration fileCon;
-    private StackMob sm;
-    private String filePath;
+    private final StackMob sm;
+    private final String filePath;
     public ConfigFile(StackMob sm, String filePath) {
         this.sm = sm;
         this.filePath = filePath;

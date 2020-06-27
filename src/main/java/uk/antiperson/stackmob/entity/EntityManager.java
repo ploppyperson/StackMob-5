@@ -6,7 +6,7 @@ import uk.antiperson.stackmob.StackMob;
 
 public class EntityManager {
 
-    private StackMob sm;
+    private final StackMob sm;
     public EntityManager(StackMob sm) {
         this.sm = sm;
     }

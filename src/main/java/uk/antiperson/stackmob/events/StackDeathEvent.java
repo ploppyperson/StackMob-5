@@ -9,7 +9,7 @@ import uk.antiperson.stackmob.entity.StackEntity;
 public class StackDeathEvent extends StackEvent {
 
     private static final HandlerList handlers = new HandlerList();
-    private int deathStep;
+    private final int deathStep;
 
     public StackDeathEvent(StackEntity stackEntity, int deathStep) {
         super(stackEntity);

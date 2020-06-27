@@ -9,8 +9,8 @@ import java.util.HashSet;
 
 public class TraitManager {
 
-    private HashSet<Trait> traits;
-    private StackMob sm;
+    private final HashSet<Trait> traits;
+    private final StackMob sm;
     public TraitManager(StackMob sm) {
         this.sm = sm;
         this.traits = new HashSet<>();

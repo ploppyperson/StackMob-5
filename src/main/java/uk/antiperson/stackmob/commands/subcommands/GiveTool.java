@@ -9,7 +9,7 @@ import uk.antiperson.stackmob.commands.User;
 @CommandMetadata(command = "tool", playerReq = true, desc = "Gives you the stacking tool.")
 public class GiveTool extends SubCommand {
 
-    private StackMob sm;
+    private final StackMob sm;
     public GiveTool(StackMob sm) {
         this.sm = sm;
     }

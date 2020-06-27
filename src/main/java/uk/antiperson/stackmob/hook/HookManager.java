@@ -13,8 +13,8 @@ import java.util.HashSet;
 
 public class HookManager {
 
-    private HashSet<Hook> hooks = new HashSet<>();
-    private StackMob sm;
+    private final HashSet<Hook> hooks = new HashSet<>();
+    private final StackMob sm;
     public HookManager(StackMob sm) {
         this.sm = sm;
     }

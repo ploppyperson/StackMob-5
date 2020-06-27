@@ -13,7 +13,7 @@ import java.util.Arrays;
 
 public class ItemTools {
 
-    private StackMob sm;
+    private final StackMob sm;
     public ItemTools(StackMob sm) {
         this.sm = sm;
     }

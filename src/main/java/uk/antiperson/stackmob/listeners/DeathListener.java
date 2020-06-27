@@ -19,7 +19,7 @@ import java.util.Map;
 
 public class DeathListener implements Listener {
 
-    private StackMob sm;
+    private final StackMob sm;
     public DeathListener(StackMob sm) {
         this.sm = sm;
     }

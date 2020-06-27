@@ -12,7 +12,7 @@ import java.util.concurrent.ThreadLocalRandom;
 @ListenerMetadata(config = "events.multiply.explosion")
 public class ExplosionListener implements Listener {
 
-    private StackMob sm;
+    private final StackMob sm;
 
     public ExplosionListener(StackMob sm) {
         this.sm = sm;

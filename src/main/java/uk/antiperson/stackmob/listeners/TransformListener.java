@@ -9,7 +9,7 @@ import uk.antiperson.stackmob.entity.StackEntity;
 
 public class TransformListener implements Listener {
 
-    private StackMob sm;
+    private final StackMob sm;
     public TransformListener(StackMob sm) {
         this.sm = sm;
     }

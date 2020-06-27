@@ -18,9 +18,9 @@ import uk.antiperson.stackmob.entity.StackEntity;
 
 public class StackingTool {
 
-    private Player player;
-    private ItemStack itemStack;
-    private StackMob sm;
+    private final Player player;
+    private final ItemStack itemStack;
+    private final StackMob sm;
     public StackingTool(StackMob sm, Player player) {
         this.sm = sm;
         this.player = player;
@@ -93,7 +93,7 @@ public class StackingTool {
         REMOVE_SINGLE(3),
         REMOVE_CHUNK(4);
 
-        private int id;
+        private final int id;
         ToolMode(int id) {
             this.id = id;
         }
@@ -105,7 +105,7 @@ public class StackingTool {
 
     private class ModifyPrompt extends NumericPrompt {
 
-        private StackEntity stackEntity;
+        private final StackEntity stackEntity;
         public ModifyPrompt(StackEntity stackEntity) {
             this.stackEntity = stackEntity;
         }

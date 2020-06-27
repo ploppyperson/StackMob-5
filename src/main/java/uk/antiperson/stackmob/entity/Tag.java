@@ -9,8 +9,8 @@ import uk.antiperson.stackmob.hook.StackableMobHook;
 
 public class Tag {
 
-    private StackEntity stackEntity;
-    private StackMob sm;
+    private final StackEntity stackEntity;
+    private final StackMob sm;
     public Tag(StackMob sm, StackEntity stackEntity) {
         this.stackEntity = stackEntity;
         this.sm = sm;

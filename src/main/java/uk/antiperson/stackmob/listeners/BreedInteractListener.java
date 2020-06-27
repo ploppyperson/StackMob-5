@@ -1,8 +1,6 @@
 package uk.antiperson.stackmob.listeners;
 
 import org.bukkit.entity.Animals;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
@@ -12,12 +10,10 @@ import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.StackEntity;
 import uk.antiperson.stackmob.utils.EntityUtils;
 
-import java.util.concurrent.ThreadLocalRandom;
-
 @ListenerMetadata(config = "events.breed.enabled")
 public class BreedInteractListener implements Listener {
 
-    private StackMob sm;
+    private final StackMob sm;
     public BreedInteractListener(StackMob sm) {
         this.sm = sm;
     }

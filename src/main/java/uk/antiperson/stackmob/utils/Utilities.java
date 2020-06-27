@@ -14,6 +14,8 @@ public class Utilities {
 
     public static final String PREFIX = ChatColor.DARK_GREEN + "StackMob " + ChatColor.GRAY + ">> " + ChatColor.RESET;
 
+    public static final String SLIME_METADATA = "deathcount";
+
     public static final String DISCORD = "https://discord.gg/fz9xzuB";
     public static final String GITHUB = "https://github.com/Nathat23/StackMob-5";
 

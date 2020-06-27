@@ -11,7 +11,7 @@ import uk.antiperson.stackmob.entity.StackEntity;
 @CommandMetadata(command = "spawn", playerReq = true, desc = "Spawn a new stack.")
 public class SpawnStack extends SubCommand {
 
-    private StackMob sm;
+    private final StackMob sm;
     public SpawnStack(StackMob sm) {
         super(CommandArgument.construct(ArgumentType.ENTITY_TYPE), CommandArgument.construct(ArgumentType.INTEGER));
         this.sm = sm;

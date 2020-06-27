@@ -9,7 +9,7 @@ import uk.antiperson.stackmob.utils.Utilities;
 @CommandMetadata(command = "about", playerReq = false, desc = "Show information about the plugin.")
 public class About extends SubCommand {
 
-    private StackMob sm;
+    private final StackMob sm;
     public About(StackMob sm) {
         this.sm = sm;
     }

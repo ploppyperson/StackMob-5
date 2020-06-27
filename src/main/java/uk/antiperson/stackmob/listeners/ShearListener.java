@@ -22,7 +22,7 @@ import java.util.concurrent.ThreadLocalRandom;
 @ListenerMetadata(config = "events.shear.enabled")
 public class ShearListener implements Listener {
 
-    private StackMob sm;
+    private final StackMob sm;
 
     public ShearListener(StackMob sm) {
         this.sm = sm;
@@ -49,10 +49,10 @@ public class ShearListener implements Listener {
         if (is == null) {
             return;
         }
-        sm.getServer().getScheduler().runTaskLater(sm, () -> {
+        sm.getServer().getScheduler().runTask(sm, () -> {
             Dispenser dispenser = (Dispenser) event.getBlock().getState();
             dispenser.getInventory().setItem(dispenser.getInventory().first(event.getTool()), is);
-        }, 1);
+        });
     }
 
     private ItemStack shearLogic(LivingEntity entity, ItemStack item) {

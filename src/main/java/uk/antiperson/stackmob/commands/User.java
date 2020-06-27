@@ -6,7 +6,7 @@ import uk.antiperson.stackmob.utils.Utilities;
 
 public class User {
 
-    private CommandSender sender;
+    private final CommandSender sender;
     public User(CommandSender sender) {
         this.sender = sender;
     }
@@ -51,6 +51,6 @@ public class User {
     enum MessageType {
         INFO,
         ERROR,
-        SUCCESS;
+        SUCCESS
     }
 }
