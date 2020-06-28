@@ -39,6 +39,10 @@ public class Utilities {
         return Package.getPackage("com.destroystokyo.paper") != null;
     }
 
+    public static boolean isNewBukkit() {
+        return Package.getPackage("net.minecraft.server.v1_16_R1") != null;
+    }
+
     public enum DownloadResult {
         SUCCESSFUL,
         ERROR

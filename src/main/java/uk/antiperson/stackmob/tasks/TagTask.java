@@ -9,10 +9,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.StackEntity;
 import uk.antiperson.stackmob.entity.TagMode;
-import uk.antiperson.stackmob.utils.NMSHelper;
 
 import java.util.List;
-import java.util.logging.Level;
 
 public class TagTask extends BukkitRunnable {
 
@@ -24,38 +22,41 @@ public class TagTask extends BukkitRunnable {
     @Override
     public void run() {
         Integer[] searchRadius = sm.getMainConfig().getTagNeabyRadius();
+        double searchX = searchRadius[0];
+        double searchY = searchRadius[1];
+        double searchZ = searchRadius[2];
         for (Player player : Bukkit.getOnlinePlayers()) {
-            List<Entity> furthest = player.getNearbyEntities(searchRadius[0] * 1.5, searchRadius[1] * 1.5, searchRadius[2] * 1.5);
-            List<Entity> nearest = player.getNearbyEntities(searchRadius[0], searchRadius[1], searchRadius[2]);
-            furthest.removeAll(nearest);
-            furthest.forEach(entity -> sendPacket(player, entity, false));
-            nearest.forEach(entity -> sendPacket(player, entity, true));
+            List<Entity> entities = player.getNearbyEntities(searchX * 1.5, searchY * 1.5, searchZ * 1.5);
+            for (Entity entity : entities) {
+                if (!(entity instanceof Mob)) {
+                    continue;
+                }
+                if (!sm.getEntityManager().isStackedEntity((LivingEntity) entity)) {
+                    continue;
+                }
+                if (entity.isDead()) {
+                    continue;
+                }
+                if (sm.getMainConfig().getTagMode(entity.getType()) != TagMode.NEARBY) {
+                    return;
+                }
+                StackEntity stackEntity = sm.getEntityManager().getStackEntity((LivingEntity) entity);
+                int threshold = sm.getMainConfig().getTagThreshold(stackEntity.getEntity().getType());
+                if (stackEntity.getSize() <= threshold) {
+                    return;
+                }
+                double xDiff = Math.abs(player.getLocation().getX() - entity.getLocation().getX());
+                double yDiff = Math.abs(player.getLocation().getY() - entity.getLocation().getY());
+                double zDiff = Math.abs(player.getLocation().getZ() - entity.getLocation().getZ());
+                if (xDiff < searchX && yDiff < searchY && zDiff < searchZ) {
+                    // Player should be shown tag
+                    stackEntity.getTag().sendPacket(player, true);
+                    continue;
+                }
+                // Player should not be shown tag
+                stackEntity.getTag().sendPacket(player, false);
+            }
         }
     }
 
-    private void sendPacket(Player player, Entity entity, boolean tagVisible) {
-        if (!(entity instanceof Mob)) {
-            return;
-        }
-        if (entity.isDead()) {
-            return;
-        }
-        if (!sm.getEntityManager().isStackedEntity((LivingEntity) entity)) {
-            return;
-        }
-        if (sm.getMainConfig().getTagMode(entity.getType()) != TagMode.NEARBY) {
-            return;
-        }
-        StackEntity stackEntity = sm.getEntityManager().getStackEntity((LivingEntity) entity);
-        int threshold = sm.getMainConfig().getTagThreshold(entity.getType());
-        if (stackEntity.getSize() <= threshold) {
-            return;
-        }
-        try {
-            NMSHelper.sendPacket(player, entity, tagVisible);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-            sm.getLogger().log(Level.WARNING,"An error occurred while sending packet. Is StackMob updated to support your server version?");
-        }
-    }
 }

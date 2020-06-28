@@ -4,8 +4,14 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.hook.StackableMobHook;
+import uk.antiperson.stackmob.hook.hooks.ProtocolLibHook;
+import uk.antiperson.stackmob.utils.NMSHelper;
+import uk.antiperson.stackmob.utils.Utilities;
+
+import java.util.logging.Level;
 
 public class Tag {
 
@@ -41,5 +47,20 @@ public class Tag {
         }
     }
 
-
+    public void sendPacket(Player player, boolean tagVisible) {
+        if (!Utilities.isNewBukkit()) {
+            ProtocolLibHook protocolLibHook = sm.getHookManager().getProtocolLibHook();
+            if (protocolLibHook == null) {
+                return;
+            }
+            protocolLibHook.sendPacket(player, stackEntity.getEntity(), tagVisible);
+            return;
+        }
+        try {
+            NMSHelper.sendPacket(player, stackEntity.getEntity(), tagVisible);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+            sm.getLogger().log(Level.WARNING,"An error occurred while sending packet. Is StackMob updated to support your server version?");
+        }
+    }
 }

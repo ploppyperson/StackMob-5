@@ -58,8 +58,9 @@ public class EntityUtils {
                 return (type == Material.COD || type == Material.SALMON) && ((Cat) entity).isTamed();
             case BEE:
                 return Tag.FLOWERS.isTagged(type);
-            case HOGLIN:
-                return type == Material.CRIMSON_FUNGUS;
+        }
+        if (Utilities.isNewBukkit()) {
+            return entity.getType() == EntityType.HOGLIN && type == Material.CRIMSON_FUNGUS;
         }
         return false;
     }

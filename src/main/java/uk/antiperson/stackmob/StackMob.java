@@ -117,8 +117,13 @@ public class StackMob extends JavaPlugin {
     private void register() {
         int stackInterval = getMainConfig().getStackInterval();
         new MergeTask(this).runTaskTimer(this, 5, stackInterval);
-        int tagInterval = getMainConfig().getTagNearbyInterval();
-        new TagTask(this).runTaskTimer(this, 5, tagInterval);
+        if (Utilities.isNewBukkit() || getHookManager().getProtocolLibHook() != null) {
+            int tagInterval = getMainConfig().getTagNearbyInterval();
+            new TagTask(this).runTaskTimer(this, 5, tagInterval);
+        } else {
+            getLogger().warning("You are not running the plugins native version and ProtocolLib could not be found (or has been disabled).");
+            getLogger().warning("The display name visibility setting 'NEARBY' will not work unless this is fixed.");
+        }
         PluginCommand command = getCommand("stackmob");
         Commands commands = new Commands(this);
         command.setExecutor(commands);
