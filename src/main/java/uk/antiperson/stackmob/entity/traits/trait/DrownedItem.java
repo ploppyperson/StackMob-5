@@ -12,7 +12,7 @@ import java.util.List;
 @TraitMetadata(entity = Drowned.class, path = "drowned-hand-item")
 public class DrownedItem implements Trait {
 
-    private List<Material> materials = Arrays.asList(Material.NAUTILUS_SHELL, Material.TRIDENT);
+    private final List<Material> materials = Arrays.asList(Material.NAUTILUS_SHELL, Material.TRIDENT);
 
     @Override
     public boolean checkTrait(LivingEntity first, LivingEntity nearby) {

@@ -28,9 +28,9 @@ import java.util.logging.Level;
 
 public class StackMob extends JavaPlugin {
 
-    private NamespacedKey stackKey = new NamespacedKey(this, "stack-size");
-    private NamespacedKey waitKey = new NamespacedKey(this, "wait-key");
-    private NamespacedKey toolKey = new NamespacedKey(this, "stack-tool");
+    private final NamespacedKey stackKey = new NamespacedKey(this, "stack-size");
+    private final NamespacedKey waitKey = new NamespacedKey(this, "wait-key");
+    private final NamespacedKey toolKey = new NamespacedKey(this, "stack-tool");
 
     private MainConfig config;
     private EntityTranslation entityTranslation;
@@ -53,7 +53,9 @@ public class StackMob extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        getLogger().info("StackMob v" + getDescription().getVersion() + " by antiPerson and contributors");
+        getLogger().info("StackMob v" + getDescription().getVersion() + " by antiPerson and contributors.");
+        getLogger().info("GitHub: " + Utilities.GITHUB);
+        getLogger().info("Discord: " + Utilities.DISCORD);
         traitManager = new TraitManager(this);
         entityManager = new EntityManager(this);
         config = new MainConfig(this);
@@ -100,11 +102,6 @@ public class StackMob extends JavaPlugin {
     private void loadConfig() {
         try {
             getMainConfig().load();
-            if (getMainConfig().isSet("check-area.x")) {
-                getLogger().info("Old config detected. Renaming to config.old and making a new one.");
-                getMainConfig().makeOld();
-                downloadBridge();
-            }
             getEntityTranslation().load();
         } catch (IOException e) {
             getLogger().log(Level.SEVERE, "There was a problem loading the configuration file. Features won't work.");
@@ -115,8 +112,13 @@ public class StackMob extends JavaPlugin {
     private void register() {
         int stackInterval = getMainConfig().getStackInterval();
         new MergeTask(this).runTaskTimer(this, 5, stackInterval);
-        int tagInterval = getMainConfig().getTagNearbyInterval();
-        new TagTask(this).runTaskTimer(this, 5, tagInterval);
+        if (Utilities.isNewBukkit() || getHookManager().getProtocolLibHook() != null) {
+            int tagInterval = getMainConfig().getTagNearbyInterval();
+            new TagTask(this).runTaskTimer(this, 5, tagInterval);
+        } else {
+            getLogger().warning("You are not running the plugins native version and ProtocolLib could not be found (or has been disabled).");
+            getLogger().warning("The display name visibility setting 'NEARBY' will not work unless this is fixed.");
+        }
         PluginCommand command = getCommand("stackmob");
         Commands commands = new Commands(this);
         command.setExecutor(commands);
@@ -155,7 +157,7 @@ public class StackMob extends JavaPlugin {
         getServer().getPluginManager().registerEvents(listener, this);
     }
 
-    private void downloadBridge() {
+    public void downloadBridge() {
         getLogger().info("Installing StackMobBridge (utility to convert legacy mob stacks)...");
         File file = new File(getDataFolder().getParent(), "StackMobBridge.jar");
         String bridgeUrl = "http://aqua.api.spiget.org/v2/resources/45495/download";

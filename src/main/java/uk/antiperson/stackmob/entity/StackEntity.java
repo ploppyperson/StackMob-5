@@ -7,11 +7,13 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import uk.antiperson.stackmob.StackMob;
+import uk.antiperson.stackmob.events.EventHelper;
+import uk.antiperson.stackmob.utils.Utilities;
 
 public class StackEntity {
 
-    private LivingEntity entity;
-    private StackMob sm;
+    private final LivingEntity entity;
+    private final StackMob sm;
     public StackEntity(StackMob sm, LivingEntity entity) {
         this.sm = sm;
         this.entity = entity;
@@ -185,6 +187,9 @@ public class StackEntity {
     public boolean merge(StackEntity toMerge) {
         StackEntity entity1 = toMerge.getSize() < getSize() ? toMerge : this;
         StackEntity entity2 = toMerge.getSize() < getSize() ? this : toMerge;
+        if (EventHelper.callStackMergeEvent(entity1, entity2).isCancelled()) {
+            return false;
+        }
         int totalSize = entity1.getSize() + entity2.getSize();
         if (totalSize > getMaxSize()) {
             toMerge.setSize(totalSize - entity2.getMaxSize());
@@ -210,7 +215,8 @@ public class StackEntity {
      */
     public StackEntity duplicate() {
         LivingEntity entity = sm.getHookManager().spawnClone(getEntity().getLocation(), this);
-        entity = entity == null ? (LivingEntity) getWorld().spawnEntity(getEntity().getLocation(), getEntity().getType()) : entity;
+        CreatureSpawnEvent.SpawnReason spawnReason = Utilities.isPaper() ? getEntity().getEntitySpawnReason() : CreatureSpawnEvent.SpawnReason.CUSTOM;
+        entity = entity == null ? (LivingEntity) getWorld().spawnEntity(getEntity().getLocation(), getEntity().getType(), spawnReason) : entity;
         StackEntity stackEntity = sm.getEntityManager().getStackEntity(entity);
         stackEntity.setSize(1);
         sm.getTraitManager().applyTraits(stackEntity, this);

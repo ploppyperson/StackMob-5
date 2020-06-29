@@ -15,8 +15,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Drops {
 
-    private LivingEntity dead;
-    private StackMob sm;
+    private final LivingEntity dead;
+    private final StackMob sm;
     public Drops(StackMob sm, StackEntity entity) {
         this.sm = sm;
         this.dead = entity.getEntity();

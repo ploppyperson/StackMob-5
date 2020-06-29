@@ -9,12 +9,15 @@ import uk.antiperson.stackmob.entity.death.DeathType;
 import uk.antiperson.stackmob.entity.TagMode;
 import uk.antiperson.stackmob.listeners.ListenerMode;
 
+import java.io.IOException;
 import java.util.*;
 
 public class MainConfig extends SpecialConfigFile {
 
+    private final StackMob sm;
     public MainConfig(StackMob sm) {
         super(sm, "config.yml");
+        this.sm = sm;
     }
 
     public int getMaxStack(EntityType type) {
@@ -194,6 +197,17 @@ public class MainConfig extends SpecialConfigFile {
             array.put(getInt(dead.getType(), "death." + key + ".priority"), key);
         }
         return array.values();
+    }
+
+    @Override
+    public void updateFile() throws IOException {
+        if (isSet("check-area.x")) {
+            sm.getLogger().info("Old config detected. Renaming to config.old and making a new one.");
+            makeOld();
+            sm.downloadBridge();
+            return;
+        }
+        super.updateFile();
     }
 
 }

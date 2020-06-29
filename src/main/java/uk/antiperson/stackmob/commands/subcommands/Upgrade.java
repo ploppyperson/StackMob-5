@@ -8,7 +8,7 @@ import uk.antiperson.stackmob.commands.User;
 @CommandMetadata(command = "upgrade", playerReq = false, desc = "Updates StackMob to the latest version.")
 public class Upgrade extends SubCommand {
 
-    private StackMob sm;
+    private final StackMob sm;
     public Upgrade(StackMob sm) {
         this.sm = sm;
     }

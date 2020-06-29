@@ -14,7 +14,7 @@ import java.util.Set;
 
 public class MergeTask extends BukkitRunnable {
 
-    private StackMob sm;
+    private final StackMob sm;
     public MergeTask(StackMob sm) {
         this.sm = sm;
     }

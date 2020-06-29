@@ -11,7 +11,7 @@ import uk.antiperson.stackmob.entity.StackEntity;
 @CommandMetadata(command = "spawn", playerReq = true, desc = "Spawn a new stack.")
 public class SpawnStack extends SubCommand {
 
-    private StackMob sm;
+    private final StackMob sm;
     public SpawnStack(StackMob sm) {
         super(CommandArgument.construct(ArgumentType.ENTITY_TYPE), CommandArgument.construct(ArgumentType.INTEGER));
         this.sm = sm;
@@ -22,7 +22,12 @@ public class SpawnStack extends SubCommand {
         Player player = (Player) sender.getSender();
         Entity entity = player.getWorld().spawnEntity(player.getLocation(), EntityType.valueOf(args[0].toUpperCase()));
         StackEntity stackEntity = sm.getEntityManager().getStackEntity((LivingEntity) entity);
-        stackEntity.setSize(Integer.parseInt(args[1]));
+        int newSize = Integer.parseInt(args[1]);
+        if (newSize > stackEntity.getMaxSize()) {
+            sender.sendError("New stack value is too large! (max = " + stackEntity.getMaxSize() + ")");
+            return false;
+        }
+        stackEntity.setSize(newSize);
         sender.sendSuccess("A new stack has been spawned.");
         return false;
     }

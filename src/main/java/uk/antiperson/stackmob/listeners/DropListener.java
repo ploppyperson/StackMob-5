@@ -14,7 +14,7 @@ import java.util.concurrent.ThreadLocalRandom;
 @ListenerMetadata(config = "events.multiply.drops")
 public class DropListener implements Listener {
 
-    private StackMob sm;
+    private final StackMob sm;
 
     public DropListener(StackMob sm) {
         this.sm = sm;

@@ -9,7 +9,7 @@ import uk.antiperson.stackmob.entity.StackEntity;
 @ListenerMetadata(config = "events.divide.tame")
 public class TameListener implements Listener {
 
-    private StackMob sm;
+    private final StackMob sm;
     public TameListener(StackMob sm) {
         this.sm = sm;
     }

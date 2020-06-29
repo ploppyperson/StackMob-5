@@ -17,8 +17,8 @@ import java.util.*;
 
 public class Commands implements CommandExecutor, TabCompleter {
 
-    private StackMob sm;
-    private Set<SubCommand> subCommands;
+    private final StackMob sm;
+    private final Set<SubCommand> subCommands;
     public Commands(StackMob sm) {
         this.sm = sm;
         this.subCommands = new HashSet<>();

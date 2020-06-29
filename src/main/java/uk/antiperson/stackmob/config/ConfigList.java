@@ -1,16 +1,18 @@
 package uk.antiperson.stackmob.config;
 
-import org.bukkit.configuration.file.FileConfiguration;
-
 import java.util.List;
 
 public class ConfigList {
 
-    private String path;
-    private FileConfiguration fileCon;
-    public ConfigList(FileConfiguration fileCon, String path) {
-        this.fileCon = fileCon;
+    private final List<?> list;
+    private final String path;
+    private final boolean inverted;
+    private final ConfigFile configFile;
+    public ConfigList(ConfigFile configFile, List<?> list, String path, boolean inverted) {
+        this.configFile = configFile;
+        this.list = list;
         this.path = path;
+        this.inverted = inverted;
     }
 
     /**
@@ -19,17 +21,25 @@ public class ConfigList {
      * @return whether this object is in the list.
      */
     public boolean contains(Object tocheck) {
-        List<?> list = fileCon.getList(path);
-        if (list == null) {
-            throw new UnsupportedOperationException(path + " list is null!");
-        }
-        if (fileCon.getBoolean(path + "-invert")){
+        if (inverted){
             return !list.contains(tocheck);
         }
         return list.contains(tocheck);
     }
 
     public List<Integer> asIntList() {
-        return fileCon.getIntegerList(path);
+        return configFile.getIntegerList(path);
     }
+
+    public static ConfigList getConfigList(ConfigFile configFile, ConfigValue value) {
+        List<?> list = (List<?>) value.getValue();
+        String path = value.getPath();
+        if (list == null) {
+            throw new UnsupportedOperationException(path + " list is null!");
+        }
+        boolean inverted = configFile.getBoolean(value.getPath() + "-invert");
+        return new ConfigList(configFile, list, path, inverted);
+    }
+
+
 }

@@ -6,7 +6,7 @@
 
     <groupId>uk.antiperson.stackmob</groupId>
     <artifactId>StackMob</artifactId>
-    <version>5.1.2</version>
+    <version>5.2.0</version>
 
     <build>
         <sourceDirectory>src/main/java</sourceDirectory>
@@ -69,6 +69,10 @@
 
     <repositories>
         <repository>
+            <id>dmulloy2-repo</id>
+            <url>https://repo.dmulloy2.net/nexus/repository/public/</url>
+        </repository>
+        <repository>
             <id>sk89q-repo</id>
             <url>http://maven.sk89q.com/repo/</url>
         </repository>
@@ -90,13 +94,13 @@
         <dependency>
             <groupId>com.destroystokyo.paper</groupId>
             <artifactId>paper-api</artifactId>
-            <version>1.15.2-R0.1-SNAPSHOT</version>
+            <version>1.16.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
-            <version>1.15.1-R0.1-SNAPSHOT</version>
+            <version>1.16.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -128,6 +132,12 @@
             <groupId>com.github.Zrips</groupId>
             <artifactId>Jobs</artifactId>
             <version>LATEST</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.comphenix.protocol</groupId>
+            <artifactId>ProtocolLib</artifactId>
+            <version>4.5.1</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

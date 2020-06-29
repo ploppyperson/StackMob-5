@@ -11,7 +11,7 @@ import java.util.function.Function;
 @CommandMetadata(command = "remove", playerReq = true, desc = "Remove all entities")
 public class Remove extends SubCommand {
 
-    private StackMob sm;
+    private final StackMob sm;
     public Remove(StackMob sm) {
         super(CommandArgument.construct(ArgumentType.STRING, true, Arrays.asList("animals", "hostile")));
         this.sm = sm;
