@@ -6,6 +6,7 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.persistence.PersistentDataType;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.events.EventHelper;
+import uk.antiperson.stackmob.utils.Utilities;
 
 public class StackEntity {
 
@@ -211,7 +212,8 @@ public class StackEntity {
      */
     public StackEntity duplicate() {
         LivingEntity entity = sm.getHookManager().spawnClone(getEntity().getLocation(), this);
-        entity = entity == null ? (LivingEntity) getWorld().spawnEntity(getEntity().getLocation(), getEntity().getType()) : entity;
+        CreatureSpawnEvent.SpawnReason spawnReason = Utilities.isPaper() ? getEntity().getEntitySpawnReason() : CreatureSpawnEvent.SpawnReason.CUSTOM;
+        entity = entity == null ? (LivingEntity) getWorld().spawnEntity(getEntity().getLocation(), getEntity().getType(), spawnReason) : entity;
         StackEntity stackEntity = sm.getEntityManager().getStackEntity(entity);
         stackEntity.setSize(1);
         sm.getTraitManager().applyTraits(stackEntity, this);
