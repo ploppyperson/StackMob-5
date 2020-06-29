@@ -21,5 +21,6 @@ public class TameListener implements Listener {
             return;
         }
         stackEntity.slice();
+        stackEntity.removeStackData();
     }
 }

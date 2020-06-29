@@ -1,8 +1,10 @@
 package uk.antiperson.stackmob.entity;
 
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.events.EventHelper;
@@ -107,6 +109,10 @@ public class StackEntity {
      */
     public void remove() {
         entity.remove();
+        if (getEntity().isLeashed()) {
+            ItemStack leash = new ItemStack(Material.LEAD, 1);
+            getWorld().dropItemNaturally(entity.getLocation(), leash);
+        }
     }
 
     /**
@@ -198,10 +204,7 @@ public class StackEntity {
     public StackEntity splitIfNotEnough(int itemAmount) {
         // If there is not enough food, then spawn a new stack with the remaining.
         if (getSize() > itemAmount) {
-            StackEntity notFed = duplicate();
-            notFed.setSize(getSize() - itemAmount);
-            setSize(itemAmount);
-            return notFed;
+            return slice(itemAmount);
         }
         return null;
     }
@@ -226,16 +229,32 @@ public class StackEntity {
     }
 
     /**
-     * Makes this stack singular and spawns another stack with the remaining stack size.
+     * Makes this stack smaller by 1 and spawns another stack with the remaining stack size.
      * @return stack with the remaining stack size.
      */
     public StackEntity slice() {
+        return slice(1);
+    }
+
+    /**
+     * Makes this stack smaller and spawns another stack with the remaining stack size.
+     * @param amount amount to
+     * @return stack with the remaining stack size.
+     */
+    public StackEntity slice(int amount) {
         if (isSingle()) {
             throw new UnsupportedOperationException("Stack size must be greater than 1 to slice!");
         }
+        if (amount >= getSize()) {
+            throw new UnsupportedOperationException("Slice amount is bigger than the stack size!");
+        }
         StackEntity duplicate = duplicate();
-        duplicate.setSize(getSize() - 1);
-        setSize(1);
+        duplicate.setSize(getSize() - amount);
+        setSize(amount);
+        if (getEntity().isLeashed()) {
+            duplicate.getEntity().setLeashHolder(getEntity().getLeashHolder());
+            getEntity().setLeashHolder(null);
+        }
         return duplicate;
     }
 

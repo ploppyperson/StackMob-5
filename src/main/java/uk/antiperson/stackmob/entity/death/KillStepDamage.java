@@ -1,6 +1,7 @@
 package uk.antiperson.stackmob.entity.death;
 
 import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.LivingEntity;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.StackEntity;
@@ -19,6 +20,12 @@ public class KillStepDamage extends DeathMethod {
         double healthBefore = ((LivingEntity)getDead().getEntity().getLastDamageCause().getEntity()).getHealth();
         double damageDone = getEntity().getLastDamageCause().getFinalDamage();
         double damageLeft = Math.abs(healthBefore - damageDone);
+        for (AttributeModifier modifier : getEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH).getModifiers()) {
+            if (!modifier.getName().equals("Leader zombie bonus")) {
+                continue;
+            }
+            getEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH).removeModifier(modifier);
+        }
         double maxHealth = getEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
         double divided = damageLeft / maxHealth;
         int entities = (int) Math.floor(divided);
