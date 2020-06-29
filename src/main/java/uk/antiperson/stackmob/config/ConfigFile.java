@@ -4,10 +4,13 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import uk.antiperson.stackmob.StackMob;
+import uk.antiperson.stackmob.utils.Utilities;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
@@ -85,6 +88,7 @@ public class ConfigFile {
             createFile();
         }
         fileCon = YamlConfiguration.loadConfiguration(file);
+        updateFile();
     }
 
     /**
@@ -121,6 +125,31 @@ public class ConfigFile {
      */
     public void save() throws IOException {
         fileCon.save(file);
+    }
+
+    public void updateFile() throws IOException {
+        InputStream includedFile = sm.getResource(file.getName());
+        if (includedFile == null) {
+            throw new UnsupportedOperationException("Config file" + file.getName() + " could not be loaded from jar file.");
+        }
+        InputStreamReader reader = new InputStreamReader(includedFile, StandardCharsets.UTF_8);
+        FileConfiguration includedConfig = YamlConfiguration.loadConfiguration(reader);
+        boolean updated = false;
+        for (String key : includedConfig.getKeys(true)) {
+            if (fileCon.isSet(key)) {
+                continue;
+            }
+            fileCon.set(key, includedConfig.get(key));
+            updated = true;
+        }
+        if (!updated) {
+            return;
+        }
+        fileCon.options().header(includedConfig.options().header());
+        sm.getLogger().info("Config file " + file.getName() + " has been updated.");
+        sm.getLogger().info("Unfortunately, this means that comments have been removed.");
+        sm.getLogger().info("If you need comments, you access a version with them at " + Utilities.GITHUB_DEFAULT_CONFIG);
+        save();
     }
 
 }

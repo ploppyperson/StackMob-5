@@ -1,9 +1,11 @@
 # StackMob 5.0 Configuration file - by antiPerson and contributors.
-
+#
 # Most options can be customised for specific entity types, for details about this, see the end of this file.
 # Asterisk meaning:
 # (*) This option cannot be overridden in the 'custom' section at the end of this file.
 # (**) The following option requires the use of Paper (https://papermc.io) because the API needed is not in Spigot.
+#
+# If the comments have been removed, you can find a version with comments at https://github.com/Nathat23/StackMob-5/tree/master/src/main/resources
 
 stack:
   # The maximum size that a stack can have.

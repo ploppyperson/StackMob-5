@@ -18,6 +18,7 @@ public class Utilities {
 
     public static final String DISCORD = "https://discord.gg/fz9xzuB";
     public static final String GITHUB = "https://github.com/Nathat23/StackMob-5";
+    public static final String GITHUB_DEFAULT_CONFIG = GITHUB + "/tree/master/src/main/resources";
 
     public static CompletableFuture<DownloadResult> downloadFile(File filePath, String url) {
         return CompletableFuture.supplyAsync(() -> {

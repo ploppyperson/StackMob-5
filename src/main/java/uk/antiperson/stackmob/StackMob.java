@@ -102,11 +102,6 @@ public class StackMob extends JavaPlugin {
     private void loadConfig() {
         try {
             getMainConfig().load();
-            if (getMainConfig().isSet("check-area.x")) {
-                getLogger().info("Old config detected. Renaming to config.old and making a new one.");
-                getMainConfig().makeOld();
-                downloadBridge();
-            }
             getEntityTranslation().load();
         } catch (IOException e) {
             getLogger().log(Level.SEVERE, "There was a problem loading the configuration file. Features won't work.");
@@ -161,7 +156,7 @@ public class StackMob extends JavaPlugin {
         getServer().getPluginManager().registerEvents(listener, this);
     }
 
-    private void downloadBridge() {
+    public void downloadBridge() {
         getLogger().info("Installing StackMobBridge (utility to convert legacy mob stacks)...");
         File file = new File(getDataFolder().getParent(), "StackMobBridge.jar");
         String bridgeUrl = "http://aqua.api.spiget.org/v2/resources/45495/download";
