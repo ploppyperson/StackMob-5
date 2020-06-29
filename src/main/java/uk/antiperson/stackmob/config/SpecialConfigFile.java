@@ -56,27 +56,4 @@ public abstract class SpecialConfigFile extends ConfigFile {
         return new ConfigValue(path, get(path));
     }
 
-    /**
-     * Gets the custom config path for this entity if it has been specified. If not this will just be the normal value.
-     * @param type the entity type
-     * @param path the config path.
-     * @return the path for this config path and entity.
-     */
-    private String getPath(EntityType type, String path) {
-        if (!isFileLoaded()) {
-            throw new UnsupportedOperationException("Configuration file has not been loaded!");
-        }
-        // Check if the specified general config path is overridden by an entity specific equivalent.
-        String customPath = "custom." + type + "." + path;
-        if (isSet(customPath)) {
-            return customPath;
-        }
-        // Check if this entity specific path is specified to clone another path.
-        String clone = "custom." + type + ".clone";
-        String clonePath = "custom." + getString(clone) + "." + path;
-        if (isString(clonePath)) {
-            return clonePath;
-        }
-        return path;
-    }
 }
