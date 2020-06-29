@@ -1,9 +1,11 @@
 package uk.antiperson.stackmob.entity.traits;
 
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Piglin;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.StackEntity;
 import uk.antiperson.stackmob.entity.traits.trait.*;
+import uk.antiperson.stackmob.utils.Utilities;
 
 import java.util.HashSet;
 
@@ -33,6 +35,11 @@ public class TraitManager {
         registerTrait(ZombieBaby.class);
         registerTrait(BeeNectar.class);
         registerTrait(BeeStung.class);
+        if (!Utilities.isNewBukkit()) {
+            return;
+        }
+        registerTrait(ZoglinBaby.class);
+        registerTrait(PiglinBaby.class);
     }
 
     /**
