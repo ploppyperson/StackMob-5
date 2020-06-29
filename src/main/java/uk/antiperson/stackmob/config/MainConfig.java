@@ -6,7 +6,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityTargetEvent;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.TagMode;
 import uk.antiperson.stackmob.entity.death.DeathType;
@@ -84,8 +83,8 @@ public class MainConfig extends SpecialConfigFile {
     private boolean default_disable_targeting_enabled;
     private final Map<EntityType, Boolean> disable_targeting_enabled = new HashMap<>();
     private final Set<EntityType> default_disable_targeting_type_blacklist = new HashSet<>();
-    private final Set<EntityTargetEvent.TargetReason> default_disable_targeting_reason_blacklist = new HashSet<>();
-    private final Map<EntityType, Set<EntityTargetEvent.TargetReason>> disable_targeting_reason_blacklist = new HashMap<>();
+    private final Set<CreatureSpawnEvent.SpawnReason> default_disable_targeting_reason_blacklist = new HashSet<>();
+    private final Map<EntityType, Set<CreatureSpawnEvent.SpawnReason>> disable_targeting_reason_blacklist = new HashMap<>();
 
 
     private final Set<EntityType> default_types_blacklist = new HashSet<>();
@@ -160,7 +159,7 @@ public class MainConfig extends SpecialConfigFile {
 
         default_disable_targeting_enabled = getBoolean("disable-targeting.enabled");
         default_disable_targeting_type_blacklist.addAll(getList("disable-targeting.type-blacklist").asEntityTypeList());
-        default_disable_targeting_reason_blacklist.addAll(getList("disable-targeting.reason-blacklist").asTargetReasonList());
+        default_disable_targeting_reason_blacklist.addAll(getList("disable-targeting.reason-blacklist").asSpawnReasonList());
 
 
         default_types_blacklist.addAll(getList("types-blacklist").asEntityTypeList());
@@ -269,7 +268,7 @@ public class MainConfig extends SpecialConfigFile {
             final boolean custom_disable_targeting_enabled = getBoolean(type, "disable-targeting.enabled");
             if (custom_disable_targeting_enabled != default_disable_targeting_enabled) disable_targeting_enabled.put(type, custom_disable_targeting_enabled);
 
-            final Set<EntityTargetEvent.TargetReason> custom_disable_targeting_reason_blacklist = new HashSet<>(getList(type, "disable-targeting.reason-blacklist").asTargetReasonList());
+            final Set<CreatureSpawnEvent.SpawnReason> custom_disable_targeting_reason_blacklist = new HashSet<>(getList(type, "disable-targeting.reason-blacklist").asSpawnReasonList());
             if (!custom_disable_targeting_reason_blacklist.equals(default_disable_targeting_reason_blacklist)) disable_targeting_reason_blacklist.put(type, custom_disable_targeting_reason_blacklist);
 
 
@@ -432,7 +431,7 @@ public class MainConfig extends SpecialConfigFile {
         return default_disable_targeting_type_blacklist.contains(type);
     }
 
-    public boolean isTargetingDisabledReason(EntityType type, EntityTargetEvent.TargetReason reason) {
+    public boolean isTargetingDisabledReason(EntityType type, CreatureSpawnEvent.SpawnReason reason) {
         return disable_targeting_reason_blacklist.getOrDefault(type, default_disable_targeting_reason_blacklist).contains(reason);
     }
 
