@@ -30,7 +30,7 @@ public class TargetListener implements Listener {
             return;
         }
         if (Utilities.isPaper()) {
-            if (sm.getMainConfig().isTargetingDisabledReason(event.getEntityType(), event.getReason())) {
+            if (sm.getMainConfig().isTargetingDisabledReason(event.getEntityType(), event.getEntity().getEntitySpawnReason())) {
                 return;
             }
         }

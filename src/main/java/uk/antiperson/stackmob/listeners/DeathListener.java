@@ -54,7 +54,6 @@ public class DeathListener implements Listener {
         if (sm.getMainConfig().isPlayerStatMulti(event.getEntityType())) {
             if (event.getEntity().getKiller() != null) {
                 event.getEntity().getKiller().incrementStatistic(Statistic.KILL_ENTITY, event.getEntityType(), toMultiply);
-                }
             }
         }
         if (event.getEntity() instanceof Slime && sm.getMainConfig().isSlimeMultiEnabled()) {

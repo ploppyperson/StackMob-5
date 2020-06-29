@@ -21,7 +21,7 @@ public class TagTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        Integer[] searchRadius = sm.getMainConfig().getTagNeabyRadius();
+        Integer[] searchRadius = sm.getMainConfig().getTagNearbyRadius();
         double searchX = searchRadius[0];
         double searchY = searchRadius[1];
         double searchZ = searchRadius[2];
