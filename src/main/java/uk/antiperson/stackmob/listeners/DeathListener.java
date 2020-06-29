@@ -12,13 +12,14 @@ import uk.antiperson.stackmob.entity.death.DeathType;
 import uk.antiperson.stackmob.entity.Drops;
 import uk.antiperson.stackmob.entity.StackEntity;
 import uk.antiperson.stackmob.entity.death.DeathMethod;
+import uk.antiperson.stackmob.events.EventHelper;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
 public class DeathListener implements Listener {
 
-    private StackMob sm;
+    private final StackMob sm;
     public DeathListener(StackMob sm) {
         this.sm = sm;
     }
@@ -29,33 +30,36 @@ public class DeathListener implements Listener {
             return;
         }
         StackEntity stackEntity = sm.getEntityManager().getStackEntity(event.getEntity());
-        if (stackEntity.getSize() == 1) {
+        if (stackEntity.isSingle()) {
             return;
         }
+        event.getEntity().setCustomName("");
+        event.getEntity().setCustomNameVisible(false);
         DeathMethod deathMethod = calculateDeath(stackEntity);
         int deathStep = Math.min(stackEntity.getSize(), deathMethod.calculateStep());
-        if (deathStep > 0 && deathStep < stackEntity.getSize()) {
+        EventHelper.callStackDeathEvent(stackEntity, deathStep);
+        if (stackEntity.getSize() > deathStep) {
             StackEntity spawned = stackEntity.duplicate();
             spawned.setSize(stackEntity.getSize() - deathStep);
             deathMethod.onSpawn(spawned);
         }
-        if (deathStep > 1) {
-            int toMultiply = deathStep - 1;
-            Map<ItemStack, Integer> drops = stackEntity.getDrops().calculateDrops(toMultiply, event.getDrops());
-            Drops.dropItems(event.getEntity().getLocation(), drops);
-            int experience = stackEntity.getDrops().calculateDeathExperience(toMultiply, event.getDroppedExp());
-            event.setDroppedExp(experience);
-            if (sm.getMainConfig().isPlayerStatMulti(event.getEntityType())) {
-                if (event.getEntity().getKiller() != null) {
-                    event.getEntity().getKiller().incrementStatistic(Statistic.KILL_ENTITY, event.getEntityType(), toMultiply);
+        if (deathStep <= 1) {
+            return;
+        }
+        int toMultiply = deathStep - 1;
+        int experience = stackEntity.getDrops().calculateDeathExperience(toMultiply, event.getDroppedExp());
+        Map<ItemStack, Integer> drops = stackEntity.getDrops().calculateDrops(toMultiply, event.getDrops());
+        Drops.dropItems(event.getEntity().getLocation(), drops);
+        event.setDroppedExp(experience);
+        if (sm.getMainConfig().isPlayerStatMulti(event.getEntityType())) {
+            if (event.getEntity().getKiller() != null) {
+                event.getEntity().getKiller().incrementStatistic(Statistic.KILL_ENTITY, event.getEntityType(), toMultiply);
                 }
             }
-            if (event.getEntity() instanceof Slime && sm.getMainConfig().isSlimeMultiEnabled()) {
-                event.getEntity().setMetadata("deathcount", new FixedMetadataValue(sm, toMultiply));
-            }
         }
-        event.getEntity().setCustomName("");
-        event.getEntity().setCustomNameVisible(false);
+        if (event.getEntity() instanceof Slime && sm.getMainConfig().isSlimeMultiEnabled()) {
+            event.getEntity().setMetadata("deathcount", new FixedMetadataValue(sm, toMultiply));
+        }
     }
 
     public DeathMethod calculateDeath(StackEntity entity){

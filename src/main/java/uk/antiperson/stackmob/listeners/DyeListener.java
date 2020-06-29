@@ -14,7 +14,7 @@ import uk.antiperson.stackmob.utils.EntityUtils;
 @ListenerMetadata(config = "events.dye.enabled")
 public class DyeListener implements Listener {
 
-    private StackMob sm;
+    private final StackMob sm;
     public DyeListener(StackMob sm) {
         this.sm = sm;
     }

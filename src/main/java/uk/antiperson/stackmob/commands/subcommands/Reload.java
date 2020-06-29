@@ -10,7 +10,7 @@ import java.io.IOException;
 @CommandMetadata(command = "reload", playerReq = false, desc = "Reloads the config files.")
 public class Reload extends SubCommand {
 
-    private StackMob sm;
+    private final StackMob sm;
     public Reload(StackMob sm) {
         this.sm = sm;
     }

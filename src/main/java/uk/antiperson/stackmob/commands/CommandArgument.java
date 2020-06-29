@@ -9,9 +9,9 @@ import java.util.List;
 
 public class CommandArgument {
 
-    private ArgumentType type;
-    private boolean optional;
-    private List<String> expectedArguments;
+    private final ArgumentType type;
+    private final boolean optional;
+    private final List<String> expectedArguments;
     public CommandArgument(ArgumentType type, boolean optional, List<String> expectedArguments) {
         this.type = type;
         this.optional = optional;

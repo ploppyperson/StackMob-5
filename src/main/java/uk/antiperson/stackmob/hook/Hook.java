@@ -6,7 +6,7 @@ import uk.antiperson.stackmob.StackMob;
 public abstract class Hook implements IHook {
 
     public StackMob sm;
-    private HookMetadata hookMetadata;
+    private final HookMetadata hookMetadata;
     public Hook(StackMob sm) {
         this.sm = sm;
         this.hookMetadata = getClass().getAnnotation(HookMetadata.class);

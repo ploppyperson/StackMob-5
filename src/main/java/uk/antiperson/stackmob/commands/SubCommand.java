@@ -2,7 +2,7 @@ package uk.antiperson.stackmob.commands;
 
 public abstract class SubCommand implements Command {
 
-    private CommandArgument[] arguments;
+    private final CommandArgument[] arguments;
     public SubCommand(CommandArgument... arguments) {
         this.arguments = arguments;
     }

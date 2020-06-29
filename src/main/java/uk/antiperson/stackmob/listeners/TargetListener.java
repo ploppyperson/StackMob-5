@@ -10,7 +10,7 @@ import uk.antiperson.stackmob.utils.Utilities;
 @ListenerMetadata(config = "disable-targeting.enabled")
 public class TargetListener implements Listener {
 
-    private StackMob sm;
+    private final StackMob sm;
     public TargetListener(StackMob sm) {
         this.sm = sm;
     }

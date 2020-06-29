@@ -14,6 +14,12 @@ public class Utilities {
 
     public static final String PREFIX = ChatColor.DARK_GREEN + "StackMob " + ChatColor.GRAY + ">> " + ChatColor.RESET;
 
+    public static final String SLIME_METADATA = "deathcount";
+
+    public static final String DISCORD = "https://discord.gg/fz9xzuB";
+    public static final String GITHUB = "https://github.com/Nathat23/StackMob-5";
+    public static final String GITHUB_DEFAULT_CONFIG = GITHUB + "/tree/master/src/main/resources";
+
     public static CompletableFuture<DownloadResult> downloadFile(File filePath, String url) {
         return CompletableFuture.supplyAsync(() -> {
             try {
@@ -32,6 +38,10 @@ public class Utilities {
 
     public static boolean isPaper() {
         return Package.getPackage("com.destroystokyo.paper") != null;
+    }
+
+    public static boolean isNewBukkit() {
+        return Package.getPackage("net.minecraft.server.v1_16_R1") != null;
     }
 
     public enum DownloadResult {

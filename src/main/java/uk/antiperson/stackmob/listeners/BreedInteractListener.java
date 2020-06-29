@@ -13,7 +13,7 @@ import uk.antiperson.stackmob.utils.EntityUtils;
 @ListenerMetadata(config = "events.breed.enabled")
 public class BreedInteractListener implements Listener {
 
-    private StackMob sm;
+    private final StackMob sm;
     public BreedInteractListener(StackMob sm) {
         this.sm = sm;
     }

@@ -11,7 +11,7 @@ import uk.antiperson.stackmob.entity.StackEntity;
 
 public class SpawnListener implements Listener {
 
-    private StackMob sm;
+    private final StackMob sm;
     public SpawnListener(StackMob sm) {
         this.sm = sm;
     }

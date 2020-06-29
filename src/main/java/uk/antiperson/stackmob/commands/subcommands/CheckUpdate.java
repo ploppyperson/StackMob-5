@@ -8,7 +8,7 @@ import uk.antiperson.stackmob.commands.User;
 @CommandMetadata(command = "update", playerReq = false, desc = "Check for plugin updates.")
 public class CheckUpdate extends SubCommand {
 
-    private StackMob sm;
+    private final StackMob sm;
     public CheckUpdate(StackMob sm) {
         this.sm = sm;
     }

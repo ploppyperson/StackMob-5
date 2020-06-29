@@ -12,9 +12,8 @@ import java.util.concurrent.TimeUnit;
 
 public class EntityManager {
 
-    private StackMob sm;
     private final Map<UUID, Integer> sizeCache = ExpiringMap.builder().maxSize(10000).expiration(30, TimeUnit.SECONDS).expirationPolicy(ExpirationPolicy.ACCESSED).build();
-
+    private final StackMob sm;
     public EntityManager(StackMob sm) {
         this.sm = sm;
     }

@@ -4,6 +4,8 @@
 # Asterisk meaning:
 # (*) This option cannot be overridden in the 'custom' section at the end of this file.
 # (**) The following option requires the use of Paper (https://papermc.io) because the API needed is not in Spigot.
+#
+# If the comments have been removed, you can find a version with comments at https://github.com/Nathat23/StackMob-5/tree/master/src/main/resources
 
 # Entity types list https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html
 # Spawn reasons list https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/CreatureSpawnEvent.SpawnReason.html
@@ -43,7 +45,7 @@ display-name:
   # Mode:
   # ALWAYS - The tag will always be visible as long as the entity is loaded.
   # HOVER - The tag will only be visible when the player hovers their crosshair on the entity.
-  # NEARBY - The tag will only be visible when the player is in range of the entity. (more resource intensive)
+  # NEARBY - The tag will only be visible when the player is in range of the entity. (more resource intensive, requires ProtocolLib on 1.15 servers)
   visibility: NEARBY
   # Options for when 'NEARBY' is used above. (*)
   nearby:
@@ -72,6 +74,8 @@ traits:
   fox-type: true
   bee-nectar: true
   bee-stung: true
+  zoglin-baby: true
+  piglin-baby: true
   leashed: true
   villager-profession: true
 
@@ -226,6 +230,8 @@ hooks:
   mcmmo: true
   # Prevent stacked entities from giving job payments.
   jobs: true
+  # Allows the use of ProtocolLib, which is used when the server version is not the native one of the plugin.
+  protocollib: true
 
 ## Some options can be modified for specific entity types. An example is shown below. Remove comments to see this in action.
 ## Options and sections with a (*) in the comment preceding cannot be overridden.
