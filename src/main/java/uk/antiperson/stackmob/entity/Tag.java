@@ -30,21 +30,26 @@ public class Tag {
             entity.setCustomNameVisible(false);
             return;
         }
-        String typeString = sm.getEntityTranslation().getTranslatedName(entity.getType());
-        if (typeString.length() == 0) {
-            StackableMobHook smh = sm.getHookManager().getApplicableHook(stackEntity);
-            typeString = smh != null ? smh.getDisplayName(entity) : entity.getType().toString();
-            typeString = typeString == null ? entity.getType().toString() : typeString;
-            typeString = WordUtils.capitalizeFully(typeString.replaceAll("[^A-Za-z0-9]", " "));
-        }
         String displayName = sm.getMainConfig().getTagFormat(entity.getType());
-        displayName = StringUtils.replace(displayName, "%type%", typeString);
+        displayName = StringUtils.replace(displayName, "%type%", getEntityName());
         displayName = StringUtils.replace(displayName, "%size%", stackEntity.getSize() + "");
         displayName = ChatColor.translateAlternateColorCodes('&', displayName);
         entity.setCustomName(displayName);
         if (sm.getMainConfig().getTagMode(entity.getType()) == TagMode.ALWAYS) {
             entity.setCustomNameVisible(true);
         }
+    }
+
+    private String getEntityName() {
+        LivingEntity entity = stackEntity.getEntity();
+        String typeString = sm.getEntityTranslation().getTranslatedName(entity.getType());
+        if (typeString != null && typeString.length() > 0) {
+            return typeString;
+        }
+        StackableMobHook smh = sm.getHookManager().getApplicableHook(stackEntity);
+        typeString = smh != null ? smh.getDisplayName(entity) : entity.getType().toString();
+        typeString = typeString == null ? entity.getType().toString() : typeString;
+        return WordUtils.capitalizeFully(typeString.replaceAll("[^A-Za-z0-9]", " "));
     }
 
     public void sendPacket(Player player, boolean tagVisible) {
