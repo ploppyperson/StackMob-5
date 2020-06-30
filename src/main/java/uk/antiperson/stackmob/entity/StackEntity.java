@@ -214,14 +214,22 @@ public class StackEntity {
      * @return a clone of this entity.
      */
     public StackEntity duplicate() {
+        StackEntity cloneStack = sm.getEntityManager().getStackEntity(spawnClone());
+        cloneStack.setSize(1);
+        sm.getTraitManager().applyTraits(cloneStack, this);
+        sm.getHookManager().onSpawn(cloneStack);
+        return cloneStack;
+    }
+
+    private LivingEntity spawnClone() {
         LivingEntity entity = sm.getHookManager().spawnClone(getEntity().getLocation(), this);
-        CreatureSpawnEvent.SpawnReason spawnReason = Utilities.isPaper() ? getEntity().getEntitySpawnReason() : CreatureSpawnEvent.SpawnReason.CUSTOM;
-        entity = entity == null ? (LivingEntity) getWorld().spawnEntity(getEntity().getLocation(), getEntity().getType(), spawnReason) : entity;
-        StackEntity stackEntity = sm.getEntityManager().getStackEntity(entity);
-        stackEntity.setSize(1);
-        sm.getTraitManager().applyTraits(stackEntity, this);
-        sm.getHookManager().onSpawn(stackEntity);
-        return stackEntity;
+        if (entity != null) {
+            return entity;
+        }
+        if (Utilities.isPaper()) {
+            return (LivingEntity) getWorld().spawnEntity(getEntity().getLocation(), getEntity().getType(), getEntity().getEntitySpawnReason());
+        }
+        return (LivingEntity) getWorld().spawnEntity(getEntity().getLocation(), getEntity().getType());
     }
 
     public boolean isSingle() {
