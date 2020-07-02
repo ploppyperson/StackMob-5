@@ -1,12 +1,11 @@
 package uk.antiperson.stackmob.entity.traits.trait;
 
-import org.bukkit.entity.Ageable;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Villager;
 import uk.antiperson.stackmob.entity.traits.Trait;
 import uk.antiperson.stackmob.entity.traits.TraitMetadata;
 
-@TraitMetadata(entity = Ageable.class, path = "villager-profession")
+@TraitMetadata(entity = Villager.class, path = "villager-profession")
 public class VillagerProfession implements Trait {
 
     @Override
