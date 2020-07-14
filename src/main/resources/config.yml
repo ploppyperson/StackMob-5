@@ -197,7 +197,7 @@ wait-to-stack:
   types-whitelist:
     - ZOMBIE
     - SKELETON
-    - PIG_ZOMBIE
+    - ZOMBIFIED_PIGLIN
     - CREEPER
     - ENDERMAN
   types-whitelist-invert: false
