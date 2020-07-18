@@ -32,6 +32,7 @@ reason-blacklist-invert: false
 
 display-name:
   # The formatting of the name tag which is shown when the stack size is above the threshold.
+  # Both legacy and RGB hex color codes are supported, these need to be prefixed by the '&' symbol.
   # Placeholders:
   # %type% - the entity's type
   # %size% - the size of the stack
