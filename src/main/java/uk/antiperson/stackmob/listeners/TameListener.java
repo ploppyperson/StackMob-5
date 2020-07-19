@@ -1,6 +1,7 @@
 package uk.antiperson.stackmob.listeners;
 
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityTameEvent;
 import uk.antiperson.stackmob.StackMob;
@@ -14,7 +15,7 @@ public class TameListener implements Listener {
         this.sm = sm;
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onTame(EntityTameEvent event) {
         StackEntity stackEntity = sm.getEntityManager().getStackEntity(event.getEntity());
         if (stackEntity.isSingle()) {

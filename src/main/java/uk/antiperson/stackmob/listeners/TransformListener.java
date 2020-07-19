@@ -2,6 +2,7 @@ package uk.antiperson.stackmob.listeners;
 
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityTransformEvent;
 import uk.antiperson.stackmob.StackMob;
@@ -14,7 +15,7 @@ public class TransformListener implements Listener {
         this.sm = sm;
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onTransform(EntityTransformEvent event){
         if (event.getTransformReason() != EntityTransformEvent.TransformReason.DROWNED) {
             return;

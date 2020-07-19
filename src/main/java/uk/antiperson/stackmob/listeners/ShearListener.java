@@ -4,6 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Dispenser;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockShearEntityEvent;
 import org.bukkit.event.player.PlayerShearEntityEvent;
@@ -28,7 +29,7 @@ public class ShearListener implements Listener {
         this.sm = sm;
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onShearSheep(PlayerShearEntityEvent event) {
         ItemStack is = shearLogic((LivingEntity) event.getEntity(), event.getPlayer().getInventory().getItemInMainHand());
         if (is == null) {
@@ -37,7 +38,7 @@ public class ShearListener implements Listener {
         event.getPlayer().getInventory().setItemInMainHand(is);
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onShearSheep(BlockShearEntityEvent event) {
         ItemStack is = shearLogic((LivingEntity) event.getEntity(), event.getTool());
         if (is == null) {

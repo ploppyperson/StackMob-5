@@ -3,6 +3,7 @@ package uk.antiperson.stackmob.listeners;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Mob;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.inventory.EquipmentSlot;
@@ -17,7 +18,7 @@ public class PlayerListener implements Listener {
         this.sm = sm;
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerInteract(PlayerInteractAtEntityEvent event) {
         if (event.getHand() == EquipmentSlot.OFF_HAND) {
             return;

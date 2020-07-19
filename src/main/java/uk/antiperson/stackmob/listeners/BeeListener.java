@@ -2,6 +2,7 @@ package uk.antiperson.stackmob.listeners;
 
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityEnterBlockEvent;
 import uk.antiperson.stackmob.StackMob;
@@ -15,7 +16,7 @@ public class BeeListener implements Listener {
         this.sm = sm;
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEntityEnterBlockEvent(EntityEnterBlockEvent event) {
         final LivingEntity bee = (LivingEntity) event.getEntity();
 

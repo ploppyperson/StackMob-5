@@ -3,6 +3,7 @@ package uk.antiperson.stackmob.listeners;
 import org.bukkit.DyeColor;
 import org.bukkit.entity.Sheep;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.ItemStack;
@@ -19,7 +20,7 @@ public class DyeListener implements Listener {
         this.sm = sm;
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onDyeListener(PlayerInteractEntityEvent event) {
         if (!(event.getRightClicked() instanceof Sheep)) {
             return;
