@@ -8,10 +8,10 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import uk.antiperson.stackmob.StackMob;
-import uk.antiperson.stackmob.entity.death.DeathType;
 import uk.antiperson.stackmob.entity.Drops;
 import uk.antiperson.stackmob.entity.StackEntity;
 import uk.antiperson.stackmob.entity.death.DeathMethod;
+import uk.antiperson.stackmob.entity.death.DeathType;
 import uk.antiperson.stackmob.events.EventHelper;
 
 import java.lang.reflect.InvocationTargetException;

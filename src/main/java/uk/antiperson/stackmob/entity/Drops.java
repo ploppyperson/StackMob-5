@@ -10,7 +10,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.loot.LootContext;
 import uk.antiperson.stackmob.StackMob;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Drops {

@@ -1,7 +1,6 @@
 package uk.antiperson.stackmob.entity.traits;
 
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Piglin;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.StackEntity;
 import uk.antiperson.stackmob.entity.traits.trait.*;
