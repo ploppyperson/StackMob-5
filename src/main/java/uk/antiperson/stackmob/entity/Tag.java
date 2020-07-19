@@ -2,7 +2,6 @@ package uk.antiperson.stackmob.entity;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import uk.antiperson.stackmob.StackMob;
@@ -33,7 +32,7 @@ public class Tag {
         String displayName = sm.getMainConfig().getTagFormat(entity.getType());
         displayName = StringUtils.replace(displayName, "%type%", getEntityName());
         displayName = StringUtils.replace(displayName, "%size%", stackEntity.getSize() + "");
-        displayName = ChatColor.translateAlternateColorCodes('&', displayName);
+        displayName = Utilities.translateColorCodes(displayName);
         entity.setCustomName(displayName);
         if (sm.getMainConfig().getTagMode(entity.getType()) == TagMode.ALWAYS) {
             entity.setCustomNameVisible(true);
@@ -68,4 +67,5 @@ public class Tag {
             sm.getLogger().log(Level.WARNING,"An error occurred while sending packet. Is StackMob updated to support your server version?");
         }
     }
+
 }
