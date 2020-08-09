@@ -50,7 +50,7 @@ public class SpawnListener implements Listener {
                     return;
                 }
             }
-            original.setSize(1);
+            original.setSize(1, event.getEntity().getCustomName() == null);
             sm.getHookManager().onSpawn(original);
         });
     }
