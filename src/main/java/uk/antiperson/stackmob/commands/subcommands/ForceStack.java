@@ -36,7 +36,7 @@ public class ForceStack extends SubCommand {
                 if ((entity instanceof Tameable) && (((Tameable) entity)).isTamed() && !(args.length > 0 && args[0].equals("tamed"))) {
                     continue;
                 }
-                CreatureSpawnEvent.SpawnReason reason = Utilities.isPaper() ? entity.getEntitySpawnReason() : null;
+                CreatureSpawnEvent.SpawnReason reason = Utilities.isPaper() ? entity.getEntitySpawnReason() : CreatureSpawnEvent.SpawnReason.DEFAULT;
                 if (sm.getMainConfig().isEntityBlacklisted(entity, reason)) {
                     continue;
                 }
