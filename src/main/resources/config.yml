@@ -27,7 +27,9 @@ worlds-blacklist-invert: false
 types-blacklist: [VILLAGER]
 types-blacklist-invert: false
 # If the entity's spawns reason is listed below, do not stack.
-reason-blacklist: [NATURAL]
+reason-blacklist:
+  - SHOULDER_ENTITY
+  - NATURAL
 reason-blacklist-invert: false
 
 display-name:
