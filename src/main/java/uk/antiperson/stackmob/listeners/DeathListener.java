@@ -30,6 +30,7 @@ public class DeathListener implements Listener {
             return;
         }
         StackEntity stackEntity = sm.getEntityManager().getStackEntity(event.getEntity());
+        sm.getEntityManager().unregisterStackedEntity(stackEntity);
         if (stackEntity.isSingle()) {
             return;
         }
@@ -59,7 +60,6 @@ public class DeathListener implements Listener {
         if (event.getEntity() instanceof Slime && sm.getMainConfig().isSlimeMultiEnabled(event.getEntityType())) {
             event.getEntity().setMetadata("deathcount", new FixedMetadataValue(sm, toMultiply));
         }
-
     }
 
     public DeathMethod calculateDeath(StackEntity entity){

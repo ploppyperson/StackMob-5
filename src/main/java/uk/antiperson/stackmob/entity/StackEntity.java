@@ -13,10 +13,12 @@ import uk.antiperson.stackmob.utils.Utilities;
 public class StackEntity {
 
     private final LivingEntity entity;
+    private final EntityManager entityManager;
     private final StackMob sm;
-    public StackEntity(StackMob sm, LivingEntity entity) {
+    public StackEntity(StackMob sm, EntityManager entityManager, LivingEntity entity) {
         this.sm = sm;
         this.entity = entity;
+        this.entityManager = entityManager;
     }
 
     /**
@@ -48,8 +50,9 @@ public class StackEntity {
 
     public void removeStackData() {
         entity.getPersistentDataContainer().remove(sm.getStackKey());
-        getTag().update();
         entity.setCustomNameVisible(false);
+        entityManager.unregisterStackedEntity(this);
+        getTag().update();
     }
 
     public boolean shouldWait(CreatureSpawnEvent.SpawnReason spawnReason) {
@@ -108,7 +111,14 @@ public class StackEntity {
      * Removes this entity.
      */
     public void remove() {
+        remove(true);
+    }
+
+    public void remove(boolean unregister) {
         entity.remove();
+        if (unregister) {
+            entityManager.unregisterStackedEntity(this);
+        }
         if (getEntity().isLeashed()) {
             ItemStack leash = new ItemStack(Material.LEAD, 1);
             getWorld().dropItemNaturally(entity.getLocation(), leash);
@@ -182,23 +192,24 @@ public class StackEntity {
     /**
      * Merge this stack with another stack, providing they are similar.
      * @param toMerge stack to merge with.
-     * @return whether the merge was successful
+     * @param unregister whether to unregister the entity that is removed.
+     * @return the entity that was removed
      */
-    public boolean merge(StackEntity toMerge) {
+    public StackEntity merge(StackEntity toMerge, boolean unregister) {
         StackEntity entity1 = toMerge.getSize() < getSize() ? toMerge : this;
         StackEntity entity2 = toMerge.getSize() < getSize() ? this : toMerge;
         if (EventHelper.callStackMergeEvent(entity1, entity2).isCancelled()) {
-            return false;
+            return null;
         }
         int totalSize = entity1.getSize() + entity2.getSize();
         if (totalSize > getMaxSize()) {
             toMerge.setSize(totalSize - entity2.getMaxSize());
             setSize(entity2.getMaxSize());
-            return true;
+            return null;
         }
         entity2.incrementSize(entity1.getSize());
-        entity1.remove();
-        return true;
+        entity1.remove(unregister);
+        return entity1;
     }
 
     public StackEntity splitIfNotEnough(int itemAmount) {
@@ -214,7 +225,7 @@ public class StackEntity {
      * @return a clone of this entity.
      */
     public StackEntity duplicate() {
-        StackEntity cloneStack = sm.getEntityManager().getStackEntity(spawnClone());
+        StackEntity cloneStack = sm.getEntityManager().registerStackedEntity(spawnClone());
         cloneStack.setSize(1);
         sm.getTraitManager().applyTraits(cloneStack, this);
         sm.getHookManager().onSpawn(cloneStack);

@@ -28,7 +28,7 @@ public class SpawnListener implements Listener {
             if (sm.getEntityManager().isStackedEntity(event.getEntity())) {
                 return;
             }
-            StackEntity original = sm.getEntityManager().getStackEntity(event.getEntity());
+            StackEntity original = sm.getEntityManager().registerStackedEntity(event.getEntity());
             if (original.shouldWait(event.getSpawnReason())) {
                 original.makeWait();
                 return;
@@ -39,13 +39,18 @@ public class SpawnListener implements Listener {
                     continue;
                 }
                 StackEntity nearby = sm.getEntityManager().getStackEntity((LivingEntity) entity);
-                if (sm.getMainConfig().getStackThresholdEnabled(entity.getType()) && nearby.getSize() == 1) {
+                if (nearby == null) {
                     continue;
                 }
                 if (!original.checkNearby(nearby)) {
                     continue;
                 }
-                if (nearby.merge(original)) {
+                if (sm.getMainConfig().getStackThresholdEnabled(entity.getType()) && nearby.getSize() == 1) {
+                    continue;
+                }
+                StackEntity removed = nearby.merge(original, true);
+                if (removed != null) {
+                    removed.removeStackData();
                     return;
                 }
             }

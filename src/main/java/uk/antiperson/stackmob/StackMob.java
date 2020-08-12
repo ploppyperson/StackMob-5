@@ -97,6 +97,12 @@ public class StackMob extends JavaPlugin {
             getLogger().info("bStats anonymous data collection has been enabled!");
         }
         itemTools = new ItemTools(this);
+        getEntityManager().registerAllEntities();
+    }
+
+    @Override
+    public void onDisable() {
+        getEntityManager().unregisterAllEntities();
     }
 
     private void loadConfig() {
@@ -141,7 +147,7 @@ public class StackMob extends JavaPlugin {
         registerEvent(TargetListener.class);
         registerEvent(PlayerListener.class);
         registerEvent(BeeListener.class);
-        registerEvent(LeashListener.class);
+        registerEvent(ChunkListener.class);
     }
 
     private void registerEvent(Class<? extends Listener> clazz) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {

@@ -33,6 +33,7 @@ public class Commands implements CommandExecutor, TabCompleter {
         subCommands.add(new GiveTool(sm));
         subCommands.add(new Reload(sm));
         subCommands.add(new ForceStack(sm));
+        subCommands.add(new Stats(sm));
     }
 
     @Override
