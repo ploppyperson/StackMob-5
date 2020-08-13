@@ -15,6 +15,8 @@ public class StackEntity {
     private final LivingEntity entity;
     private final EntityManager entityManager;
     private final StackMob sm;
+    private boolean waiting;
+    private int waitCount;
     public StackEntity(StackMob sm, EntityManager entityManager, LivingEntity entity) {
         this.sm = sm;
         this.entity = entity;
@@ -55,6 +57,28 @@ public class StackEntity {
         getTag().update();
     }
 
+    /**
+     * In order to not break mob grinders, stacked entities can have a waiting status.
+     * This waiting status means that this stacked entity will be ignored on all stacking attempts until the count reaches 0
+     * @return whether this entity is currently waiting
+     */
+    public boolean isWaiting() {
+        return waiting;
+    }
+
+    /**
+     * Gets the wait count for this entity.
+     * @return the wait count for this entity
+     */
+    public int getWaitCount() {
+        return waitCount;
+    }
+
+    /**
+     * Whether this entity should wait.
+     * @param spawnReason the spawn reason of the entity.
+     * @return whether this entity should wait.
+     */
     public boolean shouldWait(CreatureSpawnEvent.SpawnReason spawnReason) {
         if (!sm.getMainConfig().isWaitingEnabled(getEntity().getType())) {
             return false;
@@ -68,19 +92,28 @@ public class StackEntity {
         return true;
     }
 
+    /**
+     * In order to not break mob grinders, stacked entities can have a waiting status.
+     * This waiting status means that this stacked entity will be ignored on all stacking attempts until the count reaches 0.
+     */
     public void makeWait() {
-        int time = sm.getMainConfig().getWaitingTime(getEntity().getType());
-        getEntity().getPersistentDataContainer().set(sm.getWaitKey(), PersistentDataType.INTEGER, time);
+        if (isWaiting()) {
+            throw new UnsupportedOperationException("Stack is already waiting!");
+        }
+        waitCount = sm.getMainConfig().getWaitingTime(getEntity().getType());
+        waiting = true;
     }
 
+    /**
+     * Increment the waiting count.
+     */
     public void incrementWait() {
-        int currentWaiting = getEntity().getPersistentDataContainer().getOrDefault(sm.getWaitKey(), PersistentDataType.INTEGER, 0);
-        if (currentWaiting < 1) {
-            getEntity().getPersistentDataContainer().remove(sm.getWaitKey());
+        if (waitCount < 1) {
+            waiting = false;
             setSize(1);
             return;
         }
-        getEntity().getPersistentDataContainer().set(sm.getWaitKey(), PersistentDataType.INTEGER, currentWaiting - 1);
+        waitCount -= 1;
     }
 
     /**
@@ -170,11 +203,8 @@ public class StackEntity {
      * @param nearby another entity
      * @return if the given entity and this entity should stack.
      */
-    public boolean checkNearby(StackEntity nearby) {
+    public boolean match(StackEntity nearby) {
         if (getEntity().getType() != nearby.getEntity().getType()) {
-            return false;
-        }
-        if (nearby.isMaxSize()) {
             return false;
         }
         if (sm.getTraitManager().checkTraits(this, nearby)) {
@@ -183,10 +213,11 @@ public class StackEntity {
         if (sm.getHookManager().checkHooks(this, nearby)) {
             return false;
         }
-        if (nearby.getEntity().isDead() || getEntity().isDead()) {
-            return false;
-        }
         return true;
+    }
+
+    public boolean canStack() {
+        return !getEntity().isDead() && !isMaxSize() && !isWaiting();
     }
 
     /**

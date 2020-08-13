@@ -8,7 +8,6 @@ import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.StackEntity;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 public class MergeTask extends BukkitRunnable {
@@ -22,11 +21,11 @@ public class MergeTask extends BukkitRunnable {
     public void run() {
         HashSet<StackEntity> toRemove = new HashSet<>();
         for (StackEntity original : sm.getEntityManager().getStackEntities()) {
-            if (sm.getEntityManager().isWaiting(original.getEntity())) {
+            if (original.isWaiting()) {
                 original.incrementWait();
                 continue;
             }
-            if (original.isMaxSize()) {
+            if (!original.canStack()) {
                 continue;
             }
             Integer[] searchRadius = sm.getMainConfig().getStackRadius(original.getEntity().getType());
@@ -39,7 +38,10 @@ public class MergeTask extends BukkitRunnable {
                 if (nearbyStack == null) {
                     continue;
                 }
-                if (!original.checkNearby(nearbyStack)) {
+                if (!nearbyStack.canStack()) {
+                    continue;
+                }
+                if (!original.match(nearbyStack)) {
                     continue;
                 }
                 if (nearbyStack.getSize() > 1 || original.getSize() > 1) {

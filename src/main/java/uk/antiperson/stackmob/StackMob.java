@@ -29,7 +29,6 @@ import java.util.logging.Level;
 public class StackMob extends JavaPlugin {
 
     private final NamespacedKey stackKey = new NamespacedKey(this, "stack-size");
-    private final NamespacedKey waitKey = new NamespacedKey(this, "wait-key");
     private final NamespacedKey toolKey = new NamespacedKey(this, "stack-tool");
 
     private MainConfig config;
@@ -212,10 +211,6 @@ public class StackMob extends JavaPlugin {
 
     public NamespacedKey getStackKey() {
         return stackKey;
-    }
-
-    public NamespacedKey getWaitKey() {
-        return waitKey;
     }
 
     public NamespacedKey getToolKey() {

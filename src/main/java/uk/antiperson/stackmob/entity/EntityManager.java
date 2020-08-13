@@ -100,7 +100,4 @@ public class EntityManager {
         stackEntities.remove(stackEntity);
     }
 
-    public boolean isWaiting(LivingEntity entity) {
-        return entity.getPersistentDataContainer().has(sm.getWaitKey(), PersistentDataType.INTEGER);
-    }
 }
