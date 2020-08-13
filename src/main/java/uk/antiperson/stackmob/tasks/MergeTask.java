@@ -61,7 +61,10 @@ public class MergeTask extends BukkitRunnable {
             if (size < threshold) {
                 continue;
             }
-            matches.forEach(StackEntity::remove);
+            for (StackEntity match : matches) {
+                match.remove(false);
+                toRemove.add(match);
+            }
             if (size >= original.getMaxSize()) {
                 double divided = (double) size / (double) original.getMaxSize();
                 double fullStacks = Math.floor(divided);
