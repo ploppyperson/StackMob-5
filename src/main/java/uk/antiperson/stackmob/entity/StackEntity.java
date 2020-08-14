@@ -17,6 +17,7 @@ public class StackEntity {
     private final StackMob sm;
     private boolean waiting;
     private int waitCount;
+    private int stackSize;
     public StackEntity(StackMob sm, EntityManager entityManager, LivingEntity entity) {
         this.sm = sm;
         this.entity = entity;
@@ -45,6 +46,7 @@ public class StackEntity {
             newSize = getMaxSize();
         }
         entity.getPersistentDataContainer().set(sm.getStackKey(), PersistentDataType.INTEGER, newSize);
+        stackSize = newSize;
         if (update) {
             getTag().update();
         }
@@ -129,7 +131,10 @@ public class StackEntity {
      * @return the current stack size for this entity.
      */
     public int getSize() {
-        return entity.getPersistentDataContainer().getOrDefault(sm.getStackKey(), PersistentDataType.INTEGER, 1);
+        if (stackSize == 0) {
+            stackSize = getEntity().getPersistentDataContainer().getOrDefault(sm.getStackKey(), PersistentDataType.INTEGER, 1);
+        }
+        return stackSize;
     }
 
     /**
