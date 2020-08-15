@@ -67,7 +67,7 @@ public class Utilities {
     }
 
     public static boolean isNewBukkit() {
-        return Package.getPackage("net.minecraft.server.v1_16_R1") != null;
+        return Package.getPackage("net.minecraft.server.v1_16_R2") != null;
     }
 
     public enum DownloadResult {
