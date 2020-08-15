@@ -52,7 +52,7 @@ public class Tag {
     }
 
     public void sendPacket(Player player, boolean tagVisible) {
-        if (!Utilities.isNewBukkit()) {
+        if (!Utilities.isNativeVersion()) {
             ProtocolLibHook protocolLibHook = sm.getHookManager().getProtocolLibHook();
             if (protocolLibHook == null) {
                 return;

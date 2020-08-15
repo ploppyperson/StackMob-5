@@ -67,6 +67,10 @@ public class Utilities {
     }
 
     public static boolean isNewBukkit() {
+        return Package.getPackage("net.minecraft.server.v1_15_R1") == null;
+    }
+
+    public static boolean isNativeVersion() {
         return Package.getPackage("net.minecraft.server.v1_16_R2") != null;
     }
 

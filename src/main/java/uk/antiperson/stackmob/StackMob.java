@@ -117,7 +117,7 @@ public class StackMob extends JavaPlugin {
     private void register() {
         int stackInterval = getMainConfig().getStackInterval();
         new MergeTask(this).runTaskTimer(this, 5, stackInterval);
-        if (Utilities.isNewBukkit() || getHookManager().getProtocolLibHook() != null) {
+        if (Utilities.isNativeVersion() || getHookManager().getProtocolLibHook() != null) {
             int tagInterval = getMainConfig().getTagNearbyInterval();
             new TagTask(this).runTaskTimer(this, 5, tagInterval);
         } else {
