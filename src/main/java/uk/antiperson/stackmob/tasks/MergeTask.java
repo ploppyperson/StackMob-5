@@ -6,6 +6,7 @@ import org.bukkit.entity.Mob;
 import org.bukkit.scheduler.BukkitRunnable;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.StackEntity;
+import uk.antiperson.stackmob.utils.Utilities;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -66,16 +67,9 @@ public class MergeTask extends BukkitRunnable {
                 toRemove.add(match);
             }
             if (size >= original.getMaxSize()) {
-                double divided = (double) size / (double) original.getMaxSize();
-                double fullStacks = Math.floor(divided);
-                double leftOver = divided - fullStacks;
-                for (int i = 0; i < fullStacks; i++) {
+                for (int stackSize : Utilities.split(size, original.getMaxSize())) {
                     StackEntity stackEntity = original.duplicate();
-                    stackEntity.setSize(original.getMaxSize());
-                }
-                if (leftOver > 0) {
-                    StackEntity stackEntity = original.duplicate();
-                    stackEntity.setSize((int) Math.round(leftOver * original.getMaxSize()));
+                    stackEntity.setSize(stackSize);
                 }
                 return;
             }
