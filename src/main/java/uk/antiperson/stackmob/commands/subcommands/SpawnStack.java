@@ -20,13 +20,14 @@ public class SpawnStack extends SubCommand {
     @Override
     public boolean onCommand(User sender, String[] args) {
         Player player = (Player) sender.getSender();
-        Entity entity = player.getWorld().spawnEntity(player.getLocation(), EntityType.valueOf(args[0].toUpperCase()));
-        StackEntity stackEntity = sm.getEntityManager().registerStackedEntity((LivingEntity) entity);
+        EntityType entityType = EntityType.valueOf(args[0].toUpperCase());
         int newSize = Integer.parseInt(args[1]);
-        if (newSize > stackEntity.getMaxSize()) {
-            sender.sendError("New stack value is too large! (max = " + stackEntity.getMaxSize() + ")");
+        if (newSize > sm.getMainConfig().getMaxStack(entityType)) {
+            sender.sendError("New stack value is too large! (max = " + sm.getMainConfig().getMaxStack(entityType) + ")");
             return false;
         }
+        LivingEntity entity = (LivingEntity) player.getWorld().spawnEntity(player.getLocation(), entityType);
+        StackEntity stackEntity = sm.getEntityManager().registerStackedEntity(entity);
         stackEntity.setSize(newSize);
         sender.sendSuccess("A new stack has been spawned.");
         return false;
