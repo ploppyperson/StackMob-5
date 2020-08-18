@@ -80,7 +80,9 @@ public class Commands implements CommandExecutor, TabCompleter {
                 return false;
             }
             subCommand.onCommand(new User(commandSender), (String[]) ArrayUtils.remove(strings, 0));
+            return false;
         }
+        commandSender.sendMessage(Utilities.PREFIX + ChatColor.RED + "Invalid subcommand!");
         return false;
     }
 
