@@ -13,7 +13,7 @@ public class SpawnStack extends SubCommand {
 
     private final StackMob sm;
     public SpawnStack(StackMob sm) {
-        super(CommandArgument.construct(ArgumentType.ENTITY_TYPE), CommandArgument.construct(ArgumentType.INTEGER));
+        super(CommandArgument.construct(ArgumentType.ENTITY_TYPE, false), CommandArgument.construct(ArgumentType.INTEGER, false, "stack size"));
         this.sm = sm;
     }
 

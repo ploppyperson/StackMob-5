@@ -51,6 +51,8 @@ public class Commands implements CommandExecutor, TabCompleter {
                     if (argumentType.getExpectedArguments().size() <= 3 && argumentType.getExpectedArguments().size() > 0) {
                         argumentType.getExpectedArguments().forEach(argument -> options.append(argument).append("/"));
                         options.deleteCharAt(options.length() - 1);
+                    } else if (argumentType.getName() != null) {
+                        options.append(argumentType.getName());
                     } else {
                         options.append(argumentType.getType());
                     }
