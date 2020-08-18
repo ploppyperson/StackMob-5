@@ -42,7 +42,9 @@ public class Utilities {
         for (int i = 0; i < fullAmount; i++) {
             numbers.add(divisor);
         }
-        numbers.add(remainder);
+        if (remainder > 0) {
+            numbers.add(remainder);
+        }
         return numbers;
     }
 
