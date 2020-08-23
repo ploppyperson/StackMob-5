@@ -4,6 +4,7 @@ import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.entity.EntityType;
 import uk.antiperson.stackmob.StackMob;
 
+import java.util.Collections;
 import java.util.List;
 
 public abstract class SpecialConfigFile extends ConfigFile {
@@ -14,7 +15,8 @@ public abstract class SpecialConfigFile extends ConfigFile {
 
     public ConfigList getList(EntityType type, String path) {
         ConfigValue configValue = get(type, path);
-        return configValue.getValue() instanceof List<?> ? ConfigList.getConfigList(this, new ConfigValue(configValue.getPath(), configValue.getValue())) : null;
+        configValue = configValue.getValue() instanceof List<?> ? configValue : new ConfigValue(path, Collections.emptyList());
+        return ConfigList.getConfigList(this, configValue);
     }
 
     public boolean getBoolean(EntityType type, String path) {
