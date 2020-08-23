@@ -124,6 +124,8 @@ events:
 
 # How entities should die
 death:
+  # Rather than spawn a new entity in place of the killed entity, just decrease the stack size instead. (**)
+  skip-animation: false
   # Death options:
   # SINGLE - Only one entity dies.
   # ALL - Every entity dies.
