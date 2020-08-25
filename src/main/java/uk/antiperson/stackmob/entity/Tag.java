@@ -60,12 +60,7 @@ public class Tag {
             protocolLibHook.sendPacket(player, stackEntity.getEntity(), tagVisible);
             return;
         }
-        try {
-            NMSHelper.sendPacket(player, stackEntity.getEntity(), tagVisible);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-            sm.getLogger().log(Level.WARNING,"An error occurred while sending packet. Is StackMob updated to support your server version?");
-        }
+        NMSHelper.sendPacket(player, stackEntity.getEntity(), tagVisible);
     }
 
 
