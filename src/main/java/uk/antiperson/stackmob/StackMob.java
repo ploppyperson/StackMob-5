@@ -90,7 +90,7 @@ public class StackMob extends JavaPlugin {
                     break;
             }
         }));
-        Metrics metrics = new Metrics(this);
+        Metrics metrics = new Metrics(this, 522);
         metrics.addCustomChart(new Metrics.SimplePie("stackmobbridge", () -> String.valueOf(Bukkit.getPluginManager().isPluginEnabled("StackMobBridge"))));
         if (metrics.isEnabled()) {
             getLogger().info("bStats anonymous data collection has been enabled!");
