@@ -6,7 +6,7 @@
 
     <groupId>uk.antiperson.stackmob</groupId>
     <artifactId>StackMob</artifactId>
-    <version>5.2.3</version>
+    <version>5.3.0</version>
 
     <build>
         <sourceDirectory>src/main/java</sourceDirectory>
@@ -94,12 +94,12 @@
         <dependency>
             <groupId>com.destroystokyo.paper</groupId>
             <artifactId>paper-api</artifactId>
-            <version>1.16.1-R0.1-SNAPSHOT</version>
+            <version>1.16.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot</artifactId>
+            <groupId>com.destroystokyo.paper</groupId>
+            <artifactId>paper</artifactId>
             <version>1.16.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
@@ -118,7 +118,7 @@
         <dependency>
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
-            <version>1.5</version>
+            <version>1.7</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
