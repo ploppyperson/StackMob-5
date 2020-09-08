@@ -27,9 +27,6 @@ public class MergeTask extends BukkitRunnable {
                 continue;
             }
             if (!original.canStack()) {
-                if (original.getEntity().isDead()) {
-                    toRemove.add(original);
-                }
                 continue;
             }
             Integer[] searchRadius = sm.getMainConfig().getStackRadius(original.getEntity().getType());
