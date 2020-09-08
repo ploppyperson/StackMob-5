@@ -18,8 +18,5 @@ public class ChunkListener implements Listener {
         sm.getEntityManager().registerStackedEntities(event.getChunk());
     }
 
-    @EventHandler
-    public void onChunkUnload(ChunkUnloadEvent event) {
-        sm.getEntityManager().unregisterStackedEntities(event.getChunk());
-    }
+
 }
