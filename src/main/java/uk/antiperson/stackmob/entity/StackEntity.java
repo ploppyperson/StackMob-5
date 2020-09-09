@@ -88,10 +88,7 @@ public class StackEntity {
         if (!sm.getMainConfig().getWaitingTypes(getEntity().getType()).contains(getEntity().getType().toString())) {
             return false;
         }
-        if (!sm.getMainConfig().getWaitingReasons(getEntity().getType()).contains(spawnReason.toString())) {
-            return false;
-        }
-        return true;
+        return sm.getMainConfig().getWaitingReasons(getEntity().getType()).contains(spawnReason.toString());
     }
 
     /**
