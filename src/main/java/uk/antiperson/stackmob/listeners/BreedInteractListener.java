@@ -41,34 +41,30 @@ public class BreedInteractListener implements Listener {
         if (stackEntity.isSingle()) {
             return;
         }
-        switch (sm.getMainConfig().getListenerMode(animals.getType(), "breed")) {
-            case SPLIT:
-                stackEntity.slice();
-                break;
-            case MULTIPLY:
-                int itemAmount = event.getPlayer().getInventory().getItemInMainHand().getAmount();
-                EntityUtils.removeHandItem(event.getPlayer(), stackEntity.getSize());
-                stackEntity.splitIfNotEnough(itemAmount);
-                if (itemAmount == 1) {
-                    return;
-                }
-                double kAmount = stackEntity.getSize() / 2D;
-                int kidAmount = (int) Math.floor(kAmount);
-                if (kAmount > kidAmount) {
-                    stackEntity.duplicate();
-                    stackEntity.incrementSize(-1);
-                }
-                stackEntity.getDrops().dropExperience(event.getRightClicked().getLocation(),1,7, kidAmount);
-                // Spawn the kid
-                StackEntity kid = stackEntity.duplicate();
-                kid.setSize(kidAmount);
-                ((Animals) kid.getEntity()).setBaby();
-                // Update the adult
-                animals.setBreed(false);
-                animals.setBreedCause(event.getPlayer().getUniqueId());
-                break;
+        ListenerMode breed = sm.getMainConfig().getListenerMode(animals.getType(), "breed");
+        if (breed == ListenerMode.SPLIT) {
+            stackEntity.slice();
+        } else if (breed == ListenerMode.MULTIPLY) {
+            int itemAmount = event.getPlayer().getInventory().getItemInMainHand().getAmount();
+            EntityUtils.removeHandItem(event.getPlayer(), stackEntity.getSize());
+            stackEntity.splitIfNotEnough(itemAmount);
+            if (itemAmount == 1) {
+                return;
+            }
+            double kAmount = stackEntity.getSize() / 2D;
+            int kidAmount = (int) Math.floor(kAmount);
+            if (kAmount > kidAmount) {
+                stackEntity.duplicate();
+                stackEntity.incrementSize(-1);
+            }
+            stackEntity.getDrops().dropExperience(event.getRightClicked().getLocation(),1,7, kidAmount);
+            // Spawn the kid
+            StackEntity kid = stackEntity.duplicate();
+            kid.setSize(kidAmount);
+            ((Animals) kid.getEntity()).setBaby();
+            // Update the adult
+            animals.setBreed(false);
+            animals.setBreedCause(event.getPlayer().getUniqueId());
         }
     }
-
-
 }
