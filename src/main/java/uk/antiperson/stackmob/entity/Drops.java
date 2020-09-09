@@ -30,7 +30,8 @@ public class Drops {
         if (sm.getMainConfig().getDropTypeBlacklist(dead.getType()).contains(dead.getType().toString())) {
             return items;
         }
-        if (sm.getMainConfig().getDropReasonBlacklist(dead.getType()).contains(dead.getLastDamageCause().getCause().toString())) {
+        EntityDamageEvent lastDamageCause = dead.getLastDamageCause();
+        if (lastDamageCause == null || sm.getMainConfig().getDropReasonBlacklist(dead.getType()).contains(lastDamageCause.getCause().toString())) {
             return items;
         }
         for (int i = 0; i < deathAmount; i++) {
