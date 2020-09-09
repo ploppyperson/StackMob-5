@@ -3,6 +3,7 @@ package uk.antiperson.stackmob.entity.traits.trait;
 import org.bukkit.Material;
 import org.bukkit.entity.Drowned;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.inventory.EntityEquipment;
 import uk.antiperson.stackmob.entity.traits.Trait;
 import uk.antiperson.stackmob.entity.traits.TraitMetadata;
 
