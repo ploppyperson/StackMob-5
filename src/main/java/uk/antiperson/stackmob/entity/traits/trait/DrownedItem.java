@@ -3,6 +3,7 @@ package uk.antiperson.stackmob.entity.traits.trait;
 import org.bukkit.Material;
 import org.bukkit.entity.Drowned;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.inventory.EntityEquipment;
 import uk.antiperson.stackmob.entity.traits.Trait;
 import uk.antiperson.stackmob.entity.traits.TraitMetadata;
 
@@ -13,22 +14,20 @@ import java.util.List;
 public class DrownedItem implements Trait {
 
     private final List<Material> materials = Arrays.asList(Material.NAUTILUS_SHELL, Material.TRIDENT);
-
+    
     @Override
-    public boolean checkTrait(LivingEntity first, LivingEntity nearby) {
+    public boolean checkTrait (LivingEntity first, LivingEntity nearby) {
         Drowned oriDrowned = (Drowned) first;
         Drowned nearDrowned = (Drowned) nearby;
-        if(materials.contains(oriDrowned.getEquipment().getItemInMainHand().getType()) ||
-                materials.contains(nearDrowned.getEquipment().getItemInMainHand().getType())){
-            if(oriDrowned.getEquipment().getItemInMainHand().getType() !=
-                    nearDrowned.getEquipment().getItemInMainHand().getType()){
-                return true;
-            }
+        EntityEquipment oriEquipment = oriDrowned.getEquipment();
+        EntityEquipment nearEquipment = nearDrowned.getEquipment();
+        if (oriEquipment == null && nearEquipment == null) return true;
+        if (oriEquipment == null || nearEquipment == null) return false;
+        if (oriEquipment.getItemInMainHand().getType() == nearEquipment.getItemInMainHand().getType()) {
+            return materials.contains(oriEquipment.getItemInMainHand().getType());
         }
-        if(materials.contains(oriDrowned.getEquipment().getItemInOffHand().getType()) ||
-                materials.contains(nearDrowned.getEquipment().getItemInOffHand().getType())){
-            return oriDrowned.getEquipment().getItemInOffHand().getType() !=
-                    nearDrowned.getEquipment().getItemInOffHand().getType();
+        if (oriEquipment.getItemInOffHand().getType() == nearEquipment.getItemInOffHand().getType()) {
+            return materials.contains(oriEquipment.getItemInOffHand().getType());
         }
         return false;
     }
