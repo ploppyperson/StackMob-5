@@ -38,7 +38,7 @@ public class BreedInteractListener implements Listener {
         }
         Animals animals = (Animals) event.getRightClicked();
         StackEntity stackEntity = sm.getEntityManager().getStackEntity(animals);
-        if (stackEntity.isSingle()) {
+        if (stackEntity == null || stackEntity.isSingle()) {
             return;
         }
         ListenerMode breed = sm.getMainConfig().getListenerMode(animals.getType(), "breed");

@@ -34,7 +34,7 @@ public class DyeListener implements Listener {
         }
         Sheep sheep = (Sheep) event.getRightClicked();
         StackEntity stackEntity = sm.getEntityManager().getStackEntity(sheep);
-        if (stackEntity.isSingle()) {
+        if (stackEntity == null || stackEntity.isSingle()) {
             return;
         }
         ListenerMode mode = sm.getMainConfig().getListenerMode(sheep.getType(), "dye");
