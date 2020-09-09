@@ -23,7 +23,7 @@ public class BeeListener implements Listener {
         if (sm.getEntityManager().isStackedEntity(bee)) {
             final StackEntity oldBee = sm.getEntityManager().getStackEntity(bee);
 
-            if (oldBee.isSingle()) {
+            if (oldBee == null || oldBee.isSingle()) {
                 return;
             }
 
