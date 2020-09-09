@@ -59,10 +59,7 @@ public class StackEntity {
         if (!sm.getMainConfig().getWaitingTypes(getEntity().getType()).contains(getEntity().getType().toString())) {
             return false;
         }
-        if (!sm.getMainConfig().getWaitingReasons(getEntity().getType()).contains(spawnReason.toString())) {
-            return false;
-        }
-        return true;
+        return sm.getMainConfig().getWaitingReasons(getEntity().getType()).contains(spawnReason.toString());
     }
 
     public void makeWait() {
@@ -173,10 +170,7 @@ public class StackEntity {
         if (sm.getHookManager().checkHooks(this, nearby)) {
             return false;
         }
-        if (nearby.getEntity().isDead() || getEntity().isDead()) {
-            return false;
-        }
-        return true;
+        return !nearby.getEntity().isDead() && !getEntity().isDead();
     }
 
     /**
