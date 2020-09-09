@@ -193,10 +193,14 @@ public class MainConfig extends SpecialConfigFile {
 
     private Collection<String> getDeathSection(LivingEntity dead) {
         TreeMap<Integer, String> array = new TreeMap<>();
-        for (String key : getConfigurationSection("death").getKeys(false)) {
-            array.put(getInt(dead.getType(), "death." + key + ".priority"), key);
+        for (DeathType type : DeathType.values()) {
+            array.put(getInt(dead.getType(), "death." + type + ".priority"), type.toString());
         }
         return array.values();
+    }
+
+    public boolean isSkipDeathAnimation(EntityType type) {
+        return getBoolean(type, "death.skip-animation");
     }
 
     @Override

@@ -8,6 +8,8 @@ import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -33,6 +35,19 @@ public class Utilities {
         return ChatColor.translateAlternateColorCodes('&', toTranslate);
     }
 
+    public static List<Integer> split(int dividend, int divisor) {
+        int fullAmount = dividend / divisor;
+        int remainder = dividend % divisor;
+        List<Integer> numbers = new ArrayList<>(fullAmount + 1);
+        for (int i = 0; i < fullAmount; i++) {
+            numbers.add(divisor);
+        }
+        if (remainder > 0) {
+            numbers.add(remainder);
+        }
+        return numbers;
+    }
+
     public static CompletableFuture<DownloadResult> downloadFile(File filePath, String url) {
         return CompletableFuture.supplyAsync(() -> {
             try {
@@ -54,7 +69,11 @@ public class Utilities {
     }
 
     public static boolean isNewBukkit() {
-        return Package.getPackage("net.minecraft.server.v1_16_R1") != null;
+        return Package.getPackage("net.minecraft.server.v1_15_R1") == null;
+    }
+
+    public static boolean isNativeVersion() {
+        return Package.getPackage("net.minecraft.server.v1_16_R2") != null;
     }
 
     public enum DownloadResult {

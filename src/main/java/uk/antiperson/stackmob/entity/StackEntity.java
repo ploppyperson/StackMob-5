@@ -13,10 +13,15 @@ import uk.antiperson.stackmob.utils.Utilities;
 public class StackEntity {
 
     private final LivingEntity entity;
+    private final EntityManager entityManager;
     private final StackMob sm;
-    public StackEntity(StackMob sm, LivingEntity entity) {
+    private boolean waiting;
+    private int waitCount;
+    private int stackSize;
+    public StackEntity(StackMob sm, EntityManager entityManager, LivingEntity entity) {
         this.sm = sm;
         this.entity = entity;
+        this.entityManager = entityManager;
     }
 
     /**
@@ -41,6 +46,7 @@ public class StackEntity {
             newSize = getMaxSize();
         }
         entity.getPersistentDataContainer().set(sm.getStackKey(), PersistentDataType.INTEGER, newSize);
+        stackSize = newSize;
         if (update) {
             getTag().update();
         }
@@ -48,10 +54,33 @@ public class StackEntity {
 
     public void removeStackData() {
         entity.getPersistentDataContainer().remove(sm.getStackKey());
-        getTag().update();
         entity.setCustomNameVisible(false);
+        entityManager.unregisterStackedEntity(this);
+        getTag().update();
     }
 
+    /**
+     * In order to not break mob grinders, stacked entities can have a waiting status.
+     * This waiting status means that this stacked entity will be ignored on all stacking attempts until the count reaches 0
+     * @return whether this entity is currently waiting
+     */
+    public boolean isWaiting() {
+        return waiting;
+    }
+
+    /**
+     * Gets the wait count for this entity.
+     * @return the wait count for this entity
+     */
+    public int getWaitCount() {
+        return waitCount;
+    }
+
+    /**
+     * Whether this entity should wait.
+     * @param spawnReason the spawn reason of the entity.
+     * @return whether this entity should wait.
+     */
     public boolean shouldWait(CreatureSpawnEvent.SpawnReason spawnReason) {
         if (!sm.getMainConfig().isWaitingEnabled(getEntity().getType())) {
             return false;
@@ -65,19 +94,28 @@ public class StackEntity {
         return true;
     }
 
+    /**
+     * In order to not break mob grinders, stacked entities can have a waiting status.
+     * This waiting status means that this stacked entity will be ignored on all stacking attempts until the count reaches 0.
+     */
     public void makeWait() {
-        int time = sm.getMainConfig().getWaitingTime(getEntity().getType());
-        getEntity().getPersistentDataContainer().set(sm.getWaitKey(), PersistentDataType.INTEGER, time);
+        if (isWaiting()) {
+            throw new UnsupportedOperationException("Stack is already waiting!");
+        }
+        waitCount = sm.getMainConfig().getWaitingTime(getEntity().getType());
+        waiting = true;
     }
 
+    /**
+     * Increment the waiting count.
+     */
     public void incrementWait() {
-        int currentWaiting = getEntity().getPersistentDataContainer().getOrDefault(sm.getWaitKey(), PersistentDataType.INTEGER, 0);
-        if (currentWaiting < 1) {
-            getEntity().getPersistentDataContainer().remove(sm.getWaitKey());
+        if (waitCount < 1) {
+            waiting = false;
             setSize(1);
             return;
         }
-        getEntity().getPersistentDataContainer().set(sm.getWaitKey(), PersistentDataType.INTEGER, currentWaiting - 1);
+        waitCount -= 1;
     }
 
     /**
@@ -93,7 +131,10 @@ public class StackEntity {
      * @return the current stack size for this entity.
      */
     public int getSize() {
-        return entity.getPersistentDataContainer().getOrDefault(sm.getStackKey(), PersistentDataType.INTEGER, 1);
+        if (stackSize == 0) {
+            stackSize = getEntity().getPersistentDataContainer().getOrDefault(sm.getStackKey(), PersistentDataType.INTEGER, 1);
+        }
+        return stackSize;
     }
 
     /**
@@ -108,7 +149,14 @@ public class StackEntity {
      * Removes this entity.
      */
     public void remove() {
+        remove(true);
+    }
+
+    public void remove(boolean unregister) {
         entity.remove();
+        if (unregister) {
+            entityManager.unregisterStackedEntity(this);
+        }
         if (getEntity().isLeashed()) {
             ItemStack leash = new ItemStack(Material.LEAD, 1);
             getWorld().dropItemNaturally(entity.getLocation(), leash);
@@ -160,11 +208,8 @@ public class StackEntity {
      * @param nearby another entity
      * @return if the given entity and this entity should stack.
      */
-    public boolean checkNearby(StackEntity nearby) {
+    public boolean match(StackEntity nearby) {
         if (getEntity().getType() != nearby.getEntity().getType()) {
-            return false;
-        }
-        if (nearby.isMaxSize()) {
             return false;
         }
         if (sm.getTraitManager().checkTraits(this, nearby)) {
@@ -173,32 +218,34 @@ public class StackEntity {
         if (sm.getHookManager().checkHooks(this, nearby)) {
             return false;
         }
-        if (nearby.getEntity().isDead() || getEntity().isDead()) {
-            return false;
-        }
         return true;
+    }
+
+    public boolean canStack() {
+        return !getEntity().isDead() && !isMaxSize() && !isWaiting();
     }
 
     /**
      * Merge this stack with another stack, providing they are similar.
      * @param toMerge stack to merge with.
-     * @return whether the merge was successful
+     * @param unregister whether to unregister the entity that is removed.
+     * @return the entity that was removed
      */
-    public boolean merge(StackEntity toMerge) {
+    public StackEntity merge(StackEntity toMerge, boolean unregister) {
         StackEntity entity1 = toMerge.getSize() < getSize() ? toMerge : this;
         StackEntity entity2 = toMerge.getSize() < getSize() ? this : toMerge;
         if (EventHelper.callStackMergeEvent(entity1, entity2).isCancelled()) {
-            return false;
+            return null;
         }
         int totalSize = entity1.getSize() + entity2.getSize();
         if (totalSize > getMaxSize()) {
             toMerge.setSize(totalSize - entity2.getMaxSize());
             setSize(entity2.getMaxSize());
-            return true;
+            return null;
         }
         entity2.incrementSize(entity1.getSize());
-        entity1.remove();
-        return true;
+        entity1.remove(unregister);
+        return entity1;
     }
 
     public StackEntity splitIfNotEnough(int itemAmount) {
@@ -214,7 +261,7 @@ public class StackEntity {
      * @return a clone of this entity.
      */
     public StackEntity duplicate() {
-        StackEntity cloneStack = sm.getEntityManager().getStackEntity(spawnClone());
+        StackEntity cloneStack = sm.getEntityManager().registerStackedEntity(spawnClone());
         cloneStack.setSize(1);
         sm.getTraitManager().applyTraits(cloneStack, this);
         sm.getHookManager().onSpawn(cloneStack);

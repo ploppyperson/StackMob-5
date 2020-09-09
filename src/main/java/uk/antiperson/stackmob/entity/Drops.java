@@ -9,6 +9,7 @@ import org.bukkit.entity.Mob;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.loot.LootContext;
 import uk.antiperson.stackmob.StackMob;
+import uk.antiperson.stackmob.utils.Utilities;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -77,15 +78,8 @@ public class Drops {
     }
 
     public static void dropItem(Location location, ItemStack stack, int amount) {
-        double inStacks = (double) amount / (double) stack.getMaxStackSize();
-        double floor = Math.floor(inStacks);
-        double leftOver = inStacks - floor;
-        for (int i = 0; i < floor; i++) {
-            stack.setAmount(stack.getMaxStackSize());
-            location.getWorld().dropItemNaturally(location, stack);
-        }
-        if (leftOver > 0) {
-            stack.setAmount((int) Math.round(leftOver * stack.getMaxStackSize()));
+        for (int itemAmount : Utilities.split(amount, stack.getMaxStackSize())) {
+            stack.setAmount(itemAmount);
             location.getWorld().dropItemNaturally(location, stack);
         }
     }
