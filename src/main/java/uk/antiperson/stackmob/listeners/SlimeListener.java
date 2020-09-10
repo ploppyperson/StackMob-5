@@ -23,7 +23,7 @@ public class SlimeListener implements Listener {
             return;
         }
         StackEntity stackEntity = sm.getEntityManager().getStackEntity(event.getEntity());
-        if (stackEntity.isSingle()) {
+        if (stackEntity == null || stackEntity.isSingle()) {
             return;
         }
         if (!event.getEntity().hasMetadata(Utilities.SLIME_METADATA)) {
