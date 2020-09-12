@@ -6,7 +6,7 @@ import uk.antiperson.stackmob.entity.traits.Trait;
 import uk.antiperson.stackmob.entity.traits.TraitMetadata;
 
 @TraitMetadata(entity = Zoglin.class, path = "zoglin-baby")
-public class ZoglinBaby implements Trait {
+public class ZoglinBaby extends Trait {
 
     @Override
     public boolean checkTrait(LivingEntity first, LivingEntity nearby) {

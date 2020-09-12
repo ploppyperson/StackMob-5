@@ -1,6 +1,7 @@
 package uk.antiperson.stackmob.entity.traits;
 
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.StackEntity;
 import uk.antiperson.stackmob.entity.traits.trait.*;
@@ -46,7 +47,6 @@ public class TraitManager {
     /**
      * If a class hasn't been disabled in the config, add this to the hashset so it can be looped over.
      *
-     * TODO: Perhaps there could be a hashset which contains a list of entity types that should be checked.
      * @param trait class that implements trait
      * @throws IllegalAccessException if class is not accessible
      * @throws InstantiationException if class can not be instantiated
@@ -54,7 +54,14 @@ public class TraitManager {
     private void registerTrait(Class<? extends Trait> trait) throws IllegalAccessException, InstantiationException {
         TraitMetadata traitMetadata = trait.getAnnotation(TraitMetadata.class);
         if (sm.getMainConfig().isTraitEnabled(traitMetadata.path()) || sm.getMainConfig().getBoolean(traitMetadata.path())) {
-            traits.add(trait.newInstance());
+            final Trait newTrait = trait.newInstance();
+            traits.add(newTrait);
+
+            for (EntityType entityType : EntityType.values()) {
+                if (entityType.isAlive() && isTraitApplicable(newTrait, entityType.getEntityClass())) {
+                    newTrait.getSupportedEntities().add(entityType);
+                }
+            }
         }
     }
 
@@ -66,7 +73,7 @@ public class TraitManager {
      */
     public boolean checkTraits(StackEntity first, StackEntity nearby) {
         for (Trait trait : traits) {
-            if (isTraitApplicable(trait, first.getEntity())) {
+            if (trait.getSupportedEntities().contains(first.getEntity().getType())) {
                 if (trait.checkTrait(first.getEntity(), nearby.getEntity())) {
                     return true;
                 }
@@ -82,7 +89,7 @@ public class TraitManager {
      */
     public void applyTraits(StackEntity spawned, StackEntity dead) {
         for (Trait trait : traits) {
-            if (isTraitApplicable(trait, spawned.getEntity())) {
+            if (trait.getSupportedEntities().contains(spawned.getEntity().getType())) {
                 trait.applyTrait(spawned.getEntity(), dead.getEntity());
             }
         }
@@ -91,11 +98,11 @@ public class TraitManager {
     /**
      * Check if the trait is applicable to the given entity.
      * @param trait the trait to check.
-     * @param entity the entity to check.
+     * @param clazz the class of the give entity to check.
      * @return if the trait is applicable to the given entity.
      */
-    private boolean isTraitApplicable(Trait trait, LivingEntity entity) {
-        TraitMetadata traitMetadata = trait.getClass().getAnnotation(TraitMetadata.class);
-        return traitMetadata.entity().isAssignableFrom(entity.getClass());
+    private boolean isTraitApplicable(Trait trait, Class<? extends Entity> clazz) {
+        final TraitMetadata traitMetadata = trait.getClass().getAnnotation(TraitMetadata.class);
+        return traitMetadata.entity().isAssignableFrom(clazz);
     }
 }

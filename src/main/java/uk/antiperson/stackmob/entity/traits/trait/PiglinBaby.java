@@ -6,7 +6,7 @@ import uk.antiperson.stackmob.entity.traits.Trait;
 import uk.antiperson.stackmob.entity.traits.TraitMetadata;
 
 @TraitMetadata(entity = Piglin.class, path = "piglin-baby")
-public class PiglinBaby implements Trait {
+public class PiglinBaby extends Trait {
 
     @Override
     public boolean checkTrait(LivingEntity first, LivingEntity nearby) {

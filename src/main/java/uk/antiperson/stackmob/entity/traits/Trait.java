@@ -1,21 +1,26 @@
 package uk.antiperson.stackmob.entity.traits;
 
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 
-public interface Trait {
+import java.util.Collection;
+import java.util.HashSet;
 
-    /**
-     * Check if two entities have the same entity specific traits (eg. sheep colour, villager profession)
-     * @param first the initial entity.
-     * @param nearby the entity the first should stack with
-     * @return whether these two entities should stack.
-     */
-    boolean checkTrait(LivingEntity first, LivingEntity nearby);
+public abstract class Trait implements ITrait {
 
-    /**
-     * Copy the traits of the dead entity to that of the newly spawned entity.
-     * @param dead the entity that died.
-     * @param spawned the entity that was spawned to replace it.
-     */
-    void applyTrait(LivingEntity spawned, LivingEntity dead);
+    private final Collection<EntityType> supportedEntities = new HashSet<>();
+
+    public Collection<EntityType> getSupportedEntities() {
+        return supportedEntities;
+    }
+
+    @Override
+    public boolean checkTrait(LivingEntity first, LivingEntity nearby) {
+        return false;
+    }
+
+    @Override
+    public void applyTrait(LivingEntity spawned, LivingEntity dead) {
+    }
+
 }

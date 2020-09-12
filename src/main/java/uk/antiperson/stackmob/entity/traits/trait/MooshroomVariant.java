@@ -6,7 +6,7 @@ import uk.antiperson.stackmob.entity.traits.Trait;
 import uk.antiperson.stackmob.entity.traits.TraitMetadata;
 
 @TraitMetadata(entity = MushroomCow.class, path = "mooshroom-variant")
-public class MooshroomVariant implements Trait {
+public class MooshroomVariant extends Trait {
 
     @Override
     public boolean checkTrait(LivingEntity first, LivingEntity nearby) {

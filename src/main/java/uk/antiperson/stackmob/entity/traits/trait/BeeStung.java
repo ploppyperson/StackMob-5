@@ -6,7 +6,7 @@ import uk.antiperson.stackmob.entity.traits.Trait;
 import uk.antiperson.stackmob.entity.traits.TraitMetadata;
 
 @TraitMetadata(entity = Bee.class, path = "bee-stung")
-public class BeeStung implements Trait {
+public class BeeStung extends Trait {
     @Override
     public boolean checkTrait(LivingEntity first, LivingEntity nearby) {
         return ((Bee) first).hasStung() != ((Bee) nearby).hasStung();

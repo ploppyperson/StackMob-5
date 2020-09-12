@@ -6,7 +6,7 @@ import uk.antiperson.stackmob.entity.traits.Trait;
 import uk.antiperson.stackmob.entity.traits.TraitMetadata;
 
 @TraitMetadata(entity = Parrot.class, path = "parrot-variant")
-public class ParrotVariant implements Trait {
+public class ParrotVariant extends Trait {
 
     @Override
     public boolean checkTrait(LivingEntity first, LivingEntity nearby) {
