@@ -9,32 +9,28 @@ import org.bukkit.entity.Mob;
 import org.bukkit.persistence.PersistentDataType;
 import uk.antiperson.stackmob.StackMob;
 
-import java.util.HashSet;
+import java.util.Collection;
+import java.util.HashMap;
 
 public class EntityManager {
 
     private final StackMob sm;
-    private final HashSet<StackEntity> stackEntities;
+    private final HashMap<Integer, StackEntity> stackEntities;
     public EntityManager(StackMob sm) {
         this.sm = sm;
-        stackEntities = new HashSet<>();
+        stackEntities = new HashMap<>();
     }
 
     public boolean isStackedEntity(LivingEntity entity) {
         return entity.getPersistentDataContainer().has(sm.getStackKey(), PersistentDataType.INTEGER);
     }
 
-    public HashSet<StackEntity> getStackEntities() {
-        return stackEntities;
+    public Collection<StackEntity> getStackEntities() {
+        return stackEntities.values();
     }
 
     public StackEntity getStackEntity(LivingEntity entity) {
-        for (StackEntity stackEntity : stackEntities) {
-            if (stackEntity.getEntity().getEntityId() == entity.getEntityId()) {
-                return stackEntity;
-            }
-        }
-        return null;
+        return stackEntities.get(entity.getEntityId());
     }
 
     public void registerAllEntities() {
@@ -79,12 +75,12 @@ public class EntityManager {
 
     public StackEntity registerStackedEntity(LivingEntity entity) {
         StackEntity stackEntity = new StackEntity(sm, entity);
-        stackEntities.add(stackEntity);
+        stackEntities.put(entity.getEntityId(), stackEntity);
         return stackEntity;
     }
 
     public void registerStackedEntity(StackEntity entity) {
-        stackEntities.add(entity);
+        stackEntities.put(entity.getEntity().getEntityId(), entity);
     }
 
     public void unregisterStackedEntity(LivingEntity entity) {
@@ -96,7 +92,7 @@ public class EntityManager {
     }
 
     public void unregisterStackedEntity(StackEntity stackEntity) {
-        stackEntities.remove(stackEntity);
+        stackEntities.remove(stackEntity.getEntity().getEntityId());
     }
 
 }
