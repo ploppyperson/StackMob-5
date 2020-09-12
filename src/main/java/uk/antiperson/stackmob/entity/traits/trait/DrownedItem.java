@@ -14,9 +14,9 @@ import java.util.List;
 public class DrownedItem implements Trait {
 
     private final List<Material> materials = Arrays.asList(Material.NAUTILUS_SHELL, Material.TRIDENT);
-
+    
     @Override
-    public boolean checkTrait(LivingEntity first, LivingEntity nearby) {
+    public boolean checkTrait (LivingEntity first, LivingEntity nearby) {
         Drowned oriDrowned = (Drowned) first;
         Drowned nearDrowned = (Drowned) nearby;
         EntityEquipment oriEquipment = oriDrowned.getEquipment();
