@@ -20,7 +20,7 @@ public class LeashListener implements Listener {
         if (event.getItemDrop().getItemStack().getType() != Material.LEAD) {
             return;
         }
-        if (!sm.getEntityManager().isStackedEntity((LivingEntity) event.getEntity())) {
+        if (!StackMob.getEntityManager().isStackedEntity((LivingEntity) event.getEntity())) {
             return;
         }
         if (!event.getEntity().isDead()) {

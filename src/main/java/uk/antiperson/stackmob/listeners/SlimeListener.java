@@ -19,8 +19,11 @@ public class SlimeListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onSlimeSplit(SlimeSplitEvent event) {
-        StackEntity stackEntity = sm.getEntityManager().getStackEntity(event.getEntity());
-        if (stackEntity.isSingle()) {
+        if (!StackMob.getEntityManager().isStackedEntity(event.getEntity())) {
+            return;
+        }
+        StackEntity stackEntity = StackMob.getEntityManager().getStackEntity(event.getEntity());
+        if (stackEntity == null || stackEntity.isSingle()) {
             return;
         }
         if (!event.getEntity().hasMetadata(Utilities.SLIME_METADATA)) {

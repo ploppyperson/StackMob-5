@@ -30,20 +30,18 @@ public class DyeListener implements Listener {
             return;
         }
         Sheep sheep = (Sheep) event.getRightClicked();
-        StackEntity stackEntity = sm.getEntityManager().getStackEntity(sheep);
-        if (stackEntity.isSingle()) {
+        StackEntity stackEntity = StackMob.getEntityManager().getStackEntity(sheep);
+        if (stackEntity == null || stackEntity.isSingle()) {
             return;
         }
-        switch (sm.getMainConfig().getListenerMode(sheep.getType(), "dye")) {
-            case SPLIT:
-                StackEntity slice = stackEntity.slice();
-                ((Colorable) slice.getEntity()).setColor(sheep.getColor());
-                break;
-            case MULTIPLY:
-                stackEntity.splitIfNotEnough(event.getPlayer().getInventory().getItemInMainHand().getAmount());
-                EntityUtils.removeHandItem(event.getPlayer(), stackEntity.getSize());
-                sheep.setColor(DyeColor.valueOf(handItem.getType().toString().replace("_DYE", "")));
-                break;
+        ListenerMode mode = sm.getMainConfig().getListenerMode(sheep.getType(), "dye");
+        if (mode == ListenerMode.SPLIT) {
+            ((Colorable) stackEntity.slice().getEntity()).setColor(sheep.getColor());
+        } else if (mode == ListenerMode.MULTIPLY) {
+            stackEntity.splitIfNotEnough(event.getPlayer().getInventory().getItemInMainHand().getAmount());
+            EntityUtils.removeHandItem(event.getPlayer(), stackEntity.getSize());
+            sheep.setColor(DyeColor.valueOf(handItem.getType().toString().replace("_DYE", "")));
         }
     }
+
 }

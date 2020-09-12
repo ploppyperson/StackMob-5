@@ -74,10 +74,10 @@ public class StackingTool {
                     if (!(e instanceof Mob)) {
                         continue;
                     }
-                    if (!sm.getEntityManager().isStackedEntity((LivingEntity) e)) {
+                    if (!StackMob.getEntityManager().isStackedEntity((LivingEntity) e)) {
                         continue;
                     }
-                    StackEntity stackEntity = sm.getEntityManager().getStackEntity((LivingEntity) e);
+                    StackEntity stackEntity = StackMob.getEntityManager().getStackEntity((LivingEntity) e);
                     stackEntity.removeStackData();
                 }
                 break;
@@ -103,7 +103,7 @@ public class StackingTool {
         }
     }
 
-    private class ModifyPrompt extends NumericPrompt {
+    private static class ModifyPrompt extends NumericPrompt {
 
         private final StackEntity stackEntity;
         public ModifyPrompt(StackEntity stackEntity) {
@@ -146,7 +146,7 @@ public class StackingTool {
         }
     }
 
-    private class ExitPrompt implements ConversationAbandonedListener {
+    private static class ExitPrompt implements ConversationAbandonedListener {
 
         @Override
         public void conversationAbandoned(@NotNull ConversationAbandonedEvent conversationAbandonedEvent) {

@@ -36,7 +36,7 @@ public class Remove extends SubCommand {
             if (!function.apply(entity)) {
                 continue;
             }
-            if (!sm.getEntityManager().isStackedEntity(entity)) {
+            if (!StackMob.getEntityManager().isStackedEntity(entity)) {
                 continue;
             }
             entity.remove();

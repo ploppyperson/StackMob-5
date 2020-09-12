@@ -31,7 +31,7 @@ public class TagTask extends BukkitRunnable {
                 if (!(entity instanceof Mob)) {
                     continue;
                 }
-                if (!sm.getEntityManager().isStackedEntity((LivingEntity) entity)) {
+                if (!StackMob.getEntityManager().isStackedEntity((LivingEntity) entity)) {
                     continue;
                 }
                 if (entity.isDead()) {
@@ -40,7 +40,7 @@ public class TagTask extends BukkitRunnable {
                 if (sm.getMainConfig().getTagMode(entity.getType()) != TagMode.NEARBY) {
                     return;
                 }
-                StackEntity stackEntity = sm.getEntityManager().getStackEntity((LivingEntity) entity);
+                StackEntity stackEntity = StackMob.getEntityManager().getStackEntity((LivingEntity) entity);
                 int threshold = sm.getMainConfig().getTagThreshold(stackEntity.getEntity().getType());
                 if (stackEntity.getSize() <= threshold) {
                     return;

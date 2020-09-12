@@ -26,10 +26,10 @@ public class SpawnListener implements Listener {
             if (sm.getMainConfig().isEntityBlacklisted(event.getEntity(), event.getSpawnReason())) {
                 return;
             }
-            if (sm.getEntityManager().isStackedEntity(event.getEntity())) {
+            if (StackMob.getEntityManager().isStackedEntity(event.getEntity())) {
                 return;
             }
-            StackEntity original = sm.getEntityManager().getStackEntity(event.getEntity());
+            StackEntity original = StackMob.getEntityManager().registerStackedEntity(event.getEntity());
             if (original.shouldWait(event.getSpawnReason())) {
                 original.makeWait();
                 return;
@@ -39,14 +39,22 @@ public class SpawnListener implements Listener {
                 if (!(entity instanceof Mob)) {
                     continue;
                 }
-                StackEntity nearby = sm.getEntityManager().getStackEntity((LivingEntity) entity);
+                StackEntity nearby = StackMob.getEntityManager().getStackEntity((LivingEntity) entity);
+                if (nearby == null) {
+                    continue;
+                }
+                if (!nearby.canStack()) {
+                    continue;
+                }
+                if (!original.match(nearby)) {
+                    continue;
+                }
                 if (sm.getMainConfig().getStackThresholdEnabled(entity.getType()) && nearby.getSize() == 1) {
                     continue;
                 }
-                if (!original.checkNearby(nearby)) {
-                    continue;
-                }
-                if (nearby.merge(original)) {
+                StackEntity removed = nearby.merge(original, true);
+                if (removed != null) {
+                    removed.removeStackData();
                     return;
                 }
             }

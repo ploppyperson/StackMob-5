@@ -10,8 +10,6 @@ import uk.antiperson.stackmob.hook.hooks.ProtocolLibHook;
 import uk.antiperson.stackmob.utils.NMSHelper;
 import uk.antiperson.stackmob.utils.Utilities;
 
-import java.util.logging.Level;
-
 public class Tag {
 
     private final StackEntity stackEntity;
@@ -52,7 +50,7 @@ public class Tag {
     }
 
     public void sendPacket(Player player, boolean tagVisible) {
-        if (!Utilities.isNewBukkit()) {
+        if (!Utilities.isNativeVersion()) {
             ProtocolLibHook protocolLibHook = sm.getHookManager().getProtocolLibHook();
             if (protocolLibHook == null) {
                 return;
@@ -60,12 +58,7 @@ public class Tag {
             protocolLibHook.sendPacket(player, stackEntity.getEntity(), tagVisible);
             return;
         }
-        try {
-            NMSHelper.sendPacket(player, stackEntity.getEntity(), tagVisible);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-            sm.getLogger().log(Level.WARNING,"An error occurred while sending packet. Is StackMob updated to support your server version?");
-        }
+        NMSHelper.sendPacket(player, stackEntity.getEntity(), tagVisible);
     }
 
 }

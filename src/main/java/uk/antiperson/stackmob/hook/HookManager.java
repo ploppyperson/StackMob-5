@@ -80,7 +80,7 @@ public class HookManager {
      * @throws InstantiationException if the class is abstract
      */
     private Hook createInstance(Class<? extends Hook> hookClass) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        for (Constructor constructor : hookClass.getDeclaredConstructors()) {
+        for (Constructor<?> constructor : hookClass.getDeclaredConstructors()) {
             for (Parameter parameter : constructor.getParameters()) {
                 if (parameter.getType().isAssignableFrom(StackMob.class)) {
                     return hookClass.getDeclaredConstructor(StackMob.class).newInstance(sm);

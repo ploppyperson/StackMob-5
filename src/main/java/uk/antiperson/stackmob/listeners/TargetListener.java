@@ -21,7 +21,7 @@ public class TargetListener implements Listener {
         if (!(event.getEntity() instanceof Monster)) {
             return;
         }
-        if (!sm.getEntityManager().isStackedEntity((LivingEntity) event.getEntity())) {
+        if (!StackMob.getEntityManager().isStackedEntity((LivingEntity) event.getEntity())) {
             return;
         }
         if (!sm.getMainConfig().isTargetingDisabled(event.getEntityType())) {

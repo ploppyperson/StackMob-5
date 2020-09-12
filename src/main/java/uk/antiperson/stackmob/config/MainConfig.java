@@ -35,6 +35,8 @@ public class MainConfig extends SpecialConfigFile {
     private final Map<EntityType, Integer> display_name_threshold = new HashMap<>();
 
 
+    private boolean default_death_skip_animation;
+    private final Map<EntityType, Boolean> death_skip_animation = new HashMap<>();
     private final List<String> default_death_priority = new ArrayList<>();
     private final Map<EntityType, List<String>> death_priority = new HashMap<>();
     private final Map<String, Set<EntityType>> default_death_type_blacklist = new HashMap<>();
@@ -104,6 +106,7 @@ public class MainConfig extends SpecialConfigFile {
     private boolean default_events_multiply_slime_split;
 
     private final StackMob sm;
+
     public MainConfig(StackMob sm) {
         super(sm, "config.yml");
         this.sm = sm;
@@ -117,11 +120,12 @@ public class MainConfig extends SpecialConfigFile {
 
 
         default_display_name_format = getString("display-name.format");
-        default_display_name_visibility = TagMode.valueOf(getString( "display-name.visibility"));
+        default_display_name_visibility = TagMode.valueOf(getString("display-name.visibility"));
         default_display_name_nearby_range = getList("display-name.nearby.range").asIntList().toArray(new Integer[2]);
         default_display_name_threshold = getInt("display-name.threshold");
 
 
+        default_death_skip_animation = getBoolean("death.skip-animation");
         final Collection<String> death_priorities = getDeathSection(null);
         default_death_priority.addAll(death_priorities);
         for (String defaultDeathOption : death_priorities) {
@@ -189,24 +193,34 @@ public class MainConfig extends SpecialConfigFile {
             if (custom_stack_max_size != default_stack_max_size) stack_max_size.put(type, custom_stack_max_size);
 
             final Integer[] custom_stack_merge_range = getList(type, "stack.merge-range").asIntList().toArray(new Integer[2]);
-            if (!Arrays.equals(custom_stack_merge_range, default_stack_merge_range)) stack_merge_range.put(type, default_stack_merge_range);
+            if (!Arrays.equals(custom_stack_merge_range, default_stack_merge_range))
+                stack_merge_range.put(type, default_stack_merge_range);
 
             final boolean custom_stack_threshold_enabled = getBoolean(type, "stack.threshold.enabled");
-            if (custom_stack_threshold_enabled != default_stack_threshold_enabled) stack_threshold_enabled.put(type, custom_stack_threshold_enabled);
+            if (custom_stack_threshold_enabled != default_stack_threshold_enabled)
+                stack_threshold_enabled.put(type, custom_stack_threshold_enabled);
 
             final int custom_stack_threshold_amount = getInt(type, "stack.threshold.amount");
-            if (custom_stack_threshold_amount != default_stack_threshold_amount) stack_threshold_amount.put(type, custom_stack_threshold_amount);
+            if (custom_stack_threshold_amount != default_stack_threshold_amount)
+                stack_threshold_amount.put(type, custom_stack_threshold_amount);
 
 
             final String custom_display_name_format = getString(type, "display-name.format");
-            if (!custom_display_name_format.equals(default_display_name_format)) display_name_format.put(type, custom_display_name_format);
+            if (!custom_display_name_format.equals(default_display_name_format))
+                display_name_format.put(type, custom_display_name_format);
 
             final TagMode custom_display_name_visibility = TagMode.valueOf(getString(type, "display-name.visibility"));
-            if (custom_display_name_visibility != default_display_name_visibility) display_name_visibility.put(type, custom_display_name_visibility);
+            if (custom_display_name_visibility != default_display_name_visibility)
+                display_name_visibility.put(type, custom_display_name_visibility);
 
             final int custom_display_name_threshold = getInt(type, "display-name.threshold");
-            if (custom_display_name_threshold != default_display_name_threshold) display_name_threshold.put(type, custom_display_name_threshold);
+            if (custom_display_name_threshold != default_display_name_threshold)
+                display_name_threshold.put(type, custom_display_name_threshold);
 
+
+            final boolean custom_death_skip_animation = getBoolean(type, "death.skip-animation");
+            if (custom_death_skip_animation != default_death_skip_animation)
+                death_skip_animation.put(type, custom_death_skip_animation);
 
             final List<String> custom_death_priorities = new ArrayList<>(getDeathSection(type));
             if (!custom_death_priorities.equals(default_death_priority)) {
@@ -220,36 +234,45 @@ public class MainConfig extends SpecialConfigFile {
                 }
             }
             final int custom_death_step_max_step = getInt(type, "death.STEP.max-step");
-            if (custom_death_step_max_step != default_death_step_max_step) death_step_max_step.put(type, custom_death_step_max_step);
+            if (custom_death_step_max_step != default_death_step_max_step)
+                death_step_max_step.put(type, custom_death_step_max_step);
 
             final int custom_death_step_min_step = getInt(type, "death.STEP.min-step");
-            if (custom_death_step_min_step != default_death_step_min_step) death_step_min_step.put(type, custom_death_step_min_step);
+            if (custom_death_step_min_step != default_death_step_min_step)
+                death_step_min_step.put(type, custom_death_step_min_step);
 
 
             final boolean custom_drops_enabled = getBoolean(type, "drops.enabled");
             if (custom_drops_enabled != default_drops_enabled) drops_enabled.put(type, custom_drops_enabled);
 
             final boolean custom_drops_use_loot_tables = getBoolean(type, "drops.use-loot-tables");
-            if (custom_drops_use_loot_tables != default_drops_use_loot_tables) drops_use_loot_tables.put(type, custom_drops_use_loot_tables);
+            if (custom_drops_use_loot_tables != default_drops_use_loot_tables)
+                drops_use_loot_tables.put(type, custom_drops_use_loot_tables);
 
             final Set<Material> custom_drops_one_per_stack = new HashSet<>(getList(type, "drops.one-per-stack").asMaterialList());
-            if (!custom_drops_one_per_stack.equals(default_drops_one_per_stack)) drops_one_per_stack.put(type, custom_drops_one_per_stack);
+            if (!custom_drops_one_per_stack.equals(default_drops_one_per_stack))
+                drops_one_per_stack.put(type, custom_drops_one_per_stack);
 
             final Set<Material> custom_drops_item_blacklist = new HashSet<>(getList(type, "drops.item-blacklist").asMaterialList());
-            if (!custom_drops_item_blacklist.equals(default_drops_item_blacklist)) drops_item_blacklist.put(type, custom_drops_item_blacklist);
+            if (!custom_drops_item_blacklist.equals(default_drops_item_blacklist))
+                drops_item_blacklist.put(type, custom_drops_item_blacklist);
 
             final Set<EntityDamageEvent.DamageCause> custom_drops_reason_blacklist = new HashSet<>(getList(type, "drops.reason-blacklist").asDamageCauseList());
-            if (!custom_drops_reason_blacklist.equals(default_drops_reason_blacklist)) drops_reason_blacklist.put(type, custom_drops_reason_blacklist);
+            if (!custom_drops_reason_blacklist.equals(default_drops_reason_blacklist))
+                drops_reason_blacklist.put(type, custom_drops_reason_blacklist);
 
 
             final boolean custom_experience_enabled = getBoolean(type, "experience.enabled");
-            if (custom_experience_enabled != default_experience_enabled) experience_enabled.put(type, custom_experience_enabled);
+            if (custom_experience_enabled != default_experience_enabled)
+                experience_enabled.put(type, custom_experience_enabled);
 
             final double custom_experience_multiplier_min = getDouble(type, "experience.multiplier-min");
-            if (custom_experience_multiplier_min != default_experience_multiplier_min) experience_multiplier_min.put(type, custom_experience_multiplier_min);
+            if (custom_experience_multiplier_min != default_experience_multiplier_min)
+                experience_multiplier_min.put(type, custom_experience_multiplier_min);
 
             final double custom_experience_multiplier_max = getDouble(type, "experience.multiplier-max");
-            if (custom_experience_multiplier_max != default_experience_multiplier_max) experience_multiplier_max.put(type, custom_experience_multiplier_max);
+            if (custom_experience_multiplier_max != default_experience_multiplier_max)
+                experience_multiplier_max.put(type, custom_experience_multiplier_max);
 
 
             final boolean custom_player_stats = getBoolean(type, "player-stats");
@@ -257,10 +280,12 @@ public class MainConfig extends SpecialConfigFile {
 
 
             final boolean custom_wait_to_stack_enabled = getBoolean(type, "wait-to-stack.enabled");
-            if (custom_wait_to_stack_enabled != default_wait_to_stack_enabled) wait_to_stack_enabled.put(type, custom_wait_to_stack_enabled);
+            if (custom_wait_to_stack_enabled != default_wait_to_stack_enabled)
+                wait_to_stack_enabled.put(type, custom_wait_to_stack_enabled);
 
             final int custom_wait_to_stack_wait_time = getInt(type, "wait-to-stack.wait-time");
-            if (custom_wait_to_stack_wait_time != default_wait_to_stack_wait_time) wait_to_stack_wait_time.put(type, custom_wait_to_stack_wait_time);
+            if (custom_wait_to_stack_wait_time != default_wait_to_stack_wait_time)
+                wait_to_stack_wait_time.put(type, custom_wait_to_stack_wait_time);
 
             final Set<CreatureSpawnEvent.SpawnReason> custom_wait_to_stack_reasons_whitelist = new HashSet<>(getList(type, "wait-to-stack.reasons-whitelist").asSpawnReasonList());
             if (!custom_wait_to_stack_reasons_whitelist.equals(default_wait_to_stack_reasons_whitelist)) {
@@ -269,17 +294,21 @@ public class MainConfig extends SpecialConfigFile {
 
 
             final boolean custom_disable_targeting_enabled = getBoolean(type, "disable-targeting.enabled");
-            if (custom_disable_targeting_enabled != default_disable_targeting_enabled) disable_targeting_enabled.put(type, custom_disable_targeting_enabled);
+            if (custom_disable_targeting_enabled != default_disable_targeting_enabled)
+                disable_targeting_enabled.put(type, custom_disable_targeting_enabled);
 
             final Set<CreatureSpawnEvent.SpawnReason> custom_disable_targeting_reason_blacklist = new HashSet<>(getList(type, "disable-targeting.reason-blacklist").asSpawnReasonList());
-            if (!custom_disable_targeting_reason_blacklist.equals(default_disable_targeting_reason_blacklist)) disable_targeting_reason_blacklist.put(type, custom_disable_targeting_reason_blacklist);
+            if (!custom_disable_targeting_reason_blacklist.equals(default_disable_targeting_reason_blacklist))
+                disable_targeting_reason_blacklist.put(type, custom_disable_targeting_reason_blacklist);
 
 
             final Set<CreatureSpawnEvent.SpawnReason> custom_reason_blacklist = new HashSet<>(getList(type, "reason-blacklist").asSpawnReasonList());
-            if (!custom_reason_blacklist.equals(default_reason_blacklist)) reason_blacklist.put(type, custom_reason_blacklist);
+            if (!custom_reason_blacklist.equals(default_reason_blacklist))
+                reason_blacklist.put(type, custom_reason_blacklist);
 
             final Set<World> custom_worlds_blacklist = new HashSet<>(getList(type, "worlds-blacklist").asWorldList());
-            if (!custom_worlds_blacklist.equals(default_worlds_blacklist)) worlds_blacklist.put(type, custom_worlds_blacklist);
+            if (!custom_worlds_blacklist.equals(default_worlds_blacklist))
+                worlds_blacklist.put(type, custom_worlds_blacklist);
 
 
             for (String key : getConfigurationSection(type, "events.remove-stack-data").getKeys(false)) {
@@ -469,16 +498,21 @@ public class MainConfig extends SpecialConfigFile {
         TreeMap<Integer, String> array = new TreeMap<>();
 
         if (type == null) {
-            for (String key : getConfigurationSection("death").getKeys(false)) {
-                array.put(getInt("death." + key + ".priority"), key);
+            for (DeathType deathType : DeathType.values()) {
+                array.put(getInt("death." + deathType.name() + ".priority"), deathType.name());
             }
         } else {
             for (String key : getConfigurationSection(type, "death").getKeys(false)) {
+                if (!key.toUpperCase().equals(key)) continue;
                 array.put(getInt(type, "death." + key + ".priority"), key);
             }
         }
 
         return array.values();
+    }
+
+    public boolean isSkipDeathAnimation(EntityType type) {
+        return death_skip_animation.getOrDefault(type, default_death_skip_animation);
     }
 
     @Override

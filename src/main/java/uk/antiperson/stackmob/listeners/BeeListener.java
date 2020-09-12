@@ -20,10 +20,10 @@ public class BeeListener implements Listener {
     public void onEntityEnterBlockEvent(EntityEnterBlockEvent event) {
         final LivingEntity bee = (LivingEntity) event.getEntity();
 
-        if (sm.getEntityManager().isStackedEntity(bee)) {
-            final StackEntity oldBee = sm.getEntityManager().getStackEntity(bee);
+        if (StackMob.getEntityManager().isStackedEntity(bee)) {
+            final StackEntity oldBee = StackMob.getEntityManager().getStackEntity(bee);
 
-            if (oldBee.isSingle()) {
+            if (oldBee == null || oldBee.isSingle()) {
                 return;
             }
 

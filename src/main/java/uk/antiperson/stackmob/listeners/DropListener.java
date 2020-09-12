@@ -25,10 +25,10 @@ public class DropListener implements Listener {
         if (event.getItemDrop().getItemStack().getType() != Material.EGG && event.getItemDrop().getItemStack().getType() != Material.SCUTE) {
             return;
         }
-        if (!sm.getEntityManager().isStackedEntity((LivingEntity) event.getEntity())) {
+        if (!StackMob.getEntityManager().isStackedEntity((LivingEntity) event.getEntity())) {
             return;
         }
-        StackEntity entity = sm.getEntityManager().getStackEntity((LivingEntity) event.getEntity());
+        StackEntity entity = StackMob.getEntityManager().getStackEntity((LivingEntity) event.getEntity());
         double multiplier = ThreadLocalRandom.current().nextDouble(0.4, 0.8);
         int itemCount = (int) Math.round((entity.getSize() - 1) * multiplier);
         Drops.dropItem(event.getEntity().getLocation(), event.getItemDrop().getItemStack(), itemCount);

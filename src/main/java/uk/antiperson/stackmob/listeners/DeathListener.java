@@ -26,27 +26,30 @@ public class DeathListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onStackDeath(EntityDeathEvent event) {
-        if (!sm.getEntityManager().isStackedEntity(event.getEntity())) {
+        if (!StackMob.getEntityManager().isStackedEntity(event.getEntity())) {
             return;
         }
-        StackEntity stackEntity = sm.getEntityManager().getStackEntity(event.getEntity());
-        if (stackEntity.isSingle()) {
-            return;
-        }
-        event.getEntity().setCustomName("");
-        event.getEntity().setCustomNameVisible(false);
+        StackEntity stackEntity = StackMob.getEntityManager().getStackEntity(event.getEntity());
         DeathMethod deathMethod = calculateDeath(stackEntity);
         int deathStep = Math.min(stackEntity.getSize(), deathMethod.calculateStep());
         EventHelper.callStackDeathEvent(stackEntity, deathStep);
-        if (stackEntity.getSize() > deathStep) {
-            StackEntity spawned = stackEntity.duplicate();
-            spawned.setSize(stackEntity.getSize() - deathStep);
-            deathMethod.onSpawn(spawned);
+        int toMultiply = deathStep - 1;
+        if (deathStep < stackEntity.getSize()) {
+            if (sm.getMainConfig().isSkipDeathAnimation(event.getEntityType())) {
+                toMultiply = deathStep;
+                event.setCancelled(true);
+                stackEntity.incrementSize(-deathStep);
+                deathMethod.onSpawn(stackEntity);
+            } else {
+                StackEntity spawned = stackEntity.duplicate();
+                spawned.setSize(stackEntity.getSize() - deathStep);
+                deathMethod.onSpawn(spawned);
+                stackEntity.removeStackData();
+            }
         }
-        if (deathStep <= 1) {
+        if (toMultiply == 0) {
             return;
         }
-        int toMultiply = deathStep - 1;
         int experience = stackEntity.getDrops().calculateDeathExperience(toMultiply, event.getDroppedExp());
         Map<ItemStack, Integer> drops = stackEntity.getDrops().calculateDrops(toMultiply, event.getDrops());
         Drops.dropItems(event.getEntity().getLocation(), drops);
@@ -61,7 +64,7 @@ public class DeathListener implements Listener {
         }
     }
 
-    public DeathMethod calculateDeath(StackEntity entity){
+    public DeathMethod calculateDeath(StackEntity entity) {
         DeathType deathType = sm.getMainConfig().getDeathType(entity.getEntity());
         try {
             return deathType.getStepClass().getDeclaredConstructor(StackMob.class, StackEntity.class).newInstance(sm, entity);

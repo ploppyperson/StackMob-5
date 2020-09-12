@@ -1,38 +1,102 @@
 package uk.antiperson.stackmob.entity;
 
-import net.jodah.expiringmap.ExpirationPolicy;
-import net.jodah.expiringmap.ExpiringMap;
+import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
+import org.bukkit.World;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Mob;
 import org.bukkit.persistence.PersistentDataType;
 import uk.antiperson.stackmob.StackMob;
 
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
+import java.util.HashSet;
 
 public class EntityManager {
 
-    private final Map<UUID, Integer> sizeCache = ExpiringMap.builder().maxSize(10000).expiration(30, TimeUnit.SECONDS).expirationPolicy(ExpirationPolicy.ACCESSED).build();
     private final StackMob sm;
+    private final HashSet<StackEntity> stackEntities;
     public EntityManager(StackMob sm) {
         this.sm = sm;
+        stackEntities = new HashSet<>();
     }
 
     public boolean isStackedEntity(LivingEntity entity) {
         return entity.getPersistentDataContainer().has(sm.getStackKey(), PersistentDataType.INTEGER);
     }
 
+    public HashSet<StackEntity> getStackEntities() {
+        return stackEntities;
+    }
+
     public StackEntity getStackEntity(LivingEntity entity) {
-        Integer size = sizeCache.get(entity.getUniqueId());
-        return size == null ? new StackEntity(sm, entity) : new StackEntity(sm, entity, size);
+        for (StackEntity stackEntity : stackEntities) {
+            if (stackEntity.getEntity().getEntityId() == entity.getEntityId()) {
+                return stackEntity;
+            }
+        }
+        return null;
     }
 
-    public boolean isWaiting(LivingEntity entity) {
-        return entity.getPersistentDataContainer().has(sm.getWaitKey(), PersistentDataType.INTEGER);
+    public void registerAllEntities() {
+        for (World world : Bukkit.getWorlds()) {
+            for (Chunk chunk : world.getLoadedChunks()) {
+                registerStackedEntities(chunk);
+            }
+        }
     }
 
-    public Map<UUID, Integer> getSizeCache() {
-        return sizeCache;
+    public void unregisterAllEntities() {
+        for (World world : Bukkit.getWorlds()) {
+            for (Chunk chunk : world.getLoadedChunks()) {
+                unregisterStackedEntities(chunk);
+            }
+        }
+    }
+
+    public void registerStackedEntities(Chunk chunk) {
+        for (Entity entity : chunk.getEntities()) {
+            if (!(entity instanceof Mob)) {
+                continue;
+            }
+            if (!StackMob.getEntityManager().isStackedEntity((LivingEntity) entity)) {
+                continue;
+            }
+            StackMob.getEntityManager().registerStackedEntity((LivingEntity) entity);
+        }
+    }
+
+    public void unregisterStackedEntities(Chunk chunk) {
+        for (Entity entity : chunk.getEntities()) {
+            if (!(entity instanceof Mob)) {
+                continue;
+            }
+            if (!StackMob.getEntityManager().isStackedEntity((LivingEntity) entity)) {
+                continue;
+            }
+            StackMob.getEntityManager().unregisterStackedEntity((LivingEntity) entity);
+        }
+    }
+
+    public StackEntity registerStackedEntity(LivingEntity entity) {
+        StackEntity stackEntity = new StackEntity(sm, entity);
+        stackEntities.add(stackEntity);
+        return stackEntity;
+    }
+
+    public void registerStackedEntity(StackEntity entity) {
+        stackEntities.add(entity);
+    }
+
+    public void unregisterStackedEntity(LivingEntity entity) {
+        StackEntity stackEntity = getStackEntity(entity);
+        if (stackEntity == null) {
+            throw new UnsupportedOperationException("Attempted to unregister entity that isn't stacked!");
+        }
+        unregisterStackedEntity(stackEntity);
+    }
+
+    public void unregisterStackedEntity(StackEntity stackEntity) {
+        stackEntities.remove(stackEntity);
     }
 
 }

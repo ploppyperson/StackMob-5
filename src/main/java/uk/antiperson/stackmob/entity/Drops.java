@@ -6,9 +6,11 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Mob;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.loot.LootContext;
 import uk.antiperson.stackmob.StackMob;
+import uk.antiperson.stackmob.utils.Utilities;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -33,7 +35,8 @@ public class Drops {
         if (sm.getMainConfig().isDropTypeBlacklisted(dead.getType())) {
             return items;
         }
-        if (sm.getMainConfig().isDropReasonBlacklisted(dead.getType(), dead.getLastDamageCause().getCause())) {
+        EntityDamageEvent lastDamageCause = dead.getLastDamageCause();
+        if (lastDamageCause == null || sm.getMainConfig().isDropReasonBlacklisted(dead.getType(), lastDamageCause.getCause())) {
             return items;
         }
         for (int i = 0; i < deathAmount; i++) {
@@ -78,15 +81,8 @@ public class Drops {
     }
 
     public static void dropItem(Location location, ItemStack stack, int amount) {
-        double inStacks = (double) amount / (double) stack.getMaxStackSize();
-        double floor = Math.floor(inStacks);
-        double leftOver = inStacks - floor;
-        for (int i = 0; i < floor; i++) {
-            stack.setAmount(stack.getMaxStackSize());
-            location.getWorld().dropItemNaturally(location, stack);
-        }
-        if (leftOver > 0) {
-            stack.setAmount((int) Math.round(leftOver * stack.getMaxStackSize()));
+        for (int itemAmount : Utilities.split(amount, stack.getMaxStackSize())) {
+            stack.setAmount(itemAmount);
             location.getWorld().dropItemNaturally(location, stack);
         }
     }

@@ -57,7 +57,7 @@ public class Updater {
         ERROR
     }
 
-    public class UpdateResult {
+    public static class UpdateResult {
 
         private final VersionResult result;
         private String newVersion;
