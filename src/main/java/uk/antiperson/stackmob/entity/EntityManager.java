@@ -31,7 +31,7 @@ public class EntityManager {
 
     public StackEntity getStackEntity(LivingEntity entity) {
         for (StackEntity stackEntity : stackEntities) {
-            if (stackEntity.getEntity().getUniqueId().equals(entity.getUniqueId())) {
+            if (stackEntity.getEntity().getEntityId() == entity.getEntityId()) {
                 return stackEntity;
             }
         }
