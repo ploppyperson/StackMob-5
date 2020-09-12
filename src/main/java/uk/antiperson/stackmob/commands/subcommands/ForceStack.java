@@ -40,7 +40,7 @@ public class ForceStack extends SubCommand {
                 if (sm.getMainConfig().isEntityBlacklisted(entity, reason)) {
                     continue;
                 }
-                sm.getEntityManager().getStackEntity(entity).setSize(1);
+                sm.getEntityManager().registerStackedEntity(entity).setSize(1);
                 count++;
             }
         }
