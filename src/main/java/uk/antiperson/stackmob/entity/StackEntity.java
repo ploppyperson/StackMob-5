@@ -15,7 +15,6 @@ public class StackEntity {
     private static final EntityManager entityManager = StackMob.getEntityManager();
 
     private final LivingEntity entity;
-    private final EntityManager entityManager;
     private final StackMob sm;
     private boolean waiting;
     private int waitCount;
@@ -23,7 +22,6 @@ public class StackEntity {
     public StackEntity(StackMob sm, LivingEntity entity) {
         this.sm = sm;
         this.entity = entity;
-        this.entityManager = entityManager;
     }
 
     /**
