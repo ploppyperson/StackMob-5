@@ -43,6 +43,9 @@ public class MergeTask extends BukkitRunnable {
                     continue;
                 }
                 if (!nearbyStack.canStack()) {
+                    if (!original.getEntity().isValid()) {
+                        toRemove.add(original);
+                    }
                     continue;
                 }
                 if (!original.match(nearbyStack)) {
