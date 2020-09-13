@@ -41,6 +41,9 @@ public class TagTask extends BukkitRunnable {
                     return;
                 }
                 StackEntity stackEntity = sm.getEntityManager().getStackEntity((LivingEntity) entity);
+                if (stackEntity == null) {
+                    return;
+                }
                 int threshold = sm.getMainConfig().getTagThreshold(stackEntity.getEntity().getType());
                 if (stackEntity.getSize() <= threshold) {
                     return;
