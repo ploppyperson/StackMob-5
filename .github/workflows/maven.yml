@@ -19,4 +19,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: StackMob
-        path: target/StackMob-5.3.2.jar
+        path: target/StackMob-5.3.3.jar
