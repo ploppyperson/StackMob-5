@@ -6,7 +6,7 @@ import uk.antiperson.stackmob.entity.traits.Trait;
 import uk.antiperson.stackmob.entity.traits.TraitMetadata;
 
 @TraitMetadata(entity = Sheep.class, path = "sheep-sheared")
-public class SheepShear extends Trait {
+public class SheepShear implements Trait {
 
     @Override
     public boolean checkTrait(LivingEntity first, LivingEntity nearby) {

@@ -6,7 +6,7 @@ import uk.antiperson.stackmob.entity.traits.Trait;
 import uk.antiperson.stackmob.entity.traits.TraitMetadata;
 
 @TraitMetadata(entity = Fox.class, path = "fox-type")
-public class FoxType extends Trait {
+public class FoxType implements Trait {
 
     @Override
     public boolean checkTrait(LivingEntity first, LivingEntity nearby) {

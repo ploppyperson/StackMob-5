@@ -6,7 +6,7 @@ import uk.antiperson.stackmob.entity.traits.Trait;
 import uk.antiperson.stackmob.entity.traits.TraitMetadata;
 
 @TraitMetadata(entity = Bee.class, path = "bee-nectar")
-public class BeeNectar extends Trait {
+public class BeeNectar implements Trait {
     @Override
     public boolean checkTrait(LivingEntity first, LivingEntity nearby) {
         return ((Bee) first).hasNectar() != ((Bee) nearby).hasNectar();

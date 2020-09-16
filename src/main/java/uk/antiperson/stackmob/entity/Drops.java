@@ -1,5 +1,6 @@
 package uk.antiperson.stackmob.entity;
 
+import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -13,7 +14,6 @@ import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.utils.Utilities;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
@@ -28,7 +28,7 @@ public class Drops {
     }
 
     public Map<ItemStack, Integer> calculateDrops(int deathAmount, List<ItemStack> originalDrops) {
-        Map<ItemStack, Integer> items = new HashMap<>();
+        Map<ItemStack, Integer> items = new Object2IntOpenHashMap<>();
         if (!sm.getMainConfig().isDropMultiEnabled(dead.getType())) {
             return items;
         }

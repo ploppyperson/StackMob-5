@@ -1,5 +1,6 @@
 package uk.antiperson.stackmob.entity;
 
+import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.World;
@@ -10,15 +11,15 @@ import org.bukkit.persistence.PersistentDataType;
 import uk.antiperson.stackmob.StackMob;
 
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.Map;
 
 public class EntityManager {
 
     private final StackMob sm;
-    private final HashMap<Integer, StackEntity> stackEntities;
+    private final Map<Integer, StackEntity> stackEntities;
     public EntityManager(StackMob sm) {
         this.sm = sm;
-        stackEntities = new HashMap<>();
+        stackEntities = new Object2ObjectOpenHashMap<>();
     }
 
     public boolean isStackedEntity(LivingEntity entity) {

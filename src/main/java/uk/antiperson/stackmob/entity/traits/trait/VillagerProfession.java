@@ -6,7 +6,7 @@ import uk.antiperson.stackmob.entity.traits.Trait;
 import uk.antiperson.stackmob.entity.traits.TraitMetadata;
 
 @TraitMetadata(entity = Villager.class, path = "villager-profession")
-public class VillagerProfession extends Trait {
+public class VillagerProfession implements Trait {
 
     @Override
     public boolean checkTrait(LivingEntity first, LivingEntity nearby) {

@@ -1,6 +1,7 @@
 package uk.antiperson.stackmob.hook;
 
 import org.bukkit.Location;
+import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import org.bukkit.entity.LivingEntity;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.StackEntity;
@@ -9,11 +10,11 @@ import uk.antiperson.stackmob.hook.hooks.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Parameter;
-import java.util.HashSet;
+import java.util.Set;
 
 public class HookManager {
 
-    private final HashSet<Hook> hooks = new HashSet<>();
+    private final Set<Hook> hooks = new ObjectOpenHashSet<>();
     private final StackMob sm;
     private ProtocolLibHook protocolLibHook;
     public HookManager(StackMob sm) {

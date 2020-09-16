@@ -6,7 +6,7 @@ import uk.antiperson.stackmob.entity.traits.Trait;
 import uk.antiperson.stackmob.entity.traits.TraitMetadata;
 
 @TraitMetadata(entity = Animals.class, path = "love-mode")
-public class LoveMode extends Trait {
+public class LoveMode implements Trait {
 
     @Override
     public boolean checkTrait(LivingEntity first, LivingEntity nearby) {

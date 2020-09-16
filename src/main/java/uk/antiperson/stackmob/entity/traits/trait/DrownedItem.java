@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @TraitMetadata(entity = Drowned.class, path = "drowned-hand-item")
-public class DrownedItem extends Trait {
+public class DrownedItem implements Trait {
 
     private final List<Material> materials = Arrays.asList(Material.NAUTILUS_SHELL, Material.TRIDENT);
     

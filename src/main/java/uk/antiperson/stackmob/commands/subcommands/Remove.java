@@ -1,5 +1,6 @@
 package uk.antiperson.stackmob.commands.subcommands;
 
+import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Mob;
@@ -9,7 +10,6 @@ import uk.antiperson.stackmob.commands.*;
 import uk.antiperson.stackmob.entity.StackEntity;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
 
@@ -35,7 +35,7 @@ public class Remove extends SubCommand {
                     break;
             }
         }
-        Set<StackEntity> toRemove = new HashSet<>();
+        Set<StackEntity> toRemove = new ObjectOpenHashSet<>();
         for (StackEntity stackEntity : StackMob.getEntityManager().getStackEntities()) {
             if (!function.apply(stackEntity.getEntity())) {
                 continue;

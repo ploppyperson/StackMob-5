@@ -2,6 +2,8 @@ package uk.antiperson.stackmob.config;
 
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.CreatureSpawnEvent;
@@ -17,90 +19,90 @@ import java.util.*;
 public class MainConfig extends SpecialConfigFile {
 
     private int default_stack_max_size;
-    private final Map<EntityType, Integer> stack_max_size = new HashMap<>();
+    private final Map<EntityType, Integer> stack_max_size = new Object2ObjectOpenHashMap<>();
     private Integer[] default_stack_merge_range;
-    private final Map<EntityType, Integer[]> stack_merge_range = new HashMap<>();
+    private final Map<EntityType, Integer[]> stack_merge_range = new Object2ObjectOpenHashMap<>();
     private boolean default_stack_threshold_enabled;
-    private final Map<EntityType, Boolean> stack_threshold_enabled = new HashMap<>();
+    private final Map<EntityType, Boolean> stack_threshold_enabled = new Object2ObjectOpenHashMap<>();
     private int default_stack_threshold_amount;
-    private final Map<EntityType, Integer> stack_threshold_amount = new HashMap<>();
+    private final Map<EntityType, Integer> stack_threshold_amount = new Object2ObjectOpenHashMap<>();
 
 
     private String default_display_name_format;
-    private final Map<EntityType, String> display_name_format = new HashMap<>();
+    private final Map<EntityType, String> display_name_format = new Object2ObjectOpenHashMap<>();
     private TagMode default_display_name_visibility;
-    private final Map<EntityType, TagMode> display_name_visibility = new HashMap<>();
+    private final Map<EntityType, TagMode> display_name_visibility = new Object2ObjectOpenHashMap<>();
     private Integer[] default_display_name_nearby_range;
     private Integer default_display_name_threshold;
-    private final Map<EntityType, Integer> display_name_threshold = new HashMap<>();
+    private final Map<EntityType, Integer> display_name_threshold = new Object2ObjectOpenHashMap<>();
 
 
     private boolean default_death_skip_animation;
-    private final Map<EntityType, Boolean> death_skip_animation = new HashMap<>();
+    private final Map<EntityType, Boolean> death_skip_animation = new Object2ObjectOpenHashMap<>();
     private final List<String> default_death_priority = new ArrayList<>();
-    private final Map<EntityType, List<String>> death_priority = new HashMap<>();
-    private final Map<String, Set<EntityType>> default_death_type_blacklist = new HashMap<>();
-    private final Map<String, Set<EntityDamageEvent.DamageCause>> default_death_reason_blacklist = new HashMap<>();
-    private final Map<EntityType, Map<String, Set<EntityDamageEvent.DamageCause>>> death_reason_blacklist = new HashMap<>();
+    private final Map<EntityType, List<String>> death_priority = new Object2ObjectOpenHashMap<>();
+    private final Map<String, Set<EntityType>> default_death_type_blacklist = new Object2ObjectOpenHashMap<>();
+    private final Map<String, Set<EntityDamageEvent.DamageCause>> default_death_reason_blacklist = new Object2ObjectOpenHashMap<>();
+    private final Map<EntityType, Map<String, Set<EntityDamageEvent.DamageCause>>> death_reason_blacklist = new Object2ObjectOpenHashMap<>();
     private int default_death_step_min_step;
-    private final Map<EntityType, Integer> death_step_min_step = new HashMap<>();
+    private final Map<EntityType, Integer> death_step_min_step = new Object2ObjectOpenHashMap<>();
     private int default_death_step_max_step;
-    private final Map<EntityType, Integer> death_step_max_step = new HashMap<>();
+    private final Map<EntityType, Integer> death_step_max_step = new Object2ObjectOpenHashMap<>();
 
 
     private boolean default_drops_enabled;
-    private final Map<EntityType, Boolean> drops_enabled = new HashMap<>();
+    private final Map<EntityType, Boolean> drops_enabled = new Object2ObjectOpenHashMap<>();
     private boolean default_drops_use_loot_tables;
-    private final Map<EntityType, Boolean> drops_use_loot_tables = new HashMap<>();
-    private final Set<Material> default_drops_one_per_stack = new HashSet<>();
-    private final Map<EntityType, Set<Material>> drops_one_per_stack = new HashMap<>();
-    private final Set<Material> default_drops_item_blacklist = new HashSet<>();
-    private final Map<EntityType, Set<Material>> drops_item_blacklist = new HashMap<>();
-    private final Set<EntityDamageEvent.DamageCause> default_drops_reason_blacklist = new HashSet<>();
-    private final Map<EntityType, Set<EntityDamageEvent.DamageCause>> drops_reason_blacklist = new HashMap<>();
-    private final Set<EntityType> default_drops_type_blacklist = new HashSet<>();
+    private final Map<EntityType, Boolean> drops_use_loot_tables = new Object2ObjectOpenHashMap<>();
+    private final Set<Material> default_drops_one_per_stack = new ObjectOpenHashSet<>();
+    private final Map<EntityType, Set<Material>> drops_one_per_stack = new Object2ObjectOpenHashMap<>();
+    private final Set<Material> default_drops_item_blacklist = new ObjectOpenHashSet<>();
+    private final Map<EntityType, Set<Material>> drops_item_blacklist = new Object2ObjectOpenHashMap<>();
+    private final Set<EntityDamageEvent.DamageCause> default_drops_reason_blacklist = new ObjectOpenHashSet<>();
+    private final Map<EntityType, Set<EntityDamageEvent.DamageCause>> drops_reason_blacklist = new Object2ObjectOpenHashMap<>();
+    private final Set<EntityType> default_drops_type_blacklist = new ObjectOpenHashSet<>();
 
 
     private boolean default_experience_enabled;
-    private final Map<EntityType, Boolean> experience_enabled = new HashMap<>();
+    private final Map<EntityType, Boolean> experience_enabled = new Object2ObjectOpenHashMap<>();
     private double default_experience_multiplier_min;
-    private final Map<EntityType, Double> experience_multiplier_min = new HashMap<>();
+    private final Map<EntityType, Double> experience_multiplier_min = new Object2ObjectOpenHashMap<>();
     private double default_experience_multiplier_max;
-    private final Map<EntityType, Double> experience_multiplier_max = new HashMap<>();
-    private final Set<EntityType> default_experience_type_blacklist = new HashSet<>();
+    private final Map<EntityType, Double> experience_multiplier_max = new Object2ObjectOpenHashMap<>();
+    private final Set<EntityType> default_experience_type_blacklist = new ObjectOpenHashSet<>();
 
 
     private boolean default_player_stats;
-    private final Map<EntityType, Boolean> player_stats = new HashMap<>();
+    private final Map<EntityType, Boolean> player_stats = new Object2ObjectOpenHashMap<>();
 
 
     private boolean default_wait_to_stack_enabled;
-    private final Map<EntityType, Boolean> wait_to_stack_enabled = new HashMap<>();
+    private final Map<EntityType, Boolean> wait_to_stack_enabled = new Object2ObjectOpenHashMap<>();
     private int default_wait_to_stack_wait_time;
-    private final Map<EntityType, Integer> wait_to_stack_wait_time = new HashMap<>();
-    private final Set<CreatureSpawnEvent.SpawnReason> default_wait_to_stack_reasons_whitelist = new HashSet<>();
-    private final Map<EntityType, Set<CreatureSpawnEvent.SpawnReason>> wait_to_stack_reasons_whitelist = new HashMap<>();
-    private final Set<EntityType> default_wait_to_stack_types_whitelist = new HashSet<>();
+    private final Map<EntityType, Integer> wait_to_stack_wait_time = new Object2ObjectOpenHashMap<>();
+    private final Set<CreatureSpawnEvent.SpawnReason> default_wait_to_stack_reasons_whitelist = new ObjectOpenHashSet<>();
+    private final Map<EntityType, Set<CreatureSpawnEvent.SpawnReason>> wait_to_stack_reasons_whitelist = new Object2ObjectOpenHashMap<>();
+    private final Set<EntityType> default_wait_to_stack_types_whitelist = new ObjectOpenHashSet<>();
 
 
     private boolean default_disable_targeting_enabled;
-    private final Map<EntityType, Boolean> disable_targeting_enabled = new HashMap<>();
-    private final Set<EntityType> default_disable_targeting_type_blacklist = new HashSet<>();
-    private final Set<CreatureSpawnEvent.SpawnReason> default_disable_targeting_reason_blacklist = new HashSet<>();
-    private final Map<EntityType, Set<CreatureSpawnEvent.SpawnReason>> disable_targeting_reason_blacklist = new HashMap<>();
+    private final Map<EntityType, Boolean> disable_targeting_enabled = new Object2ObjectOpenHashMap<>();
+    private final Set<EntityType> default_disable_targeting_type_blacklist = new ObjectOpenHashSet<>();
+    private final Set<CreatureSpawnEvent.SpawnReason> default_disable_targeting_reason_blacklist = new ObjectOpenHashSet<>();
+    private final Map<EntityType, Set<CreatureSpawnEvent.SpawnReason>> disable_targeting_reason_blacklist = new Object2ObjectOpenHashMap<>();
 
 
-    private final Set<EntityType> default_types_blacklist = new HashSet<>();
-    private final Set<CreatureSpawnEvent.SpawnReason> default_reason_blacklist = new HashSet<>();
-    private final Map<EntityType, Set<CreatureSpawnEvent.SpawnReason>> reason_blacklist = new HashMap<>();
-    private final Set<World> default_worlds_blacklist = new HashSet<>();
-    private final Map<EntityType, Set<World>> worlds_blacklist = new HashMap<>();
+    private final Set<EntityType> default_types_blacklist = new ObjectOpenHashSet<>();
+    private final Set<CreatureSpawnEvent.SpawnReason> default_reason_blacklist = new ObjectOpenHashSet<>();
+    private final Map<EntityType, Set<CreatureSpawnEvent.SpawnReason>> reason_blacklist = new Object2ObjectOpenHashMap<>();
+    private final Set<World> default_worlds_blacklist = new ObjectOpenHashSet<>();
+    private final Map<EntityType, Set<World>> worlds_blacklist = new Object2ObjectOpenHashMap<>();
 
 
-    private final Map<String, Boolean> default_events_remove_stack_data = new HashMap<>();
-    private final Map<EntityType, Map<String, Boolean>> events_remove_stack_data = new HashMap<>();
-    private final Map<String, ListenerMode> default_events_mode = new HashMap<>();
-    private final Map<EntityType, Map<String, ListenerMode>> events_mode = new HashMap<>();
+    private final Map<String, Boolean> default_events_remove_stack_data = new Object2ObjectOpenHashMap<>();
+    private final Map<EntityType, Map<String, Boolean>> events_remove_stack_data = new Object2ObjectOpenHashMap<>();
+    private final Map<String, ListenerMode> default_events_mode = new Object2ObjectOpenHashMap<>();
+    private final Map<EntityType, Map<String, ListenerMode>> events_mode = new Object2ObjectOpenHashMap<>();
 
 
     private boolean default_events_multiply_slime_split;
@@ -129,13 +131,13 @@ public class MainConfig extends SpecialConfigFile {
         final Collection<String> death_priorities = getDeathSection(null);
         default_death_priority.addAll(death_priorities);
         for (String defaultDeathOption : death_priorities) {
-            final Set<EntityType> entityTypes = default_death_type_blacklist.getOrDefault(defaultDeathOption, new HashSet<>());
+            final Set<EntityType> entityTypes = default_death_type_blacklist.getOrDefault(defaultDeathOption, new ObjectOpenHashSet<>());
             entityTypes.addAll(getList("death." + defaultDeathOption + ".type-blacklist").asEntityTypeList());
-            default_death_type_blacklist.put(defaultDeathOption, entityTypes);
+            default_death_type_blacklist.putIfAbsent(defaultDeathOption, entityTypes);
 
-            final Set<EntityDamageEvent.DamageCause> damageCauses = default_death_reason_blacklist.getOrDefault(defaultDeathOption, new HashSet<>());
+            final Set<EntityDamageEvent.DamageCause> damageCauses = default_death_reason_blacklist.getOrDefault(defaultDeathOption, new ObjectOpenHashSet<>());
             damageCauses.addAll(getList("death." + defaultDeathOption + ".reason-blacklist").asDamageCauseList());
-            default_death_reason_blacklist.put(defaultDeathOption, damageCauses);
+            default_death_reason_blacklist.putIfAbsent(defaultDeathOption, damageCauses);
         }
         default_death_step_max_step = getInt("death.STEP.max-step");
         default_death_step_min_step = getInt("death.STEP.min-step");
@@ -227,10 +229,10 @@ public class MainConfig extends SpecialConfigFile {
                 death_priority.put(type, custom_death_priorities);
 
                 for (String defaultDeathOption : custom_death_priorities) {
-                    final Map<String, Set<EntityDamageEvent.DamageCause>> damageCauses = death_reason_blacklist.getOrDefault(type, new HashMap<>());
+                    final Map<String, Set<EntityDamageEvent.DamageCause>> damageCauses = death_reason_blacklist.getOrDefault(type, new Object2ObjectOpenHashMap<>());
 
-                    damageCauses.put(defaultDeathOption, new HashSet<>(getList(type, "death." + defaultDeathOption + ".reason-blacklist").asDamageCauseList()));
-                    death_reason_blacklist.put(type, damageCauses);
+                    damageCauses.put(defaultDeathOption, new ObjectOpenHashSet<>(getList(type, "death." + defaultDeathOption + ".reason-blacklist").asDamageCauseList()));
+                    death_reason_blacklist.putIfAbsent(type, damageCauses);
                 }
             }
             final int custom_death_step_max_step = getInt(type, "death.STEP.max-step");
@@ -249,15 +251,15 @@ public class MainConfig extends SpecialConfigFile {
             if (custom_drops_use_loot_tables != default_drops_use_loot_tables)
                 drops_use_loot_tables.put(type, custom_drops_use_loot_tables);
 
-            final Set<Material> custom_drops_one_per_stack = new HashSet<>(getList(type, "drops.one-per-stack").asMaterialList());
+            final Set<Material> custom_drops_one_per_stack = new ObjectOpenHashSet<>(getList(type, "drops.one-per-stack").asMaterialList());
             if (!custom_drops_one_per_stack.equals(default_drops_one_per_stack))
                 drops_one_per_stack.put(type, custom_drops_one_per_stack);
 
-            final Set<Material> custom_drops_item_blacklist = new HashSet<>(getList(type, "drops.item-blacklist").asMaterialList());
+            final Set<Material> custom_drops_item_blacklist = new ObjectOpenHashSet<>(getList(type, "drops.item-blacklist").asMaterialList());
             if (!custom_drops_item_blacklist.equals(default_drops_item_blacklist))
                 drops_item_blacklist.put(type, custom_drops_item_blacklist);
 
-            final Set<EntityDamageEvent.DamageCause> custom_drops_reason_blacklist = new HashSet<>(getList(type, "drops.reason-blacklist").asDamageCauseList());
+            final Set<EntityDamageEvent.DamageCause> custom_drops_reason_blacklist = new ObjectOpenHashSet<>(getList(type, "drops.reason-blacklist").asDamageCauseList());
             if (!custom_drops_reason_blacklist.equals(default_drops_reason_blacklist))
                 drops_reason_blacklist.put(type, custom_drops_reason_blacklist);
 
@@ -287,7 +289,7 @@ public class MainConfig extends SpecialConfigFile {
             if (custom_wait_to_stack_wait_time != default_wait_to_stack_wait_time)
                 wait_to_stack_wait_time.put(type, custom_wait_to_stack_wait_time);
 
-            final Set<CreatureSpawnEvent.SpawnReason> custom_wait_to_stack_reasons_whitelist = new HashSet<>(getList(type, "wait-to-stack.reasons-whitelist").asSpawnReasonList());
+            final Set<CreatureSpawnEvent.SpawnReason> custom_wait_to_stack_reasons_whitelist = new ObjectOpenHashSet<>(getList(type, "wait-to-stack.reasons-whitelist").asSpawnReasonList());
             if (!custom_wait_to_stack_reasons_whitelist.equals(default_wait_to_stack_reasons_whitelist)) {
                 wait_to_stack_reasons_whitelist.put(type, custom_wait_to_stack_reasons_whitelist);
             }
@@ -297,35 +299,35 @@ public class MainConfig extends SpecialConfigFile {
             if (custom_disable_targeting_enabled != default_disable_targeting_enabled)
                 disable_targeting_enabled.put(type, custom_disable_targeting_enabled);
 
-            final Set<CreatureSpawnEvent.SpawnReason> custom_disable_targeting_reason_blacklist = new HashSet<>(getList(type, "disable-targeting.reason-blacklist").asSpawnReasonList());
+            final Set<CreatureSpawnEvent.SpawnReason> custom_disable_targeting_reason_blacklist = new ObjectOpenHashSet<>(getList(type, "disable-targeting.reason-blacklist").asSpawnReasonList());
             if (!custom_disable_targeting_reason_blacklist.equals(default_disable_targeting_reason_blacklist))
                 disable_targeting_reason_blacklist.put(type, custom_disable_targeting_reason_blacklist);
 
 
-            final Set<CreatureSpawnEvent.SpawnReason> custom_reason_blacklist = new HashSet<>(getList(type, "reason-blacklist").asSpawnReasonList());
+            final Set<CreatureSpawnEvent.SpawnReason> custom_reason_blacklist = new ObjectOpenHashSet<>(getList(type, "reason-blacklist").asSpawnReasonList());
             if (!custom_reason_blacklist.equals(default_reason_blacklist))
                 reason_blacklist.put(type, custom_reason_blacklist);
 
-            final Set<World> custom_worlds_blacklist = new HashSet<>(getList(type, "worlds-blacklist").asWorldList());
+            final Set<World> custom_worlds_blacklist = new ObjectOpenHashSet<>(getList(type, "worlds-blacklist").asWorldList());
             if (!custom_worlds_blacklist.equals(default_worlds_blacklist))
                 worlds_blacklist.put(type, custom_worlds_blacklist);
 
 
             for (String key : getConfigurationSection(type, "events.remove-stack-data").getKeys(false)) {
-                final Map<String, Boolean> map = events_remove_stack_data.getOrDefault(type, new HashMap<>());
+                final Map<String, Boolean> map = events_remove_stack_data.getOrDefault(type, new Object2ObjectOpenHashMap<>());
                 final boolean custom_events_remove_stack_data = getBoolean(type, "events.remove-stack-data." + key);
                 if (custom_events_remove_stack_data != default_events_remove_stack_data.get(key)) {
                     map.put(key, custom_events_remove_stack_data);
-                    events_remove_stack_data.put(type, map);
+                    events_remove_stack_data.putIfAbsent(type, map);
                 }
             }
             for (String key : getConfigurationSection(type, "events.").getKeys(false)) {
-                final Map<String, ListenerMode> map = events_mode.getOrDefault(type, new HashMap<>());
+                final Map<String, ListenerMode> map = events_mode.getOrDefault(type, new Object2ObjectOpenHashMap<>());
                 final String custom_mode = getString(type, "events." + key + ".mode");
 
                 if (custom_mode != null && !custom_mode.equals(default_events_mode.get(key).toString())) {
                     map.put(key, ListenerMode.valueOf(custom_mode));
-                    events_mode.put(type, map);
+                    events_mode.putIfAbsent(type, map);
                 }
             }
         }
@@ -495,7 +497,7 @@ public class MainConfig extends SpecialConfigFile {
     }
 
     private Collection<String> getDeathSection(EntityType type) {
-        TreeMap<Integer, String> array = new TreeMap<>();
+        final Map<Integer, String> array = new TreeMap<>();
 
         if (type == null) {
             for (DeathType deathType : DeathType.values()) {

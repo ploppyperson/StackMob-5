@@ -1,5 +1,7 @@
 package uk.antiperson.stackmob.entity.traits;
 
+import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import uk.antiperson.stackmob.StackMob;
@@ -7,15 +9,16 @@ import uk.antiperson.stackmob.entity.StackEntity;
 import uk.antiperson.stackmob.entity.traits.trait.*;
 import uk.antiperson.stackmob.utils.Utilities;
 
-import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class TraitManager {
 
-    private final HashSet<Trait> traits;
+    private final Map<EntityType, Set<Trait>> traitsPerEntity;
     private final StackMob sm;
     public TraitManager(StackMob sm) {
         this.sm = sm;
-        this.traits = new HashSet<>();
+        this.traitsPerEntity = new Object2ObjectOpenHashMap<>();
     }
 
     public void registerTraits() throws InstantiationException, IllegalAccessException {
@@ -55,11 +58,12 @@ public class TraitManager {
         TraitMetadata traitMetadata = trait.getAnnotation(TraitMetadata.class);
         if (sm.getMainConfig().isTraitEnabled(traitMetadata.path()) || sm.getMainConfig().getBoolean(traitMetadata.path())) {
             final Trait newTrait = trait.newInstance();
-            traits.add(newTrait);
 
             for (EntityType entityType : EntityType.values()) {
                 if (entityType.isAlive() && isTraitApplicable(newTrait, entityType.getEntityClass())) {
-                    newTrait.getSupportedEntities().add(entityType);
+                    final Set<Trait> applicableTraits = traitsPerEntity.getOrDefault(entityType, new ObjectOpenHashSet<>());
+                    applicableTraits.add(newTrait);
+                    traitsPerEntity.putIfAbsent(entityType, applicableTraits);
                 }
             }
         }
@@ -72,11 +76,9 @@ public class TraitManager {
      * @return if these entities have any not matching characteristics (traits.)
      */
     public boolean checkTraits(StackEntity first, StackEntity nearby) {
-        for (Trait trait : traits) {
-            if (trait.getSupportedEntities().contains(first.getEntity().getType())) {
-                if (trait.checkTrait(first.getEntity(), nearby.getEntity())) {
-                    return true;
-                }
+        for (Trait trait : traitsPerEntity.get(first.getEntity().getType())) {
+            if (trait.checkTrait(first.getEntity(), nearby.getEntity())) {
+                return true;
             }
         }
         return false;
@@ -88,10 +90,8 @@ public class TraitManager {
      * @param dead the entity which traits should be copied from.
      */
     public void applyTraits(StackEntity spawned, StackEntity dead) {
-        for (Trait trait : traits) {
-            if (trait.getSupportedEntities().contains(spawned.getEntity().getType())) {
-                trait.applyTrait(spawned.getEntity(), dead.getEntity());
-            }
+        for (Trait trait : traitsPerEntity.get(spawned.getEntity().getType())) {
+            trait.applyTrait(spawned.getEntity(), dead.getEntity());
         }
     }
 
@@ -105,4 +105,5 @@ public class TraitManager {
         final TraitMetadata traitMetadata = trait.getClass().getAnnotation(TraitMetadata.class);
         return traitMetadata.entity().isAssignableFrom(clazz);
     }
+
 }

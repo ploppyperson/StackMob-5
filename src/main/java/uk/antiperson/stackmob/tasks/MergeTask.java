@@ -1,5 +1,6 @@
 package uk.antiperson.stackmob.tasks;
 
+import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Mob;
@@ -8,7 +9,6 @@ import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.StackEntity;
 import uk.antiperson.stackmob.utils.Utilities;
 
-import java.util.HashSet;
 import java.util.Set;
 
 public class MergeTask extends BukkitRunnable {
@@ -20,7 +20,7 @@ public class MergeTask extends BukkitRunnable {
     }
 
     public void run() {
-        HashSet<StackEntity> toRemove = new HashSet<>();
+        Set<StackEntity> toRemove = new ObjectOpenHashSet<>();
         for (StackEntity original : StackMob.getEntityManager().getStackEntities()) {
             if (original.isWaiting()) {
                 original.incrementWait();
@@ -33,7 +33,7 @@ public class MergeTask extends BukkitRunnable {
                 continue;
             }
             Integer[] searchRadius = sm.getMainConfig().getStackRadius(original.getEntity().getType());
-            Set<StackEntity> matches = new HashSet<>();
+            Set<StackEntity> matches = new ObjectOpenHashSet<>();;
             for (Entity nearby : original.getEntity().getNearbyEntities(searchRadius[0], searchRadius[1], searchRadius[2])) {
                 if (!(nearby instanceof Mob)) {
                     continue;
