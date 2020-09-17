@@ -85,11 +85,10 @@ public class EntityManager {
     }
 
     public void unregisterStackedEntity(LivingEntity entity) {
-        StackEntity stackEntity = getStackEntity(entity);
+        StackEntity stackEntity = stackEntities.remove(entity.getEntityId());
         if (stackEntity == null) {
             throw new UnsupportedOperationException("Attempted to unregister entity that isn't stacked!");
         }
-        unregisterStackedEntity(stackEntity);
     }
 
     public void unregisterStackedEntity(StackEntity stackEntity) {
