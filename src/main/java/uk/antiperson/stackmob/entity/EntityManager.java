@@ -3,7 +3,7 @@ package uk.antiperson.stackmob.entity;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Mob;
@@ -19,7 +19,7 @@ public class EntityManager {
     private final Map<Integer, StackEntity> stackEntities;
     public EntityManager(StackMob sm) {
         this.sm = sm;
-        stackEntities = new Object2ObjectOpenHashMap<>();
+        stackEntities = new Int2ObjectOpenHashMap<>();
     }
 
     public boolean isStackedEntity(LivingEntity entity) {

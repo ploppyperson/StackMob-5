@@ -1,6 +1,5 @@
 package uk.antiperson.stackmob.entity.traits;
 
-import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -9,6 +8,7 @@ import uk.antiperson.stackmob.entity.StackEntity;
 import uk.antiperson.stackmob.entity.traits.trait.*;
 import uk.antiperson.stackmob.utils.Utilities;
 
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -18,7 +18,7 @@ public class TraitManager {
     private final StackMob sm;
     public TraitManager(StackMob sm) {
         this.sm = sm;
-        this.traitsPerEntity = new Object2ObjectOpenHashMap<>();
+        this.traitsPerEntity = new EnumMap<>(EntityType.class);
     }
 
     public void registerTraits() throws InstantiationException, IllegalAccessException {

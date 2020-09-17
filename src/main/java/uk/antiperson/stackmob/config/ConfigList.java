@@ -1,12 +1,7 @@
 package uk.antiperson.stackmob.config;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.entity.EntityType;
-import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityTargetEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,64 +35,16 @@ public class ConfigList {
         return configFile.getIntegerList(path);
     }
 
-    public List<EntityType> asEntityTypeList() {
-        final List<EntityType> entityTypeList = new ArrayList<>();
+    public <E> List<E> asEnumList(Class<E> enumClass) {
+        final List<E> list = new ArrayList<>();
 
-        for (EntityType entityType : EntityType.values()) {
-            if (contains(entityType.toString())) {
-                entityTypeList.add(entityType);
+        for (E enumConstant : enumClass.getEnumConstants()) {
+            if (contains(enumConstant.toString())) {
+                list.add(enumConstant);
             }
         }
 
-        return entityTypeList;
-    }
-
-    public List<Material> asMaterialList() {
-        final List<Material> materialList = new ArrayList<>();
-
-        for (Material material : Material.values()) {
-            if (contains(material.toString())) {
-                materialList.add(material);
-            }
-        }
-
-        return materialList;
-    }
-
-    public List<CreatureSpawnEvent.SpawnReason> asSpawnReasonList() {
-        final List<CreatureSpawnEvent.SpawnReason> spawnReasonList = new ArrayList<>();
-
-        for (CreatureSpawnEvent.SpawnReason spawnReason : CreatureSpawnEvent.SpawnReason.values()) {
-            if (contains(spawnReason.toString())) {
-                spawnReasonList.add(spawnReason);
-            }
-        }
-
-        return spawnReasonList;
-    }
-
-    public List<EntityTargetEvent.TargetReason> asTargetReasonList() {
-        final List<EntityTargetEvent.TargetReason> targetReasonList = new ArrayList<>();
-
-        for (EntityTargetEvent.TargetReason targetReason : EntityTargetEvent.TargetReason.values()) {
-            if (contains(targetReason.toString())) {
-                targetReasonList.add(targetReason);
-            }
-        }
-
-        return targetReasonList;
-    }
-
-    public List<EntityDamageEvent.DamageCause> asDamageCauseList() {
-        final List<EntityDamageEvent.DamageCause> damageCauseList = new ArrayList<>();
-
-        for (EntityDamageEvent.DamageCause damageCause : EntityDamageEvent.DamageCause.values()) {
-            if (contains(damageCause.toString())) {
-                damageCauseList.add(damageCause);
-            }
-        }
-
-        return damageCauseList;
+        return list;
     }
 
     public List<World> asWorldList() {
