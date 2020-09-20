@@ -50,7 +50,7 @@ public class Drops {
                 if (is.getType() == Material.LEAD && dead.isLeashed()) {
                     continue;
                 }
-                if (sm.getMainConfig().idDropItemBlacklisted(dead.getType(), is.getType())) {
+                if (sm.getMainConfig().isDropItemBlacklisted(dead.getType(), is.getType())) {
                     continue;
                 }
                 int dropAmount = is.getAmount();

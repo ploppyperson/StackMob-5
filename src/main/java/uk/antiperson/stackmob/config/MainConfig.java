@@ -410,7 +410,7 @@ public class MainConfig extends SpecialConfigFile {
         return drops_reason_blacklist.getOrDefault(type, default_drops_reason_blacklist).contains(cause);
     }
 
-    public boolean idDropItemBlacklisted(EntityType type, Material material) {
+    public boolean isDropItemBlacklisted(EntityType type, Material material) {
         return drops_item_blacklist.getOrDefault(type, default_drops_item_blacklist).contains(material);
     }
 

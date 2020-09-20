@@ -41,10 +41,12 @@ public class DeathListener implements Listener {
                 stackEntity.incrementSize(-deathStep);
                 deathMethod.onSpawn(stackEntity);
             } else {
-                StackEntity spawned = stackEntity.duplicate();
-                spawned.setSize(stackEntity.getSize() - deathStep);
-                deathMethod.onSpawn(spawned);
-                stackEntity.removeStackData();
+                sm.getServer().getScheduler().runTask(sm, () -> {
+                    StackEntity spawned = stackEntity.duplicate();
+                    spawned.setSize(stackEntity.getSize() - deathStep);
+                    deathMethod.onSpawn(spawned);
+                    stackEntity.removeStackData();
+                });
             }
         }
         if (toMultiply == 0) {
