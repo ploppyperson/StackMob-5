@@ -1,5 +1,6 @@
 package uk.antiperson.stackmob.listeners;
 
+import com.destroystokyo.paper.event.entity.EntityAddToWorldEvent;
 import com.destroystokyo.paper.event.entity.EntityRemoveFromWorldEvent;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Mob;
@@ -29,5 +30,17 @@ public class RemoveListener implements Listener {
             return;
         }
         sm.getEntityManager().unregisterStackedEntity(stackEntity);
+    }
+
+    @EventHandler
+    public void onEntityAdd(EntityAddToWorldEvent event) {
+        if (!(event.getEntity() instanceof Mob)) {
+            return;
+        }
+        LivingEntity livingEntity = (LivingEntity) event.getEntity();
+        if (!sm.getEntityManager().isStackedEntity(livingEntity)) {
+            return;
+        }
+        sm.getEntityManager().registerStackedEntity(livingEntity);
     }
 }
