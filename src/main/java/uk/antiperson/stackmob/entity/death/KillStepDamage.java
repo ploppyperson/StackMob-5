@@ -20,13 +20,7 @@ public class KillStepDamage extends DeathMethod {
         double healthBefore = ((LivingEntity)getDead().getEntity().getLastDamageCause().getEntity()).getHealth();
         double damageDone = getEntity().getLastDamageCause().getFinalDamage();
         double damageLeft = Math.abs(healthBefore - damageDone);
-        for (AttributeModifier modifier : getEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH).getModifiers()) {
-            if (!modifier.getName().equals("Leader zombie bonus")) {
-                continue;
-            }
-            getEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH).removeModifier(modifier);
-        }
-        double maxHealth = getEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
+        double maxHealth = getEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue();
         double divided = damageLeft / maxHealth;
         int entities = (int) Math.floor(divided);
         leftOverDamage = (divided - entities) * maxHealth;
@@ -35,7 +29,7 @@ public class KillStepDamage extends DeathMethod {
 
     @Override
     public void onSpawn(StackEntity spawned) {
-        double maxHealth = getEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
+        double maxHealth = getEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue();
         StackableMobHook smh = sm.getHookManager().getApplicableHook(spawned);
         if (smh instanceof MythicMobsHook) {
             sm.getServer().getScheduler().runTaskLater(sm, bukkitTask -> {
