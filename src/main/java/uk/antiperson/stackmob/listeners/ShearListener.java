@@ -7,6 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockShearEntityEvent;
 import org.bukkit.event.player.PlayerShearEntityEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -33,11 +34,16 @@ public class ShearListener implements Listener {
         if (event.isCancelled()) {
             return;
         }
-        ItemStack is = shearLogic((LivingEntity) event.getEntity(), event.getPlayer().getInventory().getItemInMainHand());
+        EquipmentSlot equipmentSlot = findShears(event.getPlayer());
+        if (equipmentSlot == null) {
+            sm.getLogger().info("A player just managed to shear an entity while not holding shears.");
+            return;
+        }
+        ItemStack is = shearLogic((LivingEntity) event.getEntity(), event.getPlayer().getInventory().getItem(equipmentSlot));
         if (is == null) {
             return;
         }
-        event.getPlayer().getInventory().setItemInMainHand(is);
+        event.getPlayer().getInventory().setItem(equipmentSlot, is);
     }
 
     @EventHandler
@@ -53,6 +59,19 @@ public class ShearListener implements Listener {
             Dispenser dispenser = (Dispenser) event.getBlock().getState();
             dispenser.getInventory().setItem(dispenser.getInventory().first(event.getTool()), is);
         });
+    }
+
+    private EquipmentSlot findShears(Player player) {
+        for (EquipmentSlot equipmentSlot : EquipmentSlot.values()) {
+            if (equipmentSlot != EquipmentSlot.HAND && equipmentSlot != EquipmentSlot.OFF_HAND) {
+                continue;
+            }
+            if (player.getInventory().getItem(equipmentSlot).getType() != Material.SHEARS) {
+                continue;
+            }
+            return equipmentSlot;
+        }
+        return null;
     }
 
     private ItemStack shearLogic(LivingEntity entity, ItemStack item) {
