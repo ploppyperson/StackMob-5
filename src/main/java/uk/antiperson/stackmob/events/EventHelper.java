@@ -1,6 +1,7 @@
 package uk.antiperson.stackmob.events;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.LivingEntity;
 import uk.antiperson.stackmob.entity.StackEntity;
 
 public class EventHelper {
@@ -11,9 +12,15 @@ public class EventHelper {
         return event;
     }
 
-    public static StackDeathEvent callStackDeathEvent(StackEntity dead, int deathStep) {
+    public static void callStackDeathEvent(StackEntity dead, int deathStep) {
         StackDeathEvent event = new StackDeathEvent(dead, deathStep);
+        Bukkit.getPluginManager().callEvent(event);
+    }
+
+    public static StackSpawnEvent callStackSpawnEvent(LivingEntity spawned) {
+        StackSpawnEvent event = new StackSpawnEvent(spawned);
         Bukkit.getPluginManager().callEvent(event);
         return event;
     }
+
 }

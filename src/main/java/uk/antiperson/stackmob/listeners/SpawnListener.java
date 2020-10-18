@@ -9,6 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.StackEntity;
+import uk.antiperson.stackmob.events.EventHelper;
 
 public class SpawnListener implements Listener {
 
@@ -27,6 +28,9 @@ public class SpawnListener implements Listener {
                 return;
             }
             if (StackMob.getEntityManager().isStackedEntity(event.getEntity())) {
+                return;
+            }
+            if (EventHelper.callStackSpawnEvent(event.getEntity()).isCancelled()) {
                 return;
             }
             StackEntity original = StackMob.getEntityManager().registerStackedEntity(event.getEntity());
