@@ -12,9 +12,10 @@ public class EventHelper {
         return event;
     }
 
-    public static void callStackDeathEvent(StackEntity dead, int deathStep) {
+    public static StackDeathEvent callStackDeathEvent(StackEntity dead, int deathStep) {
         StackDeathEvent event = new StackDeathEvent(dead, deathStep);
         Bukkit.getPluginManager().callEvent(event);
+        return event;
     }
 
     public static StackSpawnEvent callStackSpawnEvent(LivingEntity spawned) {

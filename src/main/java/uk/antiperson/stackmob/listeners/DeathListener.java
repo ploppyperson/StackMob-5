@@ -15,6 +15,7 @@ import uk.antiperson.stackmob.entity.StackEntity;
 import uk.antiperson.stackmob.entity.death.DeathMethod;
 import uk.antiperson.stackmob.entity.death.DeathType;
 import uk.antiperson.stackmob.events.EventHelper;
+import uk.antiperson.stackmob.events.StackDeathEvent;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
@@ -33,8 +34,7 @@ public class DeathListener implements Listener {
         }
         StackEntity stackEntity = StackMob.getEntityManager().getStackEntity(event.getEntity());
         DeathMethod deathMethod = calculateDeath(stackEntity);
-        int deathStep = Math.min(stackEntity.getSize(), deathMethod.calculateStep());
-        EventHelper.callStackDeathEvent(stackEntity, deathStep);
+        int deathStep = EventHelper.callStackDeathEvent(stackEntity, Math.min(stackEntity.getSize(), deathMethod.calculateStep())).getDeathStep();
         int toMultiply = deathStep - 1;
         if (deathStep < stackEntity.getSize()) {
             if (sm.getMainConfig().isSkipDeathAnimation(event.getEntityType())) {
