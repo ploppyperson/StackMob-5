@@ -179,7 +179,7 @@ public class MainConfig extends SpecialConfigFile {
     public DeathType getDeathType(LivingEntity dead) {
         for (String key : getDeathSection(dead)) {
             ConfigList reasons = getList(dead.getType(), "death." + key + ".reason-blacklist");
-            if (reasons.contains(dead.getLastDamageCause().getCause().toString())) {
+            if (dead.getLastDamageCause() != null && reasons.contains(dead.getLastDamageCause().getCause().toString())) {
                 continue;
             }
             ConfigList types = getList(dead.getType(), "death." + key + ".type-blacklist");
