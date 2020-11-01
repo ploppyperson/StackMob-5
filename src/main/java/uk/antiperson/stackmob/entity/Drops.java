@@ -122,5 +122,4 @@ public class Drops {
         exp.setExperience(calculateExperience(min, max, entities));
     }
 
-
 }

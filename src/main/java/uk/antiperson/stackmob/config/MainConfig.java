@@ -494,7 +494,7 @@ public class MainConfig extends SpecialConfigFile {
 
     public DeathType getDeathType(LivingEntity entity) {
         for (String key : death_priority.getOrDefault(entity.getType(), default_death_priority)) {
-            if (death_reason_blacklist.getOrDefault(entity.getType(), default_death_reason_blacklist).get(key).contains(entity.getLastDamageCause().getCause())) {
+            if (entity.getLastDamageCause() != null && death_reason_blacklist.getOrDefault(entity.getType(), default_death_reason_blacklist).get(key).contains(entity.getLastDamageCause().getCause())) {
                 continue;
             }
             if (default_death_type_blacklist.get(key).contains(entity.getType())) {
