@@ -73,7 +73,7 @@ public class Utilities {
     }
 
     public static boolean isNativeVersion() {
-        return Package.getPackage("net.minecraft.server.v1_16_R2") != null;
+        return Package.getPackage("net.minecraft.server.v1_16_R3") != null;
     }
 
     public enum DownloadResult {
