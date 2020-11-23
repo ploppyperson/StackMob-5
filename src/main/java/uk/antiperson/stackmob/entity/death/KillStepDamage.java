@@ -16,6 +16,9 @@ public class KillStepDamage extends DeathMethod {
 
     @Override
     public int calculateStep() {
+        if (getDead().getEntity().getLastDamageCause() == null) {
+            return 1;
+        }
         double healthBefore = ((LivingEntity)getDead().getEntity().getLastDamageCause().getEntity()).getHealth();
         double damageDone = getEntity().getLastDamageCause().getFinalDamage();
         double damageLeft = Math.abs(healthBefore - damageDone);
