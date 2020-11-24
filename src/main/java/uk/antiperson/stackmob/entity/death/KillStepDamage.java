@@ -21,8 +21,8 @@ public class KillStepDamage extends DeathMethod {
         }
         double healthBefore = ((LivingEntity)getDead().getEntity().getLastDamageCause().getEntity()).getHealth();
         double damageDone = getEntity().getLastDamageCause().getFinalDamage();
-        double damageLeft = Math.abs(healthBefore - damageDone);
         double maxHealth = getEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue();
+        double damageLeft = Math.min(maxHealth * (getDead().getSize() - 1), Math.abs(healthBefore - damageDone));
         double divided = damageLeft / maxHealth;
         int entities = (int) Math.floor(divided);
         leftOverDamage = (divided - entities) * maxHealth;
