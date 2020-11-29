@@ -5,6 +5,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import uk.antiperson.stackmob.StackMob;
+import uk.antiperson.stackmob.entity.StackEntity;
 import uk.antiperson.stackmob.entity.death.DeathType;
 import uk.antiperson.stackmob.entity.TagMode;
 import uk.antiperson.stackmob.listeners.ListenerMode;
@@ -201,6 +202,10 @@ public class MainConfig extends SpecialConfigFile {
 
     public boolean isSkipDeathAnimation(EntityType type) {
         return getBoolean(type, "death.skip-animation");
+    }
+
+    public StackEntity.EquipItemMode getEquipItemMode(EntityType type) {
+        return StackEntity.EquipItemMode.valueOf(getString(type, "events.equip.mode"));
     }
 
     @Override

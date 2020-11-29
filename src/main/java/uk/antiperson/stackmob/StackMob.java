@@ -147,6 +147,7 @@ public class StackMob extends JavaPlugin {
         registerEvent(PlayerListener.class);
         registerEvent(BeeListener.class);
         registerEvent(LeashListener.class);
+        registerEvent(EquipListener.class);
         if (Utilities.isPaper()) {
             registerEvent(RemoveListener.class);
         } else {

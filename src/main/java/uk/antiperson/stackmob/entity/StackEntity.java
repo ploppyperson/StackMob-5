@@ -10,6 +10,9 @@ import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.events.EventHelper;
 import uk.antiperson.stackmob.utils.Utilities;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class StackEntity {
 
     private final LivingEntity entity;
@@ -18,6 +21,7 @@ public class StackEntity {
     private boolean waiting;
     private int waitCount;
     private int stackSize;
+    private Set<ItemStack> equiptItems;
     public StackEntity(StackMob sm, EntityManager entityManager, LivingEntity entity) {
         this.sm = sm;
         this.entity = entity;
@@ -158,6 +162,7 @@ public class StackEntity {
             ItemStack leash = new ItemStack(Material.LEAD, 1);
             getWorld().dropItemNaturally(entity.getLocation(), leash);
         }
+        dropEquipItems();
     }
 
     /**
@@ -219,6 +224,11 @@ public class StackEntity {
     }
 
     public boolean canStack() {
+        if (equiptItems != null && !equiptItems.isEmpty()) {
+            if (sm.getMainConfig().getEquipItemMode(getEntity().getType()) == EquipItemMode.PREVENT_STACK) {
+                return false;
+            }
+        }
         return !getEntity().isDead() && !isMaxSize() && !isWaiting();
     }
 
@@ -310,4 +320,30 @@ public class StackEntity {
         return duplicate;
     }
 
+
+    public void addEquipItem(ItemStack equipt) {
+        if (equiptItems == null) {
+            equiptItems = new HashSet<>();
+        }
+        equiptItems.add(equipt);
+        sm.getLogger().info("equipt item " + equipt);
+    }
+
+    private void dropEquipItems() {
+        if (equiptItems == null) {
+            return;
+        }
+        if (sm.getMainConfig().getEquipItemMode(getEntity().getType()) != EquipItemMode.DROP_ITEMS) {
+            return;
+        }
+        for (ItemStack itemStack : equiptItems) {
+            getEntity().getWorld().dropItemNaturally(getEntity().getLocation(), itemStack);
+        }
+    }
+
+    public enum EquipItemMode {
+        IGNORE,
+        DROP_ITEMS,
+        PREVENT_STACK
+    }
 }

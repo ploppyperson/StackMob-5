@@ -89,6 +89,13 @@ disable-targeting:
 
 # What should be done when these entity actions occur. (*)
 events:
+  # When an entity picks up armor or other equipment
+  equip:
+    enabled: true
+    # IGNORE - do not take picked up equipment into consideration when stacking
+    # DROP_ITEMS - drop picked up items when about to stack
+    # PREVENT_STACK - do not stack this entity.
+    mode: IGNORE
   # When an entity is feed its food.
   breed:
     enabled: true
