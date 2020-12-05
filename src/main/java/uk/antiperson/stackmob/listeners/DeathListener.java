@@ -1,12 +1,17 @@
 package uk.antiperson.stackmob.listeners;
 
+import org.bukkit.Material;
 import org.bukkit.Statistic;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ExperienceOrb;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Slime;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import uk.antiperson.stackmob.StackMob;
@@ -45,10 +50,13 @@ public class DeathListener implements Listener {
                 stackEntity.incrementSize(-deathStep);
                 deathMethod.onSpawn(stackEntity);
             } else {
-                StackEntity spawned = stackEntity.duplicate();
-                spawned.setSize(stackEntity.getSize() - deathStep);
-                deathMethod.onSpawn(spawned);
                 stackEntity.removeStackData();
+                int finalDeathStep = deathStep;
+                sm.getServer().getScheduler().runTask(sm, () -> {
+                    StackEntity spawned = stackEntity.duplicate();
+                    spawned.setSize(stackEntity.getSize() - finalDeathStep);
+                    deathMethod.onSpawn(spawned);
+                });
             }
         }
         if (toMultiply == 0) {
