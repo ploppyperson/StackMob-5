@@ -21,6 +21,7 @@ import uk.antiperson.stackmob.entity.StackEntity;
 import uk.antiperson.stackmob.entity.death.DeathMethod;
 import uk.antiperson.stackmob.events.EventHelper;
 import uk.antiperson.stackmob.events.StackDeathEvent;
+import uk.antiperson.stackmob.utils.Utilities;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
@@ -43,6 +44,11 @@ public class DeathListener implements Listener {
         StackDeathEvent stackDeathEvent = EventHelper.callStackDeathEvent(stackEntity, deathStep);
         deathStep = stackDeathEvent.getDeathStep();
         int toMultiply = deathStep - 1;
+        if (sm.getMainConfig().getBoolean("traits.leashed")) {
+            if (event.getEntity().isLeashed() && (stackEntity.getSize() - deathStep) != 0) {
+                event.getEntity().setMetadata(Utilities.NO_LEASH_METADATA, new FixedMetadataValue(sm, true));
+            }
+        }
         if (deathStep < stackEntity.getSize()) {
             if (sm.getMainConfig().isSkipDeathAnimation(event.getEntityType())) {
                 toMultiply = deathStep;
