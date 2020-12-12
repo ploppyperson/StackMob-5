@@ -40,10 +40,10 @@ public class DyeListener implements Listener {
         ListenerMode mode = sm.getMainConfig().getListenerMode(sheep.getType(), "dye");
         if (mode == ListenerMode.SPLIT) {
             ((Colorable) stackEntity.slice().getEntity()).setColor(sheep.getColor());
-        } else if (mode == ListenerMode.MULTIPLY) {
-            stackEntity.splitIfNotEnough(event.getPlayer().getInventory().getItemInMainHand().getAmount());
-            EntityUtils.removeHandItem(event.getPlayer(), stackEntity.getSize());
-            sheep.setColor(DyeColor.valueOf(handItem.getType().toString().replace("_DYE", "")));
+            return;
         }
+        stackEntity.splitIfNotEnough(event.getPlayer().getInventory().getItemInMainHand().getAmount());
+        EntityUtils.removeHandItem(event.getPlayer(), stackEntity.getSize());
+        sheep.setColor(DyeColor.valueOf(handItem.getType().toString().replace("_DYE", "")));
     }
 }

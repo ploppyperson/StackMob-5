@@ -18,17 +18,15 @@ public class BeeListener implements Listener {
 
     @EventHandler (ignoreCancelled = true)
     public void onEntityEnterBlockEvent(EntityEnterBlockEvent event) {
-        final LivingEntity bee = (LivingEntity) event.getEntity();
-
-        if (sm.getEntityManager().isStackedEntity(bee)) {
-            final StackEntity oldBee = sm.getEntityManager().getStackEntity(bee);
-
-            if (oldBee == null || oldBee.isSingle()) {
-                return;
-            }
-
-            oldBee.slice();
+        LivingEntity bee = (LivingEntity) event.getEntity();
+        if (!sm.getEntityManager().isStackedEntity(bee)) {
+            return;
         }
+        final StackEntity oldBee = sm.getEntityManager().getStackEntity(bee);
+        if (oldBee == null || oldBee.isSingle()) {
+            return;
+        }
+        oldBee.slice();
     }
 
 }
