@@ -1,11 +1,11 @@
 package uk.antiperson.stackmob.listeners;
 
 import org.bukkit.Material;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDropItemEvent;
 import uk.antiperson.stackmob.StackMob;
+import uk.antiperson.stackmob.utils.Utilities;
 
 @ListenerMetadata(config = "traits.leashed")
 public class LeashListener implements Listener {
@@ -20,12 +20,10 @@ public class LeashListener implements Listener {
         if (event.getItemDrop().getItemStack().getType() != Material.LEAD) {
             return;
         }
-        if (!StackMob.getEntityManager().isStackedEntity((LivingEntity) event.getEntity())) {
+        if (!event.getEntity().hasMetadata(Utilities.NO_LEASH_METADATA)) {
             return;
         }
-        if (!event.getEntity().isDead()) {
-            return;
-        }
+        event.getEntity().removeMetadata(Utilities.NO_LEASH_METADATA, sm);
         event.setCancelled(true);
     }
 
