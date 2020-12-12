@@ -326,7 +326,6 @@ public class StackEntity {
             equiptItems = new HashSet<>();
         }
         equiptItems.add(equipt);
-        sm.getLogger().info("equipt item " + equipt);
     }
 
     private void dropEquipItems() {
