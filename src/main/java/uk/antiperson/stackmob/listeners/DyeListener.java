@@ -43,6 +43,10 @@ public class DyeListener implements Listener {
             return;
         }
         stackEntity.splitIfNotEnough(event.getPlayer().getInventory().getItemInMainHand().getAmount());
+        int limit = sm.getMainConfig().getEventMultiplyLimit(sheep.getType(), "dye", stackEntity.getSize());
+        if (stackEntity.getSize() > limit) {
+            stackEntity.slice(limit);
+        }
         EntityUtils.removeHandItem(event.getPlayer(), stackEntity.getSize());
         sheep.setColor(DyeColor.valueOf(handItem.getType().toString().replace("_DYE", "")));
     }

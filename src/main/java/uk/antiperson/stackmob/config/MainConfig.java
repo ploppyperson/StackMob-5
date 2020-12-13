@@ -163,6 +163,11 @@ public class MainConfig extends SpecialConfigFile {
         return ListenerMode.valueOf(getString(type, "events." + eventKey + ".mode"));
     }
 
+    public int getEventMultiplyLimit(EntityType type, String eventKey, int stackSize) {
+        int limit =  getInt(type, "events." + eventKey + ".limit");
+        return limit == -1 ? stackSize : Math.min(stackSize, limit);
+    }
+
     public boolean isWorldBlacklisted(EntityType type, World world) {
         return getList(type, "worlds-blacklist").contains(world.getName());
     }

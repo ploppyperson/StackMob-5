@@ -47,17 +47,17 @@ public class BreedInteractListener implements Listener {
             return;
         }
         int itemAmount = event.getPlayer().getInventory().getItemInMainHand().getAmount();
-        EntityUtils.removeHandItem(event.getPlayer(), stackEntity.getSize());
         stackEntity.splitIfNotEnough(itemAmount);
         if (itemAmount == 1) {
+            EntityUtils.removeHandItem(event.getPlayer(), 1);
             return;
         }
-        double kAmount = stackEntity.getSize() / 2D;
-        int kidAmount = (int) Math.floor(kAmount);
-        if (kAmount > kidAmount) {
-            stackEntity.duplicate();
-            stackEntity.incrementSize(-1);
+        int kidAmount = sm.getMainConfig().getEventMultiplyLimit(animals.getType(), "breed", stackEntity.getSize() / 2);
+        int parentAmount = kidAmount * 2;
+        if (stackEntity.getSize() > parentAmount) {
+            stackEntity.slice(parentAmount);
         }
+        EntityUtils.removeHandItem(event.getPlayer(), parentAmount);
         stackEntity.getDrops().dropExperience(event.getRightClicked().getLocation(),1,7, kidAmount);
         // Spawn the kid
         StackEntity kid = stackEntity.duplicate();
@@ -66,6 +66,5 @@ public class BreedInteractListener implements Listener {
         // Update the adult
         animals.setBreed(false);
         animals.setBreedCause(event.getPlayer().getUniqueId());
-
     }
 }

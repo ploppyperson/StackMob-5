@@ -90,12 +90,14 @@ public class ShearListener implements Listener {
             }
             return null;
         }
+        int limit = sm.getMainConfig().getEventMultiplyLimit(entity.getType(), "shear", stackEntity.getSize());
         Damageable damageable = (Damageable) item.getItemMeta();
         int health = item.getType().getMaxDurability() - damageable.getDamage();
-        stackEntity.splitIfNotEnough(health);
-        int damage = health - stackEntity.getSize();
+        int amount = Math.min(health, limit);
+        stackEntity.splitIfNotEnough(amount);
+        int damage = health - amount;
         if (damage > 0) {
-            damageable.setDamage(damageable.getDamage() + stackEntity.getSize());
+            damageable.setDamage(damageable.getDamage() + amount);
             item.setItemMeta((ItemMeta) damageable);
         } else {
             item = new ItemStack(Material.AIR);
@@ -106,7 +108,7 @@ public class ShearListener implements Listener {
             Collection<ItemStack> loot = sheared.getLootTable().populateLoot(ThreadLocalRandom.current(), lootContext);
             for (ItemStack itemStack : loot) {
                 if (itemStack.getData() instanceof Wool) {
-                    int woolAmount = (int) Math.round(stackEntity.getSize() * ThreadLocalRandom.current().nextDouble(1, 2));
+                    int woolAmount = (int) Math.round(amount * ThreadLocalRandom.current().nextDouble(1, 2));
                     Drops.dropItem(sheared.getLocation(), itemStack, woolAmount);
                 }
             }
@@ -114,7 +116,7 @@ public class ShearListener implements Listener {
         }
         MushroomCow mushroomCow = (MushroomCow) entity;
         ItemStack mushrooms = new ItemStack(Material.RED_MUSHROOM, 1);
-        Drops.dropItem(mushroomCow.getLocation(), mushrooms, (stackEntity.getSize() - 1) * 5);
+        Drops.dropItem(mushroomCow.getLocation(), mushrooms, (amount - 1) * 5);
         // Spawn separate normal cow for the rest of the stack.
         Entity cow = mushroomCow.getWorld().spawnEntity(mushroomCow.getLocation(), EntityType.COW);
         StackEntity stackCow = sm.getEntityManager().getStackEntity((LivingEntity) cow);
