@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.StackEntity;
 import uk.antiperson.stackmob.entity.EntityFood;
-import uk.antiperson.stackmob.utils.EntityUtils;
+import uk.antiperson.stackmob.utils.Utilities;
 
 @ListenerMetadata(config = "events.breed.enabled")
 public class BreedInteractListener implements Listener {
@@ -50,7 +50,7 @@ public class BreedInteractListener implements Listener {
         int itemAmount = event.getPlayer().getInventory().getItemInMainHand().getAmount();
         stackEntity.splitIfNotEnough(itemAmount);
         if (itemAmount == 1) {
-            EntityUtils.removeHandItem(event.getPlayer(), 1);
+            Utilities.removeHandItem(event.getPlayer(), 1);
             return;
         }
         int kidAmount = sm.getMainConfig().getEventMultiplyLimit(animals.getType(), "breed", stackEntity.getSize() / 2);
@@ -58,7 +58,7 @@ public class BreedInteractListener implements Listener {
         if (stackEntity.getSize() > parentAmount) {
             stackEntity.slice(parentAmount);
         }
-        EntityUtils.removeHandItem(event.getPlayer(), parentAmount);
+        Utilities.removeHandItem(event.getPlayer(), parentAmount);
         stackEntity.getDrops().dropExperience(event.getRightClicked().getLocation(),1,7, kidAmount);
         // Spawn the kid
         StackEntity kid = stackEntity.duplicate();

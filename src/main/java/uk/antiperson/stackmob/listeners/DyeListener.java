@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Colorable;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.StackEntity;
-import uk.antiperson.stackmob.utils.EntityUtils;
+import uk.antiperson.stackmob.utils.Utilities;
 
 @ListenerMetadata(config = "events.dye.enabled")
 public class DyeListener implements Listener {
@@ -29,7 +29,7 @@ public class DyeListener implements Listener {
             return;
         }
         ItemStack handItem = event.getPlayer().getInventory().getItemInMainHand();
-        if (!EntityUtils.isDye(handItem)) {
+        if (!Utilities.isDye(handItem)) {
             return;
         }
         Sheep sheep = (Sheep) event.getRightClicked();
@@ -47,7 +47,7 @@ public class DyeListener implements Listener {
         if (stackEntity.getSize() > limit) {
             stackEntity.slice(limit);
         }
-        EntityUtils.removeHandItem(event.getPlayer(), stackEntity.getSize());
+        Utilities.removeHandItem(event.getPlayer(), stackEntity.getSize());
         sheep.setColor(DyeColor.valueOf(handItem.getType().toString().replace("_DYE", "")));
     }
 }
