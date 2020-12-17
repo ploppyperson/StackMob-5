@@ -8,6 +8,7 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.StackEntity;
+import uk.antiperson.stackmob.entity.EntityFood;
 import uk.antiperson.stackmob.utils.EntityUtils;
 
 @ListenerMetadata(config = "events.breed.enabled")
@@ -34,7 +35,7 @@ public class BreedInteractListener implements Listener {
             return;
         }
         ItemStack foodItem = event.getPlayer().getInventory().getItemInMainHand();
-        if (!EntityUtils.isCorrectFood(event.getRightClicked(), foodItem.getType())) {
+        if (!EntityFood.isCorrectFood(event.getRightClicked(), foodItem.getType())) {
             return;
         }
         StackEntity stackEntity = sm.getEntityManager().getStackEntity(animals);
