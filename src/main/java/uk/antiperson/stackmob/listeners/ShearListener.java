@@ -16,6 +16,7 @@ import org.bukkit.material.Wool;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.Drops;
 import uk.antiperson.stackmob.entity.StackEntity;
+import uk.antiperson.stackmob.utils.Utilities;
 
 import java.util.Collection;
 import java.util.concurrent.ThreadLocalRandom;
@@ -115,7 +116,7 @@ public class ShearListener implements Listener {
             return item;
         }
         MushroomCow mushroomCow = (MushroomCow) entity;
-        ItemStack mushrooms = new ItemStack(Material.RED_MUSHROOM, 1);
+        ItemStack mushrooms = new ItemStack(getMaterial(mushroomCow), 1);
         Drops.dropItem(mushroomCow.getLocation(), mushrooms, (amount - 1) * 5);
         // Spawn separate normal cow for the rest of the stack.
         Entity cow = mushroomCow.getWorld().spawnEntity(mushroomCow.getLocation(), EntityType.COW);
@@ -124,4 +125,10 @@ public class ShearListener implements Listener {
         return item;
     }
 
+    private Material getMaterial(MushroomCow mushroomCow) {
+        if (!Utilities.isNewBukkit()) {
+            return Material.RED_MUSHROOM;
+        }
+        return mushroomCow.getVariant() == MushroomCow.Variant.RED ? Material.RED_MUSHROOM : Material.BROWN_MUSHROOM;
+    }
 }
