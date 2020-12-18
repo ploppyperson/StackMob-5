@@ -120,8 +120,8 @@ public class ShearListener implements Listener {
         Drops.dropItem(mushroomCow.getLocation(), mushrooms, (amount - 1) * 5);
         // Spawn separate normal cow for the rest of the stack.
         Entity cow = mushroomCow.getWorld().spawnEntity(mushroomCow.getLocation(), EntityType.COW);
-        StackEntity stackCow = sm.getEntityManager().getStackEntity((LivingEntity) cow);
-        stackCow.setSize(stackEntity.getSize() - 1);
+        StackEntity stackCow = sm.getEntityManager().registerStackedEntity((LivingEntity) cow);
+        stackCow.setSize(amount - 1);
         return item;
     }
 
