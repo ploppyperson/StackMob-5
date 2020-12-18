@@ -63,14 +63,14 @@ public class ShearListener implements Listener {
     }
 
     private EquipmentSlot findShears(Player player) {
-        for (EquipmentSlot equipmentSlot : EquipmentSlot.values()) {
-            if (equipmentSlot != EquipmentSlot.HAND && equipmentSlot != EquipmentSlot.OFF_HAND) {
-                continue;
-            }
-            if (player.getInventory().getItem(equipmentSlot).getType() != Material.SHEARS) {
-                continue;
-            }
-            return equipmentSlot;
+        EquipmentSlot hand = checkSlot(player, EquipmentSlot.HAND);
+        EquipmentSlot offHand = checkSlot(player, EquipmentSlot.OFF_HAND);
+        return hand == null ? offHand : hand;
+    }
+
+    private EquipmentSlot checkSlot(Player player, EquipmentSlot slot) {
+        if (player.getInventory().getItem(slot).getType() == Material.SHEARS) {
+            return slot;
         }
         return null;
     }
