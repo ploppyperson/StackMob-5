@@ -1,6 +1,8 @@
 package uk.antiperson.stackmob.utils;
 
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.io.IOException;
@@ -75,6 +77,20 @@ public class Utilities {
 
     public static boolean isNativeVersion() {
         return Package.getPackage("net.minecraft.server.v1_16_R3") != null;
+    }
+
+    public static boolean isDye(ItemStack material) {
+        return material.getType().toString().endsWith("_DYE");
+    }
+
+    public static void removeHandItem(Player player, int itemAmount) {
+        if (itemAmount == player.getInventory().getItemInMainHand().getAmount()) {
+           player.getInventory().setItemInMainHand(null);
+           return;
+        }
+        ItemStack is = player.getInventory().getItemInMainHand();
+        is.setAmount(is.getAmount() - itemAmount);
+        player.getInventory().setItemInMainHand(is);
     }
 
     public enum DownloadResult {

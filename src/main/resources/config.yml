@@ -89,24 +89,37 @@ disable-targeting:
 
 # What should be done when these entity actions occur. (*)
 events:
+  # When an entity picks up armor or other equipment
+  equip:
+    enabled: true
+    # IGNORE - do not take picked up equipment into consideration when stacking
+    # DROP_ITEMS - drop picked up items when about to stack
+    # PREVENT_STACK - do not stack this entity.
+    mode: IGNORE
   # When an entity is feed its food.
   breed:
     enabled: true
     # MULTIPLY - spawn as many baby entities possible providing there is enough food fed.
     # SPLIT - slice off an entity to that it can be bred normally.
     mode: MULTIPLY
+    # Limit the amount of baby entities spawned when using MULTIPLY mode. -1 = disabled.
+    limit: -1
   # When an entity is dyed.
   dye:
     enabled: true
     # MULTIPLY - dye as many entities possible providing there is enough dye.
     # SPLIT - slice off an entity to that it can be dyed normally.
     mode: MULTIPLY
+    # Limit the amount of sheep dyed when using MULTIPLY mode. -1 = disabled.
+    limit: -1
   # When an entity is sheared.
   shear:
     enabled: true
     # MULTIPLY - shear as many entities possible providing the shears have enough durability.
     # SPLIT - slice off an entity to that it can be sheared normally.
     mode: MULTIPLY
+    # Limit the amount of sheep sheared when using MULTIPLY mode. -1 = disabled.
+    limit: -1
   multiply:
     # Chicken eggs and turtle scutes.
     drops: true
