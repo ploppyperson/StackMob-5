@@ -33,12 +33,12 @@ public class ShearListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onShearSheep(PlayerShearEntityEvent event) {
-        EquipmentSlot equipmentSlot = findShears(event.getPlayer());
+        final EquipmentSlot equipmentSlot = findShears(event.getPlayer());
         if (equipmentSlot == null) {
             sm.getLogger().info("A player just managed to shear an entity while not holding shears.");
             return;
         }
-        ItemStack is = shearLogic((LivingEntity) event.getEntity(), event.getPlayer().getInventory().getItem(equipmentSlot));
+        final ItemStack is = shearLogic((LivingEntity) event.getEntity(), event.getPlayer().getInventory().getItem(equipmentSlot));
         if (is == null) {
             return;
         }
@@ -47,7 +47,7 @@ public class ShearListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onShearSheep(BlockShearEntityEvent event) {
-        ItemStack is = shearLogic((LivingEntity) event.getEntity(), event.getTool());
+        final ItemStack is = shearLogic((LivingEntity) event.getEntity(), event.getTool());
         if (is == null) {
             return;
         }
@@ -58,8 +58,8 @@ public class ShearListener implements Listener {
     }
 
     private EquipmentSlot findShears(Player player) {
-        EquipmentSlot hand = checkSlot(player, EquipmentSlot.HAND);
-        EquipmentSlot offHand = checkSlot(player, EquipmentSlot.OFF_HAND);
+        final EquipmentSlot hand = checkSlot(player, EquipmentSlot.HAND);
+        final EquipmentSlot offHand = checkSlot(player, EquipmentSlot.OFF_HAND);
         return hand == null ? offHand : hand;
     }
 
