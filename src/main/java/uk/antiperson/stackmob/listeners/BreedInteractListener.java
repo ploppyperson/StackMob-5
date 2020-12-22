@@ -1,6 +1,7 @@
 package uk.antiperson.stackmob.listeners;
 
 import org.bukkit.entity.Animals;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -8,8 +9,9 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import uk.antiperson.stackmob.StackMob;
+import uk.antiperson.stackmob.entity.EntityFood;
 import uk.antiperson.stackmob.entity.StackEntity;
-import uk.antiperson.stackmob.utils.EntityUtils;
+import uk.antiperson.stackmob.utils.Utilities;
 
 @ListenerMetadata(config = "events.breed.enabled")
 public class BreedInteractListener implements Listener {
@@ -27,43 +29,43 @@ public class BreedInteractListener implements Listener {
         if (!(event.getRightClicked() instanceof Animals)) {
             return;
         }
-        if (!((Animals) event.getRightClicked()).canBreed()) {
-            return;
-        }
-        ItemStack foodItem = event.getPlayer().getInventory().getItemInMainHand();
-        if (!EntityUtils.isCorrectFood(event.getRightClicked(), foodItem.getType())) {
-            return;
-        }
         Animals animals = (Animals) event.getRightClicked();
-        StackEntity stackEntity = StackMob.getEntityManager().getStackEntity(animals);
+        if (!animals.canBreed()) {
+            return;
+        }
+        final Player player = event.getPlayer();
+        final ItemStack foodItem = player.getInventory().getItemInMainHand();
+        if (!EntityFood.isCorrectFood(event.getRightClicked(), foodItem.getType())) {
+            return;
+        }
+        StackEntity stackEntity = sm.getEntityManager().getStackEntity(animals);
         if (stackEntity == null || stackEntity.isSingle()) {
             return;
         }
         ListenerMode breed = sm.getMainConfig().getListenerMode(animals.getType(), "breed");
         if (breed == ListenerMode.SPLIT) {
             stackEntity.slice();
-        } else if (breed == ListenerMode.MULTIPLY) {
-            int itemAmount = event.getPlayer().getInventory().getItemInMainHand().getAmount();
-            EntityUtils.removeHandItem(event.getPlayer(), stackEntity.getSize());
-            stackEntity.splitIfNotEnough(itemAmount);
-            if (itemAmount == 1) {
-                return;
-            }
-            double kAmount = stackEntity.getSize() / 2D;
-            int kidAmount = (int) Math.floor(kAmount);
-            if (kAmount > kidAmount) {
-                stackEntity.duplicate();
-                stackEntity.incrementSize(-1);
-            }
-            stackEntity.getDrops().dropExperience(event.getRightClicked().getLocation(),1,7, kidAmount);
-            // Spawn the kid
-            StackEntity kid = stackEntity.duplicate();
-            kid.setSize(kidAmount);
-            ((Animals) kid.getEntity()).setBaby();
-            // Update the adult
-            animals.setBreed(false);
-            animals.setBreedCause(event.getPlayer().getUniqueId());
+            return;
         }
+        int itemAmount = player.getInventory().getItemInMainHand().getAmount();
+        stackEntity.splitIfNotEnough(itemAmount);
+        if (itemAmount == 1) {
+            Utilities.removeHandItem(player, 1);
+            return;
+        }
+        int kidAmount = sm.getMainConfig().getEventMultiplyLimit(animals.getType(), "breed", stackEntity.getSize() / 2);
+        int parentAmount = kidAmount * 2;
+        if (stackEntity.getSize() > parentAmount) {
+            stackEntity.slice(parentAmount);
+        }
+        Utilities.removeHandItem(player, parentAmount);
+        stackEntity.getDrops().dropExperience(event.getRightClicked().getLocation(), 1, 7, kidAmount);
+        // Spawn the kid
+        StackEntity kid = stackEntity.duplicate(kidAmount);
+        ((Animals) kid.getEntity()).setBaby();
+        // Update the adult
+        animals.setBreed(false);
+        animals.setBreedCause(player.getUniqueId());
     }
 
 }

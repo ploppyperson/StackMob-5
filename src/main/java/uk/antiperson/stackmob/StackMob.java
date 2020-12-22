@@ -31,16 +31,19 @@ public class StackMob extends JavaPlugin {
     private final NamespacedKey stackKey = new NamespacedKey(this, "stack-size");
     private final NamespacedKey toolKey = new NamespacedKey(this, "stack-tool");
 
+    private static StackMob INSTANCE;
+
     private MainConfig config;
     private EntityTranslation entityTranslation;
     private TraitManager traitManager;
     private HookManager hookManager;
-    private static EntityManager entityManager;
+    private EntityManager entityManager;
     private Updater updater;
     private ItemTools itemTools;
 
     @Override
     public void onLoad() {
+        INSTANCE = this;
         hookManager = new HookManager(this);
         try {
             hookManager.registerOnLoad();
@@ -148,6 +151,7 @@ public class StackMob extends JavaPlugin {
         registerEvent(PlayerListener.class);
         registerEvent(BeeListener.class);
         registerEvent(LeashListener.class);
+        registerEvent(EquipListener.class);
         if (Utilities.isPaper()) {
             registerEvent(RemoveListener.class);
         } else {
@@ -191,11 +195,15 @@ public class StackMob extends JavaPlugin {
         }));
     }
 
+    public static StackMob getInstance() {
+        return INSTANCE;
+    }
+
     public EntityTranslation getEntityTranslation() {
         return entityTranslation;
     }
 
-    public static EntityManager getEntityManager() {
+    public EntityManager getEntityManager() {
         return entityManager;
     }
 
@@ -226,4 +234,5 @@ public class StackMob extends JavaPlugin {
     public ItemTools getItemTools() {
         return itemTools;
     }
+
 }
