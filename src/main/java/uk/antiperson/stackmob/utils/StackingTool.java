@@ -74,10 +74,10 @@ public class StackingTool {
                     if (!(e instanceof Mob)) {
                         continue;
                     }
-                    if (!StackMob.getEntityManager().isStackedEntity((LivingEntity) e)) {
+                    if (!sm.getEntityManager().isStackedEntity((LivingEntity) e)) {
                         continue;
                     }
-                    StackEntity stackEntity = StackMob.getEntityManager().getStackEntity((LivingEntity) e);
+                    StackEntity stackEntity = sm.getEntityManager().getStackEntity((LivingEntity) e);
                     stackEntity.removeStackData();
                 }
                 break;

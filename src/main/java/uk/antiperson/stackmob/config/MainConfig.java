@@ -3,6 +3,7 @@ package uk.antiperson.stackmob.config;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
+import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import org.bukkit.entity.EntityType;
@@ -10,6 +11,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import uk.antiperson.stackmob.StackMob;
+import uk.antiperson.stackmob.entity.StackEntity;
 import uk.antiperson.stackmob.entity.TagMode;
 import uk.antiperson.stackmob.entity.death.DeathType;
 import uk.antiperson.stackmob.listeners.ListenerMode;
@@ -70,7 +72,7 @@ public class MainConfig extends SpecialConfigFile {
     private final Map<EntityType, Double> experience_multiplier_min = new EnumMap<>(EntityType.class);
     private double default_experience_multiplier_max;
     private final Map<EntityType, Double> experience_multiplier_max = new EnumMap<>(EntityType.class);
-    private final Set<EntityType> default_experience_type_blacklist = new ObjectOpenHashSet<>();
+    private final Set<EntityType> default_experience_type_blacklist = EnumSet.noneOf(EntityType.class);
 
 
     private boolean default_player_stats;
@@ -100,10 +102,14 @@ public class MainConfig extends SpecialConfigFile {
     private final Map<EntityType, Set<World>> worlds_blacklist = new EnumMap<>(EntityType.class);
 
 
-    private final Map<String, Boolean> default_events_remove_stack_data = new Object2ObjectOpenHashMap<>();
+    private final Map<String, Boolean> default_events_remove_stack_data = new Object2BooleanOpenHashMap<>();
     private final Map<EntityType, Map<String, Boolean>> events_remove_stack_data = new EnumMap<>(EntityType.class);
     private final Map<String, ListenerMode> default_events_mode = new Object2ObjectOpenHashMap<>();
     private final Map<EntityType, Map<String, ListenerMode>> events_mode = new EnumMap<>(EntityType.class);
+    private final Map<String, Integer> default_events_limit = new Object2IntOpenHashMap<>();
+    private final Map<EntityType, Map<String, Integer>> events_limit = new EnumMap<>(EntityType.class);
+    private StackEntity.EquipItemMode default_events_equip_mode;
+    private final Map<EntityType, StackEntity.EquipItemMode> events_equip_mode = new EnumMap<>(EntityType.class);
 
 
     private boolean default_events_multiply_slime_split;
@@ -181,12 +187,15 @@ public class MainConfig extends SpecialConfigFile {
             default_events_remove_stack_data.put(key, getBoolean("events.remove-stack-data." + key));
         }
         for (String key : getConfigurationSection("events.").getKeys(false)) {
+            if (key.equals("equip")) continue;
             final String mode = getString("events." + key + ".mode");
 
             if (mode != null) {
                 default_events_mode.put(key, ListenerMode.valueOf(mode));
+                default_events_limit.put(key, getInt("events." + key + ".limit"));
             }
         }
+        default_events_equip_mode = StackEntity.EquipItemMode.valueOf(getString("events.equip.mode"));
 
 
         default_events_multiply_slime_split = getBoolean("events.multiply.slime-split");
@@ -331,13 +340,34 @@ public class MainConfig extends SpecialConfigFile {
                 }
             }
             for (String key : getConfigurationSection(type, "events.").getKeys(false)) {
-                final Map<String, ListenerMode> map = events_mode.getOrDefault(type, new Object2ObjectOpenHashMap<>());
+                if (key.equals("equip")) continue;
+                final Map<String, ListenerMode> mode_map = events_mode.getOrDefault(type, new Object2ObjectOpenHashMap<>());
                 final String custom_mode = getString(type, "events." + key + ".mode");
 
                 if (custom_mode != null && !custom_mode.equals(default_events_mode.get(key).toString())) {
-                    map.put(key, ListenerMode.valueOf(custom_mode));
-                    events_mode.putIfAbsent(type, map);
+                    mode_map.put(key, ListenerMode.valueOf(custom_mode));
+                    events_mode.putIfAbsent(type, mode_map);
                 }
+
+                switch (key) {
+                    case "shear":
+                    case "breed":
+                    case "dye":
+                        final Map<String, Integer> limit_map = events_limit.getOrDefault(type, new Object2IntOpenHashMap<>());
+                        final int custom_limit = getInt(type, "events." + key + ".limit");
+
+                        if (custom_limit != default_events_limit.get(key)) {
+                            limit_map.put(key, custom_limit);
+                            events_limit.putIfAbsent(type, limit_map);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+            final String custom_events_equip_mode = getString(type, "events.equip.mode");
+            if (custom_events_equip_mode != null && !custom_events_equip_mode.equals(default_events_equip_mode.toString())) {
+                events_equip_mode.put(type, StackEntity.EquipItemMode.valueOf(custom_events_equip_mode));
             }
         }
     }
@@ -482,6 +512,11 @@ public class MainConfig extends SpecialConfigFile {
         return events_mode.getOrDefault(type, default_events_mode).get(eventKey);
     }
 
+    public int getEventMultiplyLimit(EntityType type, String eventKey, int stackSize) {
+        final int limit =  events_limit.getOrDefault(type, default_events_limit).get(eventKey);
+        return limit == -1 ? stackSize : Math.min(stackSize, limit);
+    }
+
     public boolean isEntityBlacklisted(LivingEntity entity, CreatureSpawnEvent.SpawnReason reason) {
         if (default_types_blacklist.contains(entity.getType())) {
             return true;
@@ -524,6 +559,10 @@ public class MainConfig extends SpecialConfigFile {
 
     public boolean isSkipDeathAnimation(EntityType type) {
         return death_skip_animation.getOrDefault(type, default_death_skip_animation);
+    }
+
+    public StackEntity.EquipItemMode getEquipItemMode(EntityType type) {
+        return events_equip_mode.getOrDefault(type, default_events_equip_mode);
     }
 
     @Override

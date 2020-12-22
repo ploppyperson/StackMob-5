@@ -27,7 +27,7 @@ public class ForceStack extends SubCommand {
 
         for (World world : Bukkit.getWorlds()) {
             for (LivingEntity entity : world.getEntitiesByClass(Mob.class)) {
-                if (StackMob.getEntityManager().isStackedEntity(entity)) {
+                if (sm.getEntityManager().isStackedEntity(entity)) {
                     continue;
                 }
                 if (entity.getCustomName() != null && !(args.length > 0 && args[0].equals("named"))) {
@@ -40,7 +40,7 @@ public class ForceStack extends SubCommand {
                 if (sm.getMainConfig().isEntityBlacklisted(entity, reason)) {
                     continue;
                 }
-                StackMob.getEntityManager().registerStackedEntity(entity).setSize(1);
+                sm.getEntityManager().registerStackedEntity(entity).setSize(1);
                 count++;
             }
         }

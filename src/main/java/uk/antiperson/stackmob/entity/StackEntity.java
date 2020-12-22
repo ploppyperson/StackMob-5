@@ -2,6 +2,7 @@ package uk.antiperson.stackmob.entity;
 
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.ItemStack;
@@ -10,15 +11,18 @@ import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.events.EventHelper;
 import uk.antiperson.stackmob.utils.Utilities;
 
+import java.util.Set;
+
 public class StackEntity {
 
-    private static final EntityManager entityManager = StackMob.getEntityManager();
+    private static final EntityManager entityManager = StackMob.getInstance().getEntityManager();
 
     private final LivingEntity entity;
     private final StackMob sm;
     private boolean waiting;
     private int waitCount;
     private int stackSize;
+    private Set<ItemStack> equiptItems;
     public StackEntity(StackMob sm, LivingEntity entity) {
         this.sm = sm;
         this.entity = entity;
@@ -158,6 +162,7 @@ public class StackEntity {
             ItemStack leash = new ItemStack(Material.LEAD, 1);
             getWorld().dropItemNaturally(entity.getLocation(), leash);
         }
+        dropEquipItems();
     }
 
     /**
@@ -216,6 +221,11 @@ public class StackEntity {
     }
 
     public boolean canStack() {
+        if (equiptItems != null && !equiptItems.isEmpty()) {
+            if (sm.getMainConfig().getEquipItemMode(getEntity().getType()) == EquipItemMode.PREVENT_STACK) {
+                return false;
+            }
+        }
         return !getEntity().isDead() && !isMaxSize() && !isWaiting();
     }
 
@@ -252,11 +262,12 @@ public class StackEntity {
 
     /**
      * Creates a clone of this entity.
+     * @param amount amount to
      * @return a clone of this entity.
      */
-    public StackEntity duplicate() {
+    public StackEntity duplicate(int amount) {
         StackEntity cloneStack = entityManager.registerStackedEntity(spawnClone());
-        cloneStack.setSize(1);
+        cloneStack.setSize(amount);
         sm.getTraitManager().applyTraits(cloneStack, this);
         sm.getHookManager().onSpawn(cloneStack);
         return cloneStack;
@@ -297,14 +308,38 @@ public class StackEntity {
         if (amount >= getSize()) {
             throw new UnsupportedOperationException("Slice amount is bigger than the stack size!");
         }
-        StackEntity duplicate = duplicate();
-        duplicate.setSize(getSize() - amount);
+        StackEntity duplicate = duplicate(getSize() - amount);
         setSize(amount);
         if (getEntity().isLeashed()) {
             duplicate.getEntity().setLeashHolder(getEntity().getLeashHolder());
             getEntity().setLeashHolder(null);
         }
         return duplicate;
+    }
+
+    public void addEquipItem(ItemStack equipt) {
+        if (equiptItems == null) {
+            equiptItems = new ObjectOpenHashSet<>();
+        }
+        equiptItems.add(equipt);
+    }
+
+    private void dropEquipItems() {
+        if (equiptItems == null) {
+            return;
+        }
+        if (sm.getMainConfig().getEquipItemMode(getEntity().getType()) != EquipItemMode.DROP_ITEMS) {
+            return;
+        }
+        for (ItemStack itemStack : equiptItems) {
+            getEntity().getWorld().dropItemNaturally(getEntity().getLocation(), itemStack);
+        }
+    }
+
+    public enum EquipItemMode {
+        IGNORE,
+        DROP_ITEMS,
+        PREVENT_STACK
     }
 
 }

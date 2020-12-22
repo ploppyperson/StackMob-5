@@ -22,14 +22,14 @@ public class RemoveListener implements Listener {
             return;
         }
         LivingEntity livingEntity = (LivingEntity) event.getEntity();
-        if (!StackMob.getEntityManager().isStackedEntity(livingEntity)) {
+        if (!sm.getEntityManager().isStackedEntity(livingEntity)) {
             return;
         }
-        StackEntity stackEntity = StackMob.getEntityManager().getStackEntity(livingEntity);
+        StackEntity stackEntity = sm.getEntityManager().getStackEntity(livingEntity);
         if (stackEntity == null) {
             return;
         }
-        StackMob.getEntityManager().unregisterStackedEntity(stackEntity);
+        sm.getEntityManager().unregisterStackedEntity(stackEntity);
     }
 
     @EventHandler
@@ -38,10 +38,10 @@ public class RemoveListener implements Listener {
             return;
         }
         LivingEntity livingEntity = (LivingEntity) event.getEntity();
-        if (!StackMob.getEntityManager().isStackedEntity(livingEntity)) {
+        if (!sm.getEntityManager().isStackedEntity(livingEntity)) {
             return;
         }
-        StackMob.getEntityManager().registerStackedEntity(livingEntity);
+        sm.getEntityManager().registerStackedEntity(livingEntity);
     }
 
 }

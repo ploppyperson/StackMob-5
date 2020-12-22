@@ -31,7 +31,7 @@ public class TagInteractListener implements Listener {
         if (handItem.getType() != Material.NAME_TAG || !handItem.hasItemMeta() || !handItem.getItemMeta().hasDisplayName()) {
             return;
         }
-        StackEntity stackEntity = StackMob.getEntityManager().getStackEntity((LivingEntity) event.getRightClicked());
+        StackEntity stackEntity = sm.getEntityManager().getStackEntity((LivingEntity) event.getRightClicked());
         if (stackEntity == null) {
             return;
         }

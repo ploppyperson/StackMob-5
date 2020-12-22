@@ -29,10 +29,10 @@ public class DeathListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onStackDeath(EntityDeathEvent event) {
-        if (!StackMob.getEntityManager().isStackedEntity(event.getEntity())) {
+        if (!sm.getEntityManager().isStackedEntity(event.getEntity())) {
             return;
         }
-        StackEntity stackEntity = StackMob.getEntityManager().getStackEntity(event.getEntity());
+        StackEntity stackEntity = sm.getEntityManager().getStackEntity(event.getEntity());
         DeathMethod deathMethod = calculateDeath(stackEntity);
         int deathStep = EventHelper.callStackDeathEvent(stackEntity, Math.min(stackEntity.getSize(), deathMethod.calculateStep())).getDeathStep();
         int toMultiply = deathStep - 1;
@@ -49,8 +49,7 @@ public class DeathListener implements Listener {
                 deathMethod.onSpawn(stackEntity);
             } else {
                 sm.getServer().getScheduler().runTask(sm, () -> {
-                    StackEntity spawned = stackEntity.duplicate();
-                    spawned.setSize(stackEntity.getSize() - deathStep);
+                    StackEntity spawned = stackEntity.duplicate(stackEntity.getSize() - deathStep);
                     deathMethod.onSpawn(spawned);
                     stackEntity.removeStackData();
                 });

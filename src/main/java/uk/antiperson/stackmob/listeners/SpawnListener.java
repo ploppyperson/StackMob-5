@@ -27,13 +27,13 @@ public class SpawnListener implements Listener {
             if (sm.getMainConfig().isEntityBlacklisted(event.getEntity(), event.getSpawnReason())) {
                 return;
             }
-            if (StackMob.getEntityManager().isStackedEntity(event.getEntity())) {
+            if (sm.getEntityManager().isStackedEntity(event.getEntity())) {
                 return;
             }
             if (EventHelper.callStackSpawnEvent(event.getEntity()).isCancelled()) {
                 return;
             }
-            StackEntity original = StackMob.getEntityManager().registerStackedEntity(event.getEntity());
+            StackEntity original = sm.getEntityManager().registerStackedEntity(event.getEntity());
             if (original.shouldWait(event.getSpawnReason())) {
                 original.makeWait();
                 return;
@@ -43,7 +43,7 @@ public class SpawnListener implements Listener {
                 if (!(entity instanceof Mob)) {
                     continue;
                 }
-                StackEntity nearby = StackMob.getEntityManager().getStackEntity((LivingEntity) entity);
+                StackEntity nearby = sm.getEntityManager().getStackEntity((LivingEntity) entity);
                 if (nearby == null) {
                     continue;
                 }

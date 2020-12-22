@@ -25,10 +25,10 @@ public class DropListener implements Listener {
         if (event.getItemDrop().getItemStack().getType() != Material.EGG && event.getItemDrop().getItemStack().getType() != Material.SCUTE) {
             return;
         }
-        if (!StackMob.getEntityManager().isStackedEntity((LivingEntity) event.getEntity())) {
+        if (!sm.getEntityManager().isStackedEntity((LivingEntity) event.getEntity())) {
             return;
         }
-        StackEntity stackEntity = StackMob.getEntityManager().getStackEntity((LivingEntity) event.getEntity());
+        StackEntity stackEntity = sm.getEntityManager().getStackEntity((LivingEntity) event.getEntity());
         if (stackEntity == null || stackEntity.isSingle()) {
             return;
         }

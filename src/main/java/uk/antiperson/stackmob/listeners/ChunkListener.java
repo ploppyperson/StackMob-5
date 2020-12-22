@@ -8,19 +8,19 @@ import uk.antiperson.stackmob.StackMob;
 
 public class ChunkListener implements Listener {
 
-    private StackMob sm;
+    private final StackMob sm;
     public ChunkListener(StackMob sm) {
         this.sm = sm;
     }
 
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent event) {
-        StackMob.getEntityManager().registerStackedEntities(event.getChunk());
+        sm.getEntityManager().registerStackedEntities(event.getChunk());
     }
 
     @EventHandler
     public void onChunkUnload(ChunkUnloadEvent event) {
-        StackMob.getEntityManager().unregisterStackedEntities(event.getChunk());
+        sm.getEntityManager().unregisterStackedEntities(event.getChunk());
     }
   
 }

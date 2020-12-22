@@ -21,7 +21,7 @@ public class MergeTask extends BukkitRunnable {
 
     public void run() {
         Set<StackEntity> toRemove = new ObjectOpenHashSet<>();
-        for (StackEntity original : StackMob.getEntityManager().getStackEntities()) {
+        for (StackEntity original : sm.getEntityManager().getStackEntities()) {
             if (original.isWaiting()) {
                 original.incrementWait();
                 continue;
@@ -33,15 +33,15 @@ public class MergeTask extends BukkitRunnable {
                 continue;
             }
             Integer[] searchRadius = sm.getMainConfig().getStackRadius(original.getEntity().getType());
-            Set<StackEntity> matches = new ObjectOpenHashSet<>();;
+            Set<StackEntity> matches = new ObjectOpenHashSet<>();
             for (Entity nearby : original.getEntity().getNearbyEntities(searchRadius[0], searchRadius[1], searchRadius[2])) {
                 if (!(nearby instanceof Mob)) {
                     continue;
                 }
-                if (!StackMob.getEntityManager().isStackedEntity((LivingEntity) nearby)) {
+                if (!sm.getEntityManager().isStackedEntity((LivingEntity) nearby)) {
                     continue;
                 }
-                StackEntity nearbyStack = StackMob.getEntityManager().getStackEntity((LivingEntity) nearby);
+                StackEntity nearbyStack = sm.getEntityManager().getStackEntity((LivingEntity) nearby);
                 if (nearbyStack == null) {
                     continue;
                 }
@@ -77,15 +77,14 @@ public class MergeTask extends BukkitRunnable {
             }
             if (size >= original.getMaxSize()) {
                 for (int stackSize : Utilities.split(size, original.getMaxSize())) {
-                    StackEntity stackEntity = original.duplicate();
-                    stackEntity.setSize(stackSize);
+                    original.duplicate(stackSize);
                 }
                 return;
             }
             original.incrementSize(size);
         }
         for (StackEntity stackEntity : toRemove) {
-            StackMob.getEntityManager().unregisterStackedEntity(stackEntity);
+            sm.getEntityManager().unregisterStackedEntity(stackEntity);
         }
     }
 

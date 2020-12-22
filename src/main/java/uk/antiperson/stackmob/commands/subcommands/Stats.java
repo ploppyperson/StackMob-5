@@ -19,7 +19,7 @@ public class Stats extends SubCommand {
         int total = 0;
         int waiting = 0;
         int full = 0;
-        for (StackEntity stackEntity : StackMob.getEntityManager().getStackEntities()) {
+        for (StackEntity stackEntity : sm.getEntityManager().getStackEntities()) {
             if (stackEntity.isWaiting()) {
                 waiting += 1;
             }
@@ -29,7 +29,7 @@ public class Stats extends SubCommand {
             total += stackEntity.getSize();
         }
         sender.sendInfo("Statistics:");
-        sender.sendRawMessage("Total stack entities: " + StackMob.getEntityManager().getStackEntities().size() + " (" + total + " single entities.)");
+        sender.sendRawMessage("Total stack entities: " + sm.getEntityManager().getStackEntities().size() + " (" + total + " single entities.)");
         sender.sendRawMessage("Full stacks: " + full + " Waiting to stack: " + waiting);
         return false;
     }

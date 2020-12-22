@@ -26,7 +26,7 @@ public class SpawnStack extends SubCommand {
             return false;
         }
         LivingEntity entity = (LivingEntity) player.getWorld().spawnEntity(player.getLocation(), entityType);
-        StackEntity stackEntity = StackMob.getEntityManager().registerStackedEntity(entity);
+        StackEntity stackEntity = sm.getEntityManager().registerStackedEntity(entity);
         stackEntity.setSize(newSize);
         sender.sendSuccess("A new stack has been spawned.");
         return false;

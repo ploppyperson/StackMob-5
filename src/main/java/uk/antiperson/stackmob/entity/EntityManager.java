@@ -55,10 +55,10 @@ public class EntityManager {
             if (!(entity instanceof Mob)) {
                 continue;
             }
-            if (!StackMob.getEntityManager().isStackedEntity((LivingEntity) entity)) {
+            if (!isStackedEntity((LivingEntity) entity)) {
                 continue;
             }
-            StackMob.getEntityManager().registerStackedEntity((LivingEntity) entity);
+            registerStackedEntity((LivingEntity) entity);
         }
     }
 
@@ -67,10 +67,10 @@ public class EntityManager {
             if (!(entity instanceof Mob)) {
                 continue;
             }
-            if (!StackMob.getEntityManager().isStackedEntity((LivingEntity) entity)) {
+            if (!isStackedEntity((LivingEntity) entity)) {
                 continue;
             }
-            StackMob.getEntityManager().unregisterStackedEntity((LivingEntity) entity);
+            unregisterStackedEntity((LivingEntity) entity);
         }
     }
 

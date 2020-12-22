@@ -36,7 +36,7 @@ public class Remove extends SubCommand {
             }
         }
         Set<StackEntity> toRemove = new ObjectOpenHashSet<>();
-        for (StackEntity stackEntity : StackMob.getEntityManager().getStackEntities()) {
+        for (StackEntity stackEntity : sm.getEntityManager().getStackEntities()) {
             if (!function.apply(stackEntity.getEntity())) {
                 continue;
             }
@@ -44,7 +44,7 @@ public class Remove extends SubCommand {
             toRemove.add(stackEntity);
         }
         for (StackEntity stackEntity : toRemove) {
-            StackMob.getEntityManager().unregisterStackedEntity(stackEntity);
+            sm.getEntityManager().unregisterStackedEntity(stackEntity);
         }
         sender.sendSuccess("Entities matching your criteria have been removed.");
         return false;

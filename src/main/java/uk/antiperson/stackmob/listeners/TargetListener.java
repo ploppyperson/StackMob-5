@@ -21,7 +21,7 @@ public class TargetListener implements Listener {
         if (!(event.getEntity() instanceof Monster)) {
             return;
         }
-        if (!StackMob.getEntityManager().isStackedEntity((LivingEntity) event.getEntity())) {
+        if (!sm.getEntityManager().isStackedEntity((LivingEntity) event.getEntity())) {
             return;
         }
         if (!sm.getMainConfig().isTargetingDisabled(event.getEntityType())) {
@@ -30,11 +30,10 @@ public class TargetListener implements Listener {
         if (sm.getMainConfig().isTargetingDisabledType(event.getEntityType())) {
             return;
         }
-        if (Utilities.isPaper()) {
-            if (sm.getMainConfig().isTargetingDisabledReason(event.getEntityType(), event.getEntity().getEntitySpawnReason())) {
+        if (Utilities.isPaper() && sm.getMainConfig().isTargetingDisabledReason(event.getEntityType(), event.getEntity().getEntitySpawnReason())) {
                 return;
-            }
         }
         event.setCancelled(true);
     }
+
 }
