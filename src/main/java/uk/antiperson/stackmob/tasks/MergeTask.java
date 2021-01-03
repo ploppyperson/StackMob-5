@@ -60,6 +60,7 @@ public class MergeTask extends BukkitRunnable {
                         toRemove.add(removed);
                         break;
                     }
+                    continue;
                 }
                 matches.add(nearbyStack);
             }
