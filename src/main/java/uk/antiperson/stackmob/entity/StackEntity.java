@@ -239,20 +239,22 @@ public class StackEntity {
      * @return the entity that was removed
      */
     public StackEntity merge(StackEntity toMerge, boolean unregister) {
-        StackEntity entity1 = toMerge.getSize() < getSize() ? toMerge : this;
-        StackEntity entity2 = toMerge.getSize() < getSize() ? this : toMerge;
-        if (EventHelper.callStackMergeEvent(entity1, entity2).isCancelled()) {
+        boolean toMergeBigger = toMerge.getSize() > getSize();
+        StackEntity smallest = toMergeBigger ? this : toMerge;
+        StackEntity biggest = toMergeBigger ? toMerge : this;
+        if (EventHelper.callStackMergeEvent(smallest, biggest).isCancelled()) {
             return null;
         }
-        int totalSize = entity1.getSize() + entity2.getSize();
-        if (totalSize > getMaxSize()) {
-            toMerge.setSize(totalSize - entity2.getMaxSize());
-            setSize(entity2.getMaxSize());
+        int totalSize = smallest.getSize() + biggest.getSize();
+        int maxSize = getMaxSize();
+        if (totalSize > maxSize) {
+            smallest.setSize(totalSize - maxSize);
+            biggest.setSize(maxSize);
             return null;
         }
-        entity2.incrementSize(entity1.getSize());
-        entity1.remove(unregister);
-        return entity1;
+        biggest.incrementSize(smallest.getSize());
+        smallest.remove(unregister);
+        return smallest;
     }
 
     public StackEntity splitIfNotEnough(int itemAmount) {
