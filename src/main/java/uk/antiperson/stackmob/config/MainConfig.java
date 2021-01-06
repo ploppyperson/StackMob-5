@@ -184,28 +184,28 @@ public class MainConfig extends SpecialConfigFile {
     }
 
     public DeathType getDeathType(LivingEntity dead) {
-        for (String key : getDeathSection(dead)) {
-            ConfigList reasons = getList(dead.getType(), "death." + key + ".reason-blacklist");
+        for (DeathType type : getDeathSection(dead)) {
+            ConfigList reasons = getList(dead.getType(), "death." + type + ".reason-blacklist");
             if (dead.getLastDamageCause() != null && reasons.contains(dead.getLastDamageCause().getCause().toString())) {
                 continue;
             }
-            ConfigList spawnReasons = getList(dead.getType(), "death." + key + ".spawn-reason-blacklist");
+            ConfigList spawnReasons = getList(dead.getType(), "death." + type + ".spawn-reason-blacklist");
             if (Utilities.isPaper() && spawnReasons.contains(dead.getEntitySpawnReason())) {
                 continue;
             }
-            ConfigList types = getList(dead.getType(), "death." + key + ".type-blacklist");
+            ConfigList types = getList(dead.getType(), "death." + type + ".type-blacklist");
             if (types.contains(dead.getType().toString())) {
                 continue;
             }
-            return DeathType.valueOf(key);
+            return type;
         }
         throw new UnsupportedOperationException("Configuration error - unable to determine death type!");
     }
 
-    private Collection<String> getDeathSection(LivingEntity dead) {
-        TreeMap<Integer, String> array = new TreeMap<>();
+    private Collection<DeathType> getDeathSection(LivingEntity dead) {
+        TreeMap<Integer, DeathType> array = new TreeMap<>();
         for (DeathType type : DeathType.values()) {
-            array.put(getInt(dead.getType(), "death." + type + ".priority"), type.toString());
+            array.put(getInt(dead.getType(), "death." + type + ".priority"), type);
         }
         return array.values();
     }
