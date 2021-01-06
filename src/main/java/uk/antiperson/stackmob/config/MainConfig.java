@@ -15,6 +15,7 @@ import uk.antiperson.stackmob.entity.StackEntity;
 import uk.antiperson.stackmob.entity.TagMode;
 import uk.antiperson.stackmob.entity.death.DeathType;
 import uk.antiperson.stackmob.listeners.ListenerMode;
+import uk.antiperson.stackmob.utils.Utilities;
 
 import java.io.IOException;
 import java.util.*;
@@ -42,11 +43,13 @@ public class MainConfig extends SpecialConfigFile {
 
     private boolean default_death_skip_animation;
     private final Map<EntityType, Boolean> death_skip_animation = new EnumMap<>(EntityType.class);
-    private final List<String> default_death_priority = new ArrayList<>();
-    private final Map<EntityType, List<String>> death_priority = new EnumMap<>(EntityType.class);
-    private final Map<String, Set<EntityType>> default_death_type_blacklist = new Object2ObjectOpenHashMap<>();
-    private final Map<String, Set<EntityDamageEvent.DamageCause>> default_death_reason_blacklist = new Object2ObjectOpenHashMap<>();
-    private final Map<EntityType, Map<String, Set<EntityDamageEvent.DamageCause>>> death_reason_blacklist = new EnumMap<>(EntityType.class);
+    private final List<DeathType> default_death_priority = new ArrayList<>();
+    private final Map<EntityType, List<DeathType>> death_priority = new EnumMap<>(EntityType.class);
+    private final Map<DeathType, Set<EntityType>> default_death_type_blacklist = new EnumMap<>(DeathType.class);
+    private final Map<DeathType, Set<EntityDamageEvent.DamageCause>> default_death_reason_blacklist = new EnumMap<>(DeathType.class);
+    private final Map<EntityType, Map<DeathType, Set<EntityDamageEvent.DamageCause>>> death_reason_blacklist = new EnumMap<>(EntityType.class);
+    private final Map<DeathType, Set<CreatureSpawnEvent.SpawnReason>> default_spawn_reason_blacklist = new EnumMap<>(DeathType.class);
+    private final Map<EntityType, Map<DeathType, Set<CreatureSpawnEvent.SpawnReason>>> spawn_reason_blacklist = new EnumMap<>(EntityType.class);
     private int default_death_step_min_step;
     private final Map<EntityType, Integer> death_step_min_step = new EnumMap<>(EntityType.class);
     private int default_death_step_max_step;
@@ -135,9 +138,9 @@ public class MainConfig extends SpecialConfigFile {
 
 
         default_death_skip_animation = getBoolean("death.skip-animation");
-        final Collection<String> death_priorities = getDeathSection(null);
+        final Collection<DeathType> death_priorities = getDeathSection(null);
         default_death_priority.addAll(death_priorities);
-        for (String defaultDeathOption : death_priorities) {
+        for (DeathType defaultDeathOption : death_priorities) {
             final Set<EntityType> entityTypes = default_death_type_blacklist.getOrDefault(defaultDeathOption, EnumSet.noneOf(EntityType.class));
             entityTypes.addAll(getList("death." + defaultDeathOption + ".type-blacklist").asEnumList(EntityType.class));
             default_death_type_blacklist.putIfAbsent(defaultDeathOption, entityTypes);
@@ -145,6 +148,10 @@ public class MainConfig extends SpecialConfigFile {
             final Set<EntityDamageEvent.DamageCause> damageCauses = default_death_reason_blacklist.getOrDefault(defaultDeathOption, EnumSet.noneOf(EntityDamageEvent.DamageCause.class));
             damageCauses.addAll(getList("death." + defaultDeathOption + ".reason-blacklist").asEnumList(EntityDamageEvent.DamageCause.class));
             default_death_reason_blacklist.putIfAbsent(defaultDeathOption, damageCauses);
+
+            final Set<CreatureSpawnEvent.SpawnReason> spawnReasons = default_spawn_reason_blacklist.getOrDefault(defaultDeathOption, EnumSet.noneOf(CreatureSpawnEvent.SpawnReason.class));
+            spawnReasons.addAll(getList("death." + defaultDeathOption + ".spawn-reason-blacklist").asEnumList(CreatureSpawnEvent.SpawnReason.class));
+            default_spawn_reason_blacklist.putIfAbsent(defaultDeathOption, spawnReasons);
         }
         default_death_step_max_step = getInt("death.STEP.max-step");
         default_death_step_min_step = getInt("death.STEP.min-step");
@@ -234,17 +241,24 @@ public class MainConfig extends SpecialConfigFile {
             if (custom_death_skip_animation != default_death_skip_animation)
                 death_skip_animation.put(type, custom_death_skip_animation);
 
-            final List<String> custom_death_priorities = new ArrayList<>(getDeathSection(type));
+            final List<DeathType> custom_death_priorities = new ArrayList<>(getDeathSection(type));
             if (!custom_death_priorities.equals(default_death_priority)) {
                 death_priority.put(type, custom_death_priorities);
 
-                for (String defaultDeathOption : custom_death_priorities) {
-                    final Map<String, Set<EntityDamageEvent.DamageCause>> damageCauses = death_reason_blacklist.getOrDefault(type, new Object2ObjectOpenHashMap<>());
+                for (DeathType defaultDeathOption : custom_death_priorities) {
+                    final Map<DeathType, Set<EntityDamageEvent.DamageCause>> damageCauses = death_reason_blacklist.getOrDefault(type, new EnumMap<>(DeathType.class));
                     final Set<EntityDamageEvent.DamageCause> damageCausesSet = EnumSet.noneOf(EntityDamageEvent.DamageCause.class);
                     damageCausesSet.addAll(getList(type, "death." + defaultDeathOption + ".reason-blacklist").asEnumList(EntityDamageEvent.DamageCause.class));
 
                     damageCauses.put(defaultDeathOption, damageCausesSet);
                     death_reason_blacklist.putIfAbsent(type, damageCauses);
+
+                    final Map<DeathType, Set<CreatureSpawnEvent.SpawnReason>> spawnReasons = spawn_reason_blacklist.getOrDefault(type, new EnumMap<>(DeathType.class));
+                    final Set<CreatureSpawnEvent.SpawnReason> spawnReasonsSet = EnumSet.noneOf(CreatureSpawnEvent.SpawnReason.class);
+                    spawnReasonsSet.addAll(getList(type, "death." + defaultDeathOption + ".spawn-reason-blacklist").asEnumList(CreatureSpawnEvent.SpawnReason.class));
+
+                    spawnReasons.put(defaultDeathOption, spawnReasonsSet);
+                    spawn_reason_blacklist.putIfAbsent(type, spawnReasons);
                 }
             }
             final int custom_death_step_max_step = getInt(type, "death.STEP.max-step");
@@ -528,29 +542,34 @@ public class MainConfig extends SpecialConfigFile {
     }
 
     public DeathType getDeathType(LivingEntity entity) {
-        for (String key : death_priority.getOrDefault(entity.getType(), default_death_priority)) {
-            if (entity.getLastDamageCause() != null && death_reason_blacklist.getOrDefault(entity.getType(), default_death_reason_blacklist).get(key).contains(entity.getLastDamageCause().getCause())) {
+        for (DeathType deathType : death_priority.getOrDefault(entity.getType(), default_death_priority)) {
+            if (entity.getLastDamageCause() != null && death_reason_blacklist.getOrDefault(entity.getType(), default_death_reason_blacklist).get(deathType).contains(entity.getLastDamageCause().getCause())) {
                 continue;
             }
-            if (default_death_type_blacklist.get(key).contains(entity.getType())) {
+            if (Utilities.isPaper() && spawn_reason_blacklist.getOrDefault(entity.getType(), default_spawn_reason_blacklist).get(deathType).contains(entity.getEntitySpawnReason())) {
                 continue;
             }
-            return DeathType.valueOf(key);
+            if (default_death_type_blacklist.get(deathType).contains(entity.getType())) {
+                continue;
+            }
+            return deathType;
         }
         throw new UnsupportedOperationException("Configuration error - unable to determine death type!");
     }
 
-    private Collection<String> getDeathSection(EntityType type) {
-        final Map<Integer, String> array = new TreeMap<>();
+    private Collection<DeathType> getDeathSection(EntityType type) {
+        final Map<Integer, DeathType> array = new TreeMap<>();
 
         if (type == null) {
             for (DeathType deathType : DeathType.values()) {
-                array.put(getInt("death." + deathType.name() + ".priority"), deathType.name());
+                array.put(getInt("death." + deathType + ".priority"), deathType);
             }
         } else {
             for (String key : getConfigurationSection(type, "death").getKeys(false)) {
+                final DeathType deathType = DeathType.valueOf(key);
+
                 if (!key.toUpperCase().equals(key)) continue;
-                array.put(getInt(type, "death." + key + ".priority"), key);
+                array.put(getInt(type, "death." + deathType + ".priority"), deathType);
             }
         }
 

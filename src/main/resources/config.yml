@@ -1,4 +1,4 @@
-# StackMob 5.3 Configuration file - by antiPerson and contributors.
+# StackMob ${project.version} Configuration file - by antiPerson and contributors.
 
 # Most options can be customised for specific entity types, for details about this, see the end of this file.
 # Asterisk meaning:
@@ -7,10 +7,11 @@
 #
 # If the comments have been removed, you can find a version with comments at https://github.com/Nathat23/StackMob-5/tree/master/src/main/resources
 
-# Entity types list https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html
-# Spawn reasons list https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/CreatureSpawnEvent.SpawnReason.html
-# Target reasons list https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityTargetEvent.TargetReason.html
-# Damage causes list https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityDamageEvent.DamageCause.html
+# Spigot JavaDocs References:
+# (1) https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityDamageEvent.DamageCause.html
+# (2) https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/CreatureSpawnEvent.SpawnReason.html
+# (3) https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html
+# (4) https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html
 
 stack:
   # The maximum size that a stack can have. (*)
@@ -25,13 +26,13 @@ stack:
     enabled: true
     amount: 5
 
-# Names of worlds where there should be no stacking  (*)
+# Names of worlds where there should be no stacking. (*)
 worlds-blacklist: []
 worlds-blacklist-invert: false
-# Types of entity which should not stack
+# Types of entity which should not stack. (3)
 types-blacklist: [VILLAGER]
 types-blacklist-invert: false
-# If the entity's spawns reason is listed below, do not stack. (*)
+# If the entity's spawn reason is listed below, do not stack. (*)
 reason-blacklist:
   - SHOULDER_ENTITY
   - NATURAL
@@ -87,10 +88,10 @@ traits:
 disable-targeting:
   # (*)
   enabled: false
-  # If the entity's type is listed below, do not disable targeting.
+  # If the entity's type is listed below, do not disable targeting. (3)
   type-blacklist: []
   type-blacklist-invert: false
-  # If the entity's spawns reason is listed below, do not disable targeting (*) (**)
+  # If the entity's spawns reason is listed below, do not disable targeting (*) (**) (2)
   reason-blacklist: []
   reason-blacklist-invert: false
 
@@ -146,31 +147,42 @@ events:
 death:
   # Rather than spawn a new entity in place of the killed entity, just decrease the stack size instead. (**)
   skip-animation: false
-  # Death options:
+  # Death amount options:
   # SINGLE - Only one entity dies.
   # ALL - Every entity dies.
   # STEP - A random amount dies.
   # STEP_DAMAGE - An amount that depends on the damage done dies.
   #
+  # Each death option has it's own blacklist for entity traits:
+  # reason-blacklist - the last damage cause of the entity, which results in is death. (1)
+  # spawn-reason-blacklist - the spawn reason of the entity. (**) (2)
+  # type-blacklist - entity type. (3)
+  #
   # The priority 1 is highest and 4 is lowest.
-  # If the killed entity is blacklisted, either by type or death reasons, by the highest priority method,
-  # then it will attempt to use the next highest priority death method.
+  # If the killed entity is blacklisted, either by type, spawn reason or death reasons (the last damage cause),
+  # by the highest priority method, then it will attempt to use the next highest priority death method.
   SINGLE:
     priority: 4
     reason-blacklist: []
     reason-blacklist-invert: false
+    spawn-reason-blacklist: [ ]
+    spawn-reason-blacklist-invert: false
     type-blacklist: []
     type-blacklist-invert: false
   ALL:
     priority: 3
     reason-blacklist: []
     reason-blacklist-invert: false
+    spawn-reason-blacklist: [ ]
+    spawn-reason-blacklist-invert: false
     type-blacklist: []
     type-blacklist-invert: false
   STEP:
     priority: 2
     reason-blacklist: []
     reason-blacklist-invert: false
+    spawn-reason-blacklist: [ ]
+    spawn-reason-blacklist-invert: false
     type-blacklist: []
     type-blacklist-invert: false
     max-step: 5
@@ -179,6 +191,8 @@ death:
     priority: 1
     reason-blacklist: []
     reason-blacklist-invert: false
+    spawn-reason-blacklist: [ ]
+    spawn-reason-blacklist-invert: false
     type-blacklist: []
     type-blacklist-invert: false
 
@@ -187,16 +201,16 @@ drops:
   # (*)
   enabled: true
   use-loot-tables: true
-  # If each mob should only drop one of the items in the list. (*)
+  # If each mob should only drop one of the items in the list. (*) (4)
   one-per-stack: []
   one-per-stack-invert: false
-  # Items that should not be dropped. (*)
+  # Items that should not be dropped. (*) (4)
   item-blacklist: []
   item-blacklist-invert: false
-  # Death reasons that should not mean that drops are multiplied. (*)
+  # Death reasons that should not mean that drops are multiplied. (*) (1)
   reason-blacklist: []
   reason-blacklist-invert: false
-  # Types of entity for which drops should not be dropped for.
+  # Types of entity for which drops should not be dropped for. (3)
   type-blacklist: []
   type-blacklist-invert: false
 
@@ -221,7 +235,7 @@ wait-to-stack:
   enabled: true
   # For (x) times the stack task fires after spawn, don't stack this entity. (*)
   wait-time: 5
-  # Entity types that this should work for.
+  # Entity types that this should work for. (3)
   types-whitelist:
     - ZOMBIE
     - SKELETON
@@ -229,7 +243,7 @@ wait-to-stack:
     - CREEPER
     - ENDERMAN
   types-whitelist-invert: false
-  # Spawn reasons that this should work for. (*)
+  # Spawn reasons that this should work for. (*) (2)
   reasons-whitelist:
     - SPAWNER
   reasons-whitelist-invert: false
