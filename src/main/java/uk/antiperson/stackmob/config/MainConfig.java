@@ -9,6 +9,7 @@ import uk.antiperson.stackmob.entity.StackEntity;
 import uk.antiperson.stackmob.entity.death.DeathType;
 import uk.antiperson.stackmob.entity.TagMode;
 import uk.antiperson.stackmob.listeners.ListenerMode;
+import uk.antiperson.stackmob.utils.Utilities;
 
 import java.io.IOException;
 import java.util.*;
@@ -186,6 +187,10 @@ public class MainConfig extends SpecialConfigFile {
         for (String key : getDeathSection(dead)) {
             ConfigList reasons = getList(dead.getType(), "death." + key + ".reason-blacklist");
             if (dead.getLastDamageCause() != null && reasons.contains(dead.getLastDamageCause().getCause().toString())) {
+                continue;
+            }
+            ConfigList spawnReasons = getList(dead.getType(), "death." + key + ".spawn-reason-blacklist");
+            if (Utilities.isPaper() && spawnReasons.contains(dead.getEntitySpawnReason())) {
                 continue;
             }
             ConfigList types = getList(dead.getType(), "death." + key + ".type-blacklist");

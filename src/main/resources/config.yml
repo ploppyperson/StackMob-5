@@ -139,31 +139,42 @@ events:
 death:
   # Rather than spawn a new entity in place of the killed entity, just decrease the stack size instead. (**)
   skip-animation: false
-  # Death options:
+  # Death amount options:
   # SINGLE - Only one entity dies.
   # ALL - Every entity dies.
   # STEP - A random amount dies.
   # STEP_DAMAGE - An amount that depends on the damage done dies.
   #
+  # Each death option has it's own blacklist for entity traits:
+  # reason-blacklist - the last damage cause of the entity, which results in is death.
+  # spawn-reason-blacklist - the spawn reason of the entity (**)
+  # type-blacklist - entity type
+  #
   # The priority 1 is highest and 4 is lowest.
-  # If the killed entity is blacklisted, either by type or death reasons, by the highest priority method,
-  # then it will attempt to use the next highest priority death method.
+  # If the killed entity is blacklisted, either by type, spawn reason or death reasons (the last damage cause),
+  # by the highest priority method, then it will attempt to use the next highest priority death method.
   SINGLE:
     priority: 4
     reason-blacklist: []
     reason-blacklist-invert: false
+    spawn-reason-blacklist: []
+    spawn-reason-blacklist-invert: false
     type-blacklist: []
     type-blacklist-invert: false
   ALL:
     priority: 3
     reason-blacklist: []
     reason-blacklist-invert: false
+    spawn-reason-blacklist: [ ]
+    spawn-reason-blacklist-invert: false
     type-blacklist: []
     type-blacklist-invert: false
   STEP:
     priority: 2
     reason-blacklist: []
     reason-blacklist-invert: false
+    spawn-reason-blacklist: [ ]
+    spawn-reason-blacklist-invert: false
     type-blacklist: []
     type-blacklist-invert: false
     max-step: 5
@@ -172,6 +183,8 @@ death:
     priority: 1
     reason-blacklist: []
     reason-blacklist-invert: false
+    spawn-reason-blacklist: [ ]
+    spawn-reason-blacklist-invert: false
     type-blacklist: []
     type-blacklist-invert: false
 
