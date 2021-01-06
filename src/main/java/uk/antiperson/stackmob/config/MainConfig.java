@@ -566,9 +566,9 @@ public class MainConfig extends SpecialConfigFile {
             }
         } else {
             for (String key : getConfigurationSection(type, "death").getKeys(false)) {
-                final DeathType deathType = DeathType.valueOf(key);
-
                 if (!key.toUpperCase().equals(key)) continue;
+
+                final DeathType deathType = DeathType.valueOf(key);
                 array.put(getInt(type, "death." + deathType + ".priority"), deathType);
             }
         }
