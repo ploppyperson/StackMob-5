@@ -85,10 +85,10 @@ traits:
 # Similar to no-ai, but allows for movement of entities.
 disable-targeting:
   enabled: false
-  # If the entity's type is listed below, do not disable targeting.
+  # If the entity's type is listed below, do not disable targeting. (3)
   type-blacklist: []
   type-blacklist-invert: false
-  # If the entity's spawns reason is listed below, do not disable targeting (**)
+  # If the entity's spawns reason is listed below, do not disable targeting (**) (2)
   reason-blacklist: []
   reason-blacklist-invert: false
 
