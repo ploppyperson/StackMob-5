@@ -26,6 +26,10 @@ public class Utilities {
     public static final String GITHUB_DEFAULT_CONFIG = GITHUB + "/tree/master/src/main/resources";
     private static final Pattern hexPattern = Pattern.compile("&#([a-zA-Z0-9]){6}");
 
+    private static final boolean isPaper = Package.getPackage("com.destroystokyo.paper") != null;
+    private static final boolean isNewBukkit = Package.getPackage("net.minecraft.server.v1_15_R1") == null;
+    private static final boolean isNativeVersion = Package.getPackage("net.minecraft.server.v1_16_R3") != null;
+
     public static String translateColorCodes(String toTranslate) {
         Matcher matcher = hexPattern.matcher(toTranslate);
         while (matcher.find()) {
@@ -68,15 +72,15 @@ public class Utilities {
     }
 
     public static boolean isPaper() {
-        return Package.getPackage("com.destroystokyo.paper") != null;
+        return isPaper;
     }
 
     public static boolean isNewBukkit() {
-        return Package.getPackage("net.minecraft.server.v1_15_R1") == null;
+        return isNewBukkit;
     }
 
     public static boolean isNativeVersion() {
-        return Package.getPackage("net.minecraft.server.v1_16_R3") != null;
+        return isNativeVersion;
     }
 
     public static boolean isDye(ItemStack material) {
