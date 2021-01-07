@@ -211,7 +211,7 @@ public class MainConfig extends SpecialConfigFile {
     }
 
     public boolean isSkipDeathAnimation(EntityType type) {
-        return getBoolean(type, "death.skip-animation");
+        return getBoolean(type, "death.skip-animation") && Utilities.isPaper();
     }
 
     public StackEntity.EquipItemMode getEquipItemMode(EntityType type) {
