@@ -29,7 +29,7 @@ public class Utilities {
     public static String translateColorCodes(String toTranslate) {
         Matcher matcher = hexPattern.matcher(toTranslate);
         while (matcher.find()) {
-            net.md_5.bungee.api.ChatColor chatColor = net.md_5.bungee.api.ChatColor.of(matcher.group().substring(1,8));
+            net.md_5.bungee.api.ChatColor chatColor = net.md_5.bungee.api.ChatColor.of(matcher.group().substring(1, 8));
             String before = toTranslate.substring(0, matcher.start());
             String after = toTranslate.substring(matcher.end());
             toTranslate = before + chatColor + after;

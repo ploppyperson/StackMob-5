@@ -61,7 +61,7 @@ public class DeathListener implements Listener {
         int experience = stackEntity.getDrops().calculateDeathExperience(toMultiply, event.getDroppedExp());
         Map<ItemStack, Integer> drops = stackEntity.getDrops().calculateDrops(toMultiply, event.getDrops());
         Drops.dropItems(event.getEntity().getLocation(), drops);
-        if (event.isCancelled()) {
+        if (Utilities.isPaper() && event.isCancelled()) {
             ExperienceOrb orb = (ExperienceOrb) event.getEntity().getWorld().spawnEntity(event.getEntity().getLocation(), EntityType.EXPERIENCE_ORB);
             orb.setExperience(experience);
         } else {
