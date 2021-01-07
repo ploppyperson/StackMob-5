@@ -7,5 +7,6 @@ import java.lang.annotation.*;
 @Inherited
 public @interface HookMetadata {
     String name();
+
     String config();
 }

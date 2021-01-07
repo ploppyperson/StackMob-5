@@ -14,6 +14,7 @@ import uk.antiperson.stackmob.hook.StackableMobHook;
 public class MythicMobsHook extends Hook implements StackableMobHook {
 
     private MythicMobs mythicMobs;
+
     public MythicMobsHook(StackMob sm) {
         super(sm);
     }
@@ -22,7 +23,7 @@ public class MythicMobsHook extends Hook implements StackableMobHook {
     public boolean isMatching(LivingEntity first, LivingEntity nearby) {
         ActiveMob activeMobO = mythicMobs.getMobManager().getMythicMobInstance(first);
         ActiveMob activeMobN = mythicMobs.getMobManager().getMythicMobInstance(nearby);
-        if(!(activeMobO.getType().equals(activeMobN.getType()))){
+        if (!(activeMobO.getType().equals(activeMobN.getType()))) {
             return false;
         }
         ConfigList list = sm.getMainConfig().getList(first.getType(), "hooks.mythicmobs.blacklist");
@@ -33,7 +34,7 @@ public class MythicMobsHook extends Hook implements StackableMobHook {
     public LivingEntity spawnClone(Location location, LivingEntity dead) {
         ActiveMob activeMob = mythicMobs.getMobManager().getMythicMobInstance(dead);
         ActiveMob clone = mythicMobs.getMobManager().spawnMob(activeMob.getType().getInternalName(), location);
-        if(clone != null){
+        if (clone != null) {
             return (LivingEntity) clone.getEntity().getBukkitEntity();
         }
         return null;

@@ -14,6 +14,7 @@ import uk.antiperson.stackmob.events.EventHelper;
 public class SpawnListener implements Listener {
 
     private final StackMob sm;
+
     public SpawnListener(StackMob sm) {
         this.sm = sm;
     }
@@ -66,4 +67,5 @@ public class SpawnListener implements Listener {
             sm.getHookManager().onSpawn(original);
         });
     }
+
 }

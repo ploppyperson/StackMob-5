@@ -3,6 +3,7 @@ package uk.antiperson.stackmob.commands;
 public abstract class SubCommand implements Command {
 
     private final CommandArgument[] arguments;
+
     public SubCommand(CommandArgument... arguments) {
         this.arguments = arguments;
     }

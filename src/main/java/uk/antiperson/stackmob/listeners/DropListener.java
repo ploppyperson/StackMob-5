@@ -16,6 +16,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class DropListener implements Listener {
 
     private final StackMob sm;
+
     public DropListener(StackMob sm) {
         this.sm = sm;
     }

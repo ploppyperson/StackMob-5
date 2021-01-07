@@ -11,12 +11,13 @@ import uk.antiperson.stackmob.entity.StackEntity;
 public class TransformListener implements Listener {
 
     private final StackMob sm;
+
     public TransformListener(StackMob sm) {
         this.sm = sm;
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onTransform(EntityTransformEvent event){
+    public void onTransform(EntityTransformEvent event) {
         if (event.getTransformReason() != EntityTransformEvent.TransformReason.DROWNED) {
             return;
         }

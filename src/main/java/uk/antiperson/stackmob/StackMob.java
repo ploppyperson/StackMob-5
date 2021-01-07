@@ -65,7 +65,7 @@ public class StackMob extends JavaPlugin {
         getLogger().info("Loading config files...");
         loadConfig();
         getLogger().info("Registering hooks and trait checks...");
-        try{
+        try {
             getTraitManager().registerTraits();
             getHookManager().registerHooks();
         } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException e) {
@@ -183,7 +183,7 @@ public class StackMob extends JavaPlugin {
         String bridgeUrl = "http://aqua.api.spiget.org/v2/resources/45495/download";
         Utilities.downloadFile(file, bridgeUrl).whenComplete(((downloadResult, throwable) -> {
             if (downloadResult == Utilities.DownloadResult.ERROR) {
-                getLogger().log(Level.SEVERE,"There was an issue while downloading StackMobBridge.");
+                getLogger().log(Level.SEVERE, "There was an issue while downloading StackMobBridge.");
                 getLogger().log(Level.SEVERE, "This means that mob stacks will not be converted to the newer format.");
                 return;
             }

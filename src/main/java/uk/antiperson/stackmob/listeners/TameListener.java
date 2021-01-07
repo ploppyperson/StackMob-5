@@ -11,6 +11,7 @@ import uk.antiperson.stackmob.entity.StackEntity;
 public class TameListener implements Listener {
 
     private final StackMob sm;
+
     public TameListener(StackMob sm) {
         this.sm = sm;
     }

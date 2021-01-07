@@ -4,6 +4,7 @@ public class ConfigValue {
 
     private final String path;
     private final Object value;
+
     public ConfigValue(String path, Object value) {
         this.path = path;
         this.value = value;

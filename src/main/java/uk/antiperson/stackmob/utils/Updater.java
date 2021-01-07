@@ -13,6 +13,7 @@ public class Updater {
 
     private final int resourceId;
     private final Plugin sm;
+
     public Updater(Plugin sm, int resourceId) {
         this.sm = sm;
         this.resourceId = resourceId;
@@ -20,26 +21,26 @@ public class Updater {
 
     public CompletableFuture<UpdateResult> checkUpdate() {
         return CompletableFuture.supplyAsync(() -> {
-           String latestVersion = getLatestVersion();
-           if (latestVersion == null) {
-               return new UpdateResult(VersionResult.ERROR);
-           }
-           String strippedLatest = latestVersion.replaceAll("[^A-Za-z0-9]", "");
-           String strippedCurrent = sm.getDescription().getVersion().replaceAll("[^A-Za-z0-9]", "");
-           if (strippedCurrent.equals(strippedLatest)) {
-               return new UpdateResult(VersionResult.NONE);
-           }
-           return new UpdateResult(VersionResult.AVAILABLE, latestVersion);
+            String latestVersion = getLatestVersion();
+            if (latestVersion == null) {
+                return new UpdateResult(VersionResult.ERROR);
+            }
+            String strippedLatest = latestVersion.replaceAll("[^A-Za-z0-9]", "");
+            String strippedCurrent = sm.getDescription().getVersion().replaceAll("[^A-Za-z0-9]", "");
+            if (strippedCurrent.equals(strippedLatest)) {
+                return new UpdateResult(VersionResult.NONE);
+            }
+            return new UpdateResult(VersionResult.AVAILABLE, latestVersion);
         });
     }
 
-    private String getLatestVersion(){
-        try{
+    private String getLatestVersion() {
+        try {
             URL updateUrl = new URL("https://api.spigotmc.org/legacy/update.php?resource=" + resourceId);
             HttpURLConnection connect = (HttpURLConnection) updateUrl.openConnection();
             connect.setRequestMethod("GET");
             return new BufferedReader(new InputStreamReader(connect.getInputStream())).readLine();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
@@ -61,6 +62,7 @@ public class Updater {
 
         private final VersionResult result;
         private String newVersion;
+
         UpdateResult(VersionResult result, String newVersion) {
             this.result = result;
             this.newVersion = newVersion;

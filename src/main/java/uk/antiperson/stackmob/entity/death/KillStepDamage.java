@@ -10,6 +10,7 @@ import uk.antiperson.stackmob.hook.hooks.MythicMobsHook;
 public class KillStepDamage extends DeathMethod {
 
     private double leftOverDamage;
+
     public KillStepDamage(StackMob sm, StackEntity dead) {
         super(sm, dead);
     }
@@ -19,7 +20,7 @@ public class KillStepDamage extends DeathMethod {
         if (getDead().getEntity().getLastDamageCause() == null) {
             return 1;
         }
-        double healthBefore = ((LivingEntity)getDead().getEntity().getLastDamageCause().getEntity()).getHealth();
+        double healthBefore = ((LivingEntity) getDead().getEntity().getLastDamageCause().getEntity()).getHealth();
         double damageDone = getEntity().getLastDamageCause().getFinalDamage();
         double maxHealth = getEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue();
         double damageLeft = Math.min(maxHealth * (getDead().getSize() - 1), Math.abs(healthBefore - damageDone));

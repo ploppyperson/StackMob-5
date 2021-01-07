@@ -17,6 +17,7 @@ public class EntityManager {
 
     private final StackMob sm;
     private final Map<Integer, StackEntity> stackEntities;
+
     public EntityManager(StackMob sm) {
         this.sm = sm;
         stackEntities = new Int2ObjectOpenHashMap<>();

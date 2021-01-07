@@ -13,6 +13,7 @@ public class CommandArgument {
     private final boolean optional;
     private final List<String> expectedArguments;
     private final String name;
+
     private CommandArgument(ArgumentType type, boolean optional, List<String> expectedArguments, String name) {
         this.type = type;
         this.optional = optional;
@@ -60,7 +61,7 @@ public class CommandArgument {
     }
 
     public static CommandArgument construct(ArgumentType type, boolean optional, String name) {
-        return new CommandArgument(type, optional,null, name);
+        return new CommandArgument(type, optional, null, name);
     }
 
     public static CommandArgument construct(ArgumentType type, boolean optional, List<String> expectedArguments) {

@@ -12,6 +12,7 @@ public class StackMergeEvent extends StackEvent implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
     private final StackEntity nearby;
     private boolean cancelled;
+
     public StackMergeEvent(StackEntity first, StackEntity nearby) {
         super(first);
         this.nearby = nearby;
@@ -37,6 +38,7 @@ public class StackMergeEvent extends StackEvent implements Cancellable {
 
     /**
      * Gets the stack entity that the original stack entity is going to be merged with.
+     *
      * @return the stack entity that the original stack entity is going to be merged with.
      */
     public StackEntity getNearbyStackEntity() {

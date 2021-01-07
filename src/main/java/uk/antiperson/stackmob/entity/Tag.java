@@ -14,6 +14,7 @@ public class Tag {
 
     private final StackEntity stackEntity;
     private final StackMob sm;
+
     public Tag(StackMob sm, StackEntity stackEntity) {
         this.stackEntity = stackEntity;
         this.sm = sm;

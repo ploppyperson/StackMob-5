@@ -527,7 +527,7 @@ public class MainConfig extends SpecialConfigFile {
     }
 
     public int getEventMultiplyLimit(EntityType type, String eventKey, int stackSize) {
-        final int limit =  events_limit.getOrDefault(type, default_events_limit).get(eventKey);
+        final int limit = events_limit.getOrDefault(type, default_events_limit).get(eventKey);
         return limit == -1 ? stackSize : Math.min(stackSize, limit);
     }
 

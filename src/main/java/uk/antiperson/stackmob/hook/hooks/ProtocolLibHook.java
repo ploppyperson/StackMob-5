@@ -17,6 +17,7 @@ import java.lang.reflect.InvocationTargetException;
 public class ProtocolLibHook extends Hook {
 
     private ProtocolManager protocolManager;
+
     public ProtocolLibHook(StackMob sm) {
         super(sm);
     }

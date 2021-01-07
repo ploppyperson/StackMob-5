@@ -11,6 +11,7 @@ import uk.antiperson.stackmob.utils.Utilities;
 public class LeashListener implements Listener {
 
     private final StackMob sm;
+
     public LeashListener(StackMob sm) {
         this.sm = sm;
     }

@@ -7,6 +7,7 @@ public abstract class Hook implements IHook {
 
     public final StackMob sm;
     private final HookMetadata hookMetadata;
+
     public Hook(StackMob sm) {
         this.sm = sm;
         this.hookMetadata = getClass().getAnnotation(HookMetadata.class);
@@ -24,6 +25,7 @@ public abstract class Hook implements IHook {
 
     /**
      * Get the config path for this hook.
+     *
      * @return the config path for this hook.
      */
     public String getConfig() {
@@ -32,6 +34,7 @@ public abstract class Hook implements IHook {
 
     /**
      * Gets the plugin for this hook.
+     *
      * @return the plugin for this hook.
      */
     public Plugin getPlugin() {

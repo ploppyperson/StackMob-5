@@ -17,16 +17,18 @@ public class HookManager {
     private final Set<Hook> hooks = new ObjectOpenHashSet<>();
     private final StackMob sm;
     private ProtocolLibHook protocolLibHook;
+
     public HookManager(StackMob sm) {
         this.sm = sm;
     }
 
     /**
      * Register hooks on server load rather than enable, since some plugins are special.
-     * @throws NoSuchMethodException if hook class not have a constructor.
-     * @throws IllegalAccessException if hook class can not be accessed
+     *
+     * @throws NoSuchMethodException     if hook class not have a constructor.
+     * @throws IllegalAccessException    if hook class can not be accessed
      * @throws InvocationTargetException if class throws an exception in the constructor.
-     * @throws InstantiationException if the class is abstract
+     * @throws InstantiationException    if the class is abstract
      */
     public void registerOnLoad() throws InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         if (sm.getServer().getPluginManager().getPlugin("WorldGuard") != null) {
@@ -36,10 +38,11 @@ public class HookManager {
 
     /**
      * Register plugin hooks.
-     * @throws NoSuchMethodException if hook class not have a constructor.
-     * @throws IllegalAccessException if hook class can not be accessed
+     *
+     * @throws NoSuchMethodException     if hook class not have a constructor.
+     * @throws IllegalAccessException    if hook class can not be accessed
      * @throws InvocationTargetException if class throws an exception in the constructor.
-     * @throws InstantiationException if the class is abstract
+     * @throws InstantiationException    if the class is abstract
      */
     public void registerHooks() throws InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         registerHook(WorldGuardHook.class);
@@ -52,11 +55,12 @@ public class HookManager {
 
     /**
      * Register a  single hook class.
+     *
      * @param hookClass the class to register
-     * @throws NoSuchMethodException if hook class not have a constructor.
-     * @throws IllegalAccessException if hook class can not be accessed
+     * @throws NoSuchMethodException     if hook class not have a constructor.
+     * @throws IllegalAccessException    if hook class can not be accessed
      * @throws InvocationTargetException if class throws an exception in the constructor.
-     * @throws InstantiationException if the class is abstract
+     * @throws InstantiationException    if the class is abstract
      */
     private void registerHook(Class<? extends Hook> hookClass) throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
         HookMetadata hookMetadata = hookClass.getAnnotation(HookMetadata.class);
@@ -73,12 +77,13 @@ public class HookManager {
 
     /**
      * Create a new instance of the given class.
+     *
      * @param hookClass the class to create an instance of.
      * @return the new instance of this class.
-     * @throws NoSuchMethodException if hook class not have a constructor.
-     * @throws IllegalAccessException if hook class can not be accessed
+     * @throws NoSuchMethodException     if hook class not have a constructor.
+     * @throws IllegalAccessException    if hook class can not be accessed
      * @throws InvocationTargetException if class throws an exception in the constructor.
-     * @throws InstantiationException if the class is abstract
+     * @throws InstantiationException    if the class is abstract
      */
     private Hook createInstance(Class<? extends Hook> hookClass) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         for (Constructor<?> constructor : hookClass.getDeclaredConstructors()) {
@@ -93,7 +98,8 @@ public class HookManager {
 
     /**
      * Checks if the two given entities should not stack together.
-     * @param first the first entity to check.
+     *
+     * @param first  the first entity to check.
      * @param nearby entity to compare with.
      * @return if these entities should not stack.
      */
@@ -140,6 +146,7 @@ public class HookManager {
 
     /**
      * Gets the applicable hook for this entity.
+     *
      * @param entity the entity to get the applicable hook for.
      * @return the applicable hook.
      */

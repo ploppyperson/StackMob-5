@@ -9,6 +9,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CommandMetadata {
     String command();
+
     boolean playerReq();
+
     String desc();
 }

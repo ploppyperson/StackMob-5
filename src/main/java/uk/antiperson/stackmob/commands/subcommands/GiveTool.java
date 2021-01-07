@@ -10,6 +10,7 @@ import uk.antiperson.stackmob.commands.User;
 public class GiveTool extends SubCommand {
 
     private final StackMob sm;
+
     public GiveTool(StackMob sm) {
         this.sm = sm;
     }

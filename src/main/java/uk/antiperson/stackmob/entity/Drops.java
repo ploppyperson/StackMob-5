@@ -22,6 +22,7 @@ public class Drops {
 
     private final LivingEntity dead;
     private final StackMob sm;
+
     public Drops(StackMob sm, StackEntity entity) {
         this.sm = sm;
         this.dead = entity.getEntity();
@@ -77,7 +78,8 @@ public class Drops {
     }
 
     public static void dropItems(Location location, Map<ItemStack, Integer> items) {
-        for (Map.Entry<ItemStack, Integer> entry : items.entrySet()) dropItem(location, entry.getKey(),  entry.getValue());
+        for (Map.Entry<ItemStack, Integer> entry : items.entrySet())
+            dropItem(location, entry.getKey(), entry.getValue());
     }
 
     public static void dropItem(Location location, ItemStack stack, int amount) {

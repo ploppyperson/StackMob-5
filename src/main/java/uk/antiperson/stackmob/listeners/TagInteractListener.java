@@ -15,6 +15,7 @@ import uk.antiperson.stackmob.entity.StackEntity;
 public class TagInteractListener implements Listener {
 
     private final StackMob sm;
+
     public TagInteractListener(StackMob sm) {
         this.sm = sm;
     }
@@ -42,5 +43,5 @@ public class TagInteractListener implements Listener {
             stackEntity.removeStackData();
         }
     }
-  
+
 }

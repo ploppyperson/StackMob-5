@@ -7,6 +7,7 @@ public enum DeathType {
     STEP_DAMAGE(KillStepDamage.class);
 
     private final Class<? extends DeathMethod> dclass;
+
     DeathType(Class<? extends DeathMethod> dclass) {
         this.dclass = dclass;
     }

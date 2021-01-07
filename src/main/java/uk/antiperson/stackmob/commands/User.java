@@ -7,6 +7,7 @@ import uk.antiperson.stackmob.utils.Utilities;
 public class User {
 
     private final CommandSender sender;
+
     public User(CommandSender sender) {
         this.sender = sender;
     }

@@ -12,6 +12,7 @@ import uk.antiperson.stackmob.utils.Utilities;
 public class TargetListener implements Listener {
 
     private final StackMob sm;
+
     public TargetListener(StackMob sm) {
         this.sm = sm;
     }
@@ -31,7 +32,7 @@ public class TargetListener implements Listener {
             return;
         }
         if (Utilities.isPaper() && sm.getMainConfig().isTargetingDisabledReason(event.getEntityType(), event.getEntity().getEntitySpawnReason())) {
-                return;
+            return;
         }
         event.setCancelled(true);
     }

@@ -13,6 +13,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class SlimeListener implements Listener {
 
     private final StackMob sm;
+
     public SlimeListener(StackMob sm) {
         this.sm = sm;
     }
@@ -31,7 +32,7 @@ public class SlimeListener implements Listener {
         }
         int deathAmount = event.getEntity().getMetadata(Utilities.SLIME_METADATA).get(0).asInt();
         for (int i = 0; i < deathAmount; i++) {
-            int randSlime = ThreadLocalRandom.current().nextInt(2,4);
+            int randSlime = ThreadLocalRandom.current().nextInt(2, 4);
             event.setCount(event.getCount() + randSlime);
         }
         event.getEntity().removeMetadata(Utilities.SLIME_METADATA, sm);

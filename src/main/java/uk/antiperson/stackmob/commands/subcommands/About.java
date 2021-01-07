@@ -10,6 +10,7 @@ import uk.antiperson.stackmob.utils.Utilities;
 public class About extends SubCommand {
 
     private final StackMob sm;
+
     public About(StackMob sm) {
         this.sm = sm;
     }

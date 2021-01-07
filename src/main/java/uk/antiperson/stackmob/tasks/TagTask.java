@@ -15,6 +15,7 @@ import java.util.List;
 public class TagTask extends BukkitRunnable {
 
     private final StackMob sm;
+
     public TagTask(StackMob sm) {
         this.sm = sm;
     }

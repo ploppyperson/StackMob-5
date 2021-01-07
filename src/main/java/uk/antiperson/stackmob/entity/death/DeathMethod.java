@@ -8,6 +8,7 @@ public abstract class DeathMethod implements DeathStep {
 
     final StackMob sm;
     private final StackEntity dead;
+
     public DeathMethod(StackMob sm, StackEntity dead) {
         this.sm = sm;
         this.dead = dead;

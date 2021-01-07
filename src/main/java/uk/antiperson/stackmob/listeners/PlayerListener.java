@@ -14,6 +14,7 @@ import uk.antiperson.stackmob.utils.StackingTool;
 public class PlayerListener implements Listener {
 
     private final StackMob sm;
+
     public PlayerListener(StackMob sm) {
         this.sm = sm;
     }

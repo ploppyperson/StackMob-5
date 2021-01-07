@@ -10,6 +10,7 @@ import uk.antiperson.stackmob.entity.StackEntity;
 public class Stats extends SubCommand {
 
     private final StackMob sm;
+
     public Stats(StackMob sm) {
         this.sm = sm;
     }

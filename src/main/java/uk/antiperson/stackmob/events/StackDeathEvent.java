@@ -26,6 +26,7 @@ public class StackDeathEvent extends StackEvent {
 
     /**
      * Gets the amount of entities removed from the stack when it was killed.
+     *
      * @return the amount of entities removed from the stack when it was killed.
      */
     public int getDeathStep() {

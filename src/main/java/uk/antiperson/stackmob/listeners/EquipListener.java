@@ -10,6 +10,7 @@ import uk.antiperson.stackmob.entity.StackEntity;
 public class EquipListener implements Listener {
 
     private final StackMob sm;
+
     public EquipListener(StackMob sm) {
         this.sm = sm;
     }

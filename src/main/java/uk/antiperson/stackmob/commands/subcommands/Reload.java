@@ -11,6 +11,7 @@ import java.io.IOException;
 public class Reload extends SubCommand {
 
     private final StackMob sm;
+
     public Reload(StackMob sm) {
         this.sm = sm;
     }

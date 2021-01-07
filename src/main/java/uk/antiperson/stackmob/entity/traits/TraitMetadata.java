@@ -9,5 +9,6 @@ import java.lang.annotation.*;
 @Inherited
 public @interface TraitMetadata {
     Class<? extends Mob> entity();
+
     String path();
 }

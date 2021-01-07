@@ -14,6 +14,7 @@ import java.util.Arrays;
 public class ItemTools {
 
     private final StackMob sm;
+
     public ItemTools(StackMob sm) {
         this.sm = sm;
     }
@@ -24,7 +25,7 @@ public class ItemTools {
         ItemMeta itemMeta = is.getItemMeta();
         itemMeta.setDisplayName(ChatColor.GOLD + "The Stick Of Stacking");
         itemMeta.setLore(Arrays.asList(ChatColor.GREEN + "A useful tool for modifying stacked mobs.",
-                ChatColor.GOLD + "Right click to perform action" ,
+                ChatColor.GOLD + "Right click to perform action",
                 ChatColor.GOLD + "Shift-right click to change mode."));
         itemMeta.getPersistentDataContainer().set(sm.getToolKey(), PersistentDataType.INTEGER, 1);
         is.setItemMeta(itemMeta);

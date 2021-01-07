@@ -20,17 +20,17 @@ stack:
   interval: 100
   # The area around an entity for which applicable stacks should be found. (*)
   # Format: [(x cord),(y cord),(z cord)]
-  merge-range: [10,10,10]
+  merge-range: [ 10,10,10 ]
   # Only begin to stack entities when this amount of entities are nearby. (*)
   threshold:
     enabled: true
     amount: 5
 
 # Names of worlds where there should be no stacking. (*)
-worlds-blacklist: []
+worlds-blacklist: [ ]
 worlds-blacklist-invert: false
 # Types of entity which should not stack. (3)
-types-blacklist: [VILLAGER]
+types-blacklist: [ VILLAGER ]
 types-blacklist-invert: false
 # If the entity's spawn reason is listed below, do not stack. (*)
 reason-blacklist:
@@ -55,7 +55,7 @@ display-name:
   nearby:
     # The range from which the tag should be visible.
     # Format: [(x cord),(y cord),(z cord)]
-    range: [12,6,12]
+    range: [ 12,6,12 ]
     # How often (in ticks) the tag visibility status of an entity should be updated. (20 ticks = 1 second)
     interval: 20
   # Don't show the tag if the stack size of this entity if it is equal to or below the value specified. (*)
@@ -89,10 +89,10 @@ disable-targeting:
   # (*)
   enabled: false
   # If the entity's type is listed below, do not disable targeting. (3)
-  type-blacklist: []
+  type-blacklist: [ ]
   type-blacklist-invert: false
   # If the entity's spawns reason is listed below, do not disable targeting (*) (**) (2)
-  reason-blacklist: []
+  reason-blacklist: [ ]
   reason-blacklist-invert: false
 
 # What should be done when these entity actions occur. (*)
@@ -163,37 +163,37 @@ death:
   # by the highest priority method, then it will attempt to use the next highest priority death method.
   SINGLE:
     priority: 4
-    reason-blacklist: []
+    reason-blacklist: [ ]
     reason-blacklist-invert: false
     spawn-reason-blacklist: [ ]
     spawn-reason-blacklist-invert: false
-    type-blacklist: []
+    type-blacklist: [ ]
     type-blacklist-invert: false
   ALL:
     priority: 3
-    reason-blacklist: []
+    reason-blacklist: [ ]
     reason-blacklist-invert: false
     spawn-reason-blacklist: [ ]
     spawn-reason-blacklist-invert: false
-    type-blacklist: []
+    type-blacklist: [ ]
     type-blacklist-invert: false
   STEP:
     priority: 2
-    reason-blacklist: []
+    reason-blacklist: [ ]
     reason-blacklist-invert: false
     spawn-reason-blacklist: [ ]
     spawn-reason-blacklist-invert: false
-    type-blacklist: []
+    type-blacklist: [ ]
     type-blacklist-invert: false
     max-step: 5
     min-step: 1
   STEP_DAMAGE:
     priority: 1
-    reason-blacklist: []
+    reason-blacklist: [ ]
     reason-blacklist-invert: false
     spawn-reason-blacklist: [ ]
     spawn-reason-blacklist-invert: false
-    type-blacklist: []
+    type-blacklist: [ ]
     type-blacklist-invert: false
 
 # Multiply entity drops on entity death.
@@ -202,16 +202,16 @@ drops:
   enabled: true
   use-loot-tables: true
   # If each mob should only drop one of the items in the list. (*) (4)
-  one-per-stack: []
+  one-per-stack: [ ]
   one-per-stack-invert: false
   # Items that should not be dropped. (*) (4)
-  item-blacklist: []
+  item-blacklist: [ ]
   item-blacklist-invert: false
   # Death reasons that should not mean that drops are multiplied. (*) (1)
-  reason-blacklist: []
+  reason-blacklist: [ ]
   reason-blacklist-invert: false
   # Types of entity for which drops should not be dropped for. (3)
-  type-blacklist: []
+  type-blacklist: [ ]
   type-blacklist-invert: false
 
 # Multiply entity experience on entity death.
@@ -222,7 +222,7 @@ experience:
   multiplier-min: 0.5
   multiplier-max: 0.8
   # Types of entity for which exp should not be dropped for.
-  type-blacklist: []
+  type-blacklist: [ ]
   type-blacklist-invert: false
 
 # Multiply the player stats which can be seen by the player from the game menu. (*)
@@ -254,7 +254,7 @@ hooks:
   worldguard: true
   mythicmobs:
     enabled: true
-    blacklist: []
+    blacklist: [ ]
     blacklist-invert: false
   # Prevent citizens npcs from stacking.
   citizens: true

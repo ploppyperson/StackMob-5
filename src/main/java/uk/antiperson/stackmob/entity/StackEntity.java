@@ -23,6 +23,7 @@ public class StackEntity {
     private int waitCount;
     private int stackSize;
     private Set<ItemStack> equiptItems;
+
     public StackEntity(StackMob sm, LivingEntity entity) {
         this.sm = sm;
         this.entity = entity;
@@ -30,6 +31,7 @@ public class StackEntity {
 
     /**
      * Sets the size of this stack.
+     *
      * @param newSize the size this stack should be changed to.
      */
     public void setSize(int newSize) {
@@ -38,6 +40,7 @@ public class StackEntity {
 
     /**
      * Sets the size of this stack.
+     *
      * @param newSize the size this stack should be changed to.
      */
     public void setSize(int newSize, boolean update) {
@@ -66,6 +69,7 @@ public class StackEntity {
     /**
      * In order to not break mob grinders, stacked entities can have a waiting status.
      * This waiting status means that this stacked entity will be ignored on all stacking attempts until the count reaches 0
+     *
      * @return whether this entity is currently waiting
      */
     public boolean isWaiting() {
@@ -74,6 +78,7 @@ public class StackEntity {
 
     /**
      * Gets the wait count for this entity.
+     *
      * @return the wait count for this entity
      */
     public int getWaitCount() {
@@ -82,6 +87,7 @@ public class StackEntity {
 
     /**
      * Whether this entity should wait.
+     *
      * @param spawnReason the spawn reason of the entity.
      * @return whether this entity should wait.
      */
@@ -121,6 +127,7 @@ public class StackEntity {
 
     /**
      * Increments the stack size by the value given.
+     *
      * @param increment increment for stack size.
      */
     public void incrementSize(int increment) {
@@ -129,6 +136,7 @@ public class StackEntity {
 
     /**
      * Gets the current stack size for this entity.
+     *
      * @return the current stack size for this entity.
      */
     public int getSize() {
@@ -140,6 +148,7 @@ public class StackEntity {
 
     /**
      * Gets the maximum stack size.
+     *
      * @return the maximum stack size
      */
     public int getMaxSize() {
@@ -167,6 +176,7 @@ public class StackEntity {
 
     /**
      * Returns the LivingEntity of this stack.
+     *
      * @return the LivingEntity of this stack.
      */
     public LivingEntity getEntity() {
@@ -175,6 +185,7 @@ public class StackEntity {
 
     /**
      * Returns the world the entity is in.
+     *
      * @return the world the entity is in.
      */
     public World getWorld() {
@@ -183,6 +194,7 @@ public class StackEntity {
 
     /**
      * Returns a new instance of Tag for this entity.
+     *
      * @return a new instance of Tag for this entity.
      */
     public Tag getTag() {
@@ -191,6 +203,7 @@ public class StackEntity {
 
     /**
      * Returns a new instance of Drops for this entity.
+     *
      * @return a new instance of Drops for this entity.
      */
     public Drops getDrops() {
@@ -199,6 +212,7 @@ public class StackEntity {
 
     /**
      * Check if the stack is at its maximum size.
+     *
      * @return if the stack is at its maximum size.
      */
     public boolean isMaxSize() {
@@ -207,6 +221,7 @@ public class StackEntity {
 
     /**
      * Check if the given entity and this entity should stack.
+     *
      * @param nearby another entity
      * @return if the given entity and this entity should stack.
      */
@@ -231,7 +246,8 @@ public class StackEntity {
 
     /**
      * Merge this stack with another stack, providing they are similar.
-     * @param toMerge stack to merge with.
+     *
+     * @param toMerge    stack to merge with.
      * @param unregister whether to unregister the entity that is removed.
      * @return the entity that was removed
      */
@@ -264,6 +280,7 @@ public class StackEntity {
 
     /**
      * Creates a clone of this entity.
+     *
      * @param amount amount to
      * @return a clone of this entity.
      */
@@ -292,6 +309,7 @@ public class StackEntity {
 
     /**
      * Makes this stack smaller by 1 and spawns another stack with the remaining stack size.
+     *
      * @return stack with the remaining stack size.
      */
     public StackEntity slice() {
@@ -300,6 +318,7 @@ public class StackEntity {
 
     /**
      * Makes this stack smaller and spawns another stack with the remaining stack size.
+     *
      * @param amount amount to
      * @return stack with the remaining stack size.
      */

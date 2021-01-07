@@ -9,6 +9,7 @@ import uk.antiperson.stackmob.StackMob;
 public class ChunkListener implements Listener {
 
     private final StackMob sm;
+
     public ChunkListener(StackMob sm) {
         this.sm = sm;
     }
@@ -22,5 +23,5 @@ public class ChunkListener implements Listener {
     public void onChunkUnload(ChunkUnloadEvent event) {
         sm.getEntityManager().unregisterStackedEntities(event.getChunk());
     }
-  
+
 }

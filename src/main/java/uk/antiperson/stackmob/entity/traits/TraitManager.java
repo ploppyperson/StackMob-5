@@ -16,6 +16,7 @@ public class TraitManager {
 
     private final Map<EntityType, Set<Trait>> traitsPerEntity;
     private final StackMob sm;
+
     public TraitManager(StackMob sm) {
         this.sm = sm;
         this.traitsPerEntity = new EnumMap<>(EntityType.class);
@@ -71,7 +72,8 @@ public class TraitManager {
 
     /**
      * Check if the two given entities have any non-matching characteristics which prevent stacking.
-     * @param first 1st entity to check
+     *
+     * @param first  1st entity to check
      * @param nearby entity to compare with
      * @return if these entities have any not matching characteristics (traits.)
      */
@@ -86,8 +88,9 @@ public class TraitManager {
 
     /**
      * Apply the characteristics of the dead entity to the newly spawned entity.
+     *
      * @param spawned the entity that the traits should be copied to.
-     * @param dead the entity which traits should be copied from.
+     * @param dead    the entity which traits should be copied from.
      */
     public void applyTraits(StackEntity spawned, StackEntity dead) {
         for (Trait trait : traitsPerEntity.get(spawned.getEntity().getType())) {
@@ -97,6 +100,7 @@ public class TraitManager {
 
     /**
      * Check if the trait is applicable to the given entity.
+     *
      * @param trait the trait to check.
      * @param clazz the class of the give entity to check.
      * @return if the trait is applicable to the given entity.

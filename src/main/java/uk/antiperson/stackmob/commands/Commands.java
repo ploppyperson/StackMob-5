@@ -20,6 +20,7 @@ public class Commands implements CommandExecutor, TabCompleter {
 
     private final StackMob sm;
     private final Set<SubCommand> subCommands;
+
     public Commands(StackMob sm) {
         this.sm = sm;
         this.subCommands = new HashSet<>();
@@ -50,7 +51,8 @@ public class Commands implements CommandExecutor, TabCompleter {
                 for (CommandArgument argumentType : subCommand.getArguments()) {
                     StringBuilder options = new StringBuilder();
                     if (argumentType.getExpectedArguments().size() <= 3 && argumentType.getExpectedArguments().size() > 0) {
-                        for (String argument : argumentType.getExpectedArguments()) options.append(argument).append("/");
+                        for (String argument : argumentType.getExpectedArguments())
+                            options.append(argument).append("/");
                         options.deleteCharAt(options.length() - 1);
                     } else if (argumentType.getName() != null) {
                         options.append(argumentType.getName());
@@ -99,7 +101,7 @@ public class Commands implements CommandExecutor, TabCompleter {
             CommandArgument argument = argumentTypes[i];
             switch (argument.getType()) {
                 case BOOLEAN:
-                    if (!(args[i].equals("true") || args[i+1].equals("false"))) return false;
+                    if (!(args[i].equals("true") || args[i + 1].equals("false"))) return false;
                     break;
                 case INTEGER:
                     try {

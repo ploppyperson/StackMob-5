@@ -16,6 +16,7 @@ import java.util.Arrays;
 public class ForceStack extends SubCommand {
 
     private final StackMob sm;
+
     public ForceStack(StackMob sm) {
         super(CommandArgument.construct(ArgumentType.STRING, true, Arrays.asList("named", "tamed")));
         this.sm = sm;

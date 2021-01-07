@@ -21,6 +21,7 @@ public class StackingTool {
     private final Player player;
     private final ItemStack itemStack;
     private final StackMob sm;
+
     public StackingTool(StackMob sm, Player player) {
         this.sm = sm;
         this.player = player;
@@ -94,6 +95,7 @@ public class StackingTool {
         REMOVE_CHUNK(4);
 
         private final int id;
+
         ToolMode(int id) {
             this.id = id;
         }
@@ -106,6 +108,7 @@ public class StackingTool {
     private static class ModifyPrompt extends NumericPrompt {
 
         private final StackEntity stackEntity;
+
         public ModifyPrompt(StackEntity stackEntity) {
             this.stackEntity = stackEntity;
         }
@@ -125,7 +128,7 @@ public class StackingTool {
         @NotNull
         @Override
         public String getPromptText(@NotNull ConversationContext conversationContext) {
-            return ChatColor.YELLOW +  "Enter stack size: ";
+            return ChatColor.YELLOW + "Enter stack size: ";
         }
 
         @Nullable

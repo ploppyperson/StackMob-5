@@ -9,6 +9,7 @@ import uk.antiperson.stackmob.commands.User;
 public class Upgrade extends SubCommand {
 
     private final StackMob sm;
+
     public Upgrade(StackMob sm) {
         this.sm = sm;
     }

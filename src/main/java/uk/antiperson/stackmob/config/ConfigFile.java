@@ -21,6 +21,7 @@ public class ConfigFile {
     private FileConfiguration fileCon;
     private final StackMob sm;
     private final String filePath;
+
     public ConfigFile(StackMob sm, String filePath) {
         this.sm = sm;
         this.filePath = filePath;
@@ -80,6 +81,7 @@ public class ConfigFile {
 
     /**
      * Loads the config so that it can be read.
+     *
      * @throws IOException when an I/O error occurs if a new file is made.
      */
     public void load() throws IOException {
@@ -93,6 +95,7 @@ public class ConfigFile {
 
     /**
      * Rename the current file and create a new one from defaults.
+     *
      * @throws IOException when an I/O error occurs reading or writing.
      */
     public void makeOld() throws IOException {
@@ -103,13 +106,14 @@ public class ConfigFile {
 
     /**
      * Copies the default config from the jar to the plugin folder.
+     *
      * @throws IOException when an I/O error occurs reading or writing.
      */
     public void createFile() throws IOException {
         // The files copy below will throw an error if the directories are not pre existing.
         file = new File(sm.getDataFolder(), filePath);
         File parentFile = file.getParentFile();
-        if(!parentFile.exists()){
+        if (!parentFile.exists()) {
             Files.createDirectories(parentFile.toPath());
         }
         // Open the file and copy it to the plugin folder.
@@ -121,6 +125,7 @@ public class ConfigFile {
     /**
      * Saves the config to file.
      * NOTE: Comments will be removed!
+     *
      * @throws IOException when I/O error occurs
      */
     public void save() throws IOException {

@@ -17,6 +17,7 @@ import java.util.function.Function;
 public class Remove extends SubCommand {
 
     private final StackMob sm;
+
     public Remove(StackMob sm) {
         super(CommandArgument.construct(ArgumentType.STRING, true, Arrays.asList("animals", "hostile")));
         this.sm = sm;

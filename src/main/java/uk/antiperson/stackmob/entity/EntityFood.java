@@ -42,6 +42,7 @@ public enum EntityFood {
 
     private final Predicate<Tameable> predicate;
     private final Material[] foods;
+
     EntityFood(Predicate<Tameable> predicate, Material... foods) {
         this.predicate = predicate;
         this.foods = foods;

@@ -16,6 +16,7 @@ import uk.antiperson.stackmob.hook.ProtectionHook;
 public class WorldGuardHook extends Hook implements ProtectionHook {
 
     private static final StateFlag ENTITY_FLAG = new StateFlag("entity-stacking", true);
+
     public WorldGuardHook(StackMob sm) {
         super(sm);
     }
@@ -37,7 +38,7 @@ public class WorldGuardHook extends Hook implements ProtectionHook {
         try {
             RegionQuery rq = WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery();
             return rq.testState(BukkitAdapter.adapt(entity.getLocation()), null, ENTITY_FLAG);
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             return false;
         }
     }

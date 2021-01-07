@@ -12,6 +12,7 @@ import uk.antiperson.stackmob.entity.StackEntity;
 public class RemoveListener implements Listener {
 
     private final StackMob sm;
+
     public RemoveListener(StackMob sm) {
         this.sm = sm;
     }
