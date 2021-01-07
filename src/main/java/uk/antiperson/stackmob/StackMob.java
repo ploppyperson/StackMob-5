@@ -97,6 +97,10 @@ public class StackMob extends JavaPlugin {
         }
         itemTools = new ItemTools(this);
         getEntityManager().registerAllEntities();
+        if (!Utilities.isPaper()) {
+            getLogger().info("It has been detected that you are not using Paper (https://papermc.io).");
+            getLogger().info("StackMob makes use of Paper's API, which means you're missing out on features.");
+        }
     }
 
     @Override
