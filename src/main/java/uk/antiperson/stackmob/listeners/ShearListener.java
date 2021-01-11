@@ -1,6 +1,7 @@
 package uk.antiperson.stackmob.listeners;
 
 import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.block.Dispenser;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -103,7 +104,7 @@ public class ShearListener implements Listener {
             LootContext lootContext = new LootContext.Builder(sheared.getLocation()).lootedEntity(sheared).build();
             Collection<ItemStack> loot = sheared.getLootTable().populateLoot(ThreadLocalRandom.current(), lootContext);
             for (ItemStack itemStack : loot) {
-                if (itemStack.getData() instanceof Wool) {
+                if (Tag.WOOL.isTagged(itemStack.getType())) {
                     int woolAmount = (int) Math.round(amount * ThreadLocalRandom.current().nextDouble(1, 2));
                     Drops.dropItem(sheared.getLocation(), itemStack, woolAmount);
                 }
