@@ -33,7 +33,7 @@ public class StackingTool {
 
     public ToolMode getMode() {
         for (ToolMode t : ToolMode.values()) {
-            if (t.getId() == getModeId()) {
+            if (t.ordinal() == getModeId()) {
                 return t;
             }
         }
@@ -88,19 +88,11 @@ public class StackingTool {
     }
 
     enum ToolMode {
-        MODIFY(1),
-        SLICE(2),
-        REMOVE_SINGLE(3),
-        REMOVE_CHUNK(4);
+        MODIFY,
+        SLICE,
+        REMOVE_SINGLE,
+        REMOVE_CHUNK
 
-        private final int id;
-        ToolMode(int id) {
-            this.id = id;
-        }
-
-        public int getId() {
-            return id;
-        }
     }
 
     private class ModifyPrompt extends NumericPrompt {
