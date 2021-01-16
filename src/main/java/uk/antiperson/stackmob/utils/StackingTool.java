@@ -43,7 +43,7 @@ public class StackingTool {
 
     public void shiftMode() {
         ItemMeta itemMeta = itemStack.getItemMeta();
-        int nextMode = (getModeId() + 1) > ToolMode.values().length ? 1 : getModeId() + 1;
+        int nextMode = (getModeId() + 1) > ToolMode.values().length ? 0 : getModeId() + 1;
         itemMeta.getPersistentDataContainer().set(sm.getToolKey(), PersistentDataType.INTEGER, nextMode);
         itemStack.setItemMeta(itemMeta);
         player.getInventory().setItemInMainHand(itemStack);
