@@ -26,6 +26,9 @@ public abstract class SpecialConfigFile extends ConfigFile {
 
     public double getDouble(EntityType type, String path) {
         Object value = getValue(type, path);
+        if (value instanceof Integer) {
+            return NumberUtils.toInt(value.toString());
+        }
         return value instanceof Double ? NumberUtils.toDouble(value.toString()) : 0;
     }
 
