@@ -1,8 +1,7 @@
 package uk.antiperson.stackmob.listeners;
 
-import org.bukkit.entity.Bee;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityEnterBlockEvent;
 import uk.antiperson.stackmob.StackMob;
@@ -17,26 +16,17 @@ public class BeeListener implements Listener {
         this.sm = sm;
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true)
     public void onEntityEnterBlockEvent(EntityEnterBlockEvent event) {
-        final Bee oldBee = (Bee) event.getEntity();
-        if (!sm.getEntityManager().isStackedEntity(oldBee)) {
-            return;
-        }
-        final StackEntity oldStackedBee = sm.getEntityManager().getStackEntity(oldBee);
-        if (oldStackedBee == null || oldStackedBee.isSingle()) {
-            return;
-        }
-        event.setCancelled(true);
+        final LivingEntity bee = (LivingEntity) event.getEntity();
 
-        final Bee newBee = ((Bee) oldStackedBee.slice().getEntity());
-        newBee.setCannotEnterHiveTicks(2);
-        oldStackedBee.removeStackData();
-        sm.getServer().getScheduler().runTaskLater(sm, () -> {
-            if (oldBee.isValid()) {
-                oldBee.setCannotEnterHiveTicks(0);
+        if (sm.getEntityManager().isStackedEntity(bee)) {
+            final StackEntity oldBee = sm.getEntityManager().getStackEntity(bee);
+            if (oldBee == null || oldBee.isSingle()) {
+                return;
             }
-        }, 1L);
+            oldBee.slice();
+        }
     }
 
 }
