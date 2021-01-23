@@ -11,6 +11,7 @@ import uk.antiperson.stackmob.commands.*;
 import uk.antiperson.stackmob.utils.Utilities;
 
 import java.util.Arrays;
+import java.util.function.Predicate;
 
 @CommandMetadata(command = "forcestack", playerReq = false, desc = "Force all currently loaded entities to stack")
 public class ForceStack extends SubCommand {
@@ -24,16 +25,23 @@ public class ForceStack extends SubCommand {
     @Override
     public boolean onCommand(User sender, String[] args) {
         int count = 0;
-
+        Predicate<LivingEntity> predicate = null;
+        if (args.length > 0) {
+            switch (args[0].toLowerCase()) {
+                case "named":
+                    predicate = pEntity -> pEntity.getCustomName() != null;
+                    break;
+                case "tamed":
+                    predicate = pEntity -> (pEntity instanceof Tameable) && ((Tameable) pEntity).isTamed();
+                    break;
+            }
+        }
         for (World world : Bukkit.getWorlds()) {
             for (LivingEntity entity : world.getEntitiesByClass(Mob.class)) {
                 if (sm.getEntityManager().isStackedEntity(entity)) {
                     continue;
                 }
-                if (entity.getCustomName() != null && !(args.length > 0 && args[0].equals("named"))) {
-                    continue;
-                }
-                if ((entity instanceof Tameable) && (((Tameable) entity)).isTamed() && !(args.length > 0 && args[0].equals("tamed"))) {
+                if (predicate != null && !predicate.test(entity)) {
                     continue;
                 }
                 CreatureSpawnEvent.SpawnReason reason = Utilities.isPaper() ? entity.getEntitySpawnReason() : CreatureSpawnEvent.SpawnReason.DEFAULT;
@@ -44,8 +52,8 @@ public class ForceStack extends SubCommand {
                 count++;
             }
         }
-
-        sender.sendSuccess(count + " entities has been forced to stack!");
+        String entityType = predicate != null ? args[0].toLowerCase() + " " : "";
+        sender.sendSuccess(count + " " + entityType + "entities have been forced to stack!");
         return false;
     }
 }
