@@ -239,22 +239,19 @@ public class StackEntity {
      * @return the entity that was removed
      */
     public StackEntity merge(StackEntity toMerge, boolean unregister) {
-        boolean toMergeBigger = toMerge.getSize() > getSize();
-        StackEntity smallest = toMergeBigger ? this : toMerge;
-        StackEntity biggest = toMergeBigger ? toMerge : this;
-        if (EventHelper.callStackMergeEvent(smallest, biggest).isCancelled()) {
+        if (EventHelper.callStackMergeEvent(this, toMerge).isCancelled()) {
             return null;
         }
-        int totalSize = smallest.getSize() + biggest.getSize();
-        int maxSize = getMaxSize();
+        final int totalSize = getSize() + toMerge.getSize();
+        final int maxSize = getMaxSize();
         if (totalSize > maxSize) {
-            smallest.setSize(totalSize - maxSize);
-            biggest.setSize(maxSize);
+            setSize(totalSize - maxSize);
+            toMerge.setSize(maxSize);
             return null;
         }
-        biggest.incrementSize(smallest.getSize());
-        smallest.remove(unregister);
-        return smallest;
+        incrementSize(toMerge.getSize());
+        toMerge.remove(unregister);
+        return toMerge;
     }
 
     public StackEntity splitIfNotEnough(int itemAmount) {
