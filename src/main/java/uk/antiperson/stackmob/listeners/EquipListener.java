@@ -23,5 +23,5 @@ public class EquipListener implements Listener {
         StackEntity stackEntity = sm.getEntityManager().getStackEntity(event.getEntity());
         stackEntity.addEquipItem(event.getItem().getItemStack());
     }
-
+  
 }

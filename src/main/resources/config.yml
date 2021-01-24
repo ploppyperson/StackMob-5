@@ -1,9 +1,14 @@
 # StackMob ${project.version} Configuration file - by antiPerson and contributors.
-
+#
 # Most options can be customised for specific entity types, for details about this, see the end of this file.
 # Asterisk meaning:
 # (*) This option can be overridden in the 'custom' section at the end of this file.
 # (**) The following option requires the use of Paper (https://papermc.io) because the API needed is not in Spigot.
+# Spigot JavaDoc Reference:
+# (1) https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityDamageEvent.DamageCause.html
+# (2) https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/CreatureSpawnEvent.SpawnReason.html
+# (3) https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html
+# (4) https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html
 #
 # If the comments have been removed, you can find a version with comments at https://github.com/Nathat23/StackMob-5/tree/master/src/main/resources
 
@@ -32,7 +37,7 @@ worlds-blacklist-invert: false
 # Types of entity which should not stack. (3)
 types-blacklist: [ VILLAGER ]
 types-blacklist-invert: false
-# If the entity's spawn reason is listed below, do not stack. (*)
+# If the entity's spawn reason is listed below, do not stack. (*) (2)
 reason-blacklist:
   - SHOULDER_ENTITY
   - NATURAL
