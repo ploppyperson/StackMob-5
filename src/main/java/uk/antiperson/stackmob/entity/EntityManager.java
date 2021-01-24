@@ -76,7 +76,7 @@ public class EntityManager {
     }
 
     public StackEntity registerStackedEntity(LivingEntity entity) {
-        StackEntity stackEntity = new StackEntity(sm, entity);
+        final StackEntity stackEntity = new StackEntity(sm, entity);
         stackEntities.put(entity.getEntityId(), stackEntity);
         return stackEntity;
     }
@@ -86,7 +86,7 @@ public class EntityManager {
     }
 
     public void unregisterStackedEntity(LivingEntity entity) {
-        StackEntity stackEntity = stackEntities.remove(entity.getEntityId());
+        final StackEntity stackEntity = stackEntities.remove(entity.getEntityId());
         if (stackEntity == null) {
             throw new UnsupportedOperationException("Attempted to unregister entity that isn't stacked!");
         }
@@ -94,6 +94,10 @@ public class EntityManager {
 
     public void unregisterStackedEntity(StackEntity stackEntity) {
         stackEntities.remove(stackEntity.getEntity().getEntityId());
+    }
+
+    public void unregisterStackedEntity(int entityId) {
+        stackEntities.remove(entityId);
     }
 
 }

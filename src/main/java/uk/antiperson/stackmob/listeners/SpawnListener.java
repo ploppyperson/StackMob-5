@@ -25,26 +25,30 @@ public class SpawnListener implements Listener {
             return;
         }
         sm.getServer().getScheduler().runTask(sm, () -> {
-            if (sm.getMainConfig().isEntityBlacklisted(event.getEntity(), event.getSpawnReason())) {
+            final LivingEntity eventEntity = event.getEntity();
+            if (!eventEntity.isValid()) {
                 return;
             }
-            if (sm.getEntityManager().isStackedEntity(event.getEntity())) {
+            if (sm.getMainConfig().isEntityBlacklisted(eventEntity, event.getSpawnReason())) {
                 return;
             }
-            if (EventHelper.callStackSpawnEvent(event.getEntity()).isCancelled()) {
+            if (sm.getEntityManager().isStackedEntity(eventEntity)) {
                 return;
             }
-            StackEntity original = sm.getEntityManager().registerStackedEntity(event.getEntity());
+            if (EventHelper.callStackSpawnEvent(eventEntity).isCancelled()) {
+                return;
+            }
+            final StackEntity original = sm.getEntityManager().registerStackedEntity(eventEntity);
             if (original.shouldWait(event.getSpawnReason())) {
                 original.makeWait();
                 return;
             }
-            Integer[] searchRadius = sm.getMainConfig().getStackRadius(event.getEntity().getType());
-            for (Entity entity : event.getEntity().getNearbyEntities(searchRadius[0], searchRadius[1], searchRadius[2])) {
+            final Integer[] searchRadius = sm.getMainConfig().getStackRadius(eventEntity.getType());
+            for (Entity entity : eventEntity.getNearbyEntities(searchRadius[0], searchRadius[1], searchRadius[2])) {
                 if (!(entity instanceof Mob)) {
                     continue;
                 }
-                StackEntity nearby = sm.getEntityManager().getStackEntity((LivingEntity) entity);
+                final StackEntity nearby = sm.getEntityManager().getStackEntity((LivingEntity) entity);
                 if (nearby == null) {
                     continue;
                 }
@@ -57,13 +61,10 @@ public class SpawnListener implements Listener {
                 if (sm.getMainConfig().getStackThresholdEnabled(entity.getType()) && nearby.getSize() == 1) {
                     continue;
                 }
-                StackEntity removed = nearby.merge(original, true);
-                if (removed != null) {
-                    removed.removeStackData();
-                    return;
-                }
+                original.merge(nearby, true);
+                return;
             }
-            original.setSize(1, event.getEntity().getCustomName() == null);
+            original.setSize(1, eventEntity.getCustomName() == null);
             sm.getHookManager().onSpawn(original);
         });
     }

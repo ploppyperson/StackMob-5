@@ -1,5 +1,7 @@
 package uk.antiperson.stackmob.tasks;
 
+import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.ints.IntCollection;
+import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -20,20 +22,23 @@ public class MergeTask extends BukkitRunnable {
     }
 
     public void run() {
-        Set<StackEntity> toRemove = new ObjectOpenHashSet<>();
+        final IntCollection toRemove = new IntOpenHashSet();
         for (StackEntity original : sm.getEntityManager().getStackEntities()) {
+            if (toRemove.contains(original.getEntity().getEntityId())) {
+                continue;
+            }
             if (original.isWaiting()) {
                 original.incrementWait();
                 continue;
             }
             if (!original.canStack()) {
                 if (!original.getEntity().isValid()) {
-                    toRemove.add(original);
+                    toRemove.add(original.getEntity().getEntityId());
                 }
                 continue;
             }
-            Integer[] searchRadius = sm.getMainConfig().getStackRadius(original.getEntity().getType());
-            Set<StackEntity> matches = new ObjectOpenHashSet<>();
+            final Integer[] searchRadius = sm.getMainConfig().getStackRadius(original.getEntity().getType());
+            final Set<StackEntity> matches = new ObjectOpenHashSet<>();
             for (Entity nearby : original.getEntity().getNearbyEntities(searchRadius[0], searchRadius[1], searchRadius[2])) {
                 if (!(nearby instanceof Mob)) {
                     continue;
@@ -41,13 +46,16 @@ public class MergeTask extends BukkitRunnable {
                 if (!sm.getEntityManager().isStackedEntity((LivingEntity) nearby)) {
                     continue;
                 }
-                StackEntity nearbyStack = sm.getEntityManager().getStackEntity((LivingEntity) nearby);
+                final StackEntity nearbyStack = sm.getEntityManager().getStackEntity((LivingEntity) nearby);
                 if (nearbyStack == null) {
+                    continue;
+                }
+                if (toRemove.contains(nearbyStack.getEntity().getEntityId())) {
                     continue;
                 }
                 if (!nearbyStack.canStack()) {
                     if (!original.getEntity().isValid()) {
-                        toRemove.add(original);
+                        toRemove.add(original.getEntity().getEntityId());
                     }
                     continue;
                 }
@@ -55,9 +63,9 @@ public class MergeTask extends BukkitRunnable {
                     continue;
                 }
                 if (nearbyStack.getSize() > 1 || original.getSize() > 1) {
-                    StackEntity removed = nearbyStack.merge(original, false);
+                    final StackEntity removed = original.merge(nearbyStack, false);
                     if (removed != null) {
-                        toRemove.add(removed);
+                        toRemove.add(removed.getEntity().getEntityId());
                         break;
                     }
                     continue;
@@ -65,18 +73,21 @@ public class MergeTask extends BukkitRunnable {
                 matches.add(nearbyStack);
             }
             if (!sm.getMainConfig().getStackThresholdEnabled(original.getEntity().getType())) {
+                matches.clear();
                 continue;
             }
-            int threshold = sm.getMainConfig().getStackThreshold(original.getEntity().getType()) - 1;
-            int size = matches.size();
+            final int threshold = sm.getMainConfig().getStackThreshold(original.getEntity().getType()) - 1;
+            final int size = matches.size();
             if (size < threshold) {
+                matches.clear();
                 continue;
             }
             for (StackEntity match : matches) {
                 match.remove(false);
-                toRemove.add(match);
+                toRemove.add(match.getEntity().getEntityId());
             }
-            if (size >= original.getMaxSize()) {
+            matches.clear();
+            if (size + original.getSize() > original.getMaxSize()) {
                 for (int stackSize : Utilities.split(size, original.getMaxSize())) {
                     original.duplicate(stackSize);
                 }
@@ -84,7 +95,7 @@ public class MergeTask extends BukkitRunnable {
             }
             original.incrementSize(size);
         }
-        for (StackEntity stackEntity : toRemove) {
+        for (int stackEntity : toRemove) {
             sm.getEntityManager().unregisterStackedEntity(stackEntity);
         }
     }
