@@ -79,7 +79,7 @@ public class EntityManager {
     }
 
     public StackEntity registerStackedEntity(LivingEntity entity) {
-        StackEntity stackEntity = new StackEntity(sm, this, entity);
+        StackEntity stackEntity = new StackEntity(sm, entity);
         stackEntities.add(stackEntity);
         return stackEntity;
     }

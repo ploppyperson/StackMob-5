@@ -24,10 +24,10 @@ public class StackEntity {
     private Set<ItemStack> equiptItems;
     private Tag tag;
 
-    public StackEntity(StackMob sm, EntityManager entityManager, LivingEntity entity) {
+    public StackEntity(StackMob sm, LivingEntity entity) {
         this.sm = sm;
         this.entity = entity;
-        this.entityManager = entityManager;
+        this.entityManager = sm.getEntityManager();
     }
 
     /**
@@ -222,14 +222,11 @@ public class StackEntity {
         if (sm.getTraitManager().checkTraits(this, nearby)) {
             return false;
         }
-        if (sm.getHookManager().checkHooks(this, nearby)) {
-            return false;
-        }
-        return true;
+        return  sm.getHookManager().checkHooks(this, nearby);
     }
 
     public boolean canStack() {
-        if (equiptItems != null && !equiptItems.isEmpty()) {
+        if (hasEquipItem()) {
             if (sm.getMainConfig().getEquipItemMode(getEntity().getType()) == EquipItemMode.PREVENT_STACK) {
                 return false;
             }
@@ -294,7 +291,7 @@ public class StackEntity {
     }
 
     public boolean isSingle() {
-        return getSize() < 2;
+        return getSize() == 1;
     }
 
     /**
@@ -327,22 +324,29 @@ public class StackEntity {
         return duplicate;
     }
 
+    public Set<ItemStack> getEquiptItems() {
+        return equiptItems;
+    }
+
+    public boolean hasEquipItem() {
+        return getEquiptItems() != null && !getEquiptItems().isEmpty();
+    }
 
     public void addEquipItem(ItemStack equipt) {
-        if (equiptItems == null) {
+        if (!hasEquipItem()) {
             equiptItems = new HashSet<>();
         }
-        equiptItems.add(equipt);
+        getEquiptItems().add(equipt);
     }
 
     private void dropEquipItems() {
-        if (equiptItems == null) {
+        if (!hasEquipItem()) {
             return;
         }
         if (sm.getMainConfig().getEquipItemMode(getEntity().getType()) != EquipItemMode.DROP_ITEMS) {
             return;
         }
-        for (ItemStack itemStack : equiptItems) {
+        for (ItemStack itemStack : getEquiptItems()) {
             getEntity().getWorld().dropItemNaturally(getEntity().getLocation(), itemStack);
         }
     }
