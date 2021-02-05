@@ -7,7 +7,6 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.StackEntity;
 import uk.antiperson.stackmob.entity.death.DeathType;
-import uk.antiperson.stackmob.entity.TagMode;
 import uk.antiperson.stackmob.listeners.ListenerMode;
 import uk.antiperson.stackmob.utils.Utilities;
 
@@ -50,8 +49,8 @@ public class MainConfig extends SpecialConfigFile {
         return getInt(type, "display-name.threshold");
     }
 
-    public TagMode getTagMode(EntityType type) {
-        return TagMode.valueOf(getString(type, "display-name.visibility"));
+    public StackEntity.TagMode getTagMode(EntityType type) {
+        return StackEntity.TagMode.valueOf(getString(type, "display-name.visibility"));
     }
 
     public Integer[] getTagNeabyRadius() {

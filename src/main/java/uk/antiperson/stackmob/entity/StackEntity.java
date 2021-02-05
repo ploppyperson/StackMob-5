@@ -1,13 +1,19 @@
 package uk.antiperson.stackmob.entity;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.WordUtils;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.events.EventHelper;
+import uk.antiperson.stackmob.hook.StackableMobHook;
+import uk.antiperson.stackmob.hook.hooks.ProtocolLibHook;
+import uk.antiperson.stackmob.utils.NMSHelper;
 import uk.antiperson.stackmob.utils.Utilities;
 
 import java.util.HashSet;
@@ -189,7 +195,7 @@ public class StackEntity {
      */
     public Tag getTag() {
         if (tag == null) {
-            tag = new Tag(sm, this);
+            tag = new Tag();
         }
         return tag;
     }
@@ -222,7 +228,7 @@ public class StackEntity {
         if (sm.getTraitManager().checkTraits(this, nearby)) {
             return false;
         }
-        return  sm.getHookManager().checkHooks(this, nearby);
+        return sm.getHookManager().checkHooks(this, nearby);
     }
 
     public boolean canStack() {
@@ -355,5 +361,56 @@ public class StackEntity {
         IGNORE,
         DROP_ITEMS,
         PREVENT_STACK
+    }
+
+    public enum TagMode {
+        ALWAYS,
+        HOVER,
+        NEARBY
+    }
+
+    public class Tag {
+
+        public void update() {
+            LivingEntity entity = getEntity();
+            int threshold = sm.getMainConfig().getTagThreshold(entity.getType());
+            if (getSize() <= threshold) {
+                entity.setCustomName(null);
+                entity.setCustomNameVisible(false);
+                return;
+            }
+            String displayName = sm.getMainConfig().getTagFormat(entity.getType());
+            displayName = StringUtils.replace(displayName, "%type%", getEntityName());
+            displayName = StringUtils.replace(displayName, "%size%", getSize() + "");
+            displayName = Utilities.translateColorCodes(displayName);
+            entity.setCustomName(displayName);
+            if (sm.getMainConfig().getTagMode(entity.getType()) == TagMode.ALWAYS) {
+                entity.setCustomNameVisible(true);
+            }
+        }
+
+        private String getEntityName() {
+            LivingEntity entity = getEntity();
+            String typeString = sm.getEntityTranslation().getTranslatedName(entity.getType());
+            if (typeString != null && typeString.length() > 0) {
+                return typeString;
+            }
+            StackableMobHook smh = sm.getHookManager().getApplicableHook(StackEntity.this);
+            typeString = smh != null ? smh.getDisplayName(entity) : entity.getType().toString();
+            typeString = typeString == null ? entity.getType().toString() : typeString;
+            return WordUtils.capitalizeFully(typeString.replaceAll("[^A-Za-z0-9]", " "));
+        }
+
+        public void sendPacket(Player player, boolean tagVisible) {
+            if (!Utilities.isNativeVersion()) {
+                ProtocolLibHook protocolLibHook = sm.getHookManager().getProtocolLibHook();
+                if (protocolLibHook == null) {
+                    return;
+                }
+                protocolLibHook.sendPacket(player, getEntity(), tagVisible);
+                return;
+            }
+            NMSHelper.sendPacket(player, getEntity(), tagVisible);
+        }
     }
 }
