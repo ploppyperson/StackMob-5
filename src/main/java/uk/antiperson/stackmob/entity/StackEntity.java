@@ -22,6 +22,8 @@ public class StackEntity {
     private int waitCount;
     private int stackSize;
     private Set<ItemStack> equiptItems;
+    private Tag tag;
+
     public StackEntity(StackMob sm, EntityManager entityManager, LivingEntity entity) {
         this.sm = sm;
         this.entity = entity;
@@ -186,7 +188,10 @@ public class StackEntity {
      * @return a new instance of Tag for this entity.
      */
     public Tag getTag() {
-        return new Tag(sm, this);
+        if (tag == null) {
+            tag = new Tag(sm, this);
+        }
+        return tag;
     }
 
     /**
