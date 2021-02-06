@@ -5,7 +5,7 @@ import org.bukkit.entity.LivingEntity;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.StackEntity;
 import uk.antiperson.stackmob.hook.StackableMobHook;
-import uk.antiperson.stackmob.hook.hooks.MythicMobsHook;
+import uk.antiperson.stackmob.hook.hooks.MythicMobsStackHook;
 
 public class KillStepDamage extends DeathMethod {
 
@@ -33,7 +33,7 @@ public class KillStepDamage extends DeathMethod {
     public void onSpawn(StackEntity spawned) {
         double maxHealth = getEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue();
         StackableMobHook smh = sm.getHookManager().getApplicableHook(spawned);
-        if (smh instanceof MythicMobsHook) {
+        if (smh instanceof MythicMobsStackHook) {
             sm.getServer().getScheduler().runTaskLater(sm, bukkitTask -> {
                 if (!spawned.getEntity().isDead()) {
                     spawned.getEntity().setHealth(maxHealth - leftOverDamage);

@@ -42,7 +42,8 @@ public class HookManager {
      */
     public void registerHooks() throws InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         registerHook(WorldGuardHook.class);
-        registerHook(MythicMobsHook.class);
+        registerHook(MythicMobsStackHook.class);
+        registerHook(MythicMobsNoStackHook.class);
         registerHook(McmmoHook.class);
         registerHook(CitizensHook.class);
         registerHook(JobsHook.class);

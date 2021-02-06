@@ -247,9 +247,12 @@ hooks:
   # Allows the custom 'entity-stacking' flag to be used in worldguard regions.
   worldguard: true
   mythicmobs:
-    enabled: true
-    blacklist: []
-    blacklist-invert: false
+    stack: false
+    # Blacklist of MythicMob types (uses the internal name)
+    stack-blacklist: [ ]
+    stack-blacklist-invert: false
+    # When this option is enabled, MythicMobs will not stack.
+    prevent-stack: true
   # Prevent citizens npcs from stacking.
   citizens: true
   # Prevent stacked entities from giving mcmmo experience.
