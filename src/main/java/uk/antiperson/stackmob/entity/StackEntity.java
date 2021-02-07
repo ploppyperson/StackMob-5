@@ -25,6 +25,7 @@ public class StackEntity {
     private final EntityManager entityManager;
     private final StackMob sm;
     private boolean waiting;
+    private boolean forgetOnSpawn;
     private int waitCount;
     private int stackSize;
     private Set<ItemStack> equiptItems;
@@ -69,6 +70,25 @@ public class StackEntity {
         entity.setCustomNameVisible(false);
         entityManager.unregisterStackedEntity(this);
         getTag().update();
+    }
+
+    /**
+     * Returns whether the entity will have its stack data removed on spawn.
+     * See {@link #setForgetOnSpawn(boolean)} for further details.
+     * @return whether the entity will have its stack data removed on spawn.
+     */
+    public boolean isForgetOnSpawn() {
+        return forgetOnSpawn;
+    }
+
+    /**
+     * Make it so that the entity will have its stack data removed in the spawn event.
+     * This will only work if the entity already has stack data.
+     * If you are a plugin developer, use {@link uk.antiperson.stackmob.events.StackSpawnEvent} instead.
+     * @param forgetOnSpawn whether the entity should have its stack data removed in the spawn event.
+     */
+    public void setForgetOnSpawn(boolean forgetOnSpawn) {
+        this.forgetOnSpawn = forgetOnSpawn;
     }
 
     /**
