@@ -69,6 +69,7 @@ public class MergeTask extends BukkitRunnable {
                         if (original == removed) {
                             continue originals;
                         }
+                        break;
                     }
                     continue;
                 }
