@@ -23,7 +23,7 @@ public class MergeTask extends BukkitRunnable {
 
     public void run() {
         final IntCollection toRemove = new IntOpenHashSet();
-        for (StackEntity original : sm.getEntityManager().getStackEntities()) {
+        originals: for (StackEntity original : sm.getEntityManager().getStackEntities()) {
             if (toRemove.contains(original.getEntity().getEntityId())) {
                 continue;
             }
@@ -63,10 +63,12 @@ public class MergeTask extends BukkitRunnable {
                     continue;
                 }
                 if (nearbyStack.getSize() > 1 || original.getSize() > 1) {
-                    final StackEntity removed = original.merge(nearbyStack, false);
+                    final StackEntity removed = nearbyStack.merge(original, false);
                     if (removed != null) {
                         toRemove.add(removed.getEntity().getEntityId());
-                        break;
+                        if (original == removed) {
+                            continue originals;
+                        }
                     }
                     continue;
                 }
@@ -88,7 +90,9 @@ public class MergeTask extends BukkitRunnable {
             }
             matches.clear();
             if (size + original.getSize() > original.getMaxSize()) {
-                for (int stackSize : Utilities.split(size, original.getMaxSize())) {
+                final int toCompleteStack = (original.getMaxSize() - original.getSize());
+                original.incrementSize(toCompleteStack);
+                for (int stackSize : Utilities.split(size - toCompleteStack, original.getMaxSize())) {
                     original.duplicate(stackSize);
                 }
                 return;
