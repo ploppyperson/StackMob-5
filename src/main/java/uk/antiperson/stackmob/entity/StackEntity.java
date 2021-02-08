@@ -285,7 +285,7 @@ public class StackEntity {
      * @return a clone of this entity.
      */
     public StackEntity duplicate(int amount) {
-        StackEntity cloneStack = entityManager.registerStackedEntity(spawnClone());
+        final StackEntity cloneStack = entityManager.registerStackedEntity(spawnClone());
         cloneStack.setSize(amount);
         sm.getTraitManager().applyTraits(cloneStack, this);
         sm.getHookManager().onSpawn(cloneStack);
@@ -293,7 +293,7 @@ public class StackEntity {
     }
 
     private LivingEntity spawnClone() {
-        LivingEntity entity = sm.getHookManager().spawnClone(getEntity().getLocation(), this);
+        final LivingEntity entity = sm.getHookManager().spawnClone(getEntity().getLocation(), this);
         if (entity != null) {
             return entity;
         }
@@ -329,7 +329,7 @@ public class StackEntity {
         if (amount >= getSize()) {
             throw new UnsupportedOperationException("Slice amount is bigger than the stack size!");
         }
-        StackEntity duplicate = duplicate(getSize() - amount);
+        final StackEntity duplicate = duplicate(getSize() - amount);
         setSize(amount);
         if (getEntity().isLeashed()) {
             duplicate.getEntity().setLeashHolder(getEntity().getLeashHolder());
