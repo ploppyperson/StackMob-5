@@ -20,7 +20,7 @@ public class EntityManager {
 
     public EntityManager(StackMob sm) {
         this.sm = sm;
-        stackEntities = new Int2ObjectOpenHashMap<>();
+        stackEntities = new Int2ObjectOpenHashMap<>(4096);
     }
 
     public boolean isStackedEntity(LivingEntity entity) {
