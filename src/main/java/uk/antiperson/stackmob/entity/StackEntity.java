@@ -5,6 +5,7 @@ import org.bukkit.World;
 import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import uk.antiperson.stackmob.StackMob;
@@ -285,10 +286,27 @@ public class StackEntity {
      * @return a clone of this entity.
      */
     public StackEntity duplicate(int amount) {
-        final StackEntity cloneStack = entityManager.registerStackedEntity(spawnClone());
+        final LivingEntity clone = spawnClone();
+        final StackEntity cloneStack = sm.getEntityManager().registerStackedEntity(clone);
         cloneStack.setSize(amount);
         sm.getTraitManager().applyTraits(cloneStack, this);
         sm.getHookManager().onSpawn(cloneStack);
+        if (Utilities.isPaper()) {
+            // Remove equipment if is a drowned spawned by drowning
+            if (clone.getEntitySpawnReason() == CreatureSpawnEvent.SpawnReason.DROWNED) {
+                for (EquipmentSlot equipmentSlot : Utilities.HAND_SLOTS) {
+                    if (clone.getEquipment() == null) {
+                        break;
+                    }
+                    for (Material material : Utilities.DROWNED_MATERIALS) {
+                        if (clone.getEquipment().getItem(equipmentSlot).getType() != material) {
+                            continue;
+                        }
+                        clone.getEquipment().setItem(equipmentSlot, null, true);
+                    }
+                }
+            }
+        }
         return cloneStack;
     }
 

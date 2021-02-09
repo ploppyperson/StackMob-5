@@ -23,7 +23,8 @@ public class MergeTask extends BukkitRunnable {
 
     public void run() {
         final IntCollection toRemove = new IntOpenHashSet();
-        originals: for (StackEntity original : sm.getEntityManager().getStackEntities()) {
+        originals:
+        for (StackEntity original : sm.getEntityManager().getStackEntities()) {
             if (toRemove.contains(original.getEntity().getEntityId())) {
                 continue;
             }

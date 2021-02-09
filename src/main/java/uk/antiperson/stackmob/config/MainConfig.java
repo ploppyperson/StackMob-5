@@ -2,10 +2,7 @@ package uk.antiperson.stackmob.config;
 
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
-import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
+import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.objects.*;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.CreatureSpawnEvent;
@@ -43,7 +40,7 @@ public class MainConfig extends SpecialConfigFile {
 
     private boolean default_death_skip_animation;
     private final Map<EntityType, Boolean> death_skip_animation = new EnumMap<>(EntityType.class);
-    private final List<DeathType> default_death_priority = new ArrayList<>();
+    private final List<DeathType> default_death_priority = new ObjectArrayList<>();
     private final Map<EntityType, List<DeathType>> death_priority = new EnumMap<>(EntityType.class);
     private final Map<DeathType, Set<EntityType>> default_death_type_blacklist = new EnumMap<>(DeathType.class);
     private final Map<DeathType, Set<EntityDamageEvent.DamageCause>> default_death_reason_blacklist = new EnumMap<>(DeathType.class);
@@ -241,7 +238,7 @@ public class MainConfig extends SpecialConfigFile {
             if (custom_death_skip_animation != default_death_skip_animation)
                 death_skip_animation.put(type, custom_death_skip_animation);
 
-            final List<DeathType> custom_death_priorities = new ArrayList<>(getDeathSection(type));
+            final List<DeathType> custom_death_priorities = new ObjectArrayList<>(getDeathSection(type));
             if (!custom_death_priorities.equals(default_death_priority)) {
                 death_priority.put(type, custom_death_priorities);
 
