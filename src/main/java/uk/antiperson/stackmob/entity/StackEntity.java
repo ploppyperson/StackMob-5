@@ -241,13 +241,13 @@ public class StackEntity {
      */
     public StackEntity merge(StackEntity toMerge, boolean unregister) {
         boolean toMergeBigger = toMerge.getSize() > getSize();
-        StackEntity smallest = toMergeBigger ? this : toMerge;
-        StackEntity biggest = toMergeBigger ? toMerge : this;
+        final StackEntity smallest = toMergeBigger ? this : toMerge;
+        final StackEntity biggest = toMergeBigger ? toMerge : this;
         if (EventHelper.callStackMergeEvent(smallest, biggest).isCancelled()) {
             return null;
         }
-        int totalSize = smallest.getSize() + biggest.getSize();
-        int maxSize = getMaxSize();
+        final int totalSize = smallest.getSize() + biggest.getSize();
+        final int maxSize = getMaxSize();
         if (totalSize > maxSize) {
             smallest.setSize(totalSize - maxSize);
             biggest.setSize(maxSize);

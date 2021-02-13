@@ -21,7 +21,7 @@ public class MergeTask extends BukkitRunnable {
 
     public void run() {
         HashSet<StackEntity> toRemove = new HashSet<>();
-        for (StackEntity original : sm.getEntityManager().getStackEntities()) {
+        originals: for (StackEntity original : sm.getEntityManager().getStackEntities()) {
             if (original.isWaiting()) {
                 original.incrementWait();
                 continue;
@@ -52,9 +52,12 @@ public class MergeTask extends BukkitRunnable {
                     continue;
                 }
                 if (nearbyStack.getSize() > 1 || original.getSize() > 1) {
-                    StackEntity removed = nearbyStack.merge(original, false);
+                    final StackEntity removed = nearbyStack.merge(original, false);
                     if (removed != null) {
                         toRemove.add(removed);
+                        if (original == removed) {
+                            continue originals;
+                        }
                         break;
                     }
                     continue;
@@ -73,8 +76,10 @@ public class MergeTask extends BukkitRunnable {
                 match.remove(false);
                 toRemove.add(match);
             }
-            if (size >= original.getMaxSize()) {
-                for (int stackSize : Utilities.split(size, original.getMaxSize())) {
+            if (size + original.getSize() > original.getMaxSize()) {
+                final int toCompleteStack = (original.getMaxSize() - original.getSize());
+                original.incrementSize(toCompleteStack);
+                for (int stackSize : Utilities.split(size - toCompleteStack, original.getMaxSize())) {
                     StackEntity stackEntity = original.duplicate();
                     stackEntity.setSize(stackSize);
                 }
