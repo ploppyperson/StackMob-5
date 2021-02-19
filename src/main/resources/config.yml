@@ -80,6 +80,8 @@ traits:
   zoglin-baby: true
   piglin-baby: true
   leashed: true
+  # Prevent pregnant turtles from stacking. (**)
+  has-egg: true
 
 # Prevent stacked mobs from targeting players.
 # Similar to no-ai, but allows for movement of entities.
