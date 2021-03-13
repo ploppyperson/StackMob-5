@@ -248,7 +248,7 @@ public class StackEntity {
         if (sm.getTraitManager().checkTraits(this, nearby)) {
             return false;
         }
-        return sm.getHookManager().checkHooks(this, nearby);
+        return !sm.getHookManager().checkHooks(this, nearby);
     }
 
     public boolean canStack() {
