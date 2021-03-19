@@ -80,6 +80,7 @@ traits:
   zoglin-baby: true
   piglin-baby: true
   leashed: true
+  potion-effect: true
 
 # Prevent stacked mobs from targeting players.
 # Similar to no-ai, but allows for movement of entities.

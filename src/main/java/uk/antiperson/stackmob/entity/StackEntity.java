@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.potion.PotionEffect;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.events.EventHelper;
 import uk.antiperson.stackmob.hook.StackableMobHook;
@@ -280,9 +281,23 @@ public class StackEntity {
             biggest.setSize(maxSize);
             return null;
         }
+        mergePotionEffects(biggest, smallest);
         biggest.incrementSize(smallest.getSize());
         smallest.remove(unregister);
         return smallest;
+    }
+
+    public void mergePotionEffects(StackEntity toKeep, StackEntity toRemove) {
+        if (!sm.getMainConfig().isTraitEnabled("potion-effect")) {
+            return;
+        }
+        for (PotionEffect potionEffect : toRemove.getEntity().getActivePotionEffects()) {
+            double combinedSize = toKeep.getSize() + toRemove.getSize();
+            double percentOfTotal = toRemove.getSize() / combinedSize;
+            int newDuration = (int) Math.ceil(potionEffect.getDuration() * percentOfTotal);
+            PotionEffect newPotion = new PotionEffect(potionEffect.getType(), newDuration,  potionEffect.getAmplifier());
+            toKeep.getEntity().addPotionEffect(newPotion);
+        }
     }
 
     public StackEntity splitIfNotEnough(int itemAmount) {

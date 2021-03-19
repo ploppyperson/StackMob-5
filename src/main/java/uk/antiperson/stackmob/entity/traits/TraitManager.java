@@ -36,6 +36,7 @@ public class TraitManager {
         registerTrait(BeeNectar.class);
         registerTrait(BeeStung.class);
         registerTrait(Leash.class);
+        registerTrait(Potion.class);
         if (!Utilities.isNewBukkit()) {
             return;
         }
