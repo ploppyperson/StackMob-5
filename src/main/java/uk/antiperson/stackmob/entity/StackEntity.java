@@ -8,6 +8,7 @@ import org.bukkit.World;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
@@ -290,13 +291,13 @@ public class StackEntity {
      */
     public StackEntity merge(StackEntity toMerge, boolean unregister) {
         boolean toMergeBigger = toMerge.getSize() > getSize();
-        StackEntity smallest = toMergeBigger ? this : toMerge;
-        StackEntity biggest = toMergeBigger ? toMerge : this;
+        final StackEntity smallest = toMergeBigger ? this : toMerge;
+        final StackEntity biggest = toMergeBigger ? toMerge : this;
         if (EventHelper.callStackMergeEvent(smallest, biggest).isCancelled()) {
             return null;
         }
-        int totalSize = smallest.getSize() + biggest.getSize();
-        int maxSize = getMaxSize();
+        final int totalSize = smallest.getSize() + biggest.getSize();
+        final int maxSize = getMaxSize();
         if (totalSize > maxSize) {
             smallest.setSize(totalSize - maxSize);
             biggest.setSize(maxSize);
@@ -334,10 +335,25 @@ public class StackEntity {
      * @return a clone of this entity.
      */
     public StackEntity duplicate() {
-        StackEntity cloneStack = sm.getEntityManager().registerStackedEntity(spawnClone());
+        LivingEntity clone = spawnClone();
+        StackEntity cloneStack = sm.getEntityManager().registerStackedEntity(clone);
         cloneStack.setSize(1);
         sm.getTraitManager().applyTraits(cloneStack, this);
         sm.getHookManager().onSpawn(cloneStack);
+        // Remove equipment if is a drowned
+        if (Utilities.isPaper() && clone.getEntitySpawnReason() == CreatureSpawnEvent.SpawnReason.DROWNED) {
+            for (EquipmentSlot equipmentSlot : Utilities.HAND_SLOTS) {
+                if (clone.getEquipment() == null) {
+                    break;
+                }
+                for (Material material : Utilities.DROWNED_MATERIALS) {
+                    if (clone.getEquipment().getItem(equipmentSlot).getType() != material) {
+                        continue;
+                    }
+                    clone.getEquipment().setItem(equipmentSlot, null, true);
+                }
+            }
+        }
         return cloneStack;
     }
 
