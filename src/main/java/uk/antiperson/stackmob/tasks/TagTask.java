@@ -8,7 +8,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.StackEntity;
-import uk.antiperson.stackmob.entity.TagMode;
 
 import java.util.List;
 
@@ -37,7 +36,7 @@ public class TagTask extends BukkitRunnable {
                 if (entity.isDead()) {
                     continue;
                 }
-                if (sm.getMainConfig().getTagMode(entity.getType()) != TagMode.NEARBY) {
+                if (sm.getMainConfig().getTagMode(entity.getType()) != StackEntity.TagMode.NEARBY) {
                     return;
                 }
                 StackEntity stackEntity = sm.getEntityManager().getStackEntity((LivingEntity) entity);

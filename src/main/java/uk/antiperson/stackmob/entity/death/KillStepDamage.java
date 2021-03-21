@@ -1,11 +1,13 @@
 package uk.antiperson.stackmob.entity.death;
 
 import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.LivingEntity;
+import org.jetbrains.annotations.Nullable;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.StackEntity;
 import uk.antiperson.stackmob.hook.StackableMobHook;
-import uk.antiperson.stackmob.hook.hooks.MythicMobsHook;
+import uk.antiperson.stackmob.hook.hooks.MythicMobsStackHook;
 
 public class KillStepDamage extends DeathMethod {
 
@@ -31,15 +33,25 @@ public class KillStepDamage extends DeathMethod {
 
     @Override
     public void onSpawn(StackEntity spawned) {
-        double maxHealth = getEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue();
+        AttributeInstance attribute = getEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH);
+        AttributeInstance spawnedAttribute = spawned.getEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH);
+        double maxHealth = attribute.getBaseValue();
         StackableMobHook smh = sm.getHookManager().getApplicableHook(spawned);
-        if (smh instanceof MythicMobsHook) {
+        if (smh instanceof MythicMobsStackHook) {
             sm.getServer().getScheduler().runTaskLater(sm, bukkitTask -> {
                 if (!spawned.getEntity().isDead()) {
                     spawned.getEntity().setHealth(maxHealth - leftOverDamage);
                 }
             }, 5);
         }
-        spawned.getEntity().setHealth(maxHealth - leftOverDamage);
+        try {
+            spawned.getEntity().setHealth(maxHealth - leftOverDamage);
+        } catch (IllegalArgumentException e) {
+            sm.getLogger().warning("New health value is too high! Please report and include the message below.");
+            sm.getLogger().info(attribute.getBaseValue() + "," + attribute.getDefaultValue() + "," + attribute.getValue() + "," + leftOverDamage);
+            if (spawnedAttribute != null) {
+                sm.getLogger().info(spawnedAttribute.getBaseValue() + "," + attribute.getDefaultValue() + "," + attribute.getValue());
+            }
+        }
     }
 }

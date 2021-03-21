@@ -1,4 +1,5 @@
 # StackMob ${project.version} Configuration file - by antiPerson and contributors.
+# If the comments have been removed, you can find a version with comments at https://github.com/Nathat23/StackMob-5/tree/master/src/main/resources
 #
 # Most options can be customised for specific entity types, for details about this, see the end of this file.
 # Asterisk meaning:
@@ -9,8 +10,6 @@
 # (2) https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/CreatureSpawnEvent.SpawnReason.html
 # (3) https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html
 # (4) https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html
-#
-# If the comments have been removed, you can find a version with comments at https://github.com/Nathat23/StackMob-5/tree/master/src/main/resources
 
 stack:
   # The maximum size that a stack can have.
@@ -24,6 +23,13 @@ stack:
   threshold:
     enabled: true
     amount: 5
+  # Only find matches for this mob if it has moved from the last time nearby mobs were checked. (*)
+  # This may break grinders etc, which is why for now it is disabled by default.
+  # Please give feedback at https://github.com/Nathat23/StackMob-5/issues/198
+  check-location:
+    enabled: false
+    # The distance threshold for the check
+    distance: 1.0
 
 # Names of worlds where there should be no stacking
 worlds-blacklist: []
@@ -80,6 +86,7 @@ traits:
   zoglin-baby: true
   piglin-baby: true
   leashed: true
+  potion-effect: true
 
 # Prevent stacked mobs from targeting players.
 # Similar to no-ai, but allows for movement of entities.
@@ -157,7 +164,7 @@ death:
   #
   # The priority 1 is highest and 4 is lowest.
   # If the killed entity is blacklisted, either by type, spawn reason or death reasons (the last damage cause),
-  # by the highest priority method, then it will attempt to use the next highest priority death method.
+  # by the highest priority method, then we will attempt to use the next highest priority death method.
   SINGLE:
     priority: 4
     reason-blacklist: []
@@ -247,9 +254,13 @@ hooks:
   # Allows the custom 'entity-stacking' flag to be used in worldguard regions.
   worldguard: true
   mythicmobs:
-    enabled: true
-    blacklist: []
-    blacklist-invert: false
+    stack: false
+    # Blacklist of MythicMob types (uses the internal name)
+    # This blacklist does not take effect if the prevent-stack option is enabled below.
+    stack-blacklist: [ ]
+    stack-blacklist-invert: false
+    # When this option is enabled, MythicMobs will not stack.
+    prevent-stack: true
   # Prevent citizens npcs from stacking.
   citizens: true
   # Prevent stacked entities from giving mcmmo experience.
@@ -273,5 +284,3 @@ hooks:
 #    # The cloned custom options can still be overridden.
 #    stack:
 #      max-size: 5
-
-

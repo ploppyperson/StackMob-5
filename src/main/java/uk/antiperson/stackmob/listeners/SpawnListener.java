@@ -27,6 +27,10 @@ public class SpawnListener implements Listener {
                 return;
             }
             if (sm.getEntityManager().isStackedEntity(event.getEntity())) {
+                StackEntity stackEntity = sm.getEntityManager().getStackEntity(event.getEntity());
+                if (stackEntity.isForgetOnSpawn()) {
+                    stackEntity.removeStackData();
+                }
                 return;
             }
             if (EventHelper.callStackSpawnEvent(event.getEntity()).isCancelled()) {
