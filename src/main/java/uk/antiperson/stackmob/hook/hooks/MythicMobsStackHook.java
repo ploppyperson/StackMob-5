@@ -10,12 +10,12 @@ import uk.antiperson.stackmob.hook.Hook;
 import uk.antiperson.stackmob.hook.HookMetadata;
 import uk.antiperson.stackmob.hook.StackableMobHook;
 
-@HookMetadata(name = "MythicMobs", config = "mythicmobs.enabled")
-public class MythicMobsHook extends Hook implements StackableMobHook {
+@HookMetadata(name = "MythicMobs", config = "mythicmobs.stack")
+public class MythicMobsStackHook extends Hook implements StackableMobHook {
 
     private MythicMobs mythicMobs;
 
-    public MythicMobsHook(StackMob sm) {
+    public MythicMobsStackHook(StackMob sm) {
         super(sm);
     }
 

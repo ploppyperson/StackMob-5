@@ -83,9 +83,10 @@ public class Drops {
     }
 
     public static void dropItem(Location location, ItemStack stack, int amount) {
+        final Location dropLocation = location.clone().add(0, 1, 0);
         for (int itemAmount : Utilities.split(amount, stack.getMaxStackSize())) {
             stack.setAmount(itemAmount);
-            location.getWorld().dropItemNaturally(location, stack);
+            location.getWorld().dropItem(dropLocation, stack);
         }
     }
 

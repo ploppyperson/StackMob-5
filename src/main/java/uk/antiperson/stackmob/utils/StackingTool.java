@@ -14,7 +14,11 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import uk.antiperson.stackmob.StackMob;
+import uk.antiperson.stackmob.commands.User;
 import uk.antiperson.stackmob.entity.StackEntity;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class StackingTool {
 
@@ -50,67 +54,99 @@ public class StackingTool {
         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText("Shifted mode to " + getMode()));
     }
 
-    public void performAction(StackEntity clicked) {
+    public void performAction(LivingEntity clicked) {
+        final User user = new User(player);
+        if (!sm.getEntityManager().isStackedEntity(clicked)) {
+            if (getMode() != ToolMode.MODIFY) {
+                user.sendError("You cannot use " + getMode() + " on an unstacked entity!");
+                return;
+            }
+            startConversation(clicked);
+            return;
+        }
+        StackEntity stackEntity = sm.getEntityManager().getStackEntity(clicked);
         switch (getMode()) {
             case MODIFY:
-                ConversationFactory factory = new ConversationFactory(sm)
-                        .withTimeout(25)
-                        .withFirstPrompt(new ModifyPrompt(clicked))
-                        .withLocalEcho(false)
-                        .withPrefix(conversationContext -> Utilities.PREFIX)
-                        .addConversationAbandonedListener(new ExitPrompt());
-                Conversation conversation = factory.buildConversation(player);
-                conversation.begin();
-                break;
+                startConversation(clicked);
+                return;
             case SLICE:
-                if (!clicked.isSingle()) {
-                    clicked.slice();
-                    clicked.removeStackData();
-                    break;
+            case SLICE_ALL:
+                if (stackEntity.isSingle()) {
+                    user.sendError("Entity is single, therefore it cannot be sliced!");
+                    return;
                 }
-                player.sendMessage("Entity is single so cannot be sliced!");
+                final int sliceNo = getMode() == ToolMode.SLICE ? 1 : stackEntity.getSize() - 1;
+                StackEntity slice = stackEntity;
+                final Set<StackEntity> slices = new HashSet<>();
+                for (int i = 0; i < sliceNo; i++) {
+                    slice = slice.slice();
+                    slices.add(slice);
+                }
+                stackEntity.removeStackData();
+                if (getMode() == ToolMode.SLICE_ALL) {
+                    slices.forEach(sliced -> sliced.setForgetOnSpawn(true));
+                }
                 break;
             case REMOVE_CHUNK:
-                for (Entity e : clicked.getEntity().getChunk().getEntities()) {
+                for (Entity e : clicked.getChunk().getEntities()) {
                     if (!(e instanceof Mob)) {
                         continue;
                     }
                     if (!sm.getEntityManager().isStackedEntity((LivingEntity) e)) {
                         continue;
                     }
-                    StackEntity stackEntity = sm.getEntityManager().getStackEntity((LivingEntity) e);
-                    stackEntity.removeStackData();
+                    final StackEntity nearby = sm.getEntityManager().getStackEntity((LivingEntity) e);
+                    nearby.removeStackData();
                 }
                 break;
             case REMOVE_SINGLE:
-                clicked.removeStackData();
+                stackEntity.removeStackData();
                 break;
         }
+        user.sendSuccess("Action performed successfully.");
+    }
+
+    private void startConversation(LivingEntity stackEntity) {
+        ConversationFactory factory = new ConversationFactory(sm)
+                .withTimeout(25)
+                .withFirstPrompt(new ModifyPrompt(stackEntity))
+                .withLocalEcho(false)
+                .withPrefix(conversationContext -> Utilities.PREFIX)
+                .addConversationAbandonedListener(new ExitPrompt());
+        Conversation conversation = factory.buildConversation(player);
+        conversation.begin();
     }
 
     enum ToolMode {
 
-        MODIFY(),
-        SLICE(),
-        REMOVE_SINGLE(),
-        REMOVE_CHUNK()
+        MODIFY,
+        SLICE,
+        SLICE_ALL,
+        REMOVE_SINGLE,
+        REMOVE_CHUNK
 
     }
 
-    private static class ModifyPrompt extends NumericPrompt {
+    private class ModifyPrompt extends NumericPrompt {
 
-        private final StackEntity stackEntity;
+        private final LivingEntity livingEntity;
+        private final int maxSize;
 
-        public ModifyPrompt(StackEntity stackEntity) {
-            this.stackEntity = stackEntity;
+        public ModifyPrompt(LivingEntity livingEntity) {
+            this.livingEntity = livingEntity;
+            this.maxSize = sm.getMainConfig().getMaxStack(livingEntity.getType());
         }
 
         @Nullable
         @Override
         protected Prompt acceptValidatedInput(@NotNull ConversationContext conversationContext, @NotNull Number number) {
-            if (stackEntity.getEntity().isDead()) {
+            if (livingEntity.isDead()) {
                 conversationContext.getForWhom().sendRawMessage(Utilities.PREFIX + ChatColor.RED + "Entity is no longer valid. Modification has been cancelled.");
                 return Prompt.END_OF_CONVERSATION;
+            }
+            StackEntity stackEntity = sm.getEntityManager().getStackEntity(livingEntity);
+            if (stackEntity == null) {
+                stackEntity = sm.getEntityManager().registerStackedEntity(livingEntity);
             }
             stackEntity.setSize(number.intValue());
             conversationContext.getForWhom().sendRawMessage(Utilities.PREFIX + ChatColor.GREEN + "Stack value has been updated.");
@@ -126,18 +162,15 @@ public class StackingTool {
         @Nullable
         @Override
         protected String getFailedValidationText(@NotNull ConversationContext context, @NotNull String invalidInput) {
-            return Utilities.PREFIX + ChatColor.RED + "Invalid input. Accepted sizes: 1-" + stackEntity.getMaxSize();
+            return Utilities.PREFIX + ChatColor.RED + "Invalid input. Accepted sizes: 1-" + maxSize;
         }
 
         @Override
         protected boolean isNumberValid(@NotNull ConversationContext context, @NotNull Number input) {
-            if (input.intValue() > stackEntity.getMaxSize()) {
+            if (input.intValue() > maxSize) {
                 return false;
             }
-            if (input.intValue() < 1) {
-                return false;
-            }
-            return true;
+            return !(input.intValue() < 1);
         }
     }
 

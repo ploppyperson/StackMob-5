@@ -23,6 +23,8 @@ public class MergeTask extends BukkitRunnable {
 
     public void run() {
         final IntCollection toRemove = new IntOpenHashSet();
+        final boolean checkHasMoved = sm.getMainConfig().isCheckHasMoved();
+        final double checkHasMovedDistance = sm.getMainConfig().getCheckHasMovedDistance();
         originals:
         for (StackEntity original : sm.getEntityManager().getStackEntities()) {
             if (toRemove.contains(original.getEntity().getEntityId())) {
@@ -37,6 +39,12 @@ public class MergeTask extends BukkitRunnable {
                     toRemove.add(original.getEntity().getEntityId());
                 }
                 continue;
+            }
+            if (checkHasMoved) {
+                if (Utilities.distance(original.getEntity().getLocation(), original.getLastLocation()) < checkHasMovedDistance) {
+                    continue;
+                }
+                original.setLastLocation(original.getEntity().getLocation());
             }
             final Integer[] searchRadius = sm.getMainConfig().getStackRadius(original.getEntity().getType());
             final Set<StackEntity> matches = new ObjectOpenHashSet<>();

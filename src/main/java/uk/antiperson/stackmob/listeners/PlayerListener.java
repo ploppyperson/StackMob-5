@@ -8,7 +8,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import uk.antiperson.stackmob.StackMob;
-import uk.antiperson.stackmob.entity.StackEntity;
 import uk.antiperson.stackmob.utils.StackingTool;
 
 public class PlayerListener implements Listener {
@@ -27,9 +26,6 @@ public class PlayerListener implements Listener {
         if (!(event.getRightClicked() instanceof Mob)) {
             return;
         }
-        if (!sm.getItemTools().isStackingTool(event.getPlayer().getInventory().getItemInMainHand())) {
-            return;
-        }
         if (!sm.getEntityManager().isStackedEntity((LivingEntity) event.getRightClicked())) {
             return;
         }
@@ -38,7 +34,7 @@ public class PlayerListener implements Listener {
             stackingTool.shiftMode();
             return;
         }
-        StackEntity stackEntity = sm.getEntityManager().getStackEntity((LivingEntity) event.getRightClicked());
-        stackingTool.performAction(stackEntity);
+        stackingTool.performAction((LivingEntity) event.getRightClicked());
     }
+
 }

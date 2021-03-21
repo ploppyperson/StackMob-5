@@ -1,6 +1,7 @@
 package uk.antiperson.stackmob.utils;
 
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
@@ -31,9 +32,9 @@ public class Utilities {
     public static final List<Material> DROWNED_MATERIALS = Arrays.asList(Material.NAUTILUS_SHELL, Material.TRIDENT);
     public static final List<EquipmentSlot> HAND_SLOTS = Arrays.asList(EquipmentSlot.HAND, EquipmentSlot.OFF_HAND);
 
-    private static final boolean isPaper = Package.getPackage("com.destroystokyo.paper") != null;
-    private static final boolean isNewBukkit = Package.getPackage("net.minecraft.server.v1_15_R1") == null;
-    private static final boolean isNativeVersion = Package.getPackage("net.minecraft.server.v1_16_R3") != null;
+    private static final boolean usingPaper = Package.getPackage("com.destroystokyo.paper") != null;
+    private static final boolean usingLegacy = Package.getPackage("net.minecraft.server.v1_15_R1") == null;
+    private static final boolean usingNative = Package.getPackage("net.minecraft.server.v1_16_R3") != null;
 
     public static String translateColorCodes(String toTranslate) {
         Matcher matcher = hexPattern.matcher(toTranslate);
@@ -77,19 +78,23 @@ public class Utilities {
     }
 
     public static boolean isPaper() {
-        return isPaper;
+        return usingPaper;
     }
 
     public static boolean isNewBukkit() {
-        return isNewBukkit;
+        return usingLegacy;
     }
 
     public static boolean isNativeVersion() {
-        return isNativeVersion;
+        return usingNative;
     }
 
     public static boolean isDye(ItemStack material) {
         return material.getType().toString().endsWith("_DYE");
+    }
+
+    public static double distance(Location locationA, Location locationB) {
+        return locationA.distance(locationB);
     }
 
     public static void removeHandItem(Player player, int itemAmount) {

@@ -9,7 +9,6 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.StackEntity;
-import uk.antiperson.stackmob.entity.TagMode;
 import uk.antiperson.stackmob.entity.death.DeathType;
 import uk.antiperson.stackmob.listeners.ListenerMode;
 import uk.antiperson.stackmob.utils.Utilities;
@@ -27,12 +26,14 @@ public class MainConfig extends SpecialConfigFile {
     private final Map<EntityType, Boolean> stack_threshold_enabled = new EnumMap<>(EntityType.class);
     private int default_stack_threshold_amount;
     private final Map<EntityType, Integer> stack_threshold_amount = new EnumMap<>(EntityType.class);
+    private boolean default_stack_check_location_enabled;
+    private double default_stack_check_location_distance;
 
 
     private String default_display_name_format;
     private final Map<EntityType, String> display_name_format = new EnumMap<>(EntityType.class);
-    private TagMode default_display_name_visibility;
-    private final Map<EntityType, TagMode> display_name_visibility = new EnumMap<>(EntityType.class);
+    private StackEntity.TagMode default_display_name_visibility;
+    private final Map<EntityType, StackEntity.TagMode> display_name_visibility = new EnumMap<>(EntityType.class);
     private Integer[] default_display_name_nearby_range;
     private Integer default_display_name_threshold;
     private final Map<EntityType, Integer> display_name_threshold = new EnumMap<>(EntityType.class);
@@ -126,10 +127,12 @@ public class MainConfig extends SpecialConfigFile {
         default_stack_merge_range = getList("stack.merge-range").asIntList().toArray(new Integer[2]);
         default_stack_threshold_enabled = getBoolean("stack.threshold.enabled");
         default_stack_threshold_amount = getInt("stack.threshold.amount");
+        default_stack_check_location_enabled = getBoolean("stack.check-location.enabled");
+        default_stack_check_location_distance = getDouble("stack.check-location.distance");
 
 
         default_display_name_format = getString("display-name.format");
-        default_display_name_visibility = TagMode.valueOf(getString("display-name.visibility"));
+        default_display_name_visibility = StackEntity.TagMode.valueOf(getString("display-name.visibility"));
         default_display_name_nearby_range = getList("display-name.nearby.range").asIntList().toArray(new Integer[2]);
         default_display_name_threshold = getInt("display-name.threshold");
 
@@ -225,7 +228,7 @@ public class MainConfig extends SpecialConfigFile {
             if (!custom_display_name_format.equals(default_display_name_format))
                 display_name_format.put(type, custom_display_name_format);
 
-            final TagMode custom_display_name_visibility = TagMode.valueOf(getString(type, "display-name.visibility"));
+            final StackEntity.TagMode custom_display_name_visibility = StackEntity.TagMode.valueOf(getString(type, "display-name.visibility"));
             if (custom_display_name_visibility != default_display_name_visibility)
                 display_name_visibility.put(type, custom_display_name_visibility);
 
@@ -403,6 +406,14 @@ public class MainConfig extends SpecialConfigFile {
         return getInt("stack.interval");
     }
 
+    public boolean isCheckHasMoved() {
+        return default_stack_check_location_enabled;
+    }
+
+    public double getCheckHasMovedDistance() {
+        return default_stack_check_location_distance;
+    }
+
     public String getTagFormat(EntityType type) {
         return display_name_format.getOrDefault(type, default_display_name_format);
     }
@@ -411,7 +422,7 @@ public class MainConfig extends SpecialConfigFile {
         return display_name_threshold.getOrDefault(type, default_display_name_threshold);
     }
 
-    public TagMode getTagMode(EntityType type) {
+    public StackEntity.TagMode getTagMode(EntityType type) {
         return display_name_visibility.getOrDefault(type, default_display_name_visibility);
     }
 
