@@ -41,6 +41,14 @@ public class MainConfig extends SpecialConfigFile {
         return getInt("stack.interval");
     }
 
+    public boolean isCheckHasMoved() {
+        return getBoolean("stack.check-location.enabled");
+    }
+
+    public double getCheckHasMovedDistance() {
+        return getDouble("stack.check-location.distance");
+    }
+
     public String getTagFormat(EntityType type) {
         return getString(type, "display-name.format");
     }

@@ -24,6 +24,13 @@ stack:
   threshold:
     enabled: true
     amount: 5
+  # Only find matches for this mob if it has moved from the last time nearby mobs were checked. (*)
+  # This may break grinders etc, which is why for now it is disabled by default.
+  # Please give feedback at https://github.com/Nathat23/StackMob-5/issues/198
+  check-location:
+    enabled: false
+    # The distance threshold for the check
+    distance: 1.0
 
 # Names of worlds where there should be no stacking
 worlds-blacklist: []

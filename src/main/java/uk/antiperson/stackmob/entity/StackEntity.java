@@ -2,6 +2,7 @@ package uk.antiperson.stackmob.entity;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.LivingEntity;
@@ -27,6 +28,7 @@ public class StackEntity {
     private final StackMob sm;
     private boolean waiting;
     private boolean forgetOnSpawn;
+    private Location lastLocation;
     private int waitCount;
     private int stackSize;
     private Set<ItemStack> equiptItems;
@@ -71,6 +73,25 @@ public class StackEntity {
         entity.setCustomNameVisible(false);
         entityManager.unregisterStackedEntity(this);
         getTag().update();
+    }
+
+    /**
+     * Returns the location of the entity where it was last checked for stacking.
+     * @return the location of the entity where it was last checked for stacking, null if 'stack.check-location' is disabled.
+     */
+    public Location getLastLocation() {
+        if (lastLocation == null && sm.getMainConfig().isCheckHasMoved()) {
+            lastLocation = entity.getLocation();
+        }
+        return lastLocation;
+    }
+
+    /**
+     * Sets the location of the entity where it was last checked for stacking.
+     * @param lastLocation the location of the entity where it was last checked for stacking.
+     */
+    public void setLastLocation(Location lastLocation) {
+        this.lastLocation = lastLocation;
     }
 
     /**
