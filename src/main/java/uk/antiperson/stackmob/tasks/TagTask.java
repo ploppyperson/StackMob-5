@@ -26,12 +26,8 @@ public class TagTask extends BukkitRunnable {
         double searchY = searchRadius[1];
         double searchZ = searchRadius[2];
         for (Player player : Bukkit.getOnlinePlayers()) {
-            List<Entity> entities = player.getNearbyEntities(searchX * 1.5, searchY * 1.5, searchZ * 1.5);
-            for (Entity entity : entities) {
+            for (Entity entity : player.getNearbyEntities(searchX * 1.5, searchY * 1.5, searchZ * 1.5)) {
                 if (!(entity instanceof Mob)) {
-                    continue;
-                }
-                if (!sm.getEntityManager().isStackedEntity((LivingEntity) entity)) {
                     continue;
                 }
                 if (entity.isDead()) {
@@ -40,17 +36,17 @@ public class TagTask extends BukkitRunnable {
                 if (sm.getMainConfig().getTagMode(entity.getType()) != StackEntity.TagMode.NEARBY) {
                     return;
                 }
-                StackEntity stackEntity = sm.getEntityManager().getStackEntity((LivingEntity) entity);
+                final StackEntity stackEntity = sm.getEntityManager().getStackEntity((LivingEntity) entity);
                 if (stackEntity == null) {
                     return;
                 }
-                int threshold = sm.getMainConfig().getTagThreshold(stackEntity.getEntity().getType());
+                final int threshold = sm.getMainConfig().getTagThreshold(stackEntity.getEntity().getType());
                 if (stackEntity.getSize() <= threshold) {
                     return;
                 }
-                double xDiff = Math.abs(player.getLocation().getX() - entity.getLocation().getX());
-                double yDiff = Math.abs(player.getLocation().getY() - entity.getLocation().getY());
-                double zDiff = Math.abs(player.getLocation().getZ() - entity.getLocation().getZ());
+                final double xDiff = Math.abs(player.getLocation().getX() - entity.getLocation().getX());
+                final double yDiff = Math.abs(player.getLocation().getY() - entity.getLocation().getY());
+                final double zDiff = Math.abs(player.getLocation().getZ() - entity.getLocation().getZ());
                 if (xDiff < searchX && yDiff < searchY && zDiff < searchZ) {
                     // Player should be shown tag
                     stackEntity.getTag().sendPacket(player, true);

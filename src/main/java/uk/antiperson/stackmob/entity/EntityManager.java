@@ -24,7 +24,7 @@ public class EntityManager {
     }
 
     public boolean isStackedEntity(LivingEntity entity) {
-        return entity.getPersistentDataContainer().has(sm.getStackKey(), PersistentDataType.INTEGER);
+        return stackEntities.containsKey(entity.getEntityId());
     }
 
     public Collection<StackEntity> getStackEntities() {
@@ -51,12 +51,16 @@ public class EntityManager {
         }
     }
 
+    public boolean hasStackData(Entity entity) {
+        return entity.getPersistentDataContainer().has(sm.getStackKey(), PersistentDataType.INTEGER);
+    }
+
     public void registerStackedEntities(Chunk chunk) {
         for (Entity entity : chunk.getEntities()) {
             if (!(entity instanceof Mob)) {
                 continue;
             }
-            if (!isStackedEntity((LivingEntity) entity)) {
+            if (!hasStackData(entity)) {
                 continue;
             }
             registerStackedEntity((LivingEntity) entity);
@@ -68,10 +72,11 @@ public class EntityManager {
             if (!(entity instanceof Mob)) {
                 continue;
             }
-            if (!isStackedEntity((LivingEntity) entity)) {
+            final StackEntity stackEntity = getStackEntity((LivingEntity) entity);
+            if (stackEntity == null) {
                 continue;
             }
-            unregisterStackedEntity((LivingEntity) entity);
+            unregisterStackedEntity(stackEntity);
         }
     }
 
