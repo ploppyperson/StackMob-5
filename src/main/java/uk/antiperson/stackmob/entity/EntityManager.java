@@ -10,32 +10,31 @@ import org.bukkit.persistence.PersistentDataType;
 import uk.antiperson.stackmob.StackMob;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.UUID;
 
 public class EntityManager {
 
     private final StackMob sm;
-    private final HashSet<StackEntity> stackEntities;
+    private final HashMap<UUID, StackEntity> stackEntities;
+
     public EntityManager(StackMob sm) {
         this.sm = sm;
-        stackEntities = new HashSet<>();
+        stackEntities = new HashMap<>();
     }
 
     public boolean isStackedEntity(LivingEntity entity) {
-        return entity.getPersistentDataContainer().has(sm.getStackKey(), PersistentDataType.INTEGER);
+        return stackEntities.containsKey(entity.getUniqueId());
     }
 
-    public HashSet<StackEntity> getStackEntities() {
-        return stackEntities;
+    public Collection<StackEntity> getStackEntities() {
+        return stackEntities.values();
     }
 
     public StackEntity getStackEntity(LivingEntity entity) {
-        for (StackEntity stackEntity : stackEntities) {
-            if (stackEntity.getEntity().getEntityId() == entity.getEntityId()) {
-                return stackEntity;
-            }
-        }
-        return null;
+        return stackEntities.get(entity.getUniqueId());
     }
 
     public void registerAllEntities() {
@@ -54,12 +53,16 @@ public class EntityManager {
         }
     }
 
+    public boolean hasStackData(Entity entity) {
+        return entity.getPersistentDataContainer().has(sm.getStackKey(), PersistentDataType.INTEGER);
+    }
+
     public void registerStackedEntities(Chunk chunk) {
         for (Entity entity : chunk.getEntities()) {
             if (!(entity instanceof Mob)) {
                 continue;
             }
-            if (!sm.getEntityManager().isStackedEntity((LivingEntity) entity)) {
+            if (!hasStackData(entity)) {
                 continue;
             }
             sm.getEntityManager().registerStackedEntity((LivingEntity) entity);
@@ -71,21 +74,22 @@ public class EntityManager {
             if (!(entity instanceof Mob)) {
                 continue;
             }
-            if (!sm.getEntityManager().isStackedEntity((LivingEntity) entity)) {
+            StackEntity stackEntity = sm.getEntityManager().getStackEntity((LivingEntity) entity);
+            if (stackEntity == null) {
                 continue;
             }
-            sm.getEntityManager().unregisterStackedEntity((LivingEntity) entity);
+            sm.getEntityManager().unregisterStackedEntity(stackEntity);
         }
     }
 
     public StackEntity registerStackedEntity(LivingEntity entity) {
         StackEntity stackEntity = new StackEntity(sm, entity);
-        stackEntities.add(stackEntity);
+        stackEntities.put(entity.getUniqueId(), stackEntity);
         return stackEntity;
     }
 
     public void registerStackedEntity(StackEntity entity) {
-        stackEntities.add(entity);
+        stackEntities.put(entity.getEntity().getUniqueId(), entity);
     }
 
     public void unregisterStackedEntity(LivingEntity entity) {
@@ -97,7 +101,7 @@ public class EntityManager {
     }
 
     public void unregisterStackedEntity(StackEntity stackEntity) {
-        stackEntities.remove(stackEntity);
+        stackEntities.remove(stackEntity.getEntity().getUniqueId());
     }
 
 }
