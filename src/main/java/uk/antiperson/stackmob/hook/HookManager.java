@@ -53,6 +53,7 @@ public class HookManager {
         registerHook(CitizensHook.class);
         registerHook(JobsHook.class);
         registerHook(ProtocolLibHook.class);
+        registerHook(ClearlaggHook.class);
     }
 
     /**
