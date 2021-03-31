@@ -140,6 +140,13 @@
             <version>4.5.1</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>me.minebuilders</groupId>
+            <artifactId>clearlag</artifactId>
+            <version>3.2.2</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/jars/Clearlag.jar</systemPath>
+        </dependency>
     </dependencies>
 
 </project>
