@@ -281,6 +281,8 @@ hooks:
   jobs: true
   # Allows the use of ProtocolLib, which is used when the server version is not the native one of the plugin.
   protocollib: true
+  # Make it so that ClearLagg removes stacked entities.
+  clearlagg: false
 
 ## Some options can be modified for specific entity types. An example is shown below. Remove comments to see this in action.
 ## Options and sections with a (*) in the comment preceding cannot be overridden.

@@ -6,7 +6,7 @@
 
     <groupId>uk.antiperson.stackmob</groupId>
     <artifactId>StackMob</artifactId>
-    <version>5.5.0</version>
+    <version>5.5.1</version>
 
     <build>
         <sourceDirectory>src/main/java</sourceDirectory>
@@ -135,6 +135,13 @@
             <artifactId>ProtocolLib</artifactId>
             <version>4.5.1</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>me.minebuilders</groupId>
+            <artifactId>clearlag</artifactId>
+            <version>3.2.2</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/jars/Clearlag.jar</systemPath>
         </dependency>
     </dependencies>
 

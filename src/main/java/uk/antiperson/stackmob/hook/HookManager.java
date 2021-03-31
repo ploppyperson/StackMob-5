@@ -3,6 +3,7 @@ package uk.antiperson.stackmob.hook;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.event.Listener;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.StackEntity;
 import uk.antiperson.stackmob.hook.hooks.*;
@@ -71,7 +72,10 @@ public class HookManager {
         if (!sm.getMainConfig().isHookEnabled(hookMetadata.config())) {
             return;
         }
-        Hook hook = createInstance(hookClass);
+        final Hook hook = createInstance(hookClass);
+        if (hook instanceof Listener) {
+            sm.getServer().getPluginManager().registerEvents((Listener) hook, sm);
+        }
         hook.onEnable();
         hooks.add(hook);
     }
