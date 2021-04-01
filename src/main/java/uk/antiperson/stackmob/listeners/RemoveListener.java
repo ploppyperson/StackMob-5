@@ -22,9 +22,6 @@ public class RemoveListener implements Listener {
             return;
         }
         LivingEntity livingEntity = (LivingEntity) event.getEntity();
-        if (!sm.getEntityManager().isStackedEntity(livingEntity)) {
-            return;
-        }
         StackEntity stackEntity = sm.getEntityManager().getStackEntity(livingEntity);
         if (stackEntity == null) {
             return;
@@ -38,7 +35,7 @@ public class RemoveListener implements Listener {
             return;
         }
         LivingEntity livingEntity = (LivingEntity) event.getEntity();
-        if (!sm.getEntityManager().isStackedEntity(livingEntity)) {
+        if (!sm.getEntityManager().hasStackData(livingEntity)) {
             return;
         }
         sm.getEntityManager().registerStackedEntity(livingEntity);
