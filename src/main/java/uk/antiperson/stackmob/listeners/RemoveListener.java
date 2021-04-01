@@ -22,11 +22,7 @@ public class RemoveListener implements Listener {
         if (!(event.getEntity() instanceof Mob)) {
             return;
         }
-        LivingEntity livingEntity = (LivingEntity) event.getEntity();
-        if (!sm.getEntityManager().isStackedEntity(livingEntity)) {
-            return;
-        }
-        StackEntity stackEntity = sm.getEntityManager().getStackEntity(livingEntity);
+        final StackEntity stackEntity = sm.getEntityManager().getStackEntity((LivingEntity) event.getEntity());
         if (stackEntity == null) {
             return;
         }
@@ -38,8 +34,8 @@ public class RemoveListener implements Listener {
         if (!(event.getEntity() instanceof Mob)) {
             return;
         }
-        LivingEntity livingEntity = (LivingEntity) event.getEntity();
-        if (!sm.getEntityManager().isStackedEntity(livingEntity)) {
+        final LivingEntity livingEntity = (LivingEntity) event.getEntity();
+        if (!sm.getEntityManager().hasStackData(livingEntity)) {
             return;
         }
         sm.getEntityManager().registerStackedEntity(livingEntity);
