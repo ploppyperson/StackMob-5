@@ -7,7 +7,6 @@ import org.bukkit.entity.Mob;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import uk.antiperson.stackmob.StackMob;
-import uk.antiperson.stackmob.entity.StackEntity;
 
 public class RemoveListener implements Listener {
 
@@ -22,11 +21,7 @@ public class RemoveListener implements Listener {
         if (!(event.getEntity() instanceof Mob)) {
             return;
         }
-        final StackEntity stackEntity = sm.getEntityManager().getStackEntity((LivingEntity) event.getEntity());
-        if (stackEntity == null) {
-            return;
-        }
-        sm.getEntityManager().unregisterStackedEntity(stackEntity);
+        sm.getEntityManager().unregisterStackedEntity(event.getEntity().getEntityId());
     }
 
     @EventHandler
