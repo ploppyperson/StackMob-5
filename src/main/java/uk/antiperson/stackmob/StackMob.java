@@ -56,21 +56,6 @@ public class StackMob extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        if (LocalDate.of(2021, 4, 1).equals(LocalDate.now())) {
-            int randInt = ThreadLocalRandom.current().nextInt(2, 6);
-            StringBuilder builder = new StringBuilder();
-            for (int i = 0; i < randInt; i++) {
-                builder.append("Stack");
-            }
-            builder.append("StackMob");
-            try {
-                Field field = Logger.class.getDeclaredField("name");
-                field.setAccessible(true);
-                field.set(getLogger(), builder.toString());
-            } catch (NoSuchFieldException | IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
         getLogger().info("StackMob v" + getDescription().getVersion() + " by antiPerson and contributors.");
         getLogger().info("GitHub: " + Utilities.GITHUB);
         getLogger().info("Discord: " + Utilities.DISCORD);
