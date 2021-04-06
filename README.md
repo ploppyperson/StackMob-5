@@ -11,14 +11,36 @@ pratical and/or possible.
 
 It is recommended to use StackMob in conjunction with a farm limiter plugin for the best results.
 
+### Jenkins: https://ci.codemc.io/job/Nathat23/job/StackMob-5/
+
 # Building
 
 In order to build StackMob, you will need to do the following.
 
-- Build a copy of Spigot, using BuildTools https://hub.spigotmc.org/jenkins/job/BuildTools/
 - Clone the repository.
 - Run 'mvn clean install' to compile.
 
 # Contributing
 
 Contributions are welcome. StackMob is licensed under the GPLv3.
+
+# API
+
+StackMob does have a few custom events that can be used. These are in the events subpackage.
+
+Maven:
+
+```xml
+<repository>
+    <id>CodeMC</id>
+    <url>https://repo.codemc.org/repository/maven-public/</url>
+</repository>
+```
+
+```xml
+<dependency>
+    <groupId>uk.antiperson.stackmob</groupId>
+    <artifactId>StackMob</artifactId>
+    <version>5.5.3</version>
+</dependency>
+```
