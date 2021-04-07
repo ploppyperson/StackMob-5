@@ -23,12 +23,8 @@ import uk.antiperson.stackmob.utils.Utilities;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.time.LocalDate;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class StackMob extends JavaPlugin {
 
@@ -158,9 +154,9 @@ public class StackMob extends JavaPlugin {
         registerEvent(EquipListener.class);
         if (Utilities.isPaper()) {
             registerEvent(RemoveListener.class);
-        } else {
-            registerEvent(ChunkListener.class);
+            return;
         }
+        registerEvent(ChunkListener.class);
     }
 
     private void registerEvent(Class<? extends Listener> clazz) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
