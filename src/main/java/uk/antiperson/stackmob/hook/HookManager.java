@@ -15,12 +15,13 @@ import java.util.Set;
 
 public class HookManager {
 
-    private final Set<Hook> hooks = new ObjectOpenHashSet<>();
+    private final Set<Hook> hooks;
     private final StackMob sm;
     private ProtocolLibHook protocolLibHook;
 
     public HookManager(StackMob sm) {
         this.sm = sm;
+        this.hooks = new ObjectOpenHashSet<>();
     }
 
     /**
@@ -66,7 +67,7 @@ public class HookManager {
      * @throws InstantiationException    if the class is abstract
      */
     private void registerHook(Class<? extends Hook> hookClass) throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
-        HookMetadata hookMetadata = hookClass.getAnnotation(HookMetadata.class);
+        final HookMetadata hookMetadata = hookClass.getAnnotation(HookMetadata.class);
         if (!sm.getServer().getPluginManager().isPluginEnabled(hookMetadata.name())) {
             return;
         }

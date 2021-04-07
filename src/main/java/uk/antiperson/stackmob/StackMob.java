@@ -158,9 +158,9 @@ public class StackMob extends JavaPlugin {
         registerEvent(EquipListener.class);
         if (Utilities.isPaper()) {
             registerEvent(RemoveListener.class);
-        } else {
-            registerEvent(ChunkListener.class);
+            return;
         }
+        registerEvent(ChunkListener.class);
     }
 
     private void registerEvent(Class<? extends Listener> clazz) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
