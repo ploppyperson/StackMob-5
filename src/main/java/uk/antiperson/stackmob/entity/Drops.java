@@ -2,6 +2,7 @@ package uk.antiperson.stackmob.entity;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.objects.Object2IntMap;
 import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ExperienceOrb;
@@ -29,19 +30,25 @@ public class Drops {
     }
 
     public Map<ItemStack, Integer> calculateDrops(int deathAmount, List<ItemStack> originalDrops) {
-        Map<ItemStack, Integer> items = new Object2IntOpenHashMap<>();
+        final Object2IntMap<ItemStack> items = new Object2IntOpenHashMap<>();
         if (!sm.getMainConfig().isDropMultiEnabled(dead.getType())) {
             return items;
         }
         if (sm.getMainConfig().isDropTypeBlacklisted(dead.getType())) {
             return items;
         }
-        EntityDamageEvent lastDamageCause = dead.getLastDamageCause();
+        final EntityDamageEvent lastDamageCause = dead.getLastDamageCause();
         if (lastDamageCause == null || sm.getMainConfig().isDropReasonBlacklisted(dead.getType(), lastDamageCause.getCause())) {
             return items;
         }
+        final boolean useLootTables = sm.getMainConfig().isDropLootTables(dead.getType());
+        final LootContext lootContext = new LootContext.Builder(dead.getLocation()).lootedEntity(dead).killer(dead.getKiller()).build();
+        Collection<ItemStack> genItems = originalDrops;
         for (int i = 0; i < deathAmount; i++) {
-            for (ItemStack is : calculateLoot(originalDrops)) {
+            if (useLootTables) {
+                genItems = ((Mob) dead).getLootTable().populateLoot(ThreadLocalRandom.current(), lootContext);
+            }
+            for (ItemStack is : genItems) {
                 if (is == null || is.getType() == Material.AIR) {
                     continue;
                 }
@@ -54,27 +61,12 @@ public class Drops {
                 if (sm.getMainConfig().isDropItemBlacklisted(dead.getType(), is.getType())) {
                     continue;
                 }
-                int dropAmount = is.getAmount();
-                if (sm.getMainConfig().isDropItemOnePer(dead.getType(), is.getType())) {
-                    dropAmount = 1;
-                }
+                final int dropAmount = sm.getMainConfig().isDropItemOnePer(dead.getType(), is.getType()) ? 1 : is.getAmount();
                 is.setAmount(1);
-                if (items.containsKey(is)) {
-                    items.put(is, items.get(is) + dropAmount);
-                    continue;
-                }
-                items.put(is, dropAmount);
+                items.mergeInt(is, dropAmount, Integer::sum);
             }
         }
         return items;
-    }
-
-    private Collection<ItemStack> calculateLoot(List<ItemStack> originalDrops) {
-        if (!sm.getMainConfig().isDropLootTables(dead.getType())) {
-            return originalDrops;
-        }
-        LootContext lc = new LootContext.Builder(dead.getLocation()).lootedEntity(dead).killer(dead.getKiller()).build();
-        return ((Mob) dead).getLootTable().populateLoot(ThreadLocalRandom.current(), lc);
     }
 
     public static void dropItems(Location location, Map<ItemStack, Integer> items) {
