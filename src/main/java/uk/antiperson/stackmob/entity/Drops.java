@@ -69,7 +69,11 @@ public class Drops {
     }
 
     public static void dropItem(Location location, ItemStack stack, int amount) {
-        Location dropLocation = location.add(0,1,0);
+        dropItem(location, stack, amount, false);
+    }
+
+    public static void dropItem(Location location, ItemStack stack, int amount, boolean above) {
+        Location dropLocation = above ? location.add(0,1,0) : location;
         for (int itemAmount : Utilities.split(amount, stack.getMaxStackSize())) {
             stack.setAmount(itemAmount);
             location.getWorld().dropItem(dropLocation, stack);

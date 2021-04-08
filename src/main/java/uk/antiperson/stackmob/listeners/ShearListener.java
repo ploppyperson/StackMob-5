@@ -111,14 +111,14 @@ public class ShearListener implements Listener {
             for (ItemStack itemStack : loot) {
                 if (Tag.WOOL.isTagged(itemStack.getType())) {
                     int woolAmount = (int) Math.round(amount * ThreadLocalRandom.current().nextDouble(1, 2));
-                    Drops.dropItem(sheared.getLocation(), itemStack, woolAmount);
+                    Drops.dropItem(sheared.getLocation(), itemStack, woolAmount, true);
                 }
             }
             return item;
         }
         MushroomCow mushroomCow = (MushroomCow) entity;
         ItemStack mushrooms = new ItemStack(getMaterial(mushroomCow), 1);
-        Drops.dropItem(mushroomCow.getLocation(), mushrooms, (amount - 1) * 5);
+        Drops.dropItem(mushroomCow.getLocation(), mushrooms, (amount - 1) * 5, true);
         // Spawn separate normal cow for the rest of the stack.
         Entity cow = mushroomCow.getWorld().spawnEntity(mushroomCow.getLocation(), EntityType.COW);
         StackEntity stackCow = sm.getEntityManager().registerStackedEntity((LivingEntity) cow);
