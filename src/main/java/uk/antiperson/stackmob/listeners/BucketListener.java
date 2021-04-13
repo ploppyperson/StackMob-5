@@ -1,8 +1,8 @@
 package uk.antiperson.stackmob.listeners;
 
 import org.bukkit.Material;
+import org.bukkit.entity.Fish;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Mob;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -12,25 +12,25 @@ import org.bukkit.inventory.ItemStack;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.StackEntity;
 
-@ListenerMetadata(config = "events.divide.nametag")
-public class TagInteractListener implements Listener {
+@ListenerMetadata(config = "events.divide.bucket-fill")
+public class BucketListener implements Listener {
 
     private final StackMob sm;
 
-    public TagInteractListener(StackMob sm) {
+    public BucketListener(StackMob sm) {
         this.sm = sm;
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onTagInteract(PlayerInteractEntityEvent event) {
+    public void onBucketFill(PlayerInteractEntityEvent event) {
         if (event.getHand() != EquipmentSlot.HAND) {
             return;
         }
-        if (!(event.getRightClicked() instanceof Mob)) {
+        if (!(event.getRightClicked() instanceof Fish)) {
             return;
         }
         final ItemStack handItem = event.getPlayer().getInventory().getItemInMainHand();
-        if (handItem.getType() != Material.NAME_TAG || !handItem.hasItemMeta() || !handItem.getItemMeta().hasDisplayName()) {
+        if (handItem.getType() != Material.WATER_BUCKET || !handItem.hasItemMeta() || !handItem.getItemMeta().hasDisplayName()) {
             return;
         }
         final StackEntity stackEntity = sm.getEntityManager().getStackEntity((LivingEntity) event.getRightClicked());
@@ -39,9 +39,6 @@ public class TagInteractListener implements Listener {
         }
         if (!stackEntity.isSingle()) {
             stackEntity.slice();
-        }
-        if (sm.getMainConfig().removeStackDataOnDivide(event.getRightClicked().getType(), "nametag")) {
-            stackEntity.removeStackData();
         }
     }
 

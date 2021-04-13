@@ -29,12 +29,13 @@ public class DropListener implements Listener {
         if (!sm.getEntityManager().isStackedEntity((LivingEntity) event.getEntity())) {
             return;
         }
-        StackEntity stackEntity = sm.getEntityManager().getStackEntity((LivingEntity) event.getEntity());
+        final StackEntity stackEntity = sm.getEntityManager().getStackEntity((LivingEntity) event.getEntity());
         if (stackEntity == null || stackEntity.isSingle()) {
             return;
         }
-        double multiplier = ThreadLocalRandom.current().nextDouble(0.4, 0.8);
-        int itemCount = (int) Math.round((stackEntity.getSize() - 1) * multiplier);
+        final double multiplier = ThreadLocalRandom.current().nextDouble(0.4, 0.8);
+        final int itemCount = (int) Math.round((stackEntity.getSize() - 1) * multiplier);
         Drops.dropItem(event.getEntity().getLocation(), event.getItemDrop().getItemStack(), itemCount);
     }
+
 }

@@ -149,8 +149,10 @@ events:
   divide:
     nametag: true
     tame: true
-    # Only bees now
+    # Only bees currently.
     enter-block: true
+    # Only fishes currently.
+    bucket-fill: true
   remove-stack-data:
     # Should we remove the stack data of an entity that was unstacked as a result of nametag division/split?
     # Setting this to false will cause entities that were nametagged to potentially become stacked again.
