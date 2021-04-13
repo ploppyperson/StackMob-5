@@ -86,6 +86,7 @@ traits:
   zoglin-baby: true
   piglin-baby: true
   leashed: true
+  villager-profession: true
   potion-effect: true
   # Prevent pregnant turtles from stacking. (**)
   has-egg: true
