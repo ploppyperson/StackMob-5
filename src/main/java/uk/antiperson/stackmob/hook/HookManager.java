@@ -51,6 +51,7 @@ public class HookManager {
         registerHook(JobsHook.class);
         registerHook(ProtocolLibHook.class);
         registerHook(ClearlaggHook.class);
+        registerHook(MyPetHook.class);
     }
 
     /**

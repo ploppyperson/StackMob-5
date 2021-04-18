@@ -276,6 +276,8 @@ hooks:
   protocollib: true
   # Make it so that ClearLagg removes stacked entities.
   clearlagg: false
+  # Make it so that MyPet pets do not stack.
+  mypet: true
 
 ## Some options can be modified for specific entity types. An example is shown below. Remove comments to see this in action.
 ## Options and sections with a (*) in the comment preceding cannot be overridden.

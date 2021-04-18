@@ -158,6 +158,13 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/jars/Clearlag.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>de.keyle</groupId>
+            <artifactId>mypet</artifactId>
+            <version>3.11</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/jars/MyPet-3.11-SNAPSHOT-B1627.jar</systemPath>
+        </dependency>
     </dependencies>
 
 </project>
