@@ -10,6 +10,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.loot.LootContext;
 import uk.antiperson.stackmob.StackMob;
+import uk.antiperson.stackmob.config.ConfigList;
 import uk.antiperson.stackmob.utils.Utilities;
 
 import java.util.*;
@@ -37,6 +38,8 @@ public class Drops {
             return items;
         }
         boolean useLootTables = sm.getMainConfig().isDropLootTables(dead.getType());
+        ConfigList itemBlacklist = sm.getMainConfig().getDropItemBlacklist(dead.getType());
+        ConfigList dropOneItemPer = sm.getMainConfig().getDropItemOnePer(dead.getType());
         LootContext lc = new LootContext.Builder(dead.getLocation()).lootedEntity(dead).killer(dead.getKiller()).build();
         Collection<ItemStack> genItems = originalDrops;
         for (int i = 0; i < deathAmount; i++) {
@@ -53,10 +56,10 @@ public class Drops {
                 if (is.getType() == Material.LEAD && dead.isLeashed()) {
                     continue;
                 }
-                if (sm.getMainConfig().getDropItemBlacklist(dead.getType()).contains(is.getType().toString())) {
+                if (itemBlacklist.contains(is.getType().toString())) {
                     continue;
                 }
-                int dropAmount = sm.getMainConfig().getDropItemOnePer(dead.getType()).contains(is.getType().toString()) ? 1 : is.getAmount();
+                int dropAmount = dropOneItemPer.contains(is.getType().toString()) ? 1 : is.getAmount();
                 is.setAmount(1);
                 items.compute(is, (key, amount) -> amount == null ? dropAmount : amount + dropAmount);
             }
