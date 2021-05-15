@@ -8,7 +8,7 @@ import uk.antiperson.stackmob.entity.StackEntity;
 import uk.antiperson.stackmob.hook.Hook;
 import uk.antiperson.stackmob.hook.HookMetadata;
 
-@HookMetadata(name = "ClearLagg", config = "clearlagg")
+@HookMetadata(name = "ClearLag", config = "clearlagg")
 public class ClearlaggHook extends Hook implements Listener {
 
     public ClearlaggHook(StackMob sm) {
