@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
 
-@CommandMetadata(command = "remove", playerReq = true, desc = "Remove all entities")
+@CommandMetadata(command = "remove", playerReq = false, desc = "Remove all entities")
 public class Remove extends SubCommand {
 
     private final StackMob sm;
