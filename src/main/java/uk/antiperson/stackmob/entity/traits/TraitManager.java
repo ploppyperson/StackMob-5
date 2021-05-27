@@ -38,14 +38,14 @@ public class TraitManager {
         registerTrait(Leash.class);
         registerTrait(Potion.class);
         registerTrait(VillagerProfession.class);
+        if (Utilities.isPaper()) {
+            registerTrait(TurtleHasEgg.class);
+        }
         if (!Utilities.isNewBukkit()) {
             return;
         }
         registerTrait(ZoglinBaby.class);
         registerTrait(PiglinBaby.class);
-        if (Utilities.isPaper()) {
-            registerTrait(TurtleHasEgg.class);
-        }
     }
 
     /**
