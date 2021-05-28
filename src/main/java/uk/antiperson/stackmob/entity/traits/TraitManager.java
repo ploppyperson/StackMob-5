@@ -41,7 +41,7 @@ public class TraitManager {
         if (Utilities.isPaper()) {
             registerTrait(TurtleHasEgg.class);
         }
-        if (!Utilities.isNewBukkit()) {
+        if (Utilities.isNewBukkit()) {
             return;
         }
         registerTrait(ZoglinBaby.class);
