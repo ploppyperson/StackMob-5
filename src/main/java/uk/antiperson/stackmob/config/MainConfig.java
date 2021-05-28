@@ -225,6 +225,10 @@ public class MainConfig extends SpecialConfigFile {
         return StackEntity.EquipItemMode.valueOf(getString(type, "events.equip.mode"));
     }
 
+    public boolean isStackOnSpawn() {
+        return getBoolean("stack.on-spawn");
+    }
+
     @Override
     public void updateFile() throws IOException {
         if (isSet("check-area.x")) {

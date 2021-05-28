@@ -30,6 +30,8 @@ stack:
     enabled: false
     # The distance threshold for the check
     distance: 1.0
+  # Stack entities when they spawn. (*)
+  on-spawn: false
 
 # Names of worlds where there should be no stacking
 worlds-blacklist: []

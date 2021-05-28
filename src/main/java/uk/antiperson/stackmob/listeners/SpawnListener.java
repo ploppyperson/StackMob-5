@@ -1,14 +1,11 @@
 package uk.antiperson.stackmob.listeners;
 
-import com.destroystokyo.paper.event.entity.PreCreatureSpawnEvent;
-import com.destroystokyo.paper.event.entity.PreSpawnerSpawnEvent;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Mob;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.event.entity.SpawnerSpawnEvent;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.StackEntity;
 import uk.antiperson.stackmob.events.EventHelper;
@@ -18,11 +15,6 @@ public class SpawnListener implements Listener {
     private final StackMob sm;
     public SpawnListener(StackMob sm) {
         this.sm = sm;
-    }
-
-    @EventHandler
-    public void onSpawn(PreCreatureSpawnEvent event) {
-
     }
 
     @EventHandler
@@ -49,6 +41,10 @@ public class SpawnListener implements Listener {
                 original.makeWait();
                 return;
             }
+            sm.getHookManager().onSpawn(original);
+            if (!sm.getMainConfig().isStackOnSpawn()) {
+                return;
+            }
             Integer[] searchRadius = sm.getMainConfig().getStackRadius(event.getEntity().getType());
             for (Entity entity : event.getEntity().getNearbyEntities(searchRadius[0], searchRadius[1], searchRadius[2])) {
                 if (!(entity instanceof Mob)) {
@@ -73,8 +69,6 @@ public class SpawnListener implements Listener {
                     return;
                 }
             }
-            original.setSize(1);
-            sm.getHookManager().onSpawn(original);
         });
     }
 }
