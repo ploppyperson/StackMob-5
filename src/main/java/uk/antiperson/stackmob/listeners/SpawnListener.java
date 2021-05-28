@@ -42,6 +42,7 @@ public class SpawnListener implements Listener {
                 return;
             }
             sm.getHookManager().onSpawn(original);
+            original.setSize(1);
             if (!sm.getMainConfig().isStackOnSpawn()) {
                 return;
             }
