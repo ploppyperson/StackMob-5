@@ -28,10 +28,10 @@ public class KillStepDamage extends DeathMethod {
         }
         double healthBefore = ((LivingEntity)getDead().getEntity().getLastDamageCause().getEntity()).getHealth();
         double damageDone = getEntity().getLastDamageCause().getFinalDamage();
-        double maxHealth = getEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH).getDefaultValue();
+        double maxHealth = getEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
         if (getStackMob().getMainConfig().isTraitEnabled(Potion.class.getAnnotation(TraitMetadata.class).path())) {
             if (getDead().getEntity().getPotionEffect(PotionEffectType.HEALTH_BOOST) != null) {
-                maxHealth = getEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
+                maxHealth = getEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue();
                 useValue = true;
             }
         }
@@ -46,7 +46,7 @@ public class KillStepDamage extends DeathMethod {
     public void onSpawn(StackEntity spawned) {
         AttributeInstance attribute = getEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH);
         AttributeInstance spawnedAttribute = spawned.getEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH);
-        double maxHealth = useValue ? attribute.getValue() : attribute.getDefaultValue();
+        double maxHealth = attribute.getValue();
         StackableMobHook smh = sm.getHookManager().getApplicableHook(spawned);
         if (smh instanceof MythicMobsStackHook) {
             sm.getServer().getScheduler().runTaskLater(sm, bukkitTask -> {
