@@ -59,7 +59,7 @@ public class KillStepDamage extends DeathMethod {
             spawned.getEntity().setHealth(maxHealth - leftOverDamage);
         } catch (IllegalArgumentException e) {
             sm.getLogger().warning("New health value is too high! Please report and include the message below.");
-            sm.getLogger().info(attribute.getBaseValue() + "," + attribute.getDefaultValue() + "," + attribute.getValue() + "," + leftOverDamage);
+            sm.getLogger().info(useValue + "," + attribute.getBaseValue() + "," + attribute.getDefaultValue() + "," + attribute.getValue() + "," + leftOverDamage);
             if (spawnedAttribute != null) {
                 sm.getLogger().info(spawnedAttribute.getBaseValue() + "," + spawnedAttribute.getDefaultValue() + "," + spawnedAttribute.getValue());
             }
