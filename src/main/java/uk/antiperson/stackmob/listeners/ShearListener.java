@@ -54,7 +54,9 @@ public class ShearListener implements Listener {
             return;
         }
         ItemStack is = shearLogic((LivingEntity) event.getEntity(), event.getTool());
-        if (is == null) {
+        int durability = ((Damageable) event.getTool().getItemMeta()).getDamage();
+        int maxDurability = event.getTool().getType().getMaxDurability();
+        if (is == null || (maxDurability - durability) == 1) {
             return;
         }
         sm.getServer().getScheduler().runTask(sm, () -> {
