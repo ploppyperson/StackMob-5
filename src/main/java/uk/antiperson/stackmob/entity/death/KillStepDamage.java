@@ -4,7 +4,6 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.potion.PotionEffectType;
-import org.jetbrains.annotations.Nullable;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.StackEntity;
 import uk.antiperson.stackmob.entity.traits.TraitMetadata;
@@ -15,7 +14,6 @@ import uk.antiperson.stackmob.hook.hooks.MythicMobsStackHook;
 public class KillStepDamage extends DeathMethod {
 
     private double leftOverDamage;
-    private boolean useValue;
 
     public KillStepDamage(StackMob sm, StackEntity dead) {
         super(sm, dead);
@@ -32,7 +30,6 @@ public class KillStepDamage extends DeathMethod {
         if (getStackMob().getMainConfig().isTraitEnabled(Potion.class.getAnnotation(TraitMetadata.class).path())) {
             if (getDead().getEntity().getPotionEffect(PotionEffectType.HEALTH_BOOST) != null) {
                 maxHealth = getEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue();
-                useValue = true;
             }
         }
         double damageLeft = Math.min(maxHealth * (getDead().getSize() - 1), Math.abs(healthBefore - damageDone));
@@ -59,7 +56,7 @@ public class KillStepDamage extends DeathMethod {
             spawned.getEntity().setHealth(maxHealth - leftOverDamage);
         } catch (IllegalArgumentException e) {
             sm.getLogger().warning("New health value is too high! Please report and include the message below.");
-            sm.getLogger().info(useValue + "," + attribute.getBaseValue() + "," + attribute.getDefaultValue() + "," + attribute.getValue() + "," + leftOverDamage);
+            sm.getLogger().info(attribute.getBaseValue() + "," + attribute.getDefaultValue() + "," + attribute.getValue() + "," + leftOverDamage);
             if (spawnedAttribute != null) {
                 sm.getLogger().info(spawnedAttribute.getBaseValue() + "," + spawnedAttribute.getDefaultValue() + "," + spawnedAttribute.getValue());
             }
