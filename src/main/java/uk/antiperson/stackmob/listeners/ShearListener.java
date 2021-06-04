@@ -16,7 +16,6 @@ import org.bukkit.loot.LootContext;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.Drops;
 import uk.antiperson.stackmob.entity.StackEntity;
-import uk.antiperson.stackmob.utils.Utilities;
 
 import java.util.Collection;
 import java.util.concurrent.ThreadLocalRandom;
@@ -128,9 +127,6 @@ public class ShearListener implements Listener {
     }
 
     private Material getMaterial(MushroomCow mushroomCow) {
-        if (!Utilities.isNewBukkit()) {
-            return Material.RED_MUSHROOM;
-        }
         return mushroomCow.getVariant() == MushroomCow.Variant.RED ? Material.RED_MUSHROOM : Material.BROWN_MUSHROOM;
     }
 }

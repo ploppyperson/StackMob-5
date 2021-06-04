@@ -79,7 +79,7 @@ public class Utilities {
         return usingPaper;
     }
 
-    public static boolean isNewBukkit() {
+    public static boolean isLegacyVersion() {
         return usingLegacy;
     }
 
@@ -99,15 +99,6 @@ public class Utilities {
         ItemStack is = player.getInventory().getItemInMainHand();
         is.setAmount(is.getAmount() - itemAmount);
         player.getInventory().setItemInMainHand(is);
-    }
-
-    public static double distance(Location locationA, Location locationB) {
-        double xDist = locationA.getX() - locationB.getX();
-        double yDist = locationA.getY() - locationB.getY();
-        double zDist = locationA.getZ() - locationB.getZ();
-        double xzDiagonal = Math.pow(xDist, 2) + Math.pow(zDist, 2);
-        double diagonal = xzDiagonal + Math.pow(yDist, 2);
-        return Math.sqrt(diagonal);
     }
 
     public enum DownloadResult {
