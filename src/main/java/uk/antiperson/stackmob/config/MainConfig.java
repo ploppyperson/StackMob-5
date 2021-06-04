@@ -11,7 +11,8 @@ import uk.antiperson.stackmob.listeners.ListenerMode;
 import uk.antiperson.stackmob.utils.Utilities;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Collection;
+import java.util.TreeMap;
 
 public class MainConfig extends SpecialConfigFile {
 
