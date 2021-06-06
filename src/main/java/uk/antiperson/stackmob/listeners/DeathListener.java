@@ -1,24 +1,19 @@
 package uk.antiperson.stackmob.listeners;
 
-import org.bukkit.Material;
 import org.bukkit.Statistic;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ExperienceOrb;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Slime;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import uk.antiperson.stackmob.StackMob;
-import uk.antiperson.stackmob.entity.death.DeathType;
 import uk.antiperson.stackmob.entity.Drops;
 import uk.antiperson.stackmob.entity.StackEntity;
 import uk.antiperson.stackmob.entity.death.DeathMethod;
+import uk.antiperson.stackmob.entity.death.DeathType;
 import uk.antiperson.stackmob.events.EventHelper;
 import uk.antiperson.stackmob.events.StackDeathEvent;
 import uk.antiperson.stackmob.utils.Utilities;

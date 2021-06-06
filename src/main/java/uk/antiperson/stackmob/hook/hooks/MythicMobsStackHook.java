@@ -8,7 +8,6 @@ import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.config.ConfigList;
 import uk.antiperson.stackmob.hook.Hook;
 import uk.antiperson.stackmob.hook.HookMetadata;
-import uk.antiperson.stackmob.hook.SegregatedMobHook;
 import uk.antiperson.stackmob.hook.StackableMobHook;
 
 @HookMetadata(name = "MythicMobs", config = "mythicmobs.stack")

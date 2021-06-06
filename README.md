@@ -1,6 +1,6 @@
 # StackMob-5
 
-StackMob redefined for 1.15 and 1.16. Uses NBT rather than databases/yaml files so performance will be greatly improved compared to previous versions of StackMob.
+StackMob redefined for 1.16. Uses NBT rather than databases/yaml files so performance will be greatly improved compared to previous versions of StackMob.
 
 Spigot: https://www.spigotmc.org/resources/stackmob-enhance-your-servers-performance-without-the-sacrifice.29999/
 

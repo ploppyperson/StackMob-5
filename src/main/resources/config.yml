@@ -56,7 +56,7 @@ display-name:
   # Mode:
   # ALWAYS - The tag will always be visible as long as the entity is loaded.
   # HOVER - The tag will only be visible when the player hovers their crosshair on the entity.
-  # NEARBY - The tag will only be visible when the player is in range of the entity. (more resource intensive, requires ProtocolLib on 1.15 servers)
+  # NEARBY - The tag will only be visible when the player is in range of the entity. (more resource intensive, requires ProtocolLib on 1.16 servers)
   visibility: NEARBY
   # Options for when 'NEARBY' is used above. (*)
   nearby:
