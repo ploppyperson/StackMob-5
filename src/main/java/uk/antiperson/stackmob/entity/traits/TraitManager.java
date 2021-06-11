@@ -38,11 +38,11 @@ public class TraitManager {
         registerTrait(Leash.class);
         registerTrait(Potion.class);
         registerTrait(VillagerProfession.class);
-        registerTrait(ZoglinBaby.class);
-        registerTrait(PiglinBaby.class);
         if (Utilities.isPaper()) {
             registerTrait(TurtleHasEgg.class);
         }
+        registerTrait(ZoglinBaby.class);
+        registerTrait(PiglinBaby.class);
     }
 
     /**
