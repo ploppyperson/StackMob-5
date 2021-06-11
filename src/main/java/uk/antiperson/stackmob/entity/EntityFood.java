@@ -37,7 +37,9 @@ public enum EntityFood {
     FOX(Material.SWEET_BERRIES),
     CAT(Tameable::isTamed, Material.SALMON, Material.COD),
     BEE(Tag.FLOWERS.getValues().toArray(new Material[0])),
-    HOGLIN(Material.matchMaterial("CRIMSON_FUNGUS")),
+    HOGLIN(Material.CRIMSON_FUNGUS),
+    GOAT(Material.WHEAT),
+    AXOLOTL(Material.TROPICAL_FISH_BUCKET),
     INVALID;
 
     private final Predicate<Tameable> predicate;
