@@ -63,7 +63,8 @@ public class Commands implements CommandExecutor, TabCompleter {
                     }
                     args.append("[").append(options).append("] ");
                 }
-                commandSender.sendMessage(ChatColor.AQUA + "/sm " + subCommand.getCommand() + " " + args + ChatColor.GRAY + "- " + ChatColor.YELLOW + subCommand.getDescription());
+                String cmd = sm.getServer().getPluginCommand("sm").getPlugin().equals(sm) ? "sm" : "stackmob";
+                commandSender.sendMessage(ChatColor.AQUA + "/" + cmd + " " + subCommand.getCommand() + " " + args + ChatColor.GRAY + "- " + ChatColor.YELLOW + subCommand.getDescription());
             }
             commandSender.sendMessage(ChatColor.GOLD + "Key: () = Optional argument, [] = Mandatory argument.");
             return false;
