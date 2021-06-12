@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
 
 public class Utilities {
 
-    public static final String PREFIX = ChatColor.DARK_GREEN + "StackMob " + ChatColor.GRAY + ">> " + ChatColor.RESET;
+    public static final String PREFIX = ChatColor.of("#00CED1") + "StackMob " + ChatColor.GRAY + ">> " + ChatColor.RESET;
     public static final String SLIME_METADATA = "deathcount";
     public static final String NO_LEASH_METADATA = "stop-leash";
     public static final String DISCORD = "https://discord.gg/fz9xzuB";

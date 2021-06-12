@@ -1,8 +1,10 @@
 package uk.antiperson.stackmob.utils;
 
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.ChatColor;
+import org.bukkit.Color;
 import org.bukkit.conversations.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -51,7 +53,8 @@ public class StackingTool {
         itemMeta.getPersistentDataContainer().set(sm.getToolKey(), PersistentDataType.INTEGER, nextMode);
         itemStack.setItemMeta(itemMeta);
         player.getInventory().setItemInMainHand(itemStack);
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText("Shifted mode to " + getMode()));
+        BaseComponent[] baseComponent = TextComponent.fromLegacyText(ChatColor.of("#D3D3D3") + "Shifted mode to " + ChatColor.of("#A9A9A9") + getMode());
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, baseComponent);
     }
 
     public void performAction(LivingEntity clicked) {

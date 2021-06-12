@@ -1,7 +1,7 @@
 package uk.antiperson.stackmob.commands;
 
+import net.md_5.bungee.api.ChatColor;
 import org.apache.commons.lang.ArrayUtils;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -19,10 +19,11 @@ import java.util.*;
 public class Commands implements CommandExecutor, TabCompleter {
 
     private final StackMob sm;
-    private final Set<SubCommand> subCommands;
+    private final List<SubCommand> subCommands;
+
     public Commands(StackMob sm) {
         this.sm = sm;
-        this.subCommands = new HashSet<>();
+        this.subCommands = new ArrayList<>();
     }
 
     public void registerSubCommands() {
@@ -35,6 +36,7 @@ public class Commands implements CommandExecutor, TabCompleter {
         subCommands.add(new Reload(sm));
         subCommands.add(new ForceStack(sm));
         subCommands.add(new Stats(sm));
+        subCommands.sort(Comparator.comparing(SubCommand::getCommand));
     }
 
     @Override
@@ -44,7 +46,7 @@ public class Commands implements CommandExecutor, TabCompleter {
             return false;
         }
         if (strings.length == 0) {
-            commandSender.sendMessage(Utilities.PREFIX + ChatColor.GOLD + "Commands: ");
+            commandSender.sendMessage(Utilities.PREFIX + ChatColor.of("#FF7F50") + "Commands: ");
             for (SubCommand subCommand : subCommands) {
                 StringBuilder args = new StringBuilder();
                 for (CommandArgument argumentType : subCommand.getArguments()) {
@@ -64,9 +66,9 @@ public class Commands implements CommandExecutor, TabCompleter {
                     args.append("[").append(options).append("] ");
                 }
                 String cmd = sm.getServer().getPluginCommand("sm").getPlugin().equals(sm) ? "sm" : "stackmob";
-                commandSender.sendMessage(ChatColor.AQUA + "/" + cmd + " " + subCommand.getCommand() + " " + args + ChatColor.GRAY + "- " + ChatColor.YELLOW + subCommand.getDescription());
+                commandSender.sendMessage(ChatColor.of("#3CB371") + "/" + cmd + " " + subCommand.getCommand() + " " + args + ChatColor.GRAY + "- " + ChatColor.of("#90EE90") + subCommand.getDescription());
             }
-            commandSender.sendMessage(ChatColor.GOLD + "Key: () = Optional argument, [] = Mandatory argument.");
+            commandSender.sendMessage(ChatColor.of("#FF7F50") + "Key: () = Optional argument, [] = Mandatory argument.");
             return false;
         }
         for (SubCommand subCommand : subCommands) {
@@ -132,7 +134,6 @@ public class Commands implements CommandExecutor, TabCompleter {
             List<String> args = new ArrayList<>();
             for (SubCommand subCommand : subCommands) {
                 String commandString = subCommand.getCommand();
-
                 if (!commandString.toLowerCase().startsWith(strings[0].toLowerCase())) {
                     continue;
                 }
@@ -148,11 +149,9 @@ public class Commands implements CommandExecutor, TabCompleter {
                 return null;
             }
             CommandArgument commandArgument = subCommand.getArguments()[strings.length - 2];
-
             List<String> expectedArguments = new LinkedList<>(commandArgument.getExpectedArguments());
             expectedArguments.removeIf(possibleArgument -> !possibleArgument.toLowerCase().startsWith(strings[strings.length - 1].toLowerCase()));
             Collections.sort(expectedArguments);
-
             return expectedArguments;
         }
         return null;
