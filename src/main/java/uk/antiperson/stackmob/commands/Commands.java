@@ -2,6 +2,7 @@ package uk.antiperson.stackmob.commands;
 
 import net.md_5.bungee.api.ChatColor;
 import org.apache.commons.lang.ArrayUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -115,6 +116,11 @@ public class Commands implements CommandExecutor, TabCompleter {
                     try {
                         EntityType.valueOf(args[i].toUpperCase());
                     } catch (IllegalArgumentException e) {
+                        return false;
+                    }
+                    break;
+                case WORLD:
+                    if (Bukkit.getWorld(args[i]) == null) {
                         return false;
                     }
                     break;
