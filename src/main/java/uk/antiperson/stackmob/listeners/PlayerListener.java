@@ -7,7 +7,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import uk.antiperson.stackmob.StackMob;
-import uk.antiperson.stackmob.entity.StackEntity;
 import uk.antiperson.stackmob.utils.StackingTool;
 
 public class PlayerListener implements Listener {

@@ -1,7 +1,6 @@
 package uk.antiperson.stackmob.utils;
 
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
@@ -22,7 +21,7 @@ import java.util.regex.Pattern;
 
 public class Utilities {
 
-    public static final String PREFIX = ChatColor.DARK_GREEN + "StackMob " + ChatColor.GRAY + ">> " + ChatColor.RESET;
+    public static final String PREFIX = ChatColor.of("#00CED1") + "StackMob " + ChatColor.GRAY + ">> " + ChatColor.RESET;
     public static final String SLIME_METADATA = "deathcount";
     public static final String NO_LEASH_METADATA = "stop-leash";
     public static final String DISCORD = "https://discord.gg/fz9xzuB";
@@ -30,8 +29,7 @@ public class Utilities {
     public static final String GITHUB_DEFAULT_CONFIG = GITHUB + "/tree/master/src/main/resources";
     private static final Pattern hexPattern = Pattern.compile("&#([a-zA-Z0-9]){6}");
     private static final boolean usingPaper = Package.getPackage("com.destroystokyo.paper") != null;
-    private static final boolean usingLegacy = Package.getPackage("net.minecraft.server.v1_15_R1") != null;
-    private static final boolean usingNative = Package.getPackage("net.minecraft.server.v1_16_R3") != null;
+    private static final boolean usingNative = Package.getPackage("org.bukkit.craftbukkit.v1_17_R1") != null;
     public static final List<Material> DROWNED_MATERIALS = Arrays.asList(Material.NAUTILUS_SHELL, Material.TRIDENT);
     public static final List<EquipmentSlot> HAND_SLOTS = Arrays.asList(EquipmentSlot.HAND, EquipmentSlot.OFF_HAND);
 
@@ -80,10 +78,6 @@ public class Utilities {
         return usingPaper;
     }
 
-    public static boolean isNewBukkit() {
-        return usingLegacy;
-    }
-
     public static boolean isNativeVersion() {
         return usingNative;
     }
@@ -100,15 +94,6 @@ public class Utilities {
         ItemStack is = player.getInventory().getItemInMainHand();
         is.setAmount(is.getAmount() - itemAmount);
         player.getInventory().setItemInMainHand(is);
-    }
-
-    public static double distance(Location locationA, Location locationB) {
-        double xDist = locationA.getX() - locationB.getX();
-        double yDist = locationA.getY() - locationB.getY();
-        double zDist = locationA.getZ() - locationB.getZ();
-        double xzDiagonal = Math.pow(xDist, 2) + Math.pow(zDist, 2);
-        double diagonal = xzDiagonal + Math.pow(yDist, 2);
-        return Math.sqrt(diagonal);
     }
 
     public enum DownloadResult {

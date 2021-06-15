@@ -1,6 +1,9 @@
 package uk.antiperson.stackmob.commands.subcommands;
 
-import org.bukkit.entity.*;
+import org.bukkit.entity.Animals;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Mob;
+import org.bukkit.entity.Monster;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.commands.*;
 import uk.antiperson.stackmob.entity.StackEntity;

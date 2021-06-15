@@ -2,10 +2,13 @@ package uk.antiperson.stackmob.entity;
 
 import org.bukkit.Material;
 import org.bukkit.Tag;
+import org.bukkit.entity.Animals;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Tameable;
+import uk.antiperson.stackmob.utils.Utilities;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.function.Predicate;
 
 public enum EntityFood {
@@ -37,7 +40,7 @@ public enum EntityFood {
     FOX(Material.SWEET_BERRIES),
     CAT(Tameable::isTamed, Material.SALMON, Material.COD),
     BEE(Tag.FLOWERS.getValues().toArray(new Material[0])),
-    HOGLIN(Material.matchMaterial("CRIMSON_FUNGUS")),
+    HOGLIN(Material.CRIMSON_FUNGUS),
     INVALID;
 
     private final Predicate<Tameable> predicate;
@@ -69,6 +72,14 @@ public enum EntityFood {
     }
 
     public static boolean isCorrectFood(Entity entity, Material type) {
+        if (Utilities.isNativeVersion()) {
+            // Temporary reflection while Paper 1.17 is in development. TODO: REMOVE ONCE 1.17 RELEASED
+            try {
+                return (boolean) Animals.class.getDeclaredMethod("isBreedItem", Material.class).invoke(entity, type);
+            } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                e.printStackTrace();
+            }
+        }
         EntityFood food = matchFood(entity.getType());
         if (food.getPredicate() != null && !food.getPredicate().getClass().isAssignableFrom(entity.getClass())) {
             return false;

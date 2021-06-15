@@ -52,21 +52,27 @@ public class StackMob extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        getLogger().info("StackMob v" + getDescription().getVersion() + " by antiPerson and contributors.");
-        getLogger().info("GitHub: " + Utilities.GITHUB);
-        getLogger().info("Discord: " + Utilities.DISCORD);
         traitManager = new TraitManager(this);
         entityManager = new EntityManager(this);
         config = new MainConfig(this);
         entityTranslation = new EntityTranslation(this);
+        updater = new Updater(this, 29999);
+        itemTools = new ItemTools(this);
+        getLogger().info("StackMob v" + getDescription().getVersion() + " by antiPerson and contributors.");
+        getLogger().info("GitHub: " + Utilities.GITHUB + " Discord: " + Utilities.DISCORD);
         getLogger().info("Loading config files...");
-        loadConfig();
+        try {
+            getMainConfig().load();
+            getEntityTranslation().load();
+        } catch (IOException e) {
+            getLogger().log(Level.SEVERE, "There was a problem loading the configuration file.");
+            e.printStackTrace();
+        }
         getLogger().info("Registering hooks and trait checks...");
-        try{
-            getTraitManager().registerTraits();
+        try {
             getHookManager().registerHooks();
-        } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException e) {
-            getLogger().log(Level.SEVERE, "There was a problem registering traits and hooks. Features won't work.");
+            getTraitManager().registerTraits();
+        } catch (InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException e) {
             e.printStackTrace();
         }
         getLogger().info("Registering events, commands and tasks...");
@@ -75,64 +81,38 @@ public class StackMob extends JavaPlugin {
         } catch (InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
-        register();
-        updater = new Updater(this, 29999);
-        getUpdater().checkUpdate().whenComplete(((updateResult, throwable) -> {
-            switch (updateResult.getResult()) {
-                case NONE:
-                    getLogger().info("No update is currently available.");
-                    break;
-                case ERROR:
-                    getLogger().info("There was an error while getting the latest update.");
-                    break;
-                case AVAILABLE:
-                    getLogger().info("A new version is currently available. (" + updateResult.getNewVersion() + ")");
-                    break;
-            }
-        }));
-        Metrics metrics = new Metrics(this, 522);
-        metrics.addCustomChart(new Metrics.SimplePie("stackmobbridge", () -> String.valueOf(Bukkit.getPluginManager().isPluginEnabled("StackMobBridge"))));
-        if (metrics.isEnabled()) {
-            getLogger().info("bStats anonymous data collection has been enabled!");
-        }
-        itemTools = new ItemTools(this);
-        getEntityManager().registerAllEntities();
-        if (!Utilities.isPaper()) {
-            getLogger().info("It has been detected that you are not using Paper (https://papermc.io).");
-            getLogger().info("StackMob makes use of Paper's API, which means you're missing out on features.");
-        }
-    }
-
-    @Override
-    public void onDisable() {
-        getEntityManager().unregisterAllEntities();
-    }
-
-    private void loadConfig() {
-        try {
-            getMainConfig().load();
-            getEntityTranslation().load();
-        } catch (IOException e) {
-            getLogger().log(Level.SEVERE, "There was a problem loading the configuration file. Features won't work.");
-            e.printStackTrace();
-        }
-    }
-
-    private void register() {
-        int stackInterval = getMainConfig().getStackInterval();
-        new MergeTask(this).runTaskTimer(this, 5, stackInterval);
-        if (Utilities.isNativeVersion() || getHookManager().getProtocolLibHook() != null) {
-            int tagInterval = getMainConfig().getTagNearbyInterval();
-            new TagTask(this).runTaskTimer(this, 5, tagInterval);
-        } else {
-            getLogger().warning("You are not running the plugins native version and ProtocolLib could not be found (or has been disabled).");
-            getLogger().warning("The display name visibility setting 'NEARBY' will not work unless this is fixed.");
-        }
         PluginCommand command = getCommand("stackmob");
         Commands commands = new Commands(this);
         command.setExecutor(commands);
         command.setTabCompleter(commands);
         commands.registerSubCommands();
+        int stackInterval = getMainConfig().getStackInterval();
+        new MergeTask(this).runTaskTimer(this, 5, stackInterval);
+        if (Utilities.isNativeVersion()) {
+            int tagInterval = getMainConfig().getTagNearbyInterval();
+            new TagTask(this).runTaskTimer(this, 5, tagInterval);
+        } else if (getHookManager().getProtocolLibHook() == null) {
+            getLogger().warning("You are not running the plugins native version and ProtocolLib could not be found (or has been disabled).");
+            getLogger().warning("The display name visibility setting 'NEARBY' will not work unless this is fixed.");
+        }
+        getEntityManager().registerAllEntities();
+        getUpdater().checkUpdate().whenComplete(((updateResult, throwable) -> {
+            switch (updateResult.getResult()) {
+                case NONE -> getLogger().info("No update is currently available.");
+                case ERROR -> getLogger().info("There was an error while getting the latest update.");
+                case AVAILABLE -> getLogger().info("A new version is currently available. (" + updateResult.getNewVersion() + ")");
+            }
+        }));
+        if (!Utilities.isPaper()) {
+            getLogger().warning("It has been detected that you are not using Paper (https://papermc.io).");
+            getLogger().warning("StackMob makes use of Paper's API, which means you're missing out on features.");
+        }
+        new Metrics(this, 522);
+    }
+
+    @Override
+    public void onDisable() {
+        getEntityManager().unregisterAllEntities();
     }
 
     private void registerEvents() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {

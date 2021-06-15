@@ -7,8 +7,8 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import uk.antiperson.stackmob.StackMob;
-import uk.antiperson.stackmob.entity.StackEntity;
 import uk.antiperson.stackmob.entity.EntityFood;
+import uk.antiperson.stackmob.entity.StackEntity;
 import uk.antiperson.stackmob.utils.Utilities;
 
 @ListenerMetadata(config = "events.breed.enabled")
