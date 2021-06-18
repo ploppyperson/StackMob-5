@@ -28,14 +28,7 @@ public class Utilities {
     public static final String GITHUB = "https://github.com/Nathat23/StackMob-5";
     public static final String GITHUB_DEFAULT_CONFIG = GITHUB + "/tree/master/src/main/resources";
     private static final Pattern hexPattern = Pattern.compile("&#([a-zA-Z0-9]){6}");
-    private static boolean usingPaper = false;
-    static {
-        try {
-            Class.forName("com.destroystokyo.paper.PaperConfig");
-            usingPaper = true;
-        } catch (ClassNotFoundException ignored) {
-        }
-    }
+    private static final boolean usingPaper = ClassLoader.getSystemClassLoader().getDefinedPackage("com.destroystokyo.paper") != null;
     private static final boolean usingNative = ClassLoader.getSystemClassLoader().getDefinedPackage("org.bukkit.craftbukkit.v1_17_R1") != null;
     public static final List<Material> DROWNED_MATERIALS = Arrays.asList(Material.NAUTILUS_SHELL, Material.TRIDENT);
     public static final List<EquipmentSlot> HAND_SLOTS = Arrays.asList(EquipmentSlot.HAND, EquipmentSlot.OFF_HAND);
@@ -43,7 +36,7 @@ public class Utilities {
     public static String translateColorCodes(String toTranslate) {
         Matcher matcher = hexPattern.matcher(toTranslate);
         while (matcher.find()) {
-            net.md_5.bungee.api.ChatColor chatColor = net.md_5.bungee.api.ChatColor.of(matcher.group().substring(1,8));
+            ChatColor chatColor = ChatColor.of(matcher.group().substring(1,8));
             String before = toTranslate.substring(0, matcher.start());
             String after = toTranslate.substring(matcher.end());
             toTranslate = before + chatColor + after;
