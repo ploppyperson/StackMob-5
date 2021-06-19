@@ -18,6 +18,7 @@ import uk.antiperson.stackmob.listeners.*;
 import uk.antiperson.stackmob.tasks.MergeTask;
 import uk.antiperson.stackmob.tasks.TagTask;
 import uk.antiperson.stackmob.utils.ItemTools;
+import uk.antiperson.stackmob.utils.TemporaryCompat;
 import uk.antiperson.stackmob.utils.Updater;
 import uk.antiperson.stackmob.utils.Utilities;
 
@@ -108,6 +109,17 @@ public class StackMob extends JavaPlugin {
             getLogger().warning("StackMob makes use of Paper's API, which means you're missing out on features.");
         }
         new Metrics(this, 522);
+        if (Utilities.isNativeVersion()) {
+            if (Utilities.isPaper() && !Bukkit.getVersion().contains("d76f8e0")) {
+                return;
+            }
+            getLogger().info("We are enabling temporary compatibility measures for 1.17.");
+            getLogger().info("See https://github.com/Nathat23/StackMob-5/issues/223 for info.");
+            TemporaryCompat temporaryCompat = new TemporaryCompat(this);
+            temporaryCompat.init();
+            temporaryCompat.runTaskTimer(this, 20, 20);
+            getServer().getPluginManager().registerEvents(temporaryCompat, this);
+        }
     }
 
     @Override
