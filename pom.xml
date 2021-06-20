@@ -110,9 +110,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.destroystokyo.paper</groupId>
+            <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
-            <version>1.16.5-R0.1-SNAPSHOT</version>
+            <version>1.17-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -171,12 +171,6 @@
             <version>3.11</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/jars/MyPet-3.11-SNAPSHOT-B1627.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.sisu</groupId>
-            <artifactId>org.eclipse.sisu.inject</artifactId>
-            <version>0.3.4</version>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 

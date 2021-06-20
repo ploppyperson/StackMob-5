@@ -73,12 +73,7 @@ public enum EntityFood {
 
     public static boolean isCorrectFood(Entity entity, Material type) {
         if (Utilities.isNativeVersion()) {
-            // Temporary reflection while Paper 1.17 is in development. TODO: REMOVE ONCE 1.17 RELEASED
-            try {
-                return (boolean) Animals.class.getDeclaredMethod("isBreedItem", Material.class).invoke(entity, type);
-            } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-                e.printStackTrace();
-            }
+            return ((Animals) entity).isBreedItem(type);
         }
         EntityFood food = matchFood(entity.getType());
         if (food.getPredicate() != null && !food.getPredicate().getClass().isAssignableFrom(entity.getClass())) {
