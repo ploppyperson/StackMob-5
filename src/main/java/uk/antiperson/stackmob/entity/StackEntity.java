@@ -29,6 +29,7 @@ public class StackEntity {
     private final StackMob sm;
     private boolean waiting;
     private boolean forgetOnSpawn;
+    private boolean removed;
     private Location lastLocation;
     private int waitCount;
     private int stackSize;
@@ -205,6 +206,7 @@ public class StackEntity {
     }
 
     public void remove(boolean unregister) {
+        setRemoved();
         entity.remove();
         if (unregister) {
             entityManager.unregisterStackedEntity(this);
@@ -427,6 +429,14 @@ public class StackEntity {
         for (ItemStack itemStack : getEquiptItems()) {
             getEntity().getWorld().dropItemNaturally(getEntity().getLocation(), itemStack);
         }
+    }
+
+    public boolean isRemoved() {
+        return removed;
+    }
+
+    private void setRemoved() {
+        this.removed = true;
     }
 
     public enum EquipItemMode {

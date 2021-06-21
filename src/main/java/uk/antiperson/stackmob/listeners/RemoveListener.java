@@ -26,6 +26,9 @@ public class RemoveListener implements Listener {
         if (stackEntity == null) {
             return;
         }
+        if (stackEntity.isRemoved()) {
+            return;
+        }
         sm.getEntityManager().unregisterStackedEntity(stackEntity);
     }
 
