@@ -117,7 +117,7 @@ public class StackMob extends JavaPlugin {
             getLogger().info("See https://github.com/Nathat23/StackMob-5/issues/223 for info.");
             TemporaryCompat temporaryCompat = new TemporaryCompat(this);
             temporaryCompat.init();
-            temporaryCompat.runTaskTimer(this, 20, 20);
+            temporaryCompat.runTaskTimer(this, 20, 100);
             getServer().getPluginManager().registerEvents(temporaryCompat, this);
         }
     }
