@@ -1,11 +1,14 @@
 package uk.antiperson.stackmob.tasks;
 
 import org.bukkit.Bukkit;
+import org.bukkit.FluidCollisionMode;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.RayTraceResult;
+import org.bukkit.util.Vector;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.StackEntity;
 
@@ -32,17 +35,17 @@ public class TagTask extends BukkitRunnable {
                 }
                 StackEntity stackEntity = sm.getEntityManager().getStackEntity((LivingEntity) entity);
                 if (stackEntity == null) {
-                    return;
+                    continue;
                 }
                 if (entity.isDead()) {
                     continue;
                 }
                 if (sm.getMainConfig().getTagMode(entity.getType()) != StackEntity.TagMode.NEARBY) {
-                    return;
+                    continue;
                 }
                 int threshold = sm.getMainConfig().getTagThreshold(stackEntity.getEntity().getType());
                 if (stackEntity.getSize() <= threshold) {
-                    return;
+                    continue;
                 }
                 double xDiff = Math.abs(player.getLocation().getX() - entity.getLocation().getX());
                 double yDiff = Math.abs(player.getLocation().getY() - entity.getLocation().getY());
