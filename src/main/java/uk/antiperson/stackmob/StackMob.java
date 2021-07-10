@@ -99,9 +99,9 @@ public class StackMob extends JavaPlugin {
         getEntityManager().registerAllEntities();
         getUpdater().checkUpdate().whenComplete(((updateResult, throwable) -> {
             switch (updateResult.getResult()) {
-                case NONE -> getLogger().info("No update is currently available.");
-                case ERROR -> getLogger().info("There was an error while getting the latest update.");
-                case AVAILABLE -> getLogger().info("A new version is currently available. (" + updateResult.getNewVersion() + ")");
+                case NONE: getLogger().info("No update is currently available."); break;
+                case ERROR: getLogger().info("There was an error while getting the latest update."); break;
+                case AVAILABLE: getLogger().info("A new version is currently available. (" + updateResult.getNewVersion() + ")"); break;
             }
         }));
         if (!Utilities.isPaper()) {
