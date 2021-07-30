@@ -89,10 +89,9 @@ public class StackMob extends JavaPlugin {
         commands.registerSubCommands();
         int stackInterval = getMainConfig().getStackInterval();
         new MergeTask(this).runTaskTimer(this, 5, stackInterval);
-        if (Utilities.isNativeVersion()) {
-            int tagInterval = getMainConfig().getTagNearbyInterval();
-            new TagTask(this).runTaskTimer(this, 5, tagInterval);
-        } else if (getHookManager().getProtocolLibHook() == null) {
+        int tagInterval = getMainConfig().getTagNearbyInterval();
+        new TagTask(this).runTaskTimer(this, 10, tagInterval);
+        if (!Utilities.isNativeVersion() && getHookManager().getProtocolLibHook() == null) {
             getLogger().warning("You are not running the plugins native version and ProtocolLib could not be found (or has been disabled).");
             getLogger().warning("The display name visibility setting 'NEARBY' will not work unless this is fixed.");
         }
