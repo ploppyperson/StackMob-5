@@ -65,6 +65,8 @@ display-name:
     range: [12,6,12]
     # How often (in ticks) the tag visibility status of an entity should be updated. (20 ticks = 1 second)
     interval: 20
+    # Perform a ray trace, meaning that the tag is only visible if there are no occluding blocks.
+    ray-trace: true
   # Don't show the tag if the stack size of this entity if it is equal to or below the value specified.
   threshold: 1
 

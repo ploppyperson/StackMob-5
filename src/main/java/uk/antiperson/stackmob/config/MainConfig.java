@@ -70,6 +70,10 @@ public class MainConfig extends SpecialConfigFile {
         return getInt("display-name.nearby.interval");
     }
 
+    public boolean isTagNearbyRayTrace() {
+        return getBoolean("display-name.nearby.ray-trace");
+    }
+
     public boolean isTraitEnabled(String traitKey) {
         return getBoolean("traits." + traitKey);
     }
