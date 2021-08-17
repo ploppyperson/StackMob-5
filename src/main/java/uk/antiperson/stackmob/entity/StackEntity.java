@@ -141,10 +141,10 @@ public class StackEntity {
         if (!sm.getMainConfig().isWaitingEnabled(getEntity().getType())) {
             return false;
         }
-        if (!sm.getMainConfig().getWaitingTypes(getEntity().getType()).contains(getEntity().getType().toString())) {
+        if (!sm.getMainConfig().isWaitingTypes(getEntity().getType())) {
             return false;
         }
-        return sm.getMainConfig().getWaitingReasons(getEntity().getType()).contains(spawnReason.toString());
+        return sm.getMainConfig().isWaitingReasons(getEntity().getType(), spawnReason);
     }
 
     /**

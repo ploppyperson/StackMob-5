@@ -4,6 +4,7 @@ import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.StackEntity;
 import uk.antiperson.stackmob.entity.death.DeathType;
@@ -94,12 +95,12 @@ public class MainConfig extends SpecialConfigFile {
         return getBoolean(type, "multiply.slime-split");
     }
 
-    public ConfigList getDropTypeBlacklist(EntityType type) {
-        return getList(type, "drops.type-blacklist");
+    public boolean isDropTypeBlacklist(EntityType type) {
+        return getList(type, "drops.type-blacklist").contains(type);
     }
 
-    public ConfigList getDropReasonBlacklist(EntityType type) {
-        return getList(type, "drops.reason-blacklist");
+    public boolean isDropReasonBlacklist(EntityType type, EntityDamageEvent.DamageCause damageCause) {
+        return getList(type, "drops.reason-blacklist").contains(damageCause);
     }
 
     public ConfigList getDropItemBlacklist(EntityType type) {
@@ -114,8 +115,8 @@ public class MainConfig extends SpecialConfigFile {
         return getBoolean(type, "experience.enabled");
     }
 
-    public ConfigList getExpTypeBlacklist(EntityType type) {
-        return getList(type, "experience.type-blacklist");
+    public boolean isExpTypeBlacklist(EntityType type) {
+        return getList(type, "experience.type-blacklist").contains(type);
     }
 
     public double getExpMinBound(EntityType type) {
@@ -134,12 +135,12 @@ public class MainConfig extends SpecialConfigFile {
         return getBoolean(type, "wait-to-stack.enabled");
     }
 
-    public ConfigList getWaitingTypes(EntityType type) {
-        return getList(type, "wait-to-stack.types-whitelist");
+    public boolean isWaitingTypes(EntityType type) {
+        return getList(type, "wait-to-stack.types-whitelist").contains(type);
     }
 
-    public ConfigList getWaitingReasons(EntityType type) {
-        return getList(type, "wait-to-stack.reasons-whitelist");
+    public boolean isWaitingReasons(EntityType type, CreatureSpawnEvent.SpawnReason spawnReason) {
+        return getList(type, "wait-to-stack.reasons-whitelist").contains(spawnReason);
     }
 
     public int getWaitingTime(EntityType type) {
@@ -164,12 +165,12 @@ public class MainConfig extends SpecialConfigFile {
         return getBoolean(type, "disable-targeting.enabled");
     }
 
-    public ConfigList getTargetingDisabledTypes(EntityType type) {
-        return getList(type, "disable-targeting.type-blacklist");
+    public boolean isTargetingDisabledTypes(EntityType type) {
+        return getList(type, "disable-targeting.type-blacklist").contains(type);
     }
 
-    public ConfigList getTargetingDisabledReasons(EntityType type) {
-        return getList(type, "disable-targeting.reason-blacklist");
+    public boolean isTargetingDisabledReasons(EntityType type, CreatureSpawnEvent.SpawnReason spawnReason) {
+        return getList(type, "disable-targeting.reason-blacklist").contains(spawnReason);
     }
 
     public ListenerMode getListenerMode(EntityType type, String eventKey) {
