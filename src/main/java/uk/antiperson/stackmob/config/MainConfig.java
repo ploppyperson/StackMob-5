@@ -1,8 +1,16 @@
 package uk.antiperson.stackmob.config;
 
 import org.bukkit.World;
+import org.bukkit.entity.Animals;
+import org.bukkit.entity.Boss;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Ghast;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Monster;
+import org.bukkit.entity.Phantom;
+import org.bukkit.entity.Raider;
+import org.bukkit.entity.WaterMob;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import uk.antiperson.stackmob.StackMob;
@@ -187,7 +195,8 @@ public class MainConfig extends SpecialConfigFile {
     }
 
     public boolean isEntityBlacklisted(LivingEntity entity, CreatureSpawnEvent.SpawnReason reason) {
-        if (getList(entity.getType(), "types-blacklist").contains(entity.getType().toString())) {
+        ConfigList types = getList(entity.getType(), "types-blacklist");
+        if (types.contains(entity.getType().toString())) {
             return true;
         }
         if (getList(entity.getType(), "reason-blacklist").contains(reason.toString())) {
@@ -244,6 +253,28 @@ public class MainConfig extends SpecialConfigFile {
             return;
         }
         super.updateFile();
+    }
+
+    enum EntityGrouping {
+        HOSTILE(Monster.class, Ghast.class, Phantom.class),
+        ANIMALS(Animals.class),
+        WATER(WaterMob.class),
+        RAIDER(Raider.class),
+        BOSS(Boss.class);
+
+        Class<? extends Entity>[] classes;
+        EntityGrouping(Class<? extends Entity>... classes) {
+            this.classes = classes;
+        }
+
+        public boolean isEntityMemberOf(Class<? extends Entity> entity) {
+            for (Class<? extends Entity> entityClass : classes) {
+                if (entityClass.isAssignableFrom(entity)) {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 
 }
