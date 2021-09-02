@@ -5,6 +5,7 @@
 # Asterisk meaning:
 # (*) This option cannot be overridden in the 'custom' section at the end of this file.
 # (**) The following option requires the use of Paper (https://papermc.io) because the API needed is not in Spigot.
+# (***) You can use group names for entities. These are: HOSTILE, ANIMALS, WATER, RAIDER, BOSS
 # Spigot JavaDoc Reference:
 # (1) https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityDamageEvent.DamageCause.html
 # (2) https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/CreatureSpawnEvent.SpawnReason.html
@@ -36,7 +37,7 @@ stack:
 # Names of worlds where there should be no stacking
 worlds-blacklist: []
 worlds-blacklist-invert: false
-# Types of entity which should not stack (3)
+# Types of entity which should not stack (3) (***)
 types-blacklist: [VILLAGER]
 types-blacklist-invert: false
 # If the entity's spawn reason is listed below, do not stack. (2)
@@ -99,7 +100,7 @@ traits:
 # Similar to no-ai, but allows for movement of entities.
 disable-targeting:
   enabled: false
-  # If the entity's type is listed below, do not disable targeting. (3)
+  # If the entity's type is listed below, do not disable targeting. (3) (***)
   type-blacklist: []
   type-blacklist-invert: false
   # If the entity's spawns reason is listed below, do not disable targeting (**) (2)
@@ -166,10 +167,10 @@ death:
   # STEP - A random amount dies.
   # STEP_DAMAGE - An amount that depends on the damage done dies.
   #
-  # Each death option has it's own blacklist for entity traits:
+  # Each death option has its own blacklist for entity traits:
   # reason-blacklist - the last damage cause of the entity, which results in is death. (1)
   # spawn-reason-blacklist - the spawn reason of the entity. (**) (2)
-  # type-blacklist - entity type. (3)
+  # type-blacklist - entity type. (***) (3)
   #
   # The priority 1 is highest and 4 is lowest.
   # If the killed entity is blacklisted, either by type, spawn reason or death reasons (the last damage cause),
@@ -222,7 +223,7 @@ drops:
   # Death reasons that should not mean that drops are multiplied. (1)
   reason-blacklist: []
   reason-blacklist-invert: false
-  # Types of entity for which drops should not be dropped for. (3)
+  # Types of entity for which drops should not be dropped for. (3) (***)
   type-blacklist: []
   type-blacklist-invert: false
 
@@ -245,7 +246,7 @@ wait-to-stack:
   enabled: true
   # For (x) times the stack task fires after spawn, don't stack this entity.
   wait-time: 5
-  # Entity types that this should work for. (3)
+  # Entity types that this should work for. (3) (***)
   types-whitelist:
     - ZOMBIE
     - SKELETON

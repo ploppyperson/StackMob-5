@@ -104,11 +104,11 @@ public class MainConfig extends SpecialConfigFile {
     }
 
     public boolean isDropTypeBlacklist(EntityType type) {
-        return getList(type, "drops.type-blacklist").contains(type);
+        return isEntityTypeInList(type, "drops.type-blacklist");
     }
 
     public boolean isDropReasonBlacklist(EntityType type, EntityDamageEvent.DamageCause damageCause) {
-        return getList(type, "drops.reason-blacklist").contains(damageCause);
+        return getList(type, "drops.reason-blacklist").contains(damageCause.toString());
     }
 
     public ConfigList getDropItemBlacklist(EntityType type) {
@@ -124,7 +124,7 @@ public class MainConfig extends SpecialConfigFile {
     }
 
     public boolean isExpTypeBlacklist(EntityType type) {
-        return getList(type, "experience.type-blacklist").contains(type);
+        return getList(type, "experience.type-blacklist").contains(type.toString());
     }
 
     public double getExpMinBound(EntityType type) {
@@ -144,11 +144,11 @@ public class MainConfig extends SpecialConfigFile {
     }
 
     public boolean isWaitingTypes(EntityType type) {
-        return getList(type, "wait-to-stack.types-whitelist").contains(type);
+        return isEntityTypeInList(type, "wait-to-stack.types-whitelist");
     }
 
     public boolean isWaitingReasons(EntityType type, CreatureSpawnEvent.SpawnReason spawnReason) {
-        return getList(type, "wait-to-stack.reasons-whitelist").contains(spawnReason);
+        return getList(type, "wait-to-stack.reasons-whitelist").contains(spawnReason.toString());
     }
 
     public int getWaitingTime(EntityType type) {
@@ -174,11 +174,11 @@ public class MainConfig extends SpecialConfigFile {
     }
 
     public boolean isTargetingDisabledTypes(EntityType type) {
-        return getList(type, "disable-targeting.type-blacklist").contains(type);
+        return isEntityTypeInList(type, "disable-targeting.type-blacklist");
     }
 
     public boolean isTargetingDisabledReasons(EntityType type, CreatureSpawnEvent.SpawnReason spawnReason) {
-        return getList(type, "disable-targeting.reason-blacklist").contains(spawnReason);
+        return getList(type, "disable-targeting.reason-blacklist").contains(spawnReason.toString());
     }
 
     public ListenerMode getListenerMode(EntityType type, String eventKey) {
@@ -186,7 +186,7 @@ public class MainConfig extends SpecialConfigFile {
     }
 
     public int getEventMultiplyLimit(EntityType type, String eventKey, int stackSize) {
-        int limit =  getInt(type, "events." + eventKey + ".limit");
+        int limit = getInt(type, "events." + eventKey + ".limit");
         return limit == -1 ? stackSize : Math.min(stackSize, limit);
     }
 
@@ -195,8 +195,7 @@ public class MainConfig extends SpecialConfigFile {
     }
 
     public boolean isEntityBlacklisted(LivingEntity entity, CreatureSpawnEvent.SpawnReason reason) {
-        ConfigList types = getList(entity.getType(), "types-blacklist");
-        if (types.contains(entity.getType().toString())) {
+        if (isEntityTypeInList(entity.getType(), "types-blacklist")) {
             return true;
         }
         if (getList(entity.getType(), "reason-blacklist").contains(reason.toString())) {
@@ -215,8 +214,7 @@ public class MainConfig extends SpecialConfigFile {
             if (Utilities.isPaper() && spawnReasons.contains(dead.getEntitySpawnReason())) {
                 continue;
             }
-            ConfigList types = getList(dead.getType(), "death." + type + ".type-blacklist");
-            if (types.contains(dead.getType().toString())) {
+            if (isEntityTypeInList(dead.getType(), "death." + type + ".type-blacklist")) {
                 continue;
             }
             return type;
@@ -242,6 +240,19 @@ public class MainConfig extends SpecialConfigFile {
 
     public boolean isStackOnSpawn() {
         return getBoolean("stack.on-spawn");
+    }
+
+    private boolean isEntityTypeInList(EntityType type, String path) {
+        ConfigList list = getList(type, path);
+        for (EntityGrouping entityGrouping : EntityGrouping.values()) {
+            if (!list.contains(entityGrouping.toString())) {
+                continue;
+            }
+            if (entityGrouping.isEntityMemberOf(type.getEntityClass())) {
+                return true;
+            }
+        }
+        return list.contains(type);
     }
 
     @Override
