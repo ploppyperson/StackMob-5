@@ -119,7 +119,7 @@ public class StackMob extends JavaPlugin {
             temporaryCompat.runTaskTimer(this, 20, 100);
             getServer().getPluginManager().registerEvents(temporaryCompat, this);
         }
-        if (getServer().spigot().getPaperConfig().getBoolean("settings.log-named-entity-deaths", false)) {
+        if (Utilities.isPaper() && getServer().spigot().getPaperConfig().getBoolean("settings.log-named-entity-deaths", false)) {
             getLogger().warning("The paper.yml option settings.log-named-entity-deaths is enabled." +
                     " You will get messages in console every time a named mob is killed." +
                     " You should probably disable this, unless you like console spam?");
