@@ -194,6 +194,11 @@ public class MainConfig extends SpecialConfigFile {
         return getList(type, "worlds-blacklist").contains(world.getName());
     }
 
+    public boolean isEntityBlacklisted(LivingEntity entity) {
+        CreatureSpawnEvent.SpawnReason reason = Utilities.isPaper() ? entity.getEntitySpawnReason() : CreatureSpawnEvent.SpawnReason.DEFAULT;
+        return isEntityBlacklisted(entity, reason);
+    }
+
     public boolean isEntityBlacklisted(LivingEntity entity, CreatureSpawnEvent.SpawnReason reason) {
         if (isEntityTypeInList(entity.getType(), "types-blacklist")) {
             return true;

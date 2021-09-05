@@ -44,8 +44,7 @@ public class ForceStack extends SubCommand {
                 if (predicate != null && !predicate.test(entity)) {
                     continue;
                 }
-                CreatureSpawnEvent.SpawnReason reason = Utilities.isPaper() ? entity.getEntitySpawnReason() : CreatureSpawnEvent.SpawnReason.DEFAULT;
-                if (sm.getMainConfig().isEntityBlacklisted(entity, reason)) {
+                if (sm.getMainConfig().isEntityBlacklisted(entity)) {
                     continue;
                 }
                 sm.getEntityManager().registerStackedEntity(entity).setSize(1);
