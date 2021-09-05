@@ -8,6 +8,7 @@ public class ConfigList {
     private final String path;
     private final boolean inverted;
     private final ConfigFile configFile;
+
     public ConfigList(ConfigFile configFile, List<?> list, String path, boolean inverted) {
         this.configFile = configFile;
         this.list = list;
@@ -29,16 +30,6 @@ public class ConfigList {
 
     public List<Integer> asIntList() {
         return configFile.getIntegerList(path);
-    }
-
-    public static ConfigList getConfigList(ConfigFile configFile, ConfigValue value) {
-        List<?> list = (List<?>) value.getValue();
-        String path = value.getPath();
-        if (list == null) {
-            throw new UnsupportedOperationException(path + " list is null!");
-        }
-        boolean inverted = configFile.getBoolean(value.getPath() + "-invert");
-        return new ConfigList(configFile, list, path, inverted);
     }
 
 

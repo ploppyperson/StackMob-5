@@ -1,9 +1,18 @@
 package uk.antiperson.stackmob.config;
 
 import org.bukkit.World;
+import org.bukkit.entity.Animals;
+import org.bukkit.entity.Boss;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Ghast;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Monster;
+import org.bukkit.entity.Phantom;
+import org.bukkit.entity.Raider;
+import org.bukkit.entity.WaterMob;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.StackEntity;
 import uk.antiperson.stackmob.entity.death.DeathType;
@@ -70,6 +79,10 @@ public class MainConfig extends SpecialConfigFile {
         return getInt("display-name.nearby.interval");
     }
 
+    public boolean isTagNearbyRayTrace() {
+        return getBoolean("display-name.nearby.ray-trace");
+    }
+
     public boolean isTraitEnabled(String traitKey) {
         return getBoolean("traits." + traitKey);
     }
@@ -90,12 +103,12 @@ public class MainConfig extends SpecialConfigFile {
         return getBoolean(type, "multiply.slime-split");
     }
 
-    public ConfigList getDropTypeBlacklist(EntityType type) {
-        return getList(type, "drops.type-blacklist");
+    public boolean isDropTypeBlacklist(EntityType type) {
+        return isEntityTypeInList(type, "drops.type-blacklist");
     }
 
-    public ConfigList getDropReasonBlacklist(EntityType type) {
-        return getList(type, "drops.reason-blacklist");
+    public boolean isDropReasonBlacklist(EntityType type, EntityDamageEvent.DamageCause damageCause) {
+        return getList(type, "drops.reason-blacklist").contains(damageCause.toString());
     }
 
     public ConfigList getDropItemBlacklist(EntityType type) {
@@ -110,8 +123,8 @@ public class MainConfig extends SpecialConfigFile {
         return getBoolean(type, "experience.enabled");
     }
 
-    public ConfigList getExpTypeBlacklist(EntityType type) {
-        return getList(type, "experience.type-blacklist");
+    public boolean isExpTypeBlacklist(EntityType type) {
+        return getList(type, "experience.type-blacklist").contains(type.toString());
     }
 
     public double getExpMinBound(EntityType type) {
@@ -130,12 +143,12 @@ public class MainConfig extends SpecialConfigFile {
         return getBoolean(type, "wait-to-stack.enabled");
     }
 
-    public ConfigList getWaitingTypes(EntityType type) {
-        return getList(type, "wait-to-stack.types-whitelist");
+    public boolean isWaitingTypes(EntityType type) {
+        return isEntityTypeInList(type, "wait-to-stack.types-whitelist");
     }
 
-    public ConfigList getWaitingReasons(EntityType type) {
-        return getList(type, "wait-to-stack.reasons-whitelist");
+    public boolean isWaitingReasons(EntityType type, CreatureSpawnEvent.SpawnReason spawnReason) {
+        return getList(type, "wait-to-stack.reasons-whitelist").contains(spawnReason.toString());
     }
 
     public int getWaitingTime(EntityType type) {
@@ -160,12 +173,12 @@ public class MainConfig extends SpecialConfigFile {
         return getBoolean(type, "disable-targeting.enabled");
     }
 
-    public ConfigList getTargetingDisabledTypes(EntityType type) {
-        return getList(type, "disable-targeting.type-blacklist");
+    public boolean isTargetingDisabledTypes(EntityType type) {
+        return isEntityTypeInList(type, "disable-targeting.type-blacklist");
     }
 
-    public ConfigList getTargetingDisabledReasons(EntityType type) {
-        return getList(type, "disable-targeting.reason-blacklist");
+    public boolean isTargetingDisabledReasons(EntityType type, CreatureSpawnEvent.SpawnReason spawnReason) {
+        return getList(type, "disable-targeting.reason-blacklist").contains(spawnReason.toString());
     }
 
     public ListenerMode getListenerMode(EntityType type, String eventKey) {
@@ -173,7 +186,7 @@ public class MainConfig extends SpecialConfigFile {
     }
 
     public int getEventMultiplyLimit(EntityType type, String eventKey, int stackSize) {
-        int limit =  getInt(type, "events." + eventKey + ".limit");
+        int limit = getInt(type, "events." + eventKey + ".limit");
         return limit == -1 ? stackSize : Math.min(stackSize, limit);
     }
 
@@ -181,8 +194,13 @@ public class MainConfig extends SpecialConfigFile {
         return getList(type, "worlds-blacklist").contains(world.getName());
     }
 
+    public boolean isEntityBlacklisted(LivingEntity entity) {
+        CreatureSpawnEvent.SpawnReason reason = Utilities.isPaper() ? entity.getEntitySpawnReason() : CreatureSpawnEvent.SpawnReason.DEFAULT;
+        return isEntityBlacklisted(entity, reason);
+    }
+
     public boolean isEntityBlacklisted(LivingEntity entity, CreatureSpawnEvent.SpawnReason reason) {
-        if (getList(entity.getType(), "types-blacklist").contains(entity.getType().toString())) {
+        if (isEntityTypeInList(entity.getType(), "types-blacklist")) {
             return true;
         }
         if (getList(entity.getType(), "reason-blacklist").contains(reason.toString())) {
@@ -201,8 +219,7 @@ public class MainConfig extends SpecialConfigFile {
             if (Utilities.isPaper() && spawnReasons.contains(dead.getEntitySpawnReason())) {
                 continue;
             }
-            ConfigList types = getList(dead.getType(), "death." + type + ".type-blacklist");
-            if (types.contains(dead.getType().toString())) {
+            if (isEntityTypeInList(dead.getType(), "death." + type + ".type-blacklist")) {
                 continue;
             }
             return type;
@@ -230,6 +247,19 @@ public class MainConfig extends SpecialConfigFile {
         return getBoolean("stack.on-spawn");
     }
 
+    private boolean isEntityTypeInList(EntityType type, String path) {
+        ConfigList list = getList(type, path);
+        for (EntityGrouping entityGrouping : EntityGrouping.values()) {
+            if (!list.contains(entityGrouping.toString())) {
+                continue;
+            }
+            if (entityGrouping.isEntityMemberOf(type.getEntityClass())) {
+                return true;
+            }
+        }
+        return list.contains(type);
+    }
+
     @Override
     public void updateFile() throws IOException {
         if (isSet("check-area.x")) {
@@ -239,6 +269,28 @@ public class MainConfig extends SpecialConfigFile {
             return;
         }
         super.updateFile();
+    }
+
+    enum EntityGrouping {
+        HOSTILE(Monster.class, Ghast.class, Phantom.class),
+        ANIMALS(Animals.class),
+        WATER(WaterMob.class),
+        RAIDER(Raider.class),
+        BOSS(Boss.class);
+
+        Class<? extends Entity>[] classes;
+        EntityGrouping(Class<? extends Entity>... classes) {
+            this.classes = classes;
+        }
+
+        public boolean isEntityMemberOf(Class<? extends Entity> entity) {
+            for (Class<? extends Entity> entityClass : classes) {
+                if (entityClass.isAssignableFrom(entity)) {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 
 }

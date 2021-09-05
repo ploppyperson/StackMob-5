@@ -27,6 +27,7 @@ public class TagTask extends BukkitRunnable {
         double searchX = searchRadius[0];
         double searchY = searchRadius[1];
         double searchZ = searchRadius[2];
+        boolean rayTrace = sm.getMainConfig().isTagNearbyRayTrace();
         for (Player player : Bukkit.getOnlinePlayers()) {
             List<Entity> entities = player.getNearbyEntities(searchX * 1.5, searchY * 1.5, searchZ * 1.5);
             for (Entity entity : entities) {
@@ -52,13 +53,22 @@ public class TagTask extends BukkitRunnable {
                 double zDiff = Math.abs(player.getLocation().getZ() - entity.getLocation().getZ());
                 if (xDiff < searchX && yDiff < searchY && zDiff < searchZ) {
                     // Player should be shown tag
-                    stackEntity.getTag().sendPacket(player, true);
-                    continue;
+                    if (!rayTrace || rayTrace((Mob) entity, player)) {
+                        stackEntity.getTag().sendPacket(player, true);
+                        continue;
+                    }
                 }
                 // Player should not be shown tag
                 stackEntity.getTag().sendPacket(player, false);
             }
         }
+    }
+
+    private boolean rayTrace(Mob entity, Player player) {
+        Vector resultant = entity.getEyeLocation().toVector().subtract(player.getEyeLocation().toVector());
+        double distance = player.getEyeLocation().distance(entity.getEyeLocation());
+        RayTraceResult result = player.getWorld().rayTraceBlocks(player.getEyeLocation(), resultant, distance, FluidCollisionMode.NEVER, true);
+        return result == null || result.getHitBlock() == null;
     }
 
 }
