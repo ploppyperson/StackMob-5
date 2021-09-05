@@ -28,7 +28,7 @@ stack:
   # This may break grinders etc, which is why for now it is disabled by default.
   # Please give feedback at https://github.com/Nathat23/StackMob-5/issues/198
   check-location:
-    enabled: false
+    enabled: true
     # The distance threshold for the check
     distance: 1.0
   # Stack entities when they spawn. (*)
@@ -38,7 +38,7 @@ stack:
 worlds-blacklist: []
 worlds-blacklist-invert: false
 # Types of entity which should not stack (3) (***)
-types-blacklist: [VILLAGER]
+types-blacklist: [VILLAGER, WATER, RAIDER]
 types-blacklist-invert: false
 # If the entity's spawn reason is listed below, do not stack. (2)
 reason-blacklist:
@@ -52,7 +52,7 @@ display-name:
   # Placeholders:
   # %type% - the entity's type
   # %size% - the size of the stack
-  format: '&a%type% &d(%size%)'
+  format: '&#20B2AA%type% &#778899(%size%)'
   # Whether the display tag can only be seen when the player targets the entity.
   # Mode:
   # ALWAYS - The tag will always be visible as long as the entity is loaded.
