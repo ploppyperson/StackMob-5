@@ -111,6 +111,11 @@ public class StackMob extends JavaPlugin {
                     " You will get messages in console every time a named mob is killed." +
                     " You should probably disable this, unless you like console spam?");
         }
+        if (Utilities.isPaper() && getServer().spigot().getPaperConfig().getBoolean("settings.log-named-entity-deaths", false)) {
+            getLogger().warning("The paper.yml option settings.log-named-entity-deaths is enabled." +
+                    " You will get messages in console every time a named mob is killed." +
+                    " You should probably disable this, unless you like console spam?");
+        }
     }
 
     @Override
@@ -119,6 +124,7 @@ public class StackMob extends JavaPlugin {
     }
 
     private void registerEvents() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        registerEvent(BucketListener.class);
         registerEvent(DeathListener.class);
         registerEvent(TransformListener.class);
         registerEvent(BreedInteractListener.class);

@@ -1,14 +1,10 @@
 package uk.antiperson.stackmob.listeners;
 
-import org.bukkit.Material;
-import org.bukkit.entity.Fish;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.event.player.PlayerBucketEntityEvent;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.StackEntity;
 
@@ -22,24 +18,18 @@ public class BucketListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onBucketFill(PlayerInteractEntityEvent event) {
-        if (event.getHand() != EquipmentSlot.HAND) {
-            return;
-        }
-        if (!(event.getRightClicked() instanceof Fish)) {
-            return;
-        }
-        final ItemStack handItem = event.getPlayer().getInventory().getItemInMainHand();
-        if (handItem.getType() != Material.WATER_BUCKET || !handItem.hasItemMeta() || !handItem.getItemMeta().hasDisplayName()) {
-            return;
-        }
-        final StackEntity stackEntity = sm.getEntityManager().getStackEntity((LivingEntity) event.getRightClicked());
+    public void onBucketFill(PlayerBucketEntityEvent event) {
+        final StackEntity stackEntity = sm.getEntityManager().getStackEntity((LivingEntity) event.getEntity());
         if (stackEntity == null) {
             return;
         }
-        if (!stackEntity.isSingle()) {
-            stackEntity.slice();
+        if (stackEntity.isSingle()) {
+            return;
         }
+        stackEntity.slice();
+        stackEntity.remove();
+        event.getEntityBucket().setItemMeta(null);
     }
+
 
 }
