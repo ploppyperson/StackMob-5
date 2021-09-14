@@ -216,7 +216,7 @@ public class MainConfig extends SpecialConfigFile {
                 continue;
             }
             ConfigList spawnReasons = getList(dead.getType(), "death." + type + ".spawn-reason-blacklist");
-            if (Utilities.isPaper() && spawnReasons.contains(dead.getEntitySpawnReason())) {
+            if (Utilities.isPaper() && spawnReasons.contains(dead.getEntitySpawnReason().toString())) {
                 continue;
             }
             if (isEntityTypeInList(dead.getType(), "death." + type + ".type-blacklist")) {
@@ -257,7 +257,7 @@ public class MainConfig extends SpecialConfigFile {
                 return true;
             }
         }
-        return list.contains(type);
+        return list.contains(type.toString());
     }
 
     @Override

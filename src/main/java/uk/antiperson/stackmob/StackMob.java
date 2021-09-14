@@ -1,7 +1,6 @@
 package uk.antiperson.stackmob;
 
 import org.bstats.bukkit.Metrics;
-import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.event.Listener;
@@ -18,7 +17,6 @@ import uk.antiperson.stackmob.listeners.*;
 import uk.antiperson.stackmob.tasks.MergeTask;
 import uk.antiperson.stackmob.tasks.TagTask;
 import uk.antiperson.stackmob.utils.ItemTools;
-import uk.antiperson.stackmob.utils.TemporaryCompat;
 import uk.antiperson.stackmob.utils.Updater;
 import uk.antiperson.stackmob.utils.Utilities;
 
@@ -108,16 +106,10 @@ public class StackMob extends JavaPlugin {
             getLogger().warning("StackMob makes use of Paper's API, which means you're missing out on features.");
         }
         new Metrics(this, 522);
-        if (Utilities.isNativeVersion()) {
-            if (Utilities.isPaper() && !Bukkit.getVersion().contains("d76f8e0")) {
-                return;
-            }
-            getLogger().info("We are enabling temporary compatibility measures for 1.17.");
-            getLogger().info("See https://github.com/Nathat23/StackMob-5/issues/223 for info.");
-            TemporaryCompat temporaryCompat = new TemporaryCompat(this);
-            temporaryCompat.init();
-            temporaryCompat.runTaskTimer(this, 20, 100);
-            getServer().getPluginManager().registerEvents(temporaryCompat, this);
+        if (Utilities.isPaper() && getServer().spigot().getPaperConfig().getBoolean("settings.log-named-entity-deaths", false)) {
+            getLogger().warning("The paper.yml option settings.log-named-entity-deaths is enabled." +
+                    " You will get messages in console every time a named mob is killed." +
+                    " You should probably disable this, unless you like console spam?");
         }
         if (Utilities.isPaper() && getServer().spigot().getPaperConfig().getBoolean("settings.log-named-entity-deaths", false)) {
             getLogger().warning("The paper.yml option settings.log-named-entity-deaths is enabled." +

@@ -21,7 +21,7 @@ public class ConfigList {
      * @param tocheck object to check is in the list
      * @return whether this object is in the list.
      */
-    public boolean contains(Object tocheck) {
+    public boolean contains(String tocheck) {
         if (inverted){
             return !list.contains(tocheck);
         }
