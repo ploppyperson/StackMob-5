@@ -249,12 +249,15 @@ public class MainConfig extends SpecialConfigFile {
 
     private boolean isEntityTypeInList(EntityType type, String path) {
         ConfigList list = getList(type, path);
+        if (list.isInverted() && list.rawContains(type.toString())) {
+            return false;
+        }
         for (EntityGrouping entityGrouping : EntityGrouping.values()) {
-            if (!list.contains(entityGrouping.toString())) {
+            if (!list.rawContains(entityGrouping.toString())) {
                 continue;
             }
             if (entityGrouping.isEntityMemberOf(type.getEntityClass())) {
-                return true;
+                return !list.isInverted();
             }
         }
         return list.contains(type.toString());

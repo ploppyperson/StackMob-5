@@ -23,9 +23,17 @@ public class ConfigList {
      */
     public boolean contains(String tocheck) {
         if (inverted){
-            return !list.contains(tocheck);
+            return !rawContains(tocheck);
         }
-        return list.contains(tocheck);
+        return rawContains(tocheck);
+    }
+
+    public boolean isInverted() {
+        return inverted;
+    }
+
+    public boolean rawContains(String toCheck) {
+        return list.contains(toCheck);
     }
 
     public List<Integer> asIntList() {
