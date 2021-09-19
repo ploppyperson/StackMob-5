@@ -287,6 +287,9 @@ public class MainConfig extends SpecialConfigFile {
         }
 
         public boolean isEntityMemberOf(Class<? extends Entity> entity) {
+            if (entity == null) {
+                return false;
+            }
             for (Class<? extends Entity> entityClass : classes) {
                 if (entityClass.isAssignableFrom(entity)) {
                     return true;
