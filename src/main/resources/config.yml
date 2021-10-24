@@ -140,10 +140,17 @@ events:
     mode: MULTIPLY
     # Limit the amount of sheep sheared when using MULTIPLY mode. -1 = disabled.
     limit: -1
+  # When an entity explodes.
+  explosion:
+    enabled: true
+    # MULTIPLY - increase the damage done by the explosion for each entity in the stack.
+    # SPLIT - slice off an entity so that only one entity explodes.
+    mode: MULTIPLY
+    # Limit the amount of damage dealt when using MULTIPLY mode. -1 = disabled.
+    limit: -1
   multiply:
     # Chicken eggs and turtle scutes.
     drops: true
-    explosion: true
     slime-split: true
   divide:
     nametag: true

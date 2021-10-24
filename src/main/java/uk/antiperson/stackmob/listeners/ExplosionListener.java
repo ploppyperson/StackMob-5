@@ -9,7 +9,7 @@ import uk.antiperson.stackmob.entity.StackEntity;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-@ListenerMetadata(config = "events.multiply.explosion")
+@ListenerMetadata(config = "events.explosion.enabled")
 public class ExplosionListener implements Listener {
 
     private final StackMob sm;
@@ -27,7 +27,15 @@ public class ExplosionListener implements Listener {
         if (stackEntity == null || stackEntity.isSingle()) {
             return;
         }
-        double multiplier = ThreadLocalRandom.current().nextDouble(0.4, 0.6);
-        event.setYield(event.getYield() + Math.round(event.getYield() * stackEntity.getSize() * multiplier));
+        switch (sm.getMainConfig().getListenerMode(event.getEntityType(), "explosion")) {
+            case SPLIT:
+                stackEntity.slice();
+                break;
+            case MULTIPLY:
+                double multiplier = ThreadLocalRandom.current().nextDouble(0.4, 0.6);
+                int toMultiply = sm.getMainConfig().getEventMultiplyLimit(event.getEntityType(), "explosion", stackEntity.getSize());
+                event.setYield(event.getYield() + Math.round(event.getYield() * toMultiply * multiplier));
+                break;
+        }
     }
 }
