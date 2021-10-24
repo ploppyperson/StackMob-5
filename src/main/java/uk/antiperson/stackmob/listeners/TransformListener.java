@@ -16,7 +16,8 @@ public class TransformListener implements Listener {
 
     @EventHandler
     public void onTransform(EntityTransformEvent event){
-        if (event.getTransformReason() != EntityTransformEvent.TransformReason.DROWNED) {
+        if (event.getTransformReason() == EntityTransformEvent.TransformReason.SHEARED ||
+                event.getTransformReason() == EntityTransformEvent.TransformReason.SPLIT) {
             return;
         }
         if (!sm.getEntityManager().isStackedEntity(((LivingEntity) event.getEntity()))) {
