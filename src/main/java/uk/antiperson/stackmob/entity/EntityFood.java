@@ -72,7 +72,7 @@ public enum EntityFood {
     }
 
     public static boolean isCorrectFood(Entity entity, Material type) {
-        if (Utilities.isNativeVersion()) {
+        if (Utilities.isVersionAtLeast(Utilities.MinecraftVersion.V1_17_R1)) {
             return ((Animals) entity).isBreedItem(type);
         }
         EntityFood food = matchFood(entity.getType());

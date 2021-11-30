@@ -1,6 +1,7 @@
 package uk.antiperson.stackmob.utils;
 
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
@@ -29,9 +30,9 @@ public class Utilities {
     public static final String GITHUB_DEFAULT_CONFIG = GITHUB + "/tree/master/src/main/resources";
     private static final Pattern hexPattern = Pattern.compile("&#([a-zA-Z0-9]){6}");
     private static final boolean usingPaper = ClassLoader.getSystemClassLoader().getDefinedPackage("com.destroystokyo.paper") != null;
-    private static final boolean usingNative = ClassLoader.getSystemClassLoader().getDefinedPackage("org.bukkit.craftbukkit.v1_17_R1") != null;
     public static final List<Material> DROWNED_MATERIALS = Arrays.asList(Material.NAUTILUS_SHELL, Material.TRIDENT);
     public static final List<EquipmentSlot> HAND_SLOTS = Arrays.asList(EquipmentSlot.HAND, EquipmentSlot.OFF_HAND);
+    private static MinecraftVersion minecraftVersion;
 
     public static String translateColorCodes(String toTranslate) {
         Matcher matcher = hexPattern.matcher(toTranslate);
@@ -78,8 +79,22 @@ public class Utilities {
         return usingPaper;
     }
 
-    public static boolean isNativeVersion() {
-        return usingNative;
+    public static MinecraftVersion getMinecraftVersion() {
+        if (minecraftVersion == null) {
+            minecraftVersion = MinecraftVersion.V1_16_R1;
+            String packageName = Bukkit.getServer().getClass().getPackage().getName();
+            String ending = packageName.substring(packageName.lastIndexOf('.') + 1);
+            for (MinecraftVersion version: MinecraftVersion.values()) {
+                if (version.getInternalName().equals(ending)){
+                    minecraftVersion = version;
+                }
+            }
+        }
+        return minecraftVersion;
+    }
+
+    public static boolean isVersionAtLeast(MinecraftVersion version) {
+        return getMinecraftVersion().ordinal() >= version.ordinal();
     }
 
     public static boolean isDye(ItemStack material) {
@@ -99,5 +114,21 @@ public class Utilities {
     public enum DownloadResult {
         SUCCESSFUL,
         ERROR
+    }
+
+    public enum MinecraftVersion {
+        V1_16_R1("v1_16_R1"),
+        V1_17_R1("v1_17_R1"),
+        V1_18_R1("v1_18_R1");
+
+        String internalName;
+
+        MinecraftVersion(String internalName) {
+            this.internalName = internalName;
+        }
+
+        public String getInternalName() {
+            return internalName;
+        }
     }
 }

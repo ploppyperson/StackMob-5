@@ -484,7 +484,7 @@ public class StackEntity {
         }
 
         public void sendPacket(Player player, boolean tagVisible) {
-            if (!Utilities.isNativeVersion()) {
+            if (!Utilities.isVersionAtLeast(Utilities.MinecraftVersion.V1_18_R1)) {
                 ProtocolLibHook protocolLibHook = sm.getHookManager().getProtocolLibHook();
                 if (protocolLibHook == null) {
                     return;
