@@ -29,10 +29,21 @@ public class Utilities {
     public static final String GITHUB = "https://github.com/Nathat23/StackMob-5";
     public static final String GITHUB_DEFAULT_CONFIG = GITHUB + "/tree/master/src/main/resources";
     private static final Pattern hexPattern = Pattern.compile("&#([a-zA-Z0-9]){6}");
-    private static final boolean usingPaper = ClassLoader.getSystemClassLoader().getDefinedPackage("com.destroystokyo.paper") != null;
+    private static final boolean usingPaper;
     public static final List<Material> DROWNED_MATERIALS = Arrays.asList(Material.NAUTILUS_SHELL, Material.TRIDENT);
     public static final List<EquipmentSlot> HAND_SLOTS = Arrays.asList(EquipmentSlot.HAND, EquipmentSlot.OFF_HAND);
     private static MinecraftVersion minecraftVersion;
+
+    static {
+        boolean usingPaper1;
+        try {
+            Bukkit.spigot().getClass().getMethod("getPaperConfig");
+            usingPaper1 = true;
+        } catch (NoSuchMethodException e) {
+            usingPaper1 = false;
+        }
+        usingPaper = usingPaper1;
+    }
 
     public static String translateColorCodes(String toTranslate) {
         Matcher matcher = hexPattern.matcher(toTranslate);
