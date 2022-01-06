@@ -38,6 +38,8 @@ public class StackMob extends JavaPlugin {
     private Updater updater;
     private ItemTools itemTools;
 
+    private boolean stepDamageError;
+
     @Override
     public void onLoad() {
         hookManager = new HookManager(this);
@@ -213,5 +215,13 @@ public class StackMob extends JavaPlugin {
 
     public ItemTools getItemTools() {
         return itemTools;
+    }
+
+    public boolean isStepDamageError() {
+        return stepDamageError;
+    }
+
+    public void setStepDamageError(boolean stepDamageError) {
+        this.stepDamageError = stepDamageError;
     }
 }

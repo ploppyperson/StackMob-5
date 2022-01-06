@@ -55,12 +55,16 @@ public class KillStepDamage extends DeathMethod {
         try {
             spawned.getEntity().setHealth(maxHealth - leftOverDamage);
         } catch (IllegalArgumentException e) {
+            if (getStackMob().isStepDamageError()) {
+                return;
+            }
             sm.getLogger().warning("New health value is too high! Please report and include the message below.");
             sm.getLogger().info(attribute.getBaseValue() + "," + attribute.getDefaultValue() + "," + attribute.getValue() + "," + leftOverDamage);
             sm.getLogger().info("Type: " + getEntity().getType() + ", Name: " + getEntity().getCustomName() + ", Location: " + getEntity().getLocation());
             if (spawnedAttribute != null) {
                 sm.getLogger().info(spawnedAttribute.getBaseValue() + "," + spawnedAttribute.getDefaultValue() + "," + spawnedAttribute.getValue());
             }
+            getStackMob().setStepDamageError(true);
         }
     }
 }
