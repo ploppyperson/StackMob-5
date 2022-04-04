@@ -1,6 +1,6 @@
 package uk.antiperson.stackmob.hook.hooks;
 
-import io.lumine.xikage.mythicmobs.MythicMobs;
+import io.lumine.mythic.bukkit.MythicBukkit;
 import org.bukkit.entity.LivingEntity;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.hook.Hook;
@@ -10,7 +10,7 @@ import uk.antiperson.stackmob.hook.SegregatedMobHook;
 @HookMetadata(name = "MythicMobs", config = "mythicmobs.prevent-stack")
 public class MythicMobsNoStackHook extends Hook implements SegregatedMobHook {
 
-    private MythicMobs mythicMobs;
+    private MythicBukkit mythicMobs;
     public MythicMobsNoStackHook(StackMob sm) {
         super(sm);
     }
@@ -22,6 +22,6 @@ public class MythicMobsNoStackHook extends Hook implements SegregatedMobHook {
 
     @Override
     public void onEnable() {
-        mythicMobs = (MythicMobs) getPlugin();
+        mythicMobs = (MythicBukkit) getPlugin();
     }
 }
