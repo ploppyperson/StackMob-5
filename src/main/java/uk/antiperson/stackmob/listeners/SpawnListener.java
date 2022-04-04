@@ -3,6 +3,7 @@ package uk.antiperson.stackmob.listeners;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Mob;
+import org.bukkit.entity.ZombieVillager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
@@ -23,14 +24,14 @@ public class SpawnListener implements Listener {
             return;
         }
         sm.getServer().getScheduler().runTask(sm, () -> {
-            if (sm.getMainConfig().isEntityBlacklisted(event.getEntity(), event.getSpawnReason())) {
-                return;
-            }
             if (sm.getEntityManager().isStackedEntity(event.getEntity())) {
                 StackEntity stackEntity = sm.getEntityManager().getStackEntity(event.getEntity());
                 if (stackEntity != null && stackEntity.isForgetOnSpawn()) {
                     stackEntity.removeStackData();
                 }
+                return;
+            }
+            if (sm.getMainConfig().isEntityBlacklisted(event.getEntity(), event.getSpawnReason())) {
                 return;
             }
             if (EventHelper.callStackSpawnEvent(event.getEntity()).isCancelled()) {
