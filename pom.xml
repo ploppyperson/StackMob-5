@@ -106,6 +106,10 @@
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
+        <repository>
+            <id>lumine-repo</id>
+            <url>https://mvn.lumine.io/repository/maven-public/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -140,16 +144,15 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>io.lumine.xikage.mythicmobs</groupId>
-            <artifactId>mythicmobs</artifactId>
-            <version>4.9.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/jars/MythicMobs-4.9.0.jar</systemPath>
+            <groupId>io.lumine</groupId>
+            <artifactId>Mythic-Dist</artifactId>
+            <version>5.0.2-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.github.Zrips</groupId>
             <artifactId>Jobs</artifactId>
-            <version>LATEST</version>
+            <version>4.17.2</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

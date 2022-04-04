@@ -1,7 +1,7 @@
 package uk.antiperson.stackmob.hook.hooks;
 
-import io.lumine.xikage.mythicmobs.MythicMobs;
-import io.lumine.xikage.mythicmobs.mobs.ActiveMob;
+import io.lumine.mythic.bukkit.MythicBukkit;
+import io.lumine.mythic.core.mobs.ActiveMob;
 import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
 import uk.antiperson.stackmob.StackMob;
@@ -13,7 +13,7 @@ import uk.antiperson.stackmob.hook.StackableMobHook;
 @HookMetadata(name = "MythicMobs", config = "mythicmobs.stack")
 public class MythicMobsStackHook extends Hook implements StackableMobHook {
 
-    private MythicMobs mythicMobs;
+    private MythicBukkit mythicMobs;
     public MythicMobsStackHook(StackMob sm) {
         super(sm);
     }
@@ -55,6 +55,6 @@ public class MythicMobsStackHook extends Hook implements StackableMobHook {
 
     @Override
     public void onEnable() {
-        mythicMobs = (MythicMobs) getPlugin();
+        mythicMobs = (MythicBukkit) getPlugin();
     }
 }
