@@ -91,7 +91,7 @@ public class MergeTask extends BukkitRunnable {
                     StackEntity stackEntity = original.duplicate();
                     stackEntity.setSize(stackSize);
                 }
-                return;
+                continue;
             }
             original.incrementSize(size);
         }
