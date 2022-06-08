@@ -5,6 +5,8 @@ import org.apache.commons.lang.WordUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.entity.Animals;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.CreatureSpawnEvent;
@@ -342,6 +344,28 @@ public class StackEntity {
         LivingEntity clone = spawnClone();
         StackEntity cloneStack = sm.getEntityManager().registerStackedEntity(clone);
         cloneStack.setSize(1);
+        duplicateTraits(cloneStack);
+        return cloneStack;
+    }
+
+    public void spawnChild(int kidAmount) {
+        // Spawn the kid
+        StackEntity kid;
+        if (Utilities.isVersionAtLeast(Utilities.MinecraftVersion.V1_19_R1) && getEntity().getType() == EntityType.valueOf("FROG")) {
+            // tadpoles and frogs are separate entities
+            LivingEntity tadpole = spawn(EntityType.valueOf("TADPOLE"));
+            kid = sm.getEntityManager().registerStackedEntity(tadpole);
+            kid.setSize(1);
+            duplicateTraits(kid);
+        } else {
+            kid = duplicate();
+            ((Animals) kid.getEntity()).setBaby();
+        }
+        kid.setSize(kidAmount);
+    }
+
+    private void duplicateTraits(StackEntity cloneStack) {
+        LivingEntity clone = cloneStack.getEntity();
         sm.getTraitManager().applyTraits(cloneStack, this);
         sm.getHookManager().onSpawn(cloneStack);
         // Remove equipment if is a drowned
@@ -358,7 +382,6 @@ public class StackEntity {
                 }
             }
         }
-        return cloneStack;
     }
 
     private LivingEntity spawnClone() {
@@ -366,10 +389,14 @@ public class StackEntity {
         if (entity != null) {
             return entity;
         }
+        return spawn(getEntity().getType());
+    }
+
+    private LivingEntity spawn(EntityType entityType) {
         if (Utilities.isPaper()) {
-            return (LivingEntity) getWorld().spawnEntity(getEntity().getLocation(), getEntity().getType(), getEntity().getEntitySpawnReason());
+            return (LivingEntity) getWorld().spawnEntity(getEntity().getLocation(), entityType, getEntity().getEntitySpawnReason());
         }
-        return (LivingEntity) getWorld().spawnEntity(getEntity().getLocation(), getEntity().getType());
+        return (LivingEntity) getWorld().spawnEntity(getEntity().getLocation(), entityType);
     }
 
     public boolean isSingle() {
