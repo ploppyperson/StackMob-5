@@ -73,6 +73,7 @@ display-name:
 
 # Whether entity specific traits (eg. profession, colour) should be segregated (*)
 traits:
+  frog-variant: true
   sheep-color: true
   sheep-sheared: true
   slime-size: true
