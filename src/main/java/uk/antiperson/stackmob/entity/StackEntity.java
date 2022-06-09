@@ -351,9 +351,9 @@ public class StackEntity {
     public void spawnChild(int kidAmount) {
         // Spawn the kid
         StackEntity kid;
-        if (Utilities.isVersionAtLeast(Utilities.MinecraftVersion.V1_19_R1) && getEntity().getType() == EntityType.valueOf("FROG")) {
+        if (Utilities.isVersionAtLeast(Utilities.MinecraftVersion.V1_19_R1) && getEntity().getType() == EntityType.FROG) {
             // tadpoles and frogs are separate entities
-            LivingEntity tadpole = spawn(EntityType.valueOf("TADPOLE"));
+            LivingEntity tadpole = spawn(EntityType.TADPOLE);
             kid = sm.getEntityManager().registerStackedEntity(tadpole);
             kid.setSize(1);
             duplicateTraits(kid);
