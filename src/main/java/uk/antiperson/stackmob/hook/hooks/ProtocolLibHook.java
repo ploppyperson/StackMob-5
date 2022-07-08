@@ -28,7 +28,7 @@ public class ProtocolLibHook extends Hook {
     private int entityIdCounter;
     public ProtocolLibHook(StackMob sm) {
         super(sm);
-        this.entityIdCounter = Integer.MAX_VALUE;
+        this.entityIdCounter = Integer.MAX_VALUE / 2;
     }
 
     @Override
@@ -68,14 +68,14 @@ public class ProtocolLibHook extends Hook {
         watcher.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(15, WrappedDataWatcher.Registry.get(Byte.class)), (byte) 0x10);
         packetContainer1.getIntegers().write(0, entityIdCounter);
         packetContainer1.getWatchableCollectionModifier().write(0, watcher.getWatchableObjects());
-        entityIdCounter -= 1;
+        entityIdCounter += 1;
         try {
             protocolManager.sendServerPacket(player, packetContainer);
             protocolManager.sendServerPacket(player, packetContainer1);
         } catch (InvocationTargetException e) {
             e.printStackTrace();
         }
-        return entityIdCounter += 1;
+        return entityIdCounter - 1;
     }
 
     public void teleport(Player player, int id, Location location) {
