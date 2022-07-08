@@ -68,6 +68,9 @@ display-name:
     interval: 20
     # Perform a ray trace, meaning that the tag is only visible if there are no occluding blocks.
     ray-trace: true
+    # Use an armor stand (using packets) to display the tag, rather than renaming the entity.
+    # This allows the entity to be renamed using name tags
+    use-armorstand: true
   # Don't show the tag if the stack size of this entity if it is equal to or below the value specified.
   threshold: 1
 

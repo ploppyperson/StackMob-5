@@ -11,6 +11,8 @@ import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.StackEntity;
+import uk.antiperson.stackmob.packets.PlayerManager;
+import uk.antiperson.stackmob.packets.PlayerWatcher;
 
 import java.util.List;
 
@@ -29,18 +31,15 @@ public class TagTask extends BukkitRunnable {
         double searchZ = searchRadius[2];
         boolean rayTrace = sm.getMainConfig().isTagNearbyRayTrace();
         for (Player player : Bukkit.getOnlinePlayers()) {
-            List<Entity> entities = player.getNearbyEntities(searchX * 1.5, searchY * 1.5, searchZ * 1.5);
+            PlayerWatcher playerWatcher = sm.getPlayerManager().getPlayerWatcher(player);
+            playerWatcher.checkPlayer();
+          /*  List<Entity> entities = player.getNearbyEntities(searchX * 1.5, searchY * 1.5, searchZ * 1.5);
             for (Entity entity : entities) {
-                if (!(entity instanceof Mob)) {
-                    continue;
-                }
                 StackEntity stackEntity = sm.getEntityManager().getStackEntity((LivingEntity) entity);
                 if (stackEntity == null) {
                     continue;
                 }
-                if (entity.isDead()) {
-                    continue;
-                }
+
                 if (sm.getMainConfig().getTagMode(entity.getType()) != StackEntity.TagMode.NEARBY) {
                     continue;
                 }
@@ -60,15 +59,10 @@ public class TagTask extends BukkitRunnable {
                 }
                 // Player should not be shown tag
                 stackEntity.getTag().sendPacket(player, false);
-            }
+            }*/
         }
     }
 
-    private boolean rayTrace(Mob entity, Player player) {
-        Vector resultant = entity.getEyeLocation().toVector().subtract(player.getEyeLocation().toVector());
-        double distance = player.getEyeLocation().distance(entity.getEyeLocation());
-        RayTraceResult result = player.getWorld().rayTraceBlocks(player.getEyeLocation(), resultant, distance, FluidCollisionMode.NEVER, true);
-        return result == null || result.getHitBlock() == null;
-    }
+
 
 }

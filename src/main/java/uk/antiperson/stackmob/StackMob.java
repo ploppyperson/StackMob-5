@@ -1,6 +1,7 @@
 package uk.antiperson.stackmob;
 
 import org.bstats.bukkit.Metrics;
+import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.event.Listener;
@@ -14,6 +15,7 @@ import uk.antiperson.stackmob.entity.EntityManager;
 import uk.antiperson.stackmob.entity.traits.TraitManager;
 import uk.antiperson.stackmob.hook.HookManager;
 import uk.antiperson.stackmob.listeners.*;
+import uk.antiperson.stackmob.packets.PlayerManager;
 import uk.antiperson.stackmob.tasks.MergeTask;
 import uk.antiperson.stackmob.tasks.TagTask;
 import uk.antiperson.stackmob.utils.ItemTools;
@@ -37,6 +39,7 @@ public class StackMob extends JavaPlugin {
     private EntityManager entityManager;
     private Updater updater;
     private ItemTools itemTools;
+    private PlayerManager playerManager;
 
     private boolean stepDamageError;
 
@@ -59,6 +62,7 @@ public class StackMob extends JavaPlugin {
         entityTranslation = new EntityTranslation(this);
         updater = new Updater(this, 29999);
         itemTools = new ItemTools(this);
+        playerManager = new PlayerManager(this);
         getLogger().info("StackMob v" + getDescription().getVersion() + " by antiPerson and contributors.");
         getLogger().info("GitHub: " + Utilities.GITHUB + " Discord: " + Utilities.DISCORD);
         getLogger().info("Loading config files...");
@@ -90,7 +94,7 @@ public class StackMob extends JavaPlugin {
         int stackInterval = getMainConfig().getStackInterval();
         new MergeTask(this).runTaskTimer(this, 5, stackInterval);
         int tagInterval = getMainConfig().getTagNearbyInterval();
-        new TagTask(this).runTaskTimer(this, 10, tagInterval);
+        new TagTask(this).runTaskTimer(this, 10, 1);
         if (Utilities.getMinecraftVersion() != Utilities.NMS_VERSION && getHookManager().getProtocolLibHook() == null) {
             getLogger().warning("You are not running the plugins native version and ProtocolLib could not be found (or has been disabled).");
             getLogger().warning("The display name visibility setting 'NEARBY' will not work unless this is fixed.");
@@ -118,9 +122,11 @@ public class StackMob extends JavaPlugin {
     @Override
     public void onDisable() {
         getEntityManager().unregisterAllEntities();
+        Bukkit.getOnlinePlayers().forEach(player -> getPlayerManager().stopWatching(player));
     }
 
     private void registerEvents() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        registerEvent(PlayerArmorstandListener.class);
         registerEvent(BucketListener.class);
         registerEvent(DeathListener.class);
         registerEvent(TransformListener.class);
@@ -199,6 +205,10 @@ public class StackMob extends JavaPlugin {
 
     public HookManager getHookManager() {
         return hookManager;
+    }
+
+    public PlayerManager getPlayerManager() {
+        return playerManager;
     }
 
     public Updater getUpdater() {

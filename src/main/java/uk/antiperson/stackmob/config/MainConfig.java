@@ -83,6 +83,10 @@ public class MainConfig extends SpecialConfigFile {
         return getBoolean("display-name.nearby.ray-trace");
     }
 
+    public boolean isUseArmorStand() {
+        return getBoolean("display-name.nearby.use-armorstand");
+    }
+
     public boolean isTraitEnabled(String traitKey) {
         return getBoolean("traits." + traitKey);
     }

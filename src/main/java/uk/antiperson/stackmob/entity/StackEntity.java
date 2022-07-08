@@ -8,7 +8,6 @@ import org.bukkit.World;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
@@ -17,8 +16,6 @@ import org.bukkit.potion.PotionEffect;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.events.EventHelper;
 import uk.antiperson.stackmob.hook.StackableMobHook;
-import uk.antiperson.stackmob.hook.hooks.ProtocolLibHook;
-import uk.antiperson.stackmob.utils.NMSHelper;
 import uk.antiperson.stackmob.utils.Utilities;
 
 import java.util.HashSet;
@@ -482,6 +479,8 @@ public class StackEntity {
 
     public class Tag {
 
+        private String displayName;
+
         public void update() {
             LivingEntity entity = getEntity();
             int threshold = sm.getMainConfig().getTagThreshold(entity.getType());
@@ -490,10 +489,13 @@ public class StackEntity {
                 entity.setCustomNameVisible(false);
                 return;
             }
-            String displayName = sm.getMainConfig().getTagFormat(entity.getType());
+            displayName = sm.getMainConfig().getTagFormat(entity.getType());
             displayName = StringUtils.replace(displayName, "%type%", getEntityName());
             displayName = StringUtils.replace(displayName, "%size%", getSize() + "");
             displayName = Utilities.translateColorCodes(displayName);
+            if (sm.getMainConfig().isUseArmorStand()) {
+                return;
+            }
             entity.setCustomName(displayName);
             if (sm.getMainConfig().getTagMode(entity.getType()) == TagMode.ALWAYS) {
                 entity.setCustomNameVisible(true);
@@ -512,16 +514,11 @@ public class StackEntity {
             return WordUtils.capitalizeFully(typeString.replaceAll("[^A-Za-z0-9]", " "));
         }
 
-        public void sendPacket(Player player, boolean tagVisible) {
-            if (Utilities.getMinecraftVersion() != Utilities.NMS_VERSION) {
-                ProtocolLibHook protocolLibHook = sm.getHookManager().getProtocolLibHook();
-                if (protocolLibHook == null) {
-                    return;
-                }
-                protocolLibHook.sendPacket(player, getEntity(), tagVisible);
-                return;
+        public String getDisplayName() {
+            if (displayName == null) {
+                update();
             }
-            NMSHelper.sendPacket(player, getEntity(), tagVisible);
+            return displayName;
         }
     }
 }
