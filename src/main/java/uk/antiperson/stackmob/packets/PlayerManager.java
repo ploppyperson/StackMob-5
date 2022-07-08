@@ -29,5 +29,6 @@ public class PlayerManager {
     public void stopWatching(Player player) {
         PlayerWatcher playerWatcher = map.get(player.getUniqueId());
         playerWatcher.stopWatching();
+        map.remove(player.getUniqueId());
     }
 }
