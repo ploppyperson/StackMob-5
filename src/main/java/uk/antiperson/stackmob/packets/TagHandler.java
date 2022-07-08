@@ -28,9 +28,10 @@ public class TagHandler {
 
     public void init() {
         if (Utilities.getMinecraftVersion() != Utilities.NMS_VERSION) {
-            throw new UnsupportedOperationException("not done!");
+            this.fakeArmorStand = new ProtocolLibFakeArmorStand(sm);
+            return;
         }
-        this.fakeArmorStand = new ProtocolLibFakeArmorStand(sm);
+        this.fakeArmorStand = new NmsFakeArmorStand();
     }
 
     public void newlyInRange() {

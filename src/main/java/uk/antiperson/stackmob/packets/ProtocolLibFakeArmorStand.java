@@ -8,7 +8,7 @@ import uk.antiperson.stackmob.hook.hooks.ProtocolLibHook;
 
 public class ProtocolLibFakeArmorStand implements FakeArmorStand {
 
-    private StackMob sm;
+    private final StackMob sm;
     private ProtocolLibHook plh;
     private int entityId;
     public ProtocolLibFakeArmorStand(StackMob sm) {
