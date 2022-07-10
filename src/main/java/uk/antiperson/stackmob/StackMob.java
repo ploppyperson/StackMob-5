@@ -17,7 +17,8 @@ import uk.antiperson.stackmob.hook.HookManager;
 import uk.antiperson.stackmob.listeners.*;
 import uk.antiperson.stackmob.packets.PlayerManager;
 import uk.antiperson.stackmob.tasks.MergeTask;
-import uk.antiperson.stackmob.tasks.TagTask;
+import uk.antiperson.stackmob.tasks.TagCheckTask;
+import uk.antiperson.stackmob.tasks.TagMoveTask;
 import uk.antiperson.stackmob.utils.ItemTools;
 import uk.antiperson.stackmob.utils.Updater;
 import uk.antiperson.stackmob.utils.Utilities;
@@ -94,7 +95,10 @@ public class StackMob extends JavaPlugin {
         int stackInterval = getMainConfig().getStackInterval();
         new MergeTask(this).runTaskTimer(this, 5, stackInterval);
         int tagInterval = getMainConfig().getTagNearbyInterval();
-        new TagTask(this).runTaskTimer(this, 10, 1);
+        new TagCheckTask(this).runTaskTimer(this, 10, tagInterval);
+        if (getMainConfig().isUseArmorStand()) {
+            new TagMoveTask(this).runTaskTimer(this, 0, 1);
+        }
         if (Utilities.getMinecraftVersion() != Utilities.NMS_VERSION && getHookManager().getProtocolLibHook() == null) {
             getLogger().warning("You are not running the plugins native version and ProtocolLib could not be found (or has been disabled).");
             getLogger().warning("The display name visibility setting 'NEARBY' will not work unless this is fixed.");

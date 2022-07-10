@@ -1,7 +1,6 @@
 package uk.antiperson.stackmob.packets;
 
 import org.bukkit.FluidCollisionMode;
-import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
@@ -53,9 +52,13 @@ public class TagHandler {
         if (!tagVisible) {
             newlyInRange();
         }
-        if (sm.getMainConfig().isUseArmorStand()) {
-            fakeArmorStand.teleport(player, stackEntity.getEntity());
+    }
+
+    public void teleportTag() {
+        if (!sm.getMainConfig().isUseArmorStand()) {
+            return;
         }
+        fakeArmorStand.teleport(player, stackEntity.getEntity());
     }
 
     public void playerOutRange() {

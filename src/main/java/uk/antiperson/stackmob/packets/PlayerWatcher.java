@@ -6,11 +6,11 @@ import org.bukkit.entity.Player;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.StackEntity;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class PlayerWatcher {
 
@@ -21,7 +21,7 @@ public class PlayerWatcher {
     public PlayerWatcher(StackMob sm, Player player) {
         this.sm = sm;
         this.player = player;
-        this.lastRange = new HashMap<>();
+        this.lastRange = new ConcurrentHashMap<>();
     }
 
     public void checkPlayer() {
@@ -47,7 +47,6 @@ public class PlayerWatcher {
                 continue;
             }
             // entity is already tracked and in range
-            // remove all in range entities, so that the map only contains entities that left the range
             tagHandler.playerInRange();
         }
         // entities that are not in range
@@ -60,6 +59,12 @@ public class PlayerWatcher {
     public void stopWatching() {
         for (TagHandler tagHandler : lastRange.values()) {
             tagHandler.playerOutRange();
+        }
+    }
+
+    public void updateTagLocations() {
+        for (TagHandler tagHandler : lastRange.values()) {
+            tagHandler.teleportTag();
         }
     }
 

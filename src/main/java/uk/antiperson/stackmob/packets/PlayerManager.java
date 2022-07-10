@@ -3,9 +3,9 @@ package uk.antiperson.stackmob.packets;
 import org.bukkit.entity.Player;
 import uk.antiperson.stackmob.StackMob;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class PlayerManager {
 
@@ -14,7 +14,7 @@ public class PlayerManager {
 
     public PlayerManager(StackMob sm) {
         this.sm = sm;
-        this.map = new HashMap<>();
+        this.map = new ConcurrentHashMap<>();
     }
 
     public PlayerWatcher getPlayerWatcher(Player player) {
