@@ -13,7 +13,8 @@ public interface FakeArmorStand {
     void removeFakeArmorStand(Player player);
 
     default Location adjustLocation(Entity entity) {
-        return entity.getLocation().add(0, entity.getHeight() + 0.3, 0);
+        double adjustment = entity.getCustomName() == null || entity.getCustomName().length() == 0 ? 0.1 : 0.3;
+        return entity.getLocation().add(0, entity.getHeight() + adjustment, 0);
     }
 
 
