@@ -1,5 +1,6 @@
 package uk.antiperson.stackmob.packets;
 
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
@@ -74,8 +75,11 @@ public class PlayerWatcher {
         double searchY = searchRadius[1];
         double searchZ = searchRadius[2];
         HashSet<StackEntity> stackEntities = new HashSet<>();
-        for (LivingEntity entity : player.getWorld().getNearbyEntitiesByType(Mob.class, player.getLocation(), searchX, searchY, searchZ)) {
-            StackEntity stackEntity = sm.getEntityManager().getStackEntity(entity);
+        for (Entity entity : player.getWorld().getNearbyEntities(player.getLocation(), searchX, searchY, searchZ)) {
+            if (!(entity instanceof Mob)) {
+                continue;
+            }
+            StackEntity stackEntity = sm.getEntityManager().getStackEntity((LivingEntity) entity);
             if (stackEntity == null) {
                 continue;
             }
