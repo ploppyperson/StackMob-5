@@ -18,7 +18,11 @@ public class PlayerManager {
     }
 
     public PlayerWatcher getPlayerWatcher(Player player) {
-        PlayerWatcher playerWatcher = map.get(player.getUniqueId());
+        return map.get(player.getUniqueId());
+    }
+
+    public PlayerWatcher createPlayerWatcher(Player player) {
+        PlayerWatcher playerWatcher = getPlayerWatcher(player);
         if (playerWatcher == null) {
             playerWatcher = new PlayerWatcher(sm, player);
             map.put(player.getUniqueId(), playerWatcher);

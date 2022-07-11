@@ -21,6 +21,9 @@ public class TagMoveTask extends BukkitRunnable {
         sm.getServer().getScheduler().runTaskAsynchronously(sm, () -> {
             for (Player player : playerArrayList) {
                 PlayerWatcher playerWatcher = sm.getPlayerManager().getPlayerWatcher(player);
+                if (playerWatcher == null) {
+                    continue;
+                }
                 playerWatcher.updateTagLocations();
             }
         });
