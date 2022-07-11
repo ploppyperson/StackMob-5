@@ -130,7 +130,7 @@ public class StackMob extends JavaPlugin {
     }
 
     private void registerEvents() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        registerEvent(PlayerArmorstandListener.class);
+        registerEvent(PlayerArmorStandListener.class);
         registerEvent(BucketListener.class);
         registerEvent(DeathListener.class);
         registerEvent(TransformListener.class);

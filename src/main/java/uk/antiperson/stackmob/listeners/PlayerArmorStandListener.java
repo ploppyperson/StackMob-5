@@ -6,10 +6,10 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import uk.antiperson.stackmob.StackMob;
 
 @ListenerMetadata(config = "display-name.nearby.use-armorstand")
-public class PlayerArmorstandListener implements Listener {
+public class PlayerArmorStandListener implements Listener {
 
     private final StackMob sm;
-    public PlayerArmorstandListener(StackMob sm) {
+    public PlayerArmorStandListener(StackMob sm) {
         this.sm = sm;
     }
 
