@@ -65,7 +65,7 @@ public class PlayerWatcher {
 
     public void updateTagLocations() {
         for (TagHandler tagHandler : lastRange.values()) {
-            tagHandler.teleportTag();
+            tagHandler.updateTag();
         }
     }
 

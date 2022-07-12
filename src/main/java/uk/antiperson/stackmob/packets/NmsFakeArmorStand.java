@@ -19,8 +19,13 @@ import org.bukkit.entity.Player;
 public class NmsFakeArmorStand implements FakeArmorStand {
 
     private EntityArmorStand entityArmorStand;
+    private final Player player;
 
-    public void spawnFakeArmorStand(Player player, Entity owner, Location location, String name) {
+    public NmsFakeArmorStand(Player player) {
+        this.player = player;
+    }
+
+    public void spawnFakeArmorStand(Entity owner, Location location, String name) {
         WorldServer worldServer = ((CraftWorld) location.getWorld()).getHandle();
         // spawn armor stand
         Location adjusted = adjustLocation(owner);
@@ -40,14 +45,22 @@ public class NmsFakeArmorStand implements FakeArmorStand {
         ((CraftPlayer) player).getHandle().b.a(packetPlayOutEntityMetadata);
     }
 
-    public void teleport(Player player, Entity entity) {
+    @Override
+    public void updateName(String newName) {
+        DataWatcher watcher = new DataWatcher(entityArmorStand);
+        watcher.a(new DataWatcherObject<>(2, DataWatcherRegistry.f), java.util.Optional.ofNullable(IChatBaseComponent.a(newName)));
+        PacketPlayOutEntityMetadata packetPlayOutEntityMetadata = new PacketPlayOutEntityMetadata(entityArmorStand.ae(), watcher, true);
+        ((CraftPlayer) player).getHandle().b.a(packetPlayOutEntityMetadata);
+    }
+
+    public void teleport(Entity entity) {
         Location adjusted = adjustLocation(entity);
         entityArmorStand.g(adjusted.getX(), adjusted.getY(), adjusted.getZ());
         PacketPlayOutEntityTeleport teleport = new PacketPlayOutEntityTeleport(entityArmorStand);
         ((CraftPlayer) player).getHandle().b.a(teleport);
     }
 
-    public void removeFakeArmorStand(Player player) {
+    public void removeFakeArmorStand() {
         PacketPlayOutEntityDestroy entityDestroy = new PacketPlayOutEntityDestroy(entityArmorStand.ae());
         ((CraftPlayer) player).getHandle().b.a(entityDestroy);
     }

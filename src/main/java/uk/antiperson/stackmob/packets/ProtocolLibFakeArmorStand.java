@@ -11,12 +11,14 @@ public class ProtocolLibFakeArmorStand implements FakeArmorStand {
     private final StackMob sm;
     private ProtocolLibHook plh;
     private int entityId;
-    public ProtocolLibFakeArmorStand(StackMob sm) {
+    private final Player player;
+    public ProtocolLibFakeArmorStand(StackMob sm, Player player) {
         this.sm = sm;
+        this.player = player;
     }
 
     @Override
-    public void spawnFakeArmorStand(Player player, Entity owner, Location location, String name) {
+    public void spawnFakeArmorStand(Entity owner, Location location, String name) {
         if (plh == null) {
             plh = sm.getHookManager().getProtocolLibHook();
         }
@@ -24,7 +26,15 @@ public class ProtocolLibFakeArmorStand implements FakeArmorStand {
     }
 
     @Override
-    public void teleport(Player player, Entity entity) {
+    public void updateName(String newName) {
+        if (plh == null) {
+            plh = sm.getHookManager().getProtocolLibHook();
+        }
+        plh.updateTag(player, entityId, newName);
+    }
+
+    @Override
+    public void teleport(Entity entity) {
         if (plh == null) {
             plh = sm.getHookManager().getProtocolLibHook();
         }
@@ -32,7 +42,7 @@ public class ProtocolLibFakeArmorStand implements FakeArmorStand {
     }
 
     @Override
-    public void removeFakeArmorStand(Player player) {
+    public void removeFakeArmorStand() {
         if (plh == null) {
             plh = sm.getHookManager().getProtocolLibHook();
         }

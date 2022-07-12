@@ -78,6 +78,19 @@ public class ProtocolLibHook extends Hook {
         return entityIdCounter - 1;
     }
 
+    public void updateTag(Player player, int id, String newName) {
+        PacketContainer packetContainer1 = new PacketContainer(PacketType.Play.Server.ENTITY_METADATA);
+        WrappedDataWatcher watcher = new WrappedDataWatcher();
+        watcher.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(2, WrappedDataWatcher.Registry.getChatComponentSerializer(true)), Optional.of(WrappedChatComponent.fromText(newName).getHandle()));
+        packetContainer1.getIntegers().write(0, id);
+        packetContainer1.getWatchableCollectionModifier().write(0, watcher.getWatchableObjects());
+        try {
+            protocolManager.sendServerPacket(player, packetContainer1);
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void teleport(Player player, int id, Location location) {
         PacketContainer packetContainer = new PacketContainer(PacketType.Play.Server.ENTITY_TELEPORT);
         packetContainer.getIntegers().write(0, id);

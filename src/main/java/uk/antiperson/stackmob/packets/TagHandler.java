@@ -18,6 +18,7 @@ public class TagHandler {
     private final StackMob sm;
     private final Player player;
     private FakeArmorStand fakeArmorStand;
+    private String lastTag;
 
     public TagHandler(StackMob sm, Player player, StackEntity stackEntity) {
         this.sm = sm;
@@ -27,16 +28,16 @@ public class TagHandler {
 
     public void init() {
         if (Utilities.getMinecraftVersion() != Utilities.NMS_VERSION) {
-            this.fakeArmorStand = new ProtocolLibFakeArmorStand(sm);
+            this.fakeArmorStand = new ProtocolLibFakeArmorStand(sm, player);
             return;
         }
-        this.fakeArmorStand = new NmsFakeArmorStand();
+        this.fakeArmorStand = new NmsFakeArmorStand(player);
     }
 
     public void newlyInRange() {
         tagVisible = true;
         if (sm.getMainConfig().getConfig().isUseArmorStand()) {
-            fakeArmorStand.spawnFakeArmorStand(player, stackEntity.getEntity(), stackEntity.getEntity().getLocation(), stackEntity.getTag().getDisplayName());
+            fakeArmorStand.spawnFakeArmorStand(stackEntity.getEntity(), stackEntity.getEntity().getLocation(), stackEntity.getTag().getDisplayName());
             return;
         }
         sendPacket(stackEntity.getEntity(), player, true);
@@ -54,18 +55,23 @@ public class TagHandler {
         }
     }
 
-    public void teleportTag() {
+    public void updateTag() {
         if (!sm.getMainConfig().getConfig().isUseArmorStand()) {
             return;
         }
-        fakeArmorStand.teleport(player, stackEntity.getEntity());
+        fakeArmorStand.teleport(stackEntity.getEntity());
+        if (stackEntity.getTag().getDisplayName().equals(lastTag)) {
+            return;
+        }
+        fakeArmorStand.updateName(stackEntity.getTag().getDisplayName());
+        lastTag = stackEntity.getTag().getDisplayName();
     }
 
     public void playerOutRange() {
         sendPacket(stackEntity.getEntity(), player, false);
         tagVisible = false;
         if (sm.getMainConfig().getConfig().isUseArmorStand()) {
-            fakeArmorStand.removeFakeArmorStand(player);
+            fakeArmorStand.removeFakeArmorStand();
         }
     }
 
