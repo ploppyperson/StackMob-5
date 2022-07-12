@@ -65,7 +65,7 @@ display-name:
     # Format: [(x cord),(y cord),(z cord)]
     range: [12,6,12]
     # How often (in ticks) the tag visibility status of an entity should be updated. (20 ticks = 1 second)
-    interval: 20
+    interval: 50
     # Perform a ray trace, meaning that the tag is only visible if there are no occluding blocks.
     ray-trace: true
     # Use an armor stand (using packets) to display the tag, rather than renaming the entity.
@@ -157,11 +157,11 @@ events:
     drops: true
     slime-split: true
   divide:
-    nametag: true
+    nametag: false
     tame: true
     # Only bees currently.
     enter-block: true
-    # Only fishes currently.
+    # Only fish currently.
     bucket-fill: true
   remove-stack-data:
     # Should we remove the stack data of an entity that was unstacked as a result of nametag division/split?
@@ -203,7 +203,7 @@ death:
     type-blacklist: []
     type-blacklist-invert: false
   STEP:
-    priority: 2
+    priority: 1
     reason-blacklist: []
     reason-blacklist-invert: false
     spawn-reason-blacklist: [ ]
@@ -213,7 +213,7 @@ death:
     max-step: 5
     min-step: 1
   STEP_DAMAGE:
-    priority: 1
+    priority: 2
     reason-blacklist: []
     reason-blacklist-invert: false
     spawn-reason-blacklist: [ ]
