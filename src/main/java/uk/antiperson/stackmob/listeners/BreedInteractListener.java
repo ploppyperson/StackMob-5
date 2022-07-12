@@ -42,7 +42,7 @@ public class BreedInteractListener implements Listener {
         if (stackEntity == null || stackEntity.isSingle()) {
             return;
         }
-        ListenerMode breed = sm.getMainConfig().getListenerMode(animals.getType(), "breed");
+        ListenerMode breed = sm.getMainConfig().getConfig(animals.getType()).getListenerMode("breed");
         if (breed == ListenerMode.SPLIT) {
             stackEntity.slice();
             return;
@@ -53,7 +53,7 @@ public class BreedInteractListener implements Listener {
             Utilities.removeHandItem(event.getPlayer(), 1);
             return;
         }
-        int kidAmount = sm.getMainConfig().getEventMultiplyLimit(animals.getType(), "breed", stackEntity.getSize() / 2);
+        int kidAmount = sm.getMainConfig().getConfig(animals.getType()).getEventMultiplyLimit("breed", stackEntity.getSize() / 2);
         int parentAmount = kidAmount * 2;
         if (stackEntity.getSize() > parentAmount) {
             stackEntity.slice(parentAmount);

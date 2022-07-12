@@ -21,8 +21,8 @@ public class MergeTask extends BukkitRunnable {
 
     public void run() {
         HashSet<StackEntity> toRemove = new HashSet<>();
-        boolean checkHasMoved = sm.getMainConfig().isCheckHasMoved();
-        double checkHasMovedDistance = sm.getMainConfig().getCheckHasMovedDistance();
+        boolean checkHasMoved = sm.getMainConfig().getConfig().isCheckHasMoved();
+        double checkHasMovedDistance = sm.getMainConfig().getConfig().getCheckHasMovedDistance();
         originals: for (StackEntity original : sm.getEntityManager().getStackEntities()) {
             if (original.isWaiting()) {
                 original.incrementWait();
@@ -42,8 +42,8 @@ public class MergeTask extends BukkitRunnable {
                 }
                 original.setLastLocation(original.getEntity().getLocation());
             }
-            boolean stackThresholdEnabled = sm.getMainConfig().getStackThresholdEnabled(original.getEntity().getType());
-            Integer[] searchRadius = sm.getMainConfig().getStackRadius(original.getEntity().getType());
+            boolean stackThresholdEnabled = sm.getMainConfig().getConfig(original.getEntity().getType()).getStackThresholdEnabled();
+            Integer[] searchRadius = sm.getMainConfig().getConfig(original.getEntity().getType()).getStackRadius();
             Set<StackEntity> matches = new HashSet<>();
             for (Entity nearby : original.getEntity().getNearbyEntities(searchRadius[0], searchRadius[1], searchRadius[2])) {
                 if (!(nearby instanceof Mob)) {
@@ -75,7 +75,7 @@ public class MergeTask extends BukkitRunnable {
             if (!stackThresholdEnabled) {
                 continue;
             }
-            int threshold = sm.getMainConfig().getStackThreshold(original.getEntity().getType()) - 1;
+            int threshold = sm.getMainConfig().getConfig(original.getEntity().getType()).getStackThreshold() - 1;
             int size = matches.size();
             if (size < threshold) {
                 continue;

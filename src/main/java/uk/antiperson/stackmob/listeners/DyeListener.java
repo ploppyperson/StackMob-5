@@ -37,13 +37,13 @@ public class DyeListener implements Listener {
         if (stackEntity == null || stackEntity.isSingle()) {
             return;
         }
-        ListenerMode mode = sm.getMainConfig().getListenerMode(sheep.getType(), "dye");
+        ListenerMode mode = sm.getMainConfig().getConfig(sheep.getType()).getListenerMode("dye");
         if (mode == ListenerMode.SPLIT) {
             ((Colorable) stackEntity.slice().getEntity()).setColor(sheep.getColor());
             return;
         }
         stackEntity.splitIfNotEnough(event.getPlayer().getInventory().getItemInMainHand().getAmount());
-        int limit = sm.getMainConfig().getEventMultiplyLimit(sheep.getType(), "dye", stackEntity.getSize());
+        int limit = sm.getMainConfig().getConfig(sheep.getType()).getEventMultiplyLimit("dye", stackEntity.getSize());
         if (stackEntity.getSize() > limit) {
             stackEntity.slice(limit);
         }

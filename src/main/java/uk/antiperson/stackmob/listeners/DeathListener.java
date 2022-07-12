@@ -39,13 +39,13 @@ public class DeathListener implements Listener {
         StackDeathEvent stackDeathEvent = EventHelper.callStackDeathEvent(stackEntity, deathStep);
         deathStep = stackDeathEvent.getDeathStep();
         int toMultiply = deathStep - 1;
-        if (sm.getMainConfig().getBoolean("traits.leashed")) {
+        if (sm.getMainConfig().getConfigFile().getBoolean("traits.leashed")) {
             if (event.getEntity().isLeashed() && (stackEntity.getSize() - deathStep) != 0) {
                 event.getEntity().setMetadata(Utilities.NO_LEASH_METADATA, new FixedMetadataValue(sm, true));
             }
         }
         if (deathStep < stackEntity.getSize()) {
-            if (sm.getMainConfig().isSkipDeathAnimation(event.getEntityType())) {
+            if (sm.getMainConfig().getConfig(event.getEntityType()).isSkipDeathAnimation()) {
                 toMultiply = deathStep;
                 event.setCancelled(true);
                 stackEntity.incrementSize(-deathStep);
@@ -71,18 +71,18 @@ public class DeathListener implements Listener {
             ExperienceOrb orb = (ExperienceOrb) event.getEntity().getWorld().spawnEntity(event.getEntity().getLocation(), EntityType.EXPERIENCE_ORB);
             orb.setExperience(experience);
         }
-        if (sm.getMainConfig().isPlayerStatMulti(event.getEntityType())) {
+        if (sm.getMainConfig().getConfig(event.getEntityType()).isPlayerStatMulti()) {
             if (event.getEntity().getKiller() != null) {
                 event.getEntity().getKiller().incrementStatistic(Statistic.KILL_ENTITY, event.getEntityType(), toMultiply);
             }
         }
-        if (event.getEntity() instanceof Slime && sm.getMainConfig().isSlimeMultiEnabled(event.getEntityType())) {
+        if (event.getEntity() instanceof Slime && sm.getMainConfig().getConfig(event.getEntityType()).isSlimeMultiEnabled()) {
             event.getEntity().setMetadata("deathcount", new FixedMetadataValue(sm, toMultiply));
         }
     }
 
     public DeathMethod calculateDeath(StackEntity entity) {
-        DeathType deathType = sm.getMainConfig().getDeathType(entity.getEntity());
+        DeathType deathType = sm.getMainConfig().getConfig(entity.getEntity().getType()).getDeathType(entity.getEntity());
         try {
             return deathType.getStepClass().getDeclaredConstructor(StackMob.class, StackEntity.class).newInstance(sm, entity);
         } catch (InstantiationException | InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {

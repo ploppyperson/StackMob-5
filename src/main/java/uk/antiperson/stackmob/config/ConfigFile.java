@@ -14,6 +14,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.Set;
 
 public class ConfigFile {
 
@@ -81,6 +82,10 @@ public class ConfigFile {
 
     public void set(String path, Object value) {
         fileCon.set(path, value);
+    }
+
+    public Set<String> getKeys(boolean deep) {
+        return fileCon.getKeys(deep);
     }
 
     /**

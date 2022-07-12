@@ -35,7 +35,7 @@ public class TagHandler {
 
     public void newlyInRange() {
         tagVisible = true;
-        if (sm.getMainConfig().isUseArmorStand()) {
+        if (sm.getMainConfig().getConfig().isUseArmorStand()) {
             fakeArmorStand.spawnFakeArmorStand(player, stackEntity.getEntity(), stackEntity.getEntity().getLocation(), stackEntity.getTag().getDisplayName());
             return;
         }
@@ -43,7 +43,7 @@ public class TagHandler {
     }
 
     public void playerInRange() {
-        if (sm.getMainConfig().isTagNearbyRayTrace() && !rayTrace((Mob) stackEntity.getEntity(), player)) {
+        if (sm.getMainConfig().getConfig().isTagNearbyRayTrace() && !rayTrace((Mob) stackEntity.getEntity(), player)) {
             if (tagVisible) {
                 playerOutRange();
             }
@@ -55,7 +55,7 @@ public class TagHandler {
     }
 
     public void teleportTag() {
-        if (!sm.getMainConfig().isUseArmorStand()) {
+        if (!sm.getMainConfig().getConfig().isUseArmorStand()) {
             return;
         }
         fakeArmorStand.teleport(player, stackEntity.getEntity());
@@ -64,7 +64,7 @@ public class TagHandler {
     public void playerOutRange() {
         sendPacket(stackEntity.getEntity(), player, false);
         tagVisible = false;
-        if (sm.getMainConfig().isUseArmorStand()) {
+        if (sm.getMainConfig().getConfig().isUseArmorStand()) {
             fakeArmorStand.removeFakeArmorStand(player);
         }
     }

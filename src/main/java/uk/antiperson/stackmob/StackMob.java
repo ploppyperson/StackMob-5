@@ -4,12 +4,14 @@ import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.entity.EntityType;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.InvalidPluginException;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import uk.antiperson.stackmob.commands.Commands;
 import uk.antiperson.stackmob.config.EntityTranslation;
+import uk.antiperson.stackmob.config.EntityConfig;
 import uk.antiperson.stackmob.config.MainConfig;
 import uk.antiperson.stackmob.entity.EntityManager;
 import uk.antiperson.stackmob.entity.traits.TraitManager;
@@ -26,6 +28,7 @@ import uk.antiperson.stackmob.utils.Utilities;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
 
 public class StackMob extends JavaPlugin {
@@ -68,7 +71,7 @@ public class StackMob extends JavaPlugin {
         getLogger().info("GitHub: " + Utilities.GITHUB + " Discord: " + Utilities.DISCORD);
         getLogger().info("Loading config files...");
         try {
-            getMainConfig().load();
+            config.init();
             getEntityTranslation().load();
         } catch (IOException e) {
             getLogger().log(Level.SEVERE, "There was a problem loading the configuration file.");
@@ -92,11 +95,11 @@ public class StackMob extends JavaPlugin {
         command.setExecutor(commands);
         command.setTabCompleter(commands);
         commands.registerSubCommands();
-        int stackInterval = getMainConfig().getStackInterval();
+        int stackInterval = getMainConfig().getConfig().getStackInterval();
         new MergeTask(this).runTaskTimer(this, 5, stackInterval);
-        int tagInterval = getMainConfig().getTagNearbyInterval();
+        int tagInterval = getMainConfig().getConfig().getTagNearbyInterval();
         new TagCheckTask(this).runTaskTimer(this, 10, tagInterval);
-        if (getMainConfig().isUseArmorStand()) {
+        if (getMainConfig().getConfig().isUseArmorStand()) {
             new TagMoveTask(this).runTaskTimer(this, 0, 1);
         }
         if (Utilities.getMinecraftVersion() != Utilities.NMS_VERSION && getHookManager().getProtocolLibHook() == null) {
@@ -158,10 +161,10 @@ public class StackMob extends JavaPlugin {
     private void registerEvent(Class<? extends Listener> clazz) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         ListenerMetadata listenerMetadata = clazz.getAnnotation(ListenerMetadata.class);
         if (listenerMetadata != null) {
-            if (!getMainConfig().isSet(listenerMetadata.config())) {
+            if (!getMainConfig().getConfigFile().isSet(listenerMetadata.config())) {
                 return;
             }
-            if (!getMainConfig().getBoolean(listenerMetadata.config())) {
+            if (!getMainConfig().getConfigFile().getBoolean(listenerMetadata.config())) {
                 return;
             }
         }

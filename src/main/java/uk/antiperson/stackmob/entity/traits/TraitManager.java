@@ -60,7 +60,7 @@ public class TraitManager {
      */
     private void registerTrait(Class<? extends Trait> trait) throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
         final TraitMetadata traitMetadata = trait.getAnnotation(TraitMetadata.class);
-        if (sm.getMainConfig().isTraitEnabled(traitMetadata.path()) || sm.getMainConfig().getBoolean(traitMetadata.path())) {
+        if (sm.getMainConfig().getConfig().isTraitEnabled(traitMetadata.path()) || sm.getMainConfig().getConfig().isTraitEnabled(traitMetadata.path())) {
             traits.add(trait.getDeclaredConstructor().newInstance());
         }
     }

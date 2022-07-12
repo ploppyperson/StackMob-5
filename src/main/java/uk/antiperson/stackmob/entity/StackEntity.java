@@ -83,7 +83,7 @@ public class StackEntity {
      * @return the location of the entity where it was last checked for stacking, null if 'stack.check-location' is disabled.
      */
     public Location getLastLocation() {
-        if (lastLocation == null && sm.getMainConfig().isCheckHasMoved()) {
+        if (lastLocation == null && sm.getMainConfig().getConfig().isCheckHasMoved()) {
             lastLocation = entity.getLocation();
         }
         return lastLocation;
@@ -139,13 +139,13 @@ public class StackEntity {
      * @return whether this entity should wait.
      */
     public boolean shouldWait(CreatureSpawnEvent.SpawnReason spawnReason) {
-        if (!sm.getMainConfig().isWaitingEnabled(getEntity().getType())) {
+        if (!sm.getMainConfig().getConfig(getEntity().getType()).isWaitingEnabled()) {
             return false;
         }
-        if (!sm.getMainConfig().isWaitingTypes(getEntity().getType())) {
+        if (!sm.getMainConfig().getConfig(getEntity().getType()).isWaitingTypes()) {
             return false;
         }
-        return sm.getMainConfig().isWaitingReasons(getEntity().getType(), spawnReason);
+        return sm.getMainConfig().getConfig(getEntity().getType()).isWaitingReasons(spawnReason);
     }
 
     /**
@@ -156,7 +156,7 @@ public class StackEntity {
         if (isWaiting()) {
             throw new UnsupportedOperationException("Stack is already waiting!");
         }
-        waitCount = sm.getMainConfig().getWaitingTime(getEntity().getType());
+        waitCount = sm.getMainConfig().getConfig(getEntity().getType()).getWaitingTime();
         waiting = true;
     }
 
@@ -196,7 +196,7 @@ public class StackEntity {
      * @return the maximum stack size
      */
     public int getMaxSize() {
-        return sm.getMainConfig().getMaxStack(getEntity().getType());
+        return sm.getMainConfig().getConfig(getEntity().getType()).getMaxStack();
     }
 
     /**
@@ -279,7 +279,7 @@ public class StackEntity {
 
     public boolean canStack() {
         if (hasEquipItem()) {
-            if (sm.getMainConfig().getEquipItemMode(getEntity().getType()) == EquipItemMode.PREVENT_STACK) {
+            if (sm.getMainConfig().getConfig(getEntity().getType()).getEquipItemMode() == EquipItemMode.PREVENT_STACK) {
                 return false;
             }
         }
@@ -313,7 +313,7 @@ public class StackEntity {
     }
 
     public void mergePotionEffects(StackEntity toKeep, StackEntity toRemove) {
-        if (!sm.getMainConfig().isTraitEnabled("potion-effect")) {
+        if (!sm.getMainConfig().getConfig().isTraitEnabled("potion-effect")) {
             return;
         }
         for (PotionEffect potionEffect : toRemove.getEntity().getActivePotionEffects()) {
@@ -449,7 +449,7 @@ public class StackEntity {
         if (!hasEquipItem()) {
             return;
         }
-        if (sm.getMainConfig().getEquipItemMode(getEntity().getType()) != EquipItemMode.DROP_ITEMS) {
+        if (sm.getMainConfig().getConfig(getEntity().getType()).getEquipItemMode() != EquipItemMode.DROP_ITEMS) {
             return;
         }
         for (ItemStack itemStack : getEquiptItems()) {
@@ -483,21 +483,21 @@ public class StackEntity {
 
         public void update() {
             LivingEntity entity = getEntity();
-            int threshold = sm.getMainConfig().getTagThreshold(entity.getType());
+            int threshold = sm.getMainConfig().getConfig(entity.getType()).getTagThreshold();
             if (getSize() <= threshold) {
                 entity.setCustomName(null);
                 entity.setCustomNameVisible(false);
                 return;
             }
-            displayName = sm.getMainConfig().getTagFormat(entity.getType());
+            displayName = sm.getMainConfig().getConfig(entity.getType()).getTagFormat();
             displayName = StringUtils.replace(displayName, "%type%", getEntityName());
             displayName = StringUtils.replace(displayName, "%size%", getSize() + "");
             displayName = Utilities.translateColorCodes(displayName);
-            if (sm.getMainConfig().isUseArmorStand()) {
+            if (sm.getMainConfig().getConfig().isUseArmorStand()) {
                 return;
             }
             entity.setCustomName(displayName);
-            if (sm.getMainConfig().getTagMode(entity.getType()) == TagMode.ALWAYS) {
+            if (sm.getMainConfig().getConfig(entity.getType()).getTagMode() == TagMode.ALWAYS) {
                 entity.setCustomNameVisible(true);
             }
         }

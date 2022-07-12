@@ -113,7 +113,7 @@ public class StackingTool {
             case INFO:
                 user.sendInfo("Stack information: ");
                 user.sendRawMessage("Stack size: " + stackEntity.getSize() + " Max size: " + stackEntity.getMaxSize() + " Waiting count: " + stackEntity.getWaitCount());
-                user.sendRawMessage("Can stack: " + stackEntity.canStack() + " Is blacklisted? " + sm.getMainConfig().isEntityBlacklisted(stackEntity.getEntity()));
+                user.sendRawMessage("Can stack: " + stackEntity.canStack() + " Is blacklisted? " + sm.getMainConfig().getConfig(stackEntity.getEntity().getType()).isEntityBlacklisted(stackEntity.getEntity()));
                 return;
         }
         user.sendSuccess("Action performed successfully.");
@@ -146,7 +146,7 @@ public class StackingTool {
 
         public ModifyPrompt(LivingEntity livingEntity) {
             this.livingEntity = livingEntity;
-            this.maxSize = sm.getMainConfig().getMaxStack(livingEntity.getType());
+            this.maxSize = sm.getMainConfig().getConfig(livingEntity.getType()).getMaxStack();
         }
 
         @Nullable
