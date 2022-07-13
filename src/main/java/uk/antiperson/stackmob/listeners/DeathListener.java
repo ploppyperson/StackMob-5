@@ -76,7 +76,7 @@ public class DeathListener implements Listener {
                 event.getEntity().getKiller().incrementStatistic(Statistic.KILL_ENTITY, event.getEntityType(), toMultiply);
             }
         }
-        if (event.getEntity() instanceof Slime && sm.getMainConfig().getConfig(event.getEntityType()).isSlimeMultiEnabled()) {
+        if (event.getEntity() instanceof Slime && stackEntity.getEntityConfig().isSlimeMultiEnabled()) {
             event.getEntity().setMetadata("deathcount", new FixedMetadataValue(sm, toMultiply));
         }
     }

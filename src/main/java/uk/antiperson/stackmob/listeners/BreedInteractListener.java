@@ -54,7 +54,7 @@ public class BreedInteractListener implements Listener {
             Utilities.removeHandItem(event.getPlayer(), 1);
             return;
         }
-        int kidAmount = sm.getMainConfig().getConfig(animals.getType()).getEventMultiplyLimit(EntityConfig.EventType.BREED, stackEntity.getSize() / 2);
+        int kidAmount = stackEntity.getEntityConfig().getEventMultiplyLimit(EntityConfig.EventType.BREED, stackEntity.getSize() / 2);
         int parentAmount = kidAmount * 2;
         if (stackEntity.getSize() > parentAmount) {
             stackEntity.slice(parentAmount);
