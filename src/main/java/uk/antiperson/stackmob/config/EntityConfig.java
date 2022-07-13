@@ -25,12 +25,10 @@ import java.util.TreeMap;
 
 public class EntityConfig {
 
-    private final StackMob sm;
     private final Map<String, ConfigValue> map;
     private final EntityType type;
 
-    public EntityConfig(StackMob sm, EntityType type) {
-        this.sm = sm;
+    public EntityConfig(EntityType type) {
         this.type = type;
         this.map = new HashMap<>();
     }

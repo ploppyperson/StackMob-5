@@ -25,7 +25,7 @@ public class MainConfig {
     public void init() throws IOException {
         configFile.load();
         for (EntityType entityType : EntityType.values()) {
-            EntityConfig entityConfig = new EntityConfig(sm, entityType);
+            EntityConfig entityConfig = new EntityConfig(entityType);
             for (String key : configFile.getKeys(true)) {
                 if (key.startsWith("custom")) {
                     continue;
