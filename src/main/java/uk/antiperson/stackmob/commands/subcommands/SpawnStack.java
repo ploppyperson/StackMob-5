@@ -28,8 +28,13 @@ public class SpawnStack extends SubCommand {
         Player player = (Player) sender.getSender();
         EntityType entityType = EntityType.valueOf(args[0].toUpperCase());
         int newSize = Integer.parseInt(args[1]);
-        if (newSize > sm.getMainConfig().getConfig(entityType).getMaxStack()) {
-            sender.sendError("New stack value is too large! (max = " + sm.getMainConfig().getConfig(entityType).getMaxStack() + ")");
+        if (newSize < 1) {
+            sender.sendError("You cannot spawn a stack with size less than one!");
+            return false;
+        }
+        int maxSize = sm.getMainConfig().getConfig(entityType).getMaxStack();
+        if (newSize > maxSize) {
+            sender.sendError("Provided stack value is too large! (the maximum for " + entityType + " is " + maxSize + ")");
             return false;
         }
         int amountOfStacks = args.length > 2 ? Integer.parseInt(args[2]) : 1;

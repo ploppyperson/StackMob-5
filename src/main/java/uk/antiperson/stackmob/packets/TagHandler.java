@@ -94,4 +94,7 @@ public class TagHandler {
         return result == null || result.getHitBlock() == null;
     }
 
+    public boolean isTagVisible() {
+        return tagVisible;
+    }
 }

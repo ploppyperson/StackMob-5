@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.StackEntity;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -90,5 +91,9 @@ public class PlayerWatcher {
 
     public Player getPlayer() {
         return player;
+    }
+
+    public Collection<TagHandler> getTagHandlers() {
+        return lastRange.values();
     }
 }
