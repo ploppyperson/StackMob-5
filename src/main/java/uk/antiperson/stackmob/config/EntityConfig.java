@@ -16,10 +16,8 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.StackEntity;
 import uk.antiperson.stackmob.entity.death.DeathType;
-import uk.antiperson.stackmob.listeners.ListenerMode;
 import uk.antiperson.stackmob.utils.Utilities;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -323,4 +321,8 @@ public class EntityConfig {
         }
     }
 
+    public enum ListenerMode {
+        MULTIPLY,
+        SPLIT
+    }
 }

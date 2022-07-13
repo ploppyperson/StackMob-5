@@ -43,8 +43,8 @@ public class BreedInteractListener implements Listener {
         if (stackEntity == null || stackEntity.isSingle()) {
             return;
         }
-        ListenerMode breed = stackEntity.getEntityConfig().getListenerMode(EntityConfig.EventType.BREED);
-        if (breed == ListenerMode.SPLIT) {
+        EntityConfig.ListenerMode breed = stackEntity.getEntityConfig().getListenerMode(EntityConfig.EventType.BREED);
+        if (breed == EntityConfig.ListenerMode.SPLIT) {
             stackEntity.slice();
             return;
         }

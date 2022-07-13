@@ -38,8 +38,8 @@ public class DyeListener implements Listener {
         if (stackEntity == null || stackEntity.isSingle()) {
             return;
         }
-        ListenerMode mode = stackEntity.getEntityConfig().getListenerMode(EntityConfig.EventType.DYE);
-        if (mode == ListenerMode.SPLIT) {
+        EntityConfig.ListenerMode mode = stackEntity.getEntityConfig().getListenerMode(EntityConfig.EventType.DYE);
+        if (mode == EntityConfig.ListenerMode.SPLIT) {
             ((Colorable) stackEntity.slice().getEntity()).setColor(sheep.getColor());
             return;
         }

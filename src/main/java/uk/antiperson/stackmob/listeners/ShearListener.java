@@ -85,8 +85,8 @@ public class ShearListener implements Listener {
         if (stackEntity == null || stackEntity.isSingle()) {
             return null;
         }
-        ListenerMode shear = stackEntity.getEntityConfig().getListenerMode(EntityConfig.EventType.SHEAR);
-        if (shear == ListenerMode.SPLIT) {
+        EntityConfig.ListenerMode shear = stackEntity.getEntityConfig().getListenerMode(EntityConfig.EventType.SHEAR);
+        if (shear == EntityConfig.ListenerMode.SPLIT) {
             StackEntity slice = stackEntity.slice();
             if (slice.getEntity() instanceof Sheep) {
                 ((Sheep) slice.getEntity()).setSheared(false);
