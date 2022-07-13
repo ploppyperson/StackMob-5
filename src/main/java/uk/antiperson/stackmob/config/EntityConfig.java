@@ -195,12 +195,12 @@ public class EntityConfig {
         return map.get("disable-targeting.reason-blacklist").getList().contains(spawnReason.toString());
     }
 
-    public ListenerMode getListenerMode(String eventKey) {
-        return ListenerMode.valueOf(map.get("events." + eventKey + ".mode").getString());
+    public ListenerMode getListenerMode(EventType eventType) {
+        return ListenerMode.valueOf(map.get("events." + eventType.getConfigKey() + ".mode").getString());
     }
 
-    public int getEventMultiplyLimit(String eventKey, int stackSize) {
-        int limit = map.get( "events." + eventKey + ".limit").getInt();
+    public int getEventMultiplyLimit(EventType eventType, int stackSize) {
+        int limit = map.get( "events." + eventType.getConfigKey() + ".limit").getInt();
         return limit == -1 ? stackSize : Math.min(stackSize, limit);
     }
 
@@ -303,6 +303,23 @@ public class EntityConfig {
                 }
             }
             return false;
+        }
+    }
+
+    public enum EventType {
+        BREED("breed"),
+        DYE("dye"),
+        EQUIP("equip"),
+        EXPLOSION("explosion"),
+        SHEAR("shear");
+
+        String configKey;
+        EventType(String configKey) {
+            this.configKey = configKey;
+        }
+
+        public String getConfigKey() {
+            return configKey;
         }
     }
 

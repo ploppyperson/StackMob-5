@@ -8,6 +8,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Colorable;
 import uk.antiperson.stackmob.StackMob;
+import uk.antiperson.stackmob.config.EntityConfig;
 import uk.antiperson.stackmob.entity.StackEntity;
 import uk.antiperson.stackmob.utils.Utilities;
 
@@ -37,13 +38,13 @@ public class DyeListener implements Listener {
         if (stackEntity == null || stackEntity.isSingle()) {
             return;
         }
-        ListenerMode mode = stackEntity.getEntityConfig().getListenerMode("dye");
+        ListenerMode mode = stackEntity.getEntityConfig().getListenerMode(EntityConfig.EventType.DYE);
         if (mode == ListenerMode.SPLIT) {
             ((Colorable) stackEntity.slice().getEntity()).setColor(sheep.getColor());
             return;
         }
         stackEntity.splitIfNotEnough(event.getPlayer().getInventory().getItemInMainHand().getAmount());
-        int limit = stackEntity.getEntityConfig().getEventMultiplyLimit("dye", stackEntity.getSize());
+        int limit = stackEntity.getEntityConfig().getEventMultiplyLimit(EntityConfig.EventType.DYE, stackEntity.getSize());
         if (stackEntity.getSize() > limit) {
             stackEntity.slice(limit);
         }

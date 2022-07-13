@@ -14,6 +14,7 @@ import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.loot.LootContext;
 import uk.antiperson.stackmob.StackMob;
+import uk.antiperson.stackmob.config.EntityConfig;
 import uk.antiperson.stackmob.entity.Drops;
 import uk.antiperson.stackmob.entity.StackEntity;
 
@@ -84,7 +85,7 @@ public class ShearListener implements Listener {
         if (stackEntity == null || stackEntity.isSingle()) {
             return null;
         }
-        ListenerMode shear = stackEntity.getEntityConfig().getListenerMode("shear");
+        ListenerMode shear = stackEntity.getEntityConfig().getListenerMode(EntityConfig.EventType.SHEAR);
         if (shear == ListenerMode.SPLIT) {
             StackEntity slice = stackEntity.slice();
             if (slice.getEntity() instanceof Sheep) {
@@ -92,7 +93,7 @@ public class ShearListener implements Listener {
             }
             return null;
         }
-        int limit = stackEntity.getEntityConfig().getEventMultiplyLimit("shear", stackEntity.getSize());
+        int limit = stackEntity.getEntityConfig().getEventMultiplyLimit(EntityConfig.EventType.SHEAR, stackEntity.getSize());
         Damageable damageable = (Damageable) item.getItemMeta();
         int health = item.getType().getMaxDurability() - damageable.getDamage();
         int amount = Math.min(health, limit);
