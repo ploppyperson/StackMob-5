@@ -4,6 +4,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import uk.antiperson.stackmob.StackMob;
+import uk.antiperson.stackmob.entity.StackEntity;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -60,6 +61,11 @@ public class MainConfig {
                 }
             }
         }
+    }
+
+    public void reload() throws IOException {
+        init();
+        sm.getEntityManager().getStackEntities().forEach(StackEntity::refreshConfig);
     }
 
     public EntityConfig getConfig(EntityType type) {
