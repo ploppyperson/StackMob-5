@@ -45,7 +45,7 @@ public class DeathListener implements Listener {
             }
         }
         if (deathStep < stackEntity.getSize()) {
-            if (sm.getMainConfig().getConfig(event.getEntityType()).isSkipDeathAnimation()) {
+            if (stackEntity.getEntityConfig().isSkipDeathAnimation()) {
                 toMultiply = deathStep;
                 event.setCancelled(true);
                 stackEntity.incrementSize(-deathStep);
@@ -71,7 +71,7 @@ public class DeathListener implements Listener {
             ExperienceOrb orb = (ExperienceOrb) event.getEntity().getWorld().spawnEntity(event.getEntity().getLocation(), EntityType.EXPERIENCE_ORB);
             orb.setExperience(experience);
         }
-        if (sm.getMainConfig().getConfig(event.getEntityType()).isPlayerStatMulti()) {
+        if (stackEntity.getEntityConfig().isPlayerStatMulti()) {
             if (event.getEntity().getKiller() != null) {
                 event.getEntity().getKiller().incrementStatistic(Statistic.KILL_ENTITY, event.getEntityType(), toMultiply);
             }
@@ -82,7 +82,7 @@ public class DeathListener implements Listener {
     }
 
     public DeathMethod calculateDeath(StackEntity entity) {
-        DeathType deathType = sm.getMainConfig().getConfig(entity.getEntity().getType()).getDeathType(entity.getEntity());
+        DeathType deathType = entity.getEntityConfig().getDeathType(entity.getEntity());
         try {
             return deathType.getStepClass().getDeclaredConstructor(StackMob.class, StackEntity.class).newInstance(sm, entity);
         } catch (InstantiationException | InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {

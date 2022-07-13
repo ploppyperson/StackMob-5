@@ -84,7 +84,7 @@ public class ShearListener implements Listener {
         if (stackEntity == null || stackEntity.isSingle()) {
             return null;
         }
-        ListenerMode shear = sm.getMainConfig().getConfig(entity.getType()).getListenerMode("shear");
+        ListenerMode shear = stackEntity.getEntityConfig().getListenerMode("shear");
         if (shear == ListenerMode.SPLIT) {
             StackEntity slice = stackEntity.slice();
             if (slice.getEntity() instanceof Sheep) {
@@ -92,7 +92,7 @@ public class ShearListener implements Listener {
             }
             return null;
         }
-        int limit = sm.getMainConfig().getConfig(entity.getType()).getEventMultiplyLimit("shear", stackEntity.getSize());
+        int limit = stackEntity.getEntityConfig().getEventMultiplyLimit("shear", stackEntity.getSize());
         Damageable damageable = (Damageable) item.getItemMeta();
         int health = item.getType().getMaxDurability() - damageable.getDamage();
         int amount = Math.min(health, limit);

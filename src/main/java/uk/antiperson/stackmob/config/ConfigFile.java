@@ -16,7 +16,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Set;
 
-public class ConfigFile {
+public abstract class ConfigFile implements Config {
 
     private File file;
     private FileConfiguration fileCon;

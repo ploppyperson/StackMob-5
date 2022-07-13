@@ -27,13 +27,13 @@ public class ExplosionListener implements Listener {
         if (stackEntity == null || stackEntity.isSingle()) {
             return;
         }
-        switch (sm.getMainConfig().getConfig(event.getEntityType()).getListenerMode("explosion")) {
+        switch (stackEntity.getEntityConfig().getListenerMode("explosion")) {
             case SPLIT:
                 stackEntity.slice();
                 break;
             case MULTIPLY:
                 double multiplier = ThreadLocalRandom.current().nextDouble(0.4, 0.6);
-                int toMultiply = sm.getMainConfig().getConfig(event.getEntityType()).getEventMultiplyLimit("explosion", stackEntity.getSize());
+                int toMultiply = stackEntity.getEntityConfig().getEventMultiplyLimit("explosion", stackEntity.getSize());
                 event.setYield(event.getYield() + Math.round(event.getYield() * toMultiply * multiplier));
                 break;
         }

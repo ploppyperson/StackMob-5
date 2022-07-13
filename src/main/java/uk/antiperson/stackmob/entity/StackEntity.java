@@ -14,6 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import uk.antiperson.stackmob.StackMob;
+import uk.antiperson.stackmob.config.EntityConfig;
 import uk.antiperson.stackmob.events.EventHelper;
 import uk.antiperson.stackmob.hook.StackableMobHook;
 import uk.antiperson.stackmob.utils.Utilities;
@@ -34,6 +35,7 @@ public class StackEntity {
     private int stackSize;
     private Set<ItemStack> equiptItems;
     private Tag tag;
+    private EntityConfig entityConfig;
 
     public StackEntity(StackMob sm, LivingEntity entity) {
         this.sm = sm;
@@ -139,13 +141,13 @@ public class StackEntity {
      * @return whether this entity should wait.
      */
     public boolean shouldWait(CreatureSpawnEvent.SpawnReason spawnReason) {
-        if (!sm.getMainConfig().getConfig(getEntity().getType()).isWaitingEnabled()) {
+        if (!getEntityConfig().isWaitingEnabled()) {
             return false;
         }
-        if (!sm.getMainConfig().getConfig(getEntity().getType()).isWaitingTypes()) {
+        if (!getEntityConfig().isWaitingTypes()) {
             return false;
         }
-        return sm.getMainConfig().getConfig(getEntity().getType()).isWaitingReasons(spawnReason);
+        return getEntityConfig().isWaitingReasons(spawnReason);
     }
 
     /**
@@ -156,7 +158,7 @@ public class StackEntity {
         if (isWaiting()) {
             throw new UnsupportedOperationException("Stack is already waiting!");
         }
-        waitCount = sm.getMainConfig().getConfig(getEntity().getType()).getWaitingTime();
+        waitCount = getEntityConfig().getWaitingTime();
         waiting = true;
     }
 
@@ -196,7 +198,7 @@ public class StackEntity {
      * @return the maximum stack size
      */
     public int getMaxSize() {
-        return sm.getMainConfig().getConfig(getEntity().getType()).getMaxStack();
+        return getEntityConfig().getMaxStack();
     }
 
     /**
@@ -279,7 +281,7 @@ public class StackEntity {
 
     public boolean canStack() {
         if (hasEquipItem()) {
-            if (sm.getMainConfig().getConfig(getEntity().getType()).getEquipItemMode() == EquipItemMode.PREVENT_STACK) {
+            if (getEntityConfig().getEquipItemMode() == EquipItemMode.PREVENT_STACK) {
                 return false;
             }
         }
@@ -449,7 +451,7 @@ public class StackEntity {
         if (!hasEquipItem()) {
             return;
         }
-        if (sm.getMainConfig().getConfig(getEntity().getType()).getEquipItemMode() != EquipItemMode.DROP_ITEMS) {
+        if (getEntityConfig().getEquipItemMode() != EquipItemMode.DROP_ITEMS) {
             return;
         }
         for (ItemStack itemStack : getEquiptItems()) {
@@ -463,6 +465,17 @@ public class StackEntity {
 
     private void setRemoved() {
         this.removed = true;
+    }
+
+    public void refreshConfig() {
+        entityConfig = sm.getMainConfig().getConfig(getEntity());
+    }
+    
+    public EntityConfig getEntityConfig() {
+        if (entityConfig == null) {
+            refreshConfig();
+        }
+        return entityConfig;
     }
 
     public enum EquipItemMode {
@@ -483,13 +496,13 @@ public class StackEntity {
 
         public void update() {
             LivingEntity entity = getEntity();
-            int threshold = sm.getMainConfig().getConfig(entity.getType()).getTagThreshold();
+            int threshold = getEntityConfig().getTagThreshold();
             if (getSize() <= threshold) {
                 entity.setCustomName(null);
                 entity.setCustomNameVisible(false);
                 return;
             }
-            displayName = sm.getMainConfig().getConfig(entity.getType()).getTagFormat();
+            displayName = getEntityConfig().getTagFormat();
             displayName = StringUtils.replace(displayName, "%type%", getEntityName());
             displayName = StringUtils.replace(displayName, "%size%", getSize() + "");
             displayName = Utilities.translateColorCodes(displayName);
@@ -497,7 +510,7 @@ public class StackEntity {
                 return;
             }
             entity.setCustomName(displayName);
-            if (sm.getMainConfig().getConfig(entity.getType()).getTagMode() == TagMode.ALWAYS) {
+            if (getEntityConfig().getTagMode() == TagMode.ALWAYS) {
                 entity.setCustomNameVisible(true);
             }
         }

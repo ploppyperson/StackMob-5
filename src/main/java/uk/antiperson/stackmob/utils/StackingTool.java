@@ -113,7 +113,7 @@ public class StackingTool {
             case INFO:
                 user.sendInfo("Stack information: ");
                 user.sendRawMessage("Stack size: " + stackEntity.getSize() + " Max size: " + stackEntity.getMaxSize() + " Waiting count: " + stackEntity.getWaitCount());
-                user.sendRawMessage("Can stack: " + stackEntity.canStack() + " Is blacklisted? " + sm.getMainConfig().getConfig(stackEntity.getEntity().getType()).isEntityBlacklisted(stackEntity.getEntity()));
+                user.sendRawMessage("Can stack: " + stackEntity.canStack() + " Is blacklisted? " + stackEntity.getEntityConfig().isEntityBlacklisted(stackEntity.getEntity()));
                 return;
         }
         user.sendSuccess("Action performed successfully.");

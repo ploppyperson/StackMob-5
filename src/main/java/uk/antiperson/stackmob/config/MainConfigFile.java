@@ -23,4 +23,9 @@ public class MainConfigFile extends ConfigFile {
         }
         super.updateFile();
     }
+
+    @Override
+    public void reloadConfig() throws IOException {
+        load();
+    }
 }

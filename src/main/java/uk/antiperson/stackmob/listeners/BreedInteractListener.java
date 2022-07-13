@@ -42,7 +42,7 @@ public class BreedInteractListener implements Listener {
         if (stackEntity == null || stackEntity.isSingle()) {
             return;
         }
-        ListenerMode breed = sm.getMainConfig().getConfig(animals.getType()).getListenerMode("breed");
+        ListenerMode breed = stackEntity.getEntityConfig().getListenerMode("breed");
         if (breed == ListenerMode.SPLIT) {
             stackEntity.slice();
             return;

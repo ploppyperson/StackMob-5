@@ -47,7 +47,7 @@ public class SpawnListener implements Listener {
             if (!sm.getMainConfig().getConfig().isStackOnSpawn()) {
                 return;
             }
-            Integer[] searchRadius = sm.getMainConfig().getConfig(event.getEntity().getType()).getStackRadius();
+            Integer[] searchRadius = original.getEntityConfig().getStackRadius();
             for (Entity entity : event.getEntity().getNearbyEntities(searchRadius[0], searchRadius[1], searchRadius[2])) {
                 if (!(entity instanceof Mob)) {
                     continue;
@@ -62,7 +62,7 @@ public class SpawnListener implements Listener {
                 if (!original.match(nearby)) {
                     continue;
                 }
-                if (sm.getMainConfig().getConfig(entity.getType()).getStackThresholdEnabled() && nearby.getSize() == 1) {
+                if (original.getEntityConfig().getStackThresholdEnabled() && nearby.getSize() == 1) {
                     continue;
                 }
                 StackEntity removed = nearby.merge(original, true);

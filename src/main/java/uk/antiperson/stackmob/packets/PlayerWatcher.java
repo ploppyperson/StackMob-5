@@ -30,10 +30,10 @@ public class PlayerWatcher {
         Set<StackEntity> nearby = getNearbyStacks();
         Set<TagHandler> remaining = new HashSet<>(lastRange.values());
         for (StackEntity iterated : nearby) {
-            if (sm.getMainConfig().getConfig(iterated.getEntity().getType()).getTagMode() != StackEntity.TagMode.NEARBY) {
+            if (iterated.getEntityConfig().getTagMode() != StackEntity.TagMode.NEARBY) {
                 continue;
             }
-            int threshold = sm.getMainConfig().getConfig(iterated.getEntity().getType()).getTagThreshold();
+            int threshold = iterated.getEntityConfig().getTagThreshold();
             if (iterated.getSize() <= threshold) {
                 continue;
             }

@@ -71,8 +71,8 @@ public class StackMob extends JavaPlugin {
         getLogger().info("GitHub: " + Utilities.GITHUB + " Discord: " + Utilities.DISCORD);
         getLogger().info("Loading config files...");
         try {
-            config.init();
-            getEntityTranslation().load();
+            getMainConfig().init();
+            getEntityTranslation().reloadConfig();
         } catch (IOException e) {
             getLogger().log(Level.SEVERE, "There was a problem loading the configuration file.");
             e.printStackTrace();

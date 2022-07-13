@@ -1,6 +1,7 @@
 package uk.antiperson.stackmob.config;
 
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import uk.antiperson.stackmob.StackMob;
 
@@ -63,6 +64,10 @@ public class MainConfig {
 
     public EntityConfig getConfig(EntityType type) {
         return map.get(type);
+    }
+
+    public EntityConfig getConfig(Entity entity) {
+        return getConfig(entity.getType());
     }
 
     public EntityConfig getConfig() {
