@@ -1,5 +1,7 @@
 package uk.antiperson.stackmob.packets;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.minecraft.network.chat.IChatBaseComponent;
 import net.minecraft.network.protocol.game.PacketPlayOutEntityDestroy;
 import net.minecraft.network.protocol.game.PacketPlayOutEntityMetadata;
@@ -16,6 +18,8 @@ import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
+import java.util.Optional;
+
 public class NmsFakeArmorStand implements FakeArmorStand {
 
     private EntityArmorStand entityArmorStand;
@@ -25,7 +29,7 @@ public class NmsFakeArmorStand implements FakeArmorStand {
         this.player = player;
     }
 
-    public void spawnFakeArmorStand(Entity owner, Location location, String name) {
+    public void spawnFakeArmorStand(Entity owner, Location location, Component name) {
         WorldServer worldServer = ((CraftWorld) location.getWorld()).getHandle();
         // spawn armor stand
         Location adjusted = adjustLocation(owner);
@@ -36,7 +40,7 @@ public class NmsFakeArmorStand implements FakeArmorStand {
         ((CraftPlayer) player).getHandle().b.a(packetPlayOutSpawn);
         DataWatcher watcher = new DataWatcher(entityArmorStand);
         watcher.a(new DataWatcherObject<>(0, DataWatcherRegistry.a), (byte) 0x20);
-        watcher.a(new DataWatcherObject<>(2, DataWatcherRegistry.f), java.util.Optional.ofNullable(IChatBaseComponent.a(name)));
+        watcher.a(new DataWatcherObject<>(2, DataWatcherRegistry.f), Optional.ofNullable(IChatBaseComponent.ChatSerializer.a(GsonComponentSerializer.gson().serializeToTree(name))));
         watcher.a(new DataWatcherObject<>(3, DataWatcherRegistry.i), true);
         watcher.a(new DataWatcherObject<>(5, DataWatcherRegistry.i), true);
         watcher.a(new DataWatcherObject<>(15, DataWatcherRegistry.a), (byte) 0x10);
@@ -46,9 +50,9 @@ public class NmsFakeArmorStand implements FakeArmorStand {
     }
 
     @Override
-    public void updateName(String newName) {
+    public void updateName(Component newName) {
         DataWatcher watcher = new DataWatcher(entityArmorStand);
-        watcher.a(new DataWatcherObject<>(2, DataWatcherRegistry.f), java.util.Optional.ofNullable(IChatBaseComponent.a(newName)));
+        watcher.a(new DataWatcherObject<>(2, DataWatcherRegistry.f), Optional.ofNullable(IChatBaseComponent.ChatSerializer.a(GsonComponentSerializer.gson().serializeToTree(newName))));
         PacketPlayOutEntityMetadata packetPlayOutEntityMetadata = new PacketPlayOutEntityMetadata(entityArmorStand.ae(), watcher, true);
         ((CraftPlayer) player).getHandle().b.a(packetPlayOutEntityMetadata);
     }

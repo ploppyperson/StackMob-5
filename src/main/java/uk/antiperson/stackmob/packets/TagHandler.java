@@ -1,5 +1,6 @@
 package uk.antiperson.stackmob.packets;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.FluidCollisionMode;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Mob;
@@ -18,7 +19,7 @@ public class TagHandler {
     private final StackMob sm;
     private final Player player;
     private FakeArmorStand fakeArmorStand;
-    private String lastTag;
+    private Component lastTag;
 
     public TagHandler(StackMob sm, Player player, StackEntity stackEntity) {
         this.sm = sm;

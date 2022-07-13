@@ -1,5 +1,6 @@
 package uk.antiperson.stackmob.packets;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -18,7 +19,7 @@ public class ProtocolLibFakeArmorStand implements FakeArmorStand {
     }
 
     @Override
-    public void spawnFakeArmorStand(Entity owner, Location location, String name) {
+    public void spawnFakeArmorStand(Entity owner, Location location, Component name) {
         if (plh == null) {
             plh = sm.getHookManager().getProtocolLibHook();
         }
@@ -26,7 +27,7 @@ public class ProtocolLibFakeArmorStand implements FakeArmorStand {
     }
 
     @Override
-    public void updateName(String newName) {
+    public void updateName(Component newName) {
         if (plh == null) {
             plh = sm.getHookManager().getProtocolLibHook();
         }

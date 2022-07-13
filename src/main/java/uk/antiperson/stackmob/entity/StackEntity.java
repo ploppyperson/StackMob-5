@@ -1,5 +1,6 @@
 package uk.antiperson.stackmob.entity;
 
+import net.kyori.adventure.text.Component;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Location;
@@ -21,6 +22,7 @@ import uk.antiperson.stackmob.utils.Utilities;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class StackEntity {
 
@@ -492,7 +494,7 @@ public class StackEntity {
 
     public class Tag {
 
-        private String displayName;
+        private Component displayName;
 
         public void update() {
             LivingEntity entity = getEntity();
@@ -502,14 +504,14 @@ public class StackEntity {
                 entity.setCustomNameVisible(false);
                 return;
             }
-            displayName = getEntityConfig().getTagFormat();
-            displayName = StringUtils.replace(displayName, "%type%", getEntityName());
-            displayName = StringUtils.replace(displayName, "%size%", getSize() + "");
-            displayName = Utilities.translateColorCodes(displayName);
-            if (sm.getMainConfig().getConfig().isUseArmorStand()) {
+            String format = getEntityConfig().getTagFormat();
+            format = StringUtils.replace(format, "%type%", getEntityName());
+            format = StringUtils.replace(format, "%size%", getSize() + "");
+            displayName = Utilities.createComponent(format);
+            if (sm.getMainConfig().getConfig().isUseArmorStand() && getEntityConfig().getTagMode() == TagMode.NEARBY) {
                 return;
             }
-            entity.setCustomName(displayName);
+            entity.customName(displayName);
             if (getEntityConfig().getTagMode() == TagMode.ALWAYS) {
                 entity.setCustomNameVisible(true);
             }
@@ -527,7 +529,7 @@ public class StackEntity {
             return WordUtils.capitalizeFully(typeString.replaceAll("[^A-Za-z0-9]", " "));
         }
 
-        public String getDisplayName() {
+        public Component getDisplayName() {
             if (displayName == null) {
                 update();
             }

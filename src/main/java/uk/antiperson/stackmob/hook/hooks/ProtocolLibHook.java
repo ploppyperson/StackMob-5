@@ -6,6 +6,8 @@ import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -49,7 +51,7 @@ public class ProtocolLibHook extends Hook {
         }
     }
 
-    public int spawnFakeArmorStand(Player player, Location location, String name) {
+    public int spawnFakeArmorStand(Player player, Location location, Component name) {
         // spawn packet
         PacketContainer packetContainer = new PacketContainer(PacketType.Play.Server.SPAWN_ENTITY);
         packetContainer.getIntegers().write(0, entityIdCounter);
@@ -62,7 +64,7 @@ public class ProtocolLibHook extends Hook {
         PacketContainer packetContainer1 = new PacketContainer(PacketType.Play.Server.ENTITY_METADATA);
         WrappedDataWatcher watcher = new WrappedDataWatcher();
         watcher.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(0, WrappedDataWatcher.Registry.get(Byte.class)), (byte) 0x20);
-        watcher.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(2, WrappedDataWatcher.Registry.getChatComponentSerializer(true)), Optional.of(WrappedChatComponent.fromText(name).getHandle()));
+        watcher.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(2, WrappedDataWatcher.Registry.getChatComponentSerializer(true)), Optional.of(WrappedChatComponent.fromJson(GsonComponentSerializer.gson().serialize(name))));
         watcher.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(3, WrappedDataWatcher.Registry.get(Boolean.class)), true);
         watcher.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(5, WrappedDataWatcher.Registry.get(Boolean.class)), true);
         watcher.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(15, WrappedDataWatcher.Registry.get(Byte.class)), (byte) 0x10);
@@ -78,10 +80,10 @@ public class ProtocolLibHook extends Hook {
         return entityIdCounter - 1;
     }
 
-    public void updateTag(Player player, int id, String newName) {
+    public void updateTag(Player player, int id, Component newName) {
         PacketContainer packetContainer1 = new PacketContainer(PacketType.Play.Server.ENTITY_METADATA);
         WrappedDataWatcher watcher = new WrappedDataWatcher();
-        watcher.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(2, WrappedDataWatcher.Registry.getChatComponentSerializer(true)), Optional.of(WrappedChatComponent.fromText(newName).getHandle()));
+        watcher.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(2, WrappedDataWatcher.Registry.getChatComponentSerializer(true)), Optional.of(WrappedChatComponent.fromJson(GsonComponentSerializer.gson().serialize(newName)).getHandle()));
         packetContainer1.getIntegers().write(0, id);
         packetContainer1.getWatchableCollectionModifier().write(0, watcher.getWatchableObjects());
         try {

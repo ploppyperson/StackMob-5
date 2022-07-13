@@ -1,14 +1,15 @@
 package uk.antiperson.stackmob.packets;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 public interface FakeArmorStand {
 
-    void spawnFakeArmorStand(Entity owner, Location location, String name);
+    void spawnFakeArmorStand(Entity owner, Location location, Component name);
 
-    void updateName(String newName);
+    void updateName(Component newName);
 
     void teleport(Entity entity);
 
