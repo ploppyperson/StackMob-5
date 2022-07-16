@@ -1,5 +1,6 @@
 package uk.antiperson.stackmob.entity;
 
+import net.kyori.adventure.text.Component;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Location;
@@ -8,21 +9,20 @@ import org.bukkit.World;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import uk.antiperson.stackmob.StackMob;
+import uk.antiperson.stackmob.config.EntityConfig;
 import uk.antiperson.stackmob.events.EventHelper;
 import uk.antiperson.stackmob.hook.StackableMobHook;
-import uk.antiperson.stackmob.hook.hooks.ProtocolLibHook;
-import uk.antiperson.stackmob.utils.NMSHelper;
 import uk.antiperson.stackmob.utils.Utilities;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class StackEntity {
 
@@ -37,6 +37,7 @@ public class StackEntity {
     private int stackSize;
     private Set<ItemStack> equiptItems;
     private Tag tag;
+    private EntityConfig entityConfig;
 
     public StackEntity(StackMob sm, LivingEntity entity) {
         this.sm = sm;
@@ -86,7 +87,7 @@ public class StackEntity {
      * @return the location of the entity where it was last checked for stacking, null if 'stack.check-location' is disabled.
      */
     public Location getLastLocation() {
-        if (lastLocation == null && sm.getMainConfig().isCheckHasMoved()) {
+        if (lastLocation == null && sm.getMainConfig().getConfig().isCheckHasMoved()) {
             lastLocation = entity.getLocation();
         }
         return lastLocation;
@@ -142,13 +143,13 @@ public class StackEntity {
      * @return whether this entity should wait.
      */
     public boolean shouldWait(CreatureSpawnEvent.SpawnReason spawnReason) {
-        if (!sm.getMainConfig().isWaitingEnabled(getEntity().getType())) {
+        if (!getEntityConfig().isWaitingEnabled()) {
             return false;
         }
-        if (!sm.getMainConfig().isWaitingTypes(getEntity().getType())) {
+        if (!getEntityConfig().isWaitingTypes()) {
             return false;
         }
-        return sm.getMainConfig().isWaitingReasons(getEntity().getType(), spawnReason);
+        return getEntityConfig().isWaitingReasons(spawnReason);
     }
 
     /**
@@ -159,7 +160,7 @@ public class StackEntity {
         if (isWaiting()) {
             throw new UnsupportedOperationException("Stack is already waiting!");
         }
-        waitCount = sm.getMainConfig().getWaitingTime(getEntity().getType());
+        waitCount = getEntityConfig().getWaitingTime();
         waiting = true;
     }
 
@@ -199,7 +200,7 @@ public class StackEntity {
      * @return the maximum stack size
      */
     public int getMaxSize() {
-        return sm.getMainConfig().getMaxStack(getEntity().getType());
+        return getEntityConfig().getMaxStack();
     }
 
     /**
@@ -282,7 +283,7 @@ public class StackEntity {
 
     public boolean canStack() {
         if (hasEquipItem()) {
-            if (sm.getMainConfig().getEquipItemMode(getEntity().getType()) == EquipItemMode.PREVENT_STACK) {
+            if (getEntityConfig().getEquipItemMode() == EquipItemMode.PREVENT_STACK) {
                 return false;
             }
         }
@@ -316,7 +317,7 @@ public class StackEntity {
     }
 
     public void mergePotionEffects(StackEntity toKeep, StackEntity toRemove) {
-        if (!sm.getMainConfig().isTraitEnabled("potion-effect")) {
+        if (!sm.getMainConfig().getConfig().isTraitEnabled("potion-effect")) {
             return;
         }
         for (PotionEffect potionEffect : toRemove.getEntity().getActivePotionEffects()) {
@@ -452,7 +453,7 @@ public class StackEntity {
         if (!hasEquipItem()) {
             return;
         }
-        if (sm.getMainConfig().getEquipItemMode(getEntity().getType()) != EquipItemMode.DROP_ITEMS) {
+        if (getEntityConfig().getEquipItemMode() != EquipItemMode.DROP_ITEMS) {
             return;
         }
         for (ItemStack itemStack : getEquiptItems()) {
@@ -466,6 +467,17 @@ public class StackEntity {
 
     private void setRemoved() {
         this.removed = true;
+    }
+
+    public void refreshConfig() {
+        entityConfig = sm.getMainConfig().getConfig(getEntity());
+    }
+    
+    public EntityConfig getEntityConfig() {
+        if (entityConfig == null) {
+            refreshConfig();
+        }
+        return entityConfig;
     }
 
     public enum EquipItemMode {
@@ -482,20 +494,25 @@ public class StackEntity {
 
     public class Tag {
 
+        private Component displayName;
+
         public void update() {
             LivingEntity entity = getEntity();
-            int threshold = sm.getMainConfig().getTagThreshold(entity.getType());
+            int threshold = getEntityConfig().getTagThreshold();
             if (getSize() <= threshold) {
                 entity.setCustomName(null);
                 entity.setCustomNameVisible(false);
                 return;
             }
-            String displayName = sm.getMainConfig().getTagFormat(entity.getType());
-            displayName = StringUtils.replace(displayName, "%type%", getEntityName());
-            displayName = StringUtils.replace(displayName, "%size%", getSize() + "");
-            displayName = Utilities.translateColorCodes(displayName);
-            entity.setCustomName(displayName);
-            if (sm.getMainConfig().getTagMode(entity.getType()) == TagMode.ALWAYS) {
+            String format = getEntityConfig().getTagFormat();
+            format = StringUtils.replace(format, "%type%", getEntityName());
+            format = StringUtils.replace(format, "%size%", getSize() + "");
+            displayName = Utilities.createComponent(format);
+            if (sm.getMainConfig().getConfig().isUseArmorStand() && getEntityConfig().getTagMode() == TagMode.NEARBY) {
+                return;
+            }
+            entity.customName(displayName);
+            if (getEntityConfig().getTagMode() == TagMode.ALWAYS) {
                 entity.setCustomNameVisible(true);
             }
         }
@@ -512,16 +529,11 @@ public class StackEntity {
             return WordUtils.capitalizeFully(typeString.replaceAll("[^A-Za-z0-9]", " "));
         }
 
-        public void sendPacket(Player player, boolean tagVisible) {
-            if (Utilities.getMinecraftVersion() != Utilities.NMS_VERSION) {
-                ProtocolLibHook protocolLibHook = sm.getHookManager().getProtocolLibHook();
-                if (protocolLibHook == null) {
-                    return;
-                }
-                protocolLibHook.sendPacket(player, getEntity(), tagVisible);
-                return;
+        public Component getDisplayName() {
+            if (displayName == null) {
+                update();
             }
-            NMSHelper.sendPacket(player, getEntity(), tagVisible);
+            return displayName;
         }
     }
 }

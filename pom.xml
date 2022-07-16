@@ -6,7 +6,7 @@
 
     <groupId>uk.antiperson.stackmob</groupId>
     <artifactId>StackMob</artifactId>
-    <version>5.7.6</version>
+    <version>5.8.0</version>
 
     <build>
         <sourceDirectory>src/main/java</sourceDirectory>
@@ -51,6 +51,10 @@
                     <relocations>
                         <relocation>
                             <pattern>org.bstats</pattern>
+                            <shadedPattern>uk.antiperson.stackmob</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>net.kyori</pattern>
                             <shadedPattern>uk.antiperson.stackmob</shadedPattern>
                         </relocation>
                     </relocations>
@@ -174,6 +178,12 @@
             <version>3.11</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/jars/MyPet-3.11-SNAPSHOT-B1627.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-platform-bukkit</artifactId>
+            <version>4.1.1</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 

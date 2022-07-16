@@ -1,21 +1,26 @@
 package uk.antiperson.stackmob;
 
 import org.bstats.bukkit.Metrics;
+import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.entity.EntityType;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.InvalidPluginException;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import uk.antiperson.stackmob.commands.Commands;
 import uk.antiperson.stackmob.config.EntityTranslation;
+import uk.antiperson.stackmob.config.EntityConfig;
 import uk.antiperson.stackmob.config.MainConfig;
 import uk.antiperson.stackmob.entity.EntityManager;
 import uk.antiperson.stackmob.entity.traits.TraitManager;
 import uk.antiperson.stackmob.hook.HookManager;
 import uk.antiperson.stackmob.listeners.*;
+import uk.antiperson.stackmob.packets.PlayerManager;
 import uk.antiperson.stackmob.tasks.MergeTask;
-import uk.antiperson.stackmob.tasks.TagTask;
+import uk.antiperson.stackmob.tasks.TagCheckTask;
+import uk.antiperson.stackmob.tasks.TagMoveTask;
 import uk.antiperson.stackmob.utils.ItemTools;
 import uk.antiperson.stackmob.utils.Updater;
 import uk.antiperson.stackmob.utils.Utilities;
@@ -23,6 +28,7 @@ import uk.antiperson.stackmob.utils.Utilities;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
 
 public class StackMob extends JavaPlugin {
@@ -37,6 +43,7 @@ public class StackMob extends JavaPlugin {
     private EntityManager entityManager;
     private Updater updater;
     private ItemTools itemTools;
+    private PlayerManager playerManager;
 
     private boolean stepDamageError;
 
@@ -59,12 +66,13 @@ public class StackMob extends JavaPlugin {
         entityTranslation = new EntityTranslation(this);
         updater = new Updater(this, 29999);
         itemTools = new ItemTools(this);
+        playerManager = new PlayerManager(this);
         getLogger().info("StackMob v" + getDescription().getVersion() + " by antiPerson and contributors.");
         getLogger().info("GitHub: " + Utilities.GITHUB + " Discord: " + Utilities.DISCORD);
         getLogger().info("Loading config files...");
         try {
-            getMainConfig().load();
-            getEntityTranslation().load();
+            getMainConfig().init();
+            getEntityTranslation().reloadConfig();
         } catch (IOException e) {
             getLogger().log(Level.SEVERE, "There was a problem loading the configuration file.");
             e.printStackTrace();
@@ -87,10 +95,13 @@ public class StackMob extends JavaPlugin {
         command.setExecutor(commands);
         command.setTabCompleter(commands);
         commands.registerSubCommands();
-        int stackInterval = getMainConfig().getStackInterval();
+        int stackInterval = getMainConfig().getConfig().getStackInterval();
         new MergeTask(this).runTaskTimer(this, 5, stackInterval);
-        int tagInterval = getMainConfig().getTagNearbyInterval();
-        new TagTask(this).runTaskTimer(this, 10, tagInterval);
+        int tagInterval = getMainConfig().getConfig().getTagNearbyInterval();
+        new TagCheckTask(this).runTaskTimer(this, 10, tagInterval);
+        if (getMainConfig().getConfig().isUseArmorStand()) {
+            new TagMoveTask(this).runTaskTimer(this, 0, 1);
+        }
         if (Utilities.getMinecraftVersion() != Utilities.NMS_VERSION && getHookManager().getProtocolLibHook() == null) {
             getLogger().warning("You are not running the plugins native version and ProtocolLib could not be found (or has been disabled).");
             getLogger().warning("The display name visibility setting 'NEARBY' will not work unless this is fixed.");
@@ -108,19 +119,16 @@ public class StackMob extends JavaPlugin {
             getLogger().warning("StackMob makes use of Paper's API, which means you're missing out on features.");
         }
         new Metrics(this, 522);
-        if (Utilities.isPaper() && getServer().spigot().getPaperConfig().getBoolean("settings.log-named-entity-deaths", false)) {
-            getLogger().warning("The paper.yml option settings.log-named-entity-deaths is enabled." +
-                    " You will get messages in console every time a named mob is killed." +
-                    " You should probably disable this, unless you like console spam?");
-        }
     }
 
     @Override
     public void onDisable() {
         getEntityManager().unregisterAllEntities();
+        Bukkit.getOnlinePlayers().forEach(player -> getPlayerManager().stopWatching(player));
     }
 
     private void registerEvents() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        registerEvent(PlayerArmorStandListener.class);
         registerEvent(BucketListener.class);
         registerEvent(DeathListener.class);
         registerEvent(TransformListener.class);
@@ -148,10 +156,10 @@ public class StackMob extends JavaPlugin {
     private void registerEvent(Class<? extends Listener> clazz) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         ListenerMetadata listenerMetadata = clazz.getAnnotation(ListenerMetadata.class);
         if (listenerMetadata != null) {
-            if (!getMainConfig().isSet(listenerMetadata.config())) {
+            if (!getMainConfig().getConfigFile().isSet(listenerMetadata.config())) {
                 return;
             }
-            if (!getMainConfig().getBoolean(listenerMetadata.config())) {
+            if (!getMainConfig().getConfigFile().getBoolean(listenerMetadata.config())) {
                 return;
             }
         }
@@ -199,6 +207,10 @@ public class StackMob extends JavaPlugin {
 
     public HookManager getHookManager() {
         return hookManager;
+    }
+
+    public PlayerManager getPlayerManager() {
+        return playerManager;
     }
 
     public Updater getUpdater() {

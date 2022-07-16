@@ -1,5 +1,9 @@
 package uk.antiperson.stackmob.utils;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.util.RGBLike;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -46,16 +50,28 @@ public class Utilities {
         usingPaper = usingPaper1;
     }
 
-    public static String translateColorCodes(String toTranslate) {
+    public static Component createComponent(String toTranslate) {
+        String toModify = toTranslate;
         Matcher matcher = hexPattern.matcher(toTranslate);
+        TextComponent component = Component.text("");
+        List<Integer> indexes = new ArrayList<>();
+        int shift = 0;
         while (matcher.find()) {
-            ChatColor chatColor = ChatColor.of(matcher.group().substring(1,8));
-            String before = toTranslate.substring(0, matcher.start());
-            String after = toTranslate.substring(matcher.end());
-            toTranslate = before + chatColor + after;
-            matcher = hexPattern.matcher(toTranslate);
+            indexes.add(matcher.start() + shift);
+            indexes.add(matcher.end() + shift);
+            toModify = toModify.substring(toModify.indexOf('&') + 1);
+            matcher = hexPattern.matcher(toModify);
+            shift += 1;
         }
-        return ChatColor.translateAlternateColorCodes('&', toTranslate);
+        for (int i = 0; i < indexes.size(); i+= 2) {
+            int firstStart = indexes.get(i);
+            int firstEnding = indexes.get(i + 1);
+            int nextStart = i == indexes.size() - 2 ? toTranslate.length() : indexes.get(i + 2);
+            String colorCode = toTranslate.substring(firstStart + 1, firstEnding);
+            String text = toTranslate.substring(firstEnding, nextStart);
+            component = component.append(Component.text(text).color(TextColor.fromCSSHexString(colorCode)));
+        }
+        return component;
     }
 
     public static List<Integer> split(int dividend, int divisor) {

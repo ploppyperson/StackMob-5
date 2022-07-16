@@ -7,6 +7,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import uk.antiperson.stackmob.StackMob;
+import uk.antiperson.stackmob.config.EntityConfig;
 import uk.antiperson.stackmob.entity.EntityFood;
 import uk.antiperson.stackmob.entity.StackEntity;
 import uk.antiperson.stackmob.utils.Utilities;
@@ -42,8 +43,8 @@ public class BreedInteractListener implements Listener {
         if (stackEntity == null || stackEntity.isSingle()) {
             return;
         }
-        ListenerMode breed = sm.getMainConfig().getListenerMode(animals.getType(), "breed");
-        if (breed == ListenerMode.SPLIT) {
+        EntityConfig.ListenerMode breed = stackEntity.getEntityConfig().getListenerMode(EntityConfig.EventType.BREED);
+        if (breed == EntityConfig.ListenerMode.SPLIT) {
             stackEntity.slice();
             return;
         }
@@ -53,7 +54,7 @@ public class BreedInteractListener implements Listener {
             Utilities.removeHandItem(event.getPlayer(), 1);
             return;
         }
-        int kidAmount = sm.getMainConfig().getEventMultiplyLimit(animals.getType(), "breed", stackEntity.getSize() / 2);
+        int kidAmount = stackEntity.getEntityConfig().getEventMultiplyLimit(EntityConfig.EventType.BREED, stackEntity.getSize() / 2);
         int parentAmount = kidAmount * 2;
         if (stackEntity.getSize() > parentAmount) {
             stackEntity.slice(parentAmount);

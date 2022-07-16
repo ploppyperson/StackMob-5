@@ -30,19 +30,19 @@ public class Drops {
 
     public Map<ItemStack, Integer> calculateDrops(int deathAmount, List<ItemStack> originalDrops) {
         Map<ItemStack, Integer> items = new HashMap<>();
-        if (!sm.getMainConfig().isDropMultiEnabled(dead.getType())) {
+        if (!sm.getMainConfig().getConfig(dead).isDropMultiEnabled()) {
             return items;
         }
-        if (sm.getMainConfig().isDropTypeBlacklist(dead.getType())) {
+        if (sm.getMainConfig().getConfig(dead).isDropTypeBlacklist()) {
             return items;
         }
         EntityDamageEvent lastDamageCause = dead.getLastDamageCause();
-        if (lastDamageCause == null || sm.getMainConfig().isDropReasonBlacklist(dead.getType(), lastDamageCause.getCause())) {
+        if (lastDamageCause == null || sm.getMainConfig().getConfig(dead).isDropReasonBlacklist(lastDamageCause.getCause())) {
             return items;
         }
-        boolean useLootTables = sm.getMainConfig().isDropLootTables(dead.getType());
-        ConfigList itemBlacklist = sm.getMainConfig().getDropItemBlacklist(dead.getType());
-        ConfigList dropOneItemPer = sm.getMainConfig().getDropItemOnePer(dead.getType());
+        boolean useLootTables = sm.getMainConfig().getConfig(dead).isDropLootTables();
+        ConfigList itemBlacklist = sm.getMainConfig().getConfig(dead).getDropItemBlacklist();
+        ConfigList dropOneItemPer = sm.getMainConfig().getConfig(dead).getDropItemOnePer();
         LootContext lc = new LootContext.Builder(dead.getLocation()).lootedEntity(dead).killer(dead.getKiller()).build();
         Collection<ItemStack> genItems = originalDrops;
         for (int i = 0; i < deathAmount; i++) {
@@ -99,14 +99,14 @@ public class Drops {
     }
 
     public int calculateDeathExperience(int deadCount, int exp) {
-        if (!sm.getMainConfig().isExpMultiEnabled(dead.getType())) {
+        if (!sm.getMainConfig().getConfig(dead).isExpMultiEnabled()) {
             return exp;
         }
-        if (sm.getMainConfig().isExpTypeBlacklist(dead.getType())) {
+        if (sm.getMainConfig().getConfig(dead).isExpTypeBlacklist()) {
             return exp;
         }
-        double minMulti = sm.getMainConfig().getExpMinBound(dead.getType()) * exp;
-        double maxMulti = sm.getMainConfig().getExpMaxBound(dead.getType()) * exp;
+        double minMulti = sm.getMainConfig().getConfig(dead).getExpMinBound() * exp;
+        double maxMulti = sm.getMainConfig().getConfig(dead).getExpMaxBound() * exp;
         return exp + calculateExperience(minMulti, maxMulti, deadCount);
     }
 

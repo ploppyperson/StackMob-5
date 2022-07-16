@@ -55,6 +55,19 @@ public class CommandArgument {
         return strings;
     }
 
+    public String buildString() {
+        StringBuilder options = new StringBuilder();
+        if (getExpectedArguments().size() <= 3 && getExpectedArguments().size() > 0) {
+            getExpectedArguments().forEach(argument -> options.append(argument).append("/"));
+            options.deleteCharAt(options.length() - 1);
+        } else if (getName() != null) {
+            options.append(getName());
+        } else {
+            options.append(getType());
+        }
+        return options.toString();
+    }
+
     public String getName() {
         return name;
     }

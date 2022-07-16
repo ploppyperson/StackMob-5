@@ -67,7 +67,7 @@ public class HookManager {
         if (!sm.getServer().getPluginManager().isPluginEnabled(hookMetadata.name())) {
             return;
         }
-        if (!sm.getMainConfig().isHookEnabled(hookMetadata.config())) {
+        if (!sm.getMainConfig().getConfig().isHookEnabled(hookMetadata.config())) {
             return;
         }
         Hook hook = createInstance(hookClass);

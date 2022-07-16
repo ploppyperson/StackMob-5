@@ -31,7 +31,7 @@ public class SpawnListener implements Listener {
                 }
                 return;
             }
-            if (sm.getMainConfig().isEntityBlacklisted(event.getEntity(), event.getSpawnReason())) {
+            if (sm.getMainConfig().getConfig(event.getEntity().getType()).isEntityBlacklisted(event.getEntity(), event.getSpawnReason())) {
                 return;
             }
             if (EventHelper.callStackSpawnEvent(event.getEntity()).isCancelled()) {
@@ -44,10 +44,10 @@ public class SpawnListener implements Listener {
             }
             sm.getHookManager().onSpawn(original);
             original.setSize(1);
-            if (!sm.getMainConfig().isStackOnSpawn()) {
+            if (!sm.getMainConfig().getConfig().isStackOnSpawn()) {
                 return;
             }
-            Integer[] searchRadius = sm.getMainConfig().getStackRadius(event.getEntity().getType());
+            Integer[] searchRadius = original.getEntityConfig().getStackRadius();
             for (Entity entity : event.getEntity().getNearbyEntities(searchRadius[0], searchRadius[1], searchRadius[2])) {
                 if (!(entity instanceof Mob)) {
                     continue;
@@ -62,7 +62,7 @@ public class SpawnListener implements Listener {
                 if (!original.match(nearby)) {
                     continue;
                 }
-                if (sm.getMainConfig().getStackThresholdEnabled(entity.getType()) && nearby.getSize() == 1) {
+                if (original.getEntityConfig().getStackThresholdEnabled() && nearby.getSize() == 1) {
                     continue;
                 }
                 StackEntity removed = nearby.merge(original, true);

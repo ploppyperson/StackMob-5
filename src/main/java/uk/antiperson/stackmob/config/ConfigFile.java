@@ -14,8 +14,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.Set;
 
-public class ConfigFile {
+public abstract class ConfigFile implements Config {
 
     private File file;
     private FileConfiguration fileCon;
@@ -83,6 +84,10 @@ public class ConfigFile {
         fileCon.set(path, value);
     }
 
+    public Set<String> getKeys(boolean deep) {
+        return fileCon.getKeys(deep);
+    }
+
     /**
      * Loads the config so that it can be read.
      * @throws IOException when an I/O error occurs if a new file is made.
@@ -144,6 +149,9 @@ public class ConfigFile {
             if (fileCon.isSet(key)) {
                 continue;
             }
+            if (Utilities.isVersionAtLeast(Utilities.MinecraftVersion.V1_18_R2)) {
+                fileCon.setComments(key, includedConfig.getComments(key));
+            }
             fileCon.set(key, includedConfig.get(key));
             updated = true;
         }
@@ -151,8 +159,10 @@ public class ConfigFile {
             return;
         }
         fileCon.options().header(includedConfig.options().header());
-        sm.getLogger().warning("Config file " + file.getName() + " has been updated. This means that comments have been removed.");
-        sm.getLogger().info("If you need comments, you access a version with them at " + Utilities.GITHUB_DEFAULT_CONFIG);
+        if (!Utilities.isVersionAtLeast(Utilities.MinecraftVersion.V1_18_R2)) {
+            sm.getLogger().warning("Config file " + file.getName() + " has been updated. This means that comments have been removed.");
+            sm.getLogger().info("If you need comments, you access a version with them at " + Utilities.GITHUB_DEFAULT_CONFIG);
+        }
         save();
     }
 

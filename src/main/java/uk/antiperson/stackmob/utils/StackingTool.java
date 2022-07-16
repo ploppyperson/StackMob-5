@@ -20,6 +20,7 @@ import uk.antiperson.stackmob.commands.User;
 import uk.antiperson.stackmob.entity.StackEntity;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class StackingTool {
@@ -55,7 +56,9 @@ public class StackingTool {
         ItemMeta itemMeta = itemStack.getItemMeta();
         int nextMode = (getModeId() + 1) >= ToolMode.values().length ? 0 : getModeId() + 1;
         itemMeta.getPersistentDataContainer().set(sm.getToolKey(), PersistentDataType.INTEGER, nextMode);
-        itemMeta.setDisplayName(ItemTools.ITEM_NAME + ChatColor.of("#FF6347") + " Mode: " + getMode(nextMode));
+        List<String> lore = itemMeta.getLore();
+        lore.set(lore.size() - 1, ChatColor.of("#FF6347") + "Mode: " + getMode(nextMode));
+        itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
         player.getInventory().setItemInMainHand(itemStack);
         BaseComponent[] baseComponent = TextComponent.fromLegacyText(ChatColor.of("#D3D3D3") + "Shifted mode to " + ChatColor.of("#A9A9A9") + getMode(nextMode));
@@ -113,7 +116,7 @@ public class StackingTool {
             case INFO:
                 user.sendInfo("Stack information: ");
                 user.sendRawMessage("Stack size: " + stackEntity.getSize() + " Max size: " + stackEntity.getMaxSize() + " Waiting count: " + stackEntity.getWaitCount());
-                user.sendRawMessage("Can stack: " + stackEntity.canStack() + " Is blacklisted? " + sm.getMainConfig().isEntityBlacklisted(stackEntity.getEntity()));
+                user.sendRawMessage("Can stack: " + stackEntity.canStack() + " Is blacklisted? " + stackEntity.getEntityConfig().isEntityBlacklisted(stackEntity.getEntity()));
                 return;
         }
         user.sendSuccess("Action performed successfully.");
@@ -146,7 +149,7 @@ public class StackingTool {
 
         public ModifyPrompt(LivingEntity livingEntity) {
             this.livingEntity = livingEntity;
-            this.maxSize = sm.getMainConfig().getMaxStack(livingEntity.getType());
+            this.maxSize = sm.getMainConfig().getConfig(livingEntity.getType()).getMaxStack();
         }
 
         @Nullable
