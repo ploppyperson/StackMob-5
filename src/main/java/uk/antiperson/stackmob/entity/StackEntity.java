@@ -1,6 +1,7 @@
 package uk.antiperson.stackmob.entity;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Location;
@@ -511,10 +512,18 @@ public class StackEntity {
             if (sm.getMainConfig().getConfig().isUseArmorStand() && getEntityConfig().getTagMode() == TagMode.NEARBY) {
                 return;
             }
-            entity.customName(displayName);
+            updateName(displayName);
             if (getEntityConfig().getTagMode() == TagMode.ALWAYS) {
                 entity.setCustomNameVisible(true);
             }
+        }
+
+        private void updateName(Component component) {
+            if (Utilities.isPaper()) {
+                entity.customName(component);
+                return;
+            }
+            entity.setCustomName(LegacyComponentSerializer.legacySection().serialize(component));
         }
 
         private String getEntityName() {
