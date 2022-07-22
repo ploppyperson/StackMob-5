@@ -1,9 +1,7 @@
 package uk.antiperson.stackmob.utils;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
-import net.kyori.adventure.text.format.TextColor;
-import net.kyori.adventure.util.RGBLike;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -21,8 +19,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Utilities {
 
@@ -32,12 +28,12 @@ public class Utilities {
     public static final String DISCORD = "https://discord.gg/fz9xzuB";
     public static final String GITHUB = "https://github.com/Nathat23/StackMob-5";
     public static final String GITHUB_DEFAULT_CONFIG = GITHUB + "/tree/master/src/main/resources";
-    private static final Pattern hexPattern = Pattern.compile("&#([a-zA-Z0-9]){6}");
     private static final boolean usingPaper;
     public static final List<Material> DROWNED_MATERIALS = Arrays.asList(Material.NAUTILUS_SHELL, Material.TRIDENT);
     public static final List<EquipmentSlot> HAND_SLOTS = Arrays.asList(EquipmentSlot.HAND, EquipmentSlot.OFF_HAND);
     private static MinecraftVersion minecraftVersion;
     public static final MinecraftVersion NMS_VERSION = MinecraftVersion.V1_19_R1;
+    private static final LegacyComponentSerializer legacyComponentSerializer = LegacyComponentSerializer.builder().character('&').hexColors().hexCharacter('#').build();
 
     static {
         boolean usingPaper1;
@@ -51,27 +47,7 @@ public class Utilities {
     }
 
     public static Component createComponent(String toTranslate) {
-        String toModify = toTranslate;
-        Matcher matcher = hexPattern.matcher(toTranslate);
-        TextComponent component = Component.text("");
-        List<Integer> indexes = new ArrayList<>();
-        int shift = 0;
-        while (matcher.find()) {
-            indexes.add(matcher.start() + shift);
-            indexes.add(matcher.end() + shift);
-            toModify = toModify.substring(toModify.indexOf('&') + 1);
-            matcher = hexPattern.matcher(toModify);
-            shift += 1;
-        }
-        for (int i = 0; i < indexes.size(); i+= 2) {
-            int firstStart = indexes.get(i);
-            int firstEnding = indexes.get(i + 1);
-            int nextStart = i == indexes.size() - 2 ? toTranslate.length() : indexes.get(i + 2);
-            String colorCode = toTranslate.substring(firstStart + 1, firstEnding);
-            String text = toTranslate.substring(firstEnding, nextStart);
-            component = component.append(Component.text(text).color(TextColor.fromCSSHexString(colorCode)));
-        }
-        return component;
+        return legacyComponentSerializer.deserialize(toTranslate);
     }
 
     public static List<Integer> split(int dividend, int divisor) {
