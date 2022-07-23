@@ -1,18 +1,19 @@
 package uk.antiperson.stackmob.commands;
 
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import uk.antiperson.stackmob.utils.Utilities;
 
 public class User {
 
-    private final CommandSender sender;
-    public User(CommandSender sender) {
+    private final Audience sender;
+    public User(Audience sender) {
         this.sender = sender;
     }
 
     public void sendRawMessage(String message) {
-        sender.sendMessage(message);
+        sender.sendMessage(Component.text(message));
     }
 
     public void sendInfo(String message) {
@@ -27,25 +28,27 @@ public class User {
         sendMessage(MessageType.SUCCESS, message);
     }
 
-    public CommandSender getSender() {
+    public Audience getSender() {
         return sender;
     }
 
-    private void sendMessage(MessageType type, String rawMessage) {
-        StringBuilder message = new StringBuilder(Utilities.PREFIX);
+    private void sendMessage(MessageType type, String string) {
+        sendMessage(type, Component.text(string));
+    }
+
+    private void sendMessage(MessageType type, Component component) {
         switch (type) {
             case INFO:
-                message.append(ChatColor.YELLOW);
+                component = component.color(NamedTextColor.YELLOW);
                 break;
             case ERROR:
-                message.append(ChatColor.RED);
+                component = component.color(NamedTextColor.RED);
                 break;
             case SUCCESS:
-                message.append(ChatColor.GREEN);
+                component = component.color(NamedTextColor.GREEN);
                 break;
         }
-        message.append(rawMessage);
-        sender.sendMessage(message.toString());
+        sender.sendMessage(Utilities.PREFIX.append(component));
     }
 
     enum MessageType {

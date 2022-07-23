@@ -1,17 +1,16 @@
 package uk.antiperson.stackmob;
 
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.PluginCommand;
-import org.bukkit.entity.EntityType;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.InvalidPluginException;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import uk.antiperson.stackmob.commands.Commands;
 import uk.antiperson.stackmob.config.EntityTranslation;
-import uk.antiperson.stackmob.config.EntityConfig;
 import uk.antiperson.stackmob.config.MainConfig;
 import uk.antiperson.stackmob.entity.EntityManager;
 import uk.antiperson.stackmob.entity.traits.TraitManager;
@@ -28,7 +27,6 @@ import uk.antiperson.stackmob.utils.Utilities;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
 
 public class StackMob extends JavaPlugin {
@@ -44,6 +42,7 @@ public class StackMob extends JavaPlugin {
     private Updater updater;
     private ItemTools itemTools;
     private PlayerManager playerManager;
+    private BukkitAudiences adventure;
 
     private boolean stepDamageError;
 
@@ -60,6 +59,7 @@ public class StackMob extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        adventure = BukkitAudiences.create(this);
         traitManager = new TraitManager(this);
         entityManager = new EntityManager(this);
         config = new MainConfig(this);
@@ -125,6 +125,10 @@ public class StackMob extends JavaPlugin {
     public void onDisable() {
         getEntityManager().unregisterAllEntities();
         Bukkit.getOnlinePlayers().forEach(player -> getPlayerManager().stopWatching(player));
+        if (adventure != null) {
+            adventure.close();
+            adventure = null;
+        }
     }
 
     private void registerEvents() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
@@ -227,6 +231,13 @@ public class StackMob extends JavaPlugin {
 
     public ItemTools getItemTools() {
         return itemTools;
+    }
+
+    public BukkitAudiences getAdventure() {
+        if (adventure == null) {
+            throw new IllegalStateException("Tried to access Adventure when the plugin was disabled!");
+        }
+        return this.adventure;
     }
 
     public boolean isStepDamageError() {

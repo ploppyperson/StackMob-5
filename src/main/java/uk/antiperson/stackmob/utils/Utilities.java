@@ -1,6 +1,8 @@
 package uk.antiperson.stackmob.utils;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
@@ -22,7 +24,8 @@ import java.util.concurrent.CompletableFuture;
 
 public class Utilities {
 
-    public static final String PREFIX = ChatColor.of("#00CED1") + "StackMob " + ChatColor.GRAY + ">> " + ChatColor.RESET;
+    public static final Component PREFIX = Component.text("StackMob ").color(TextColor.color(0, 206, 209)).append(Component.text(">> ").color(NamedTextColor.GRAY)).compact();
+    public static final String PREFIX_STRING = LegacyComponentSerializer.legacySection().serialize(PREFIX);
     public static final String SLIME_METADATA = "deathcount";
     public static final String NO_LEASH_METADATA = "stop-leash";
     public static final String DISCORD = "https://discord.gg/fz9xzuB";

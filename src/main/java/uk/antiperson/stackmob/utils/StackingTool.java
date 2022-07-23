@@ -1,5 +1,8 @@
 package uk.antiperson.stackmob.utils;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -61,8 +64,9 @@ public class StackingTool {
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
         player.getInventory().setItemInMainHand(itemStack);
-        BaseComponent[] baseComponent = TextComponent.fromLegacyText(ChatColor.of("#D3D3D3") + "Shifted mode to " + ChatColor.of("#A9A9A9") + getMode(nextMode));
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, baseComponent);
+        Component component = Component.text("Shifted mode to ").color(TextColor.color(211, 211, 211));
+        Component mode = Component.text(getMode(nextMode).toString()).color(TextColor.color(169, 169, 169));
+        sm.getAdventure().player(player).sendActionBar(component.append(mode));
     }
 
     public void performAction(LivingEntity clicked) {
@@ -127,7 +131,7 @@ public class StackingTool {
                 .withTimeout(25)
                 .withFirstPrompt(new ModifyPrompt(stackEntity))
                 .withLocalEcho(false)
-                .withPrefix(conversationContext -> Utilities.PREFIX)
+                .withPrefix(conversationContext -> Utilities.PREFIX_STRING)
                 .addConversationAbandonedListener(new ExitPrompt());
         Conversation conversation = factory.buildConversation(player);
         conversation.begin();
@@ -156,7 +160,7 @@ public class StackingTool {
         @Override
         protected Prompt acceptValidatedInput(@NotNull ConversationContext conversationContext, @NotNull Number number) {
             if (livingEntity.isDead()) {
-                conversationContext.getForWhom().sendRawMessage(Utilities.PREFIX + ChatColor.RED + "Entity is no longer valid. Modification has been cancelled.");
+                conversationContext.getForWhom().sendRawMessage(Utilities.PREFIX_STRING + ChatColor.RED + "Entity is no longer valid. Modification has been cancelled.");
                 return Prompt.END_OF_CONVERSATION;
             }
             StackEntity stackEntity = sm.getEntityManager().getStackEntity(livingEntity);
@@ -164,7 +168,7 @@ public class StackingTool {
                 stackEntity = sm.getEntityManager().registerStackedEntity(livingEntity);
             }
             stackEntity.setSize(number.intValue());
-            conversationContext.getForWhom().sendRawMessage(Utilities.PREFIX + ChatColor.GREEN + "Stack value has been updated.");
+            conversationContext.getForWhom().sendRawMessage(Utilities.PREFIX_STRING + ChatColor.GREEN + "Stack value has been updated.");
             return Prompt.END_OF_CONVERSATION;
         }
 
@@ -177,7 +181,7 @@ public class StackingTool {
         @Nullable
         @Override
         protected String getFailedValidationText(@NotNull ConversationContext context, @NotNull String invalidInput) {
-            return Utilities.PREFIX + ChatColor.RED + "Invalid input. Accepted sizes: 1-" + maxSize;
+            return Utilities.PREFIX_STRING + ChatColor.RED + "Invalid input. Accepted sizes: 1-" + maxSize;
         }
 
         @Override
@@ -185,7 +189,7 @@ public class StackingTool {
             if (input.intValue() > maxSize) {
                 return false;
             }
-            return !(input.intValue() < 1);
+            return input.intValue() > 0;
         }
     }
 
@@ -196,7 +200,7 @@ public class StackingTool {
             if (conversationAbandonedEvent.gracefulExit()) {
                 return;
             }
-            conversationAbandonedEvent.getContext().getForWhom().sendRawMessage(Utilities.PREFIX + ChatColor.RED + "Stack modification has timed out.");
+            conversationAbandonedEvent.getContext().getForWhom().sendRawMessage(Utilities.PREFIX_STRING + ChatColor.RED + "Stack modification has timed out.");
         }
 
     }

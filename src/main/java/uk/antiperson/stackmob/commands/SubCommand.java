@@ -1,6 +1,8 @@
 package uk.antiperson.stackmob.commands;
 
-import net.md_5.bungee.api.ChatColor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
 
 public abstract class SubCommand implements Command {
 
@@ -29,7 +31,7 @@ public abstract class SubCommand implements Command {
         return getClass().getAnnotation(CommandMetadata.class);
     }
 
-    public String buildString(String cmd) {
+    public Component buildComponent(String cmd) {
         StringBuilder args = new StringBuilder();
         for (CommandArgument argumentType : getArguments()) {
             String options = argumentType.buildString();
@@ -39,7 +41,10 @@ public abstract class SubCommand implements Command {
             }
             args.append("[").append(options).append("] ");
         }
-        return ChatColor.of("#3CB371") + "/" + cmd + " " + getCommand() + " " + args + ChatColor.GRAY + "- " + ChatColor.of("#90EE90") + getDescription();
+        Component label = Component.text("/" + cmd + " " + getCommand() + " " + args).color(TextColor.color(60, 179, 113));
+        Component separator = Component.text("- ").color(NamedTextColor.GRAY);
+        Component desc = Component.text(getDescription()).color(TextColor.color(144, 238, 144));
+        return label.append(separator).append(desc);
     }
 
 }

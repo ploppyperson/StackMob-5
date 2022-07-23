@@ -1,5 +1,9 @@
 package uk.antiperson.stackmob.commands;
 
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
 import net.md_5.bungee.api.ChatColor;
 import org.apache.commons.lang3.ArrayUtils;
 import org.bukkit.Bukkit;
@@ -54,36 +58,44 @@ public class Commands implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
+        Audience sender = sm.getAdventure().sender(commandSender);
+        String cmd = Bukkit.getServer().getPluginCommand("sm").getPlugin().equals(sm) ? "sm" : "stackmob";
         if (!(commandSender.hasPermission("stackmob.admin"))) {
-            commandSender.sendMessage(Utilities.PREFIX + ChatColor.RED + "You do not have permission!");
+            sendError(sender, "You do not have permission!");
             return false;
         }
         if (strings.length == 0) {
-            commandSender.sendMessage(Utilities.PREFIX + ChatColor.of("#FF7F50") + "Commands: ");
+            Component commands = Utilities.PREFIX.append(Component.text("Commands:").color(TextColor.color(255, 127, 80)));
+            sender.sendMessage(commands);
             for (SubCommand subCommand : subCommands.values()) {
-                String cmd = Bukkit.getServer().getPluginCommand("sm").getPlugin().equals(sm) ? "sm" : "stackmob";
-                commandSender.sendMessage(subCommand.buildString(cmd));
+                sender.sendMessage(subCommand.buildComponent(cmd));
             }
-            commandSender.sendMessage(ChatColor.of("#FF7F50") + "Key: () = Optional argument, [] = Mandatory argument.");
+            Component key = Component.text("Key: () = Optional argument, [] = Mandatory argument.").color(TextColor.color(255, 127, 80));
+            sender.sendMessage(key);
             return false;
         }
         SubCommand subCommand = subCommands.get(strings[0].toLowerCase());
         if (subCommand == null) {
-            commandSender.sendMessage(Utilities.PREFIX + ChatColor.RED + "Invalid subcommand!");
+            sendError(sender, "Invalid subcommand!");
             return false;
         }
         if (subCommand.isPlayerRequired() && !(commandSender instanceof Player)) {
-            commandSender.sendMessage(Utilities.PREFIX + ChatColor.RED + "You are not a player!");
+            sendError(sender, "This subcommand requires a player!");
             return false;
         }
         String[] subCmdArgs = ArrayUtils.remove(strings, 0);
         if (!validateArgs(subCommand.getArguments(), subCmdArgs)) {
-            commandSender.sendMessage(Utilities.PREFIX + ChatColor.RED + "Invalid arguments for '" + subCommand.getCommand() + "'. Usage:");
-            commandSender.sendMessage(subCommand.buildString("stackmob"));
+            sendError(sender, "Invalid arguments for '" + subCommand.getCommand() + "'. Usage:");
+            sender.sendMessage(subCommand.buildComponent(cmd));
             return false;
         }
         subCommand.onCommand(new User(commandSender), subCmdArgs);
         return false;
+    }
+
+    private void sendError(Audience audience, String message) {
+        Component noPerm = Utilities.PREFIX.append(Component.text(message).color(NamedTextColor.RED));
+        audience.sendMessage(noPerm);
     }
 
     public boolean validateArgs(CommandArgument[] argumentTypes, String[] args) {
