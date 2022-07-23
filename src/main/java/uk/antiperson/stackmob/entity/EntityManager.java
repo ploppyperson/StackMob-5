@@ -10,17 +10,18 @@ import org.bukkit.persistence.PersistentDataType;
 import uk.antiperson.stackmob.StackMob;
 
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class EntityManager {
 
     private final StackMob sm;
-    private final HashMap<UUID, StackEntity> stackEntities;
+    private final Map<UUID, StackEntity> stackEntities;
 
     public EntityManager(StackMob sm) {
         this.sm = sm;
-        stackEntities = new HashMap<>();
+        stackEntities = new ConcurrentHashMap<>();
     }
 
     public boolean isStackedEntity(LivingEntity entity) {
