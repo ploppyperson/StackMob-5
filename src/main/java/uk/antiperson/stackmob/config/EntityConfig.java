@@ -110,7 +110,7 @@ public class EntityConfig {
     }
 
     public boolean isSlimeMultiEnabled() {
-        return map.get( "multiply.slime-split").getBoolean();
+        return map.get( "events.multiply.slime-split").getBoolean();
     }
 
     public boolean isDropTypeBlacklist() {
