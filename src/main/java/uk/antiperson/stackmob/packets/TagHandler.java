@@ -89,6 +89,9 @@ public class TagHandler {
     }
 
     private boolean rayTrace(Mob entity, Player player) {
+        if (entity.getEyeLocation().getWorld() != player.getWorld()) {
+            return false;
+        }
         Vector resultant = entity.getEyeLocation().toVector().subtract(player.getEyeLocation().toVector());
         double distance = player.getEyeLocation().distance(entity.getEyeLocation());
         RayTraceResult result = player.getWorld().rayTraceBlocks(player.getEyeLocation(), resultant, distance, FluidCollisionMode.NEVER, true);
