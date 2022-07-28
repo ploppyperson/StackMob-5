@@ -17,7 +17,7 @@ public interface FakeArmorStand {
     void removeFakeArmorStand();
 
     default Location adjustLocation(Entity entity) {
-        double adjustment = shouldAdjust(entity) ? 0.1 : 0.3;
+        double adjustment = shouldAdjust(entity) ? 0.3 : 0.1;
         return entity.getLocation().add(0, entity.getHeight() + adjustment, 0);
     }
 
