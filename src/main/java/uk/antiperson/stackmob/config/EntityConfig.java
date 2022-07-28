@@ -19,98 +19,140 @@ import uk.antiperson.stackmob.entity.death.DeathType;
 import uk.antiperson.stackmob.utils.Utilities;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 public class EntityConfig {
 
-    private final Map<String, ConfigValue> map;
+    private final Map<String, ConfigValue> valueMap;
     private final EntityType type;
+    private final StackMob sm;
 
-    public EntityConfig(EntityType type) {
+    public EntityConfig(StackMob sm, EntityType type) {
+        this.sm = sm;
         this.type = type;
-        this.map = new HashMap<>();
+        this.valueMap = new HashMap<>();
     }
 
     public void put(String path, ConfigValue value) {
-        map.put(path, value);
+        valueMap.put(path, value);
+    }
+
+    public ConfigValue getConfigValue(String path) {
+        ConfigValue configValue = valueMap.get(path);
+        if (configValue == null) {
+            sm.getLogger().info("The value at config path " + path + " is null. Make sure your config is correctly formatted at this path.");
+        }
+        return configValue;
+    }
+
+    public boolean getBoolean(String path) {
+        ConfigValue configValue = getConfigValue(path);
+        return configValue != null && configValue.getBoolean();
+    }
+
+    public int getInt(String path) {
+        ConfigValue configValue = getConfigValue(path);
+        return configValue == null ? 0 : configValue.getInt();
+    }
+
+    public double getDouble(String path) {
+        ConfigValue configValue = getConfigValue(path);
+        return configValue == null ? 0 : configValue.getDouble();
+    }
+
+    public String getString(String path) {
+        ConfigValue configValue = getConfigValue(path);
+        return configValue == null ? "" : configValue.getString();
+    }
+
+    public List<Integer> getIntList(String path) {
+        ConfigValue configValue = getConfigValue(path);
+        return configValue == null ? Collections.emptyList() : configValue.asIntList();
+    }
+
+    public ConfigList getList(String path) {
+        ConfigValue configValue = getConfigValue(path);
+        return configValue == null ? new ConfigList(null, Collections.emptyList(), path, false) : configValue.getList();
     }
 
     public int getMaxStack() {
-        return map.get("stack.max-size").getInt();
+        return getInt("stack.max-size");
     }
 
     public boolean getStackThresholdEnabled() {
-        return map.get( "stack.threshold.enabled").getBoolean();
+        return getBoolean( "stack.threshold.enabled");
     }
 
     public int getStackThreshold() {
-        return map.get( "stack.threshold.amount").getInt();
+        return getInt( "stack.threshold.amount");
     }
 
     public Integer[] getStackRadius() {
-        return map.get("stack.merge-range").asIntList().toArray(new Integer[2]);
+        return getIntList("stack.merge-range").toArray(new Integer[2]);
     }
 
     public int getStackInterval() {
-        return map.get("stack.interval").getInt();
+        return getInt("stack.interval");
     }
 
     public boolean isCheckHasMoved() {
-        return map.get("stack.check-location.enabled").getBoolean();
+        return getBoolean("stack.check-location.enabled");
     }
 
     public double getCheckHasMovedDistance() {
-        return map.get("stack.check-location.distance").getDouble();
+        return getDouble("stack.check-location.distance");
     }
 
     public String getTagFormat() {
-        return map.get("display-name.format").getString();
+        return getString("display-name.format");
     }
 
     public int getTagThreshold() {
-        return map.get( "display-name.threshold").getInt();
+        return getInt( "display-name.threshold");
     }
 
     public StackEntity.TagMode getTagMode() {
-        return StackEntity.TagMode.valueOf(map.get("display-name.visibility").getString());
+        return StackEntity.TagMode.valueOf(getString("display-name.visibility"));
     }
 
-    public Integer[] getTagNeabyRadius() {
-        return map.get("display-name.nearby.range").asIntList().toArray(new Integer[2]);
+    public Integer[] getTagNearbyRadius() {
+        return getIntList("display-name.nearby.range").toArray(new Integer[2]);
     }
 
     public int getTagNearbyInterval() {
-        return map.get("display-name.nearby.interval").getInt();
+        return getInt("display-name.nearby.interval");
     }
 
     public boolean isTagNearbyRayTrace() {
-        return map.get("display-name.nearby.ray-trace").getBoolean();
+        return getBoolean("display-name.nearby.ray-trace");
     }
 
     public boolean isUseArmorStand() {
-        return map.get("display-name.nearby.use-armorstand").getBoolean();
+        return getBoolean("display-name.nearby.use-armorstand");
     }
 
     public boolean isTraitEnabled(String traitKey) {
-        return map.get("traits." + traitKey).getBoolean();
+        return getBoolean("traits." + traitKey);
     }
 
     public boolean isHookEnabled(String traitKey) {
-        return map.get("hooks." + traitKey).getBoolean();
+        return getBoolean("hooks." + traitKey);
     }
 
     public boolean isDropMultiEnabled() {
-        return map.get( "drops.enabled").getBoolean();
+        return getBoolean( "drops.enabled");
     }
 
     public boolean isDropLootTables() {
-        return map.get( "drops.use-loot-tables").getBoolean();
+        return getBoolean( "drops.use-loot-tables");
     }
 
     public boolean isSlimeMultiEnabled() {
-        return map.get( "events.multiply.slime-split").getBoolean();
+        return getBoolean( "events.multiply.slime-split");
     }
 
     public boolean isDropTypeBlacklist() {
@@ -118,39 +160,39 @@ public class EntityConfig {
     }
 
     public boolean isDropReasonBlacklist(EntityDamageEvent.DamageCause damageCause) {
-        return map.get("drops.reason-blacklist").getList().contains(damageCause.toString());
+        return getList("drops.reason-blacklist").contains(damageCause.toString());
     }
 
     public ConfigList getDropItemBlacklist() {
-        return map.get("drops.item-blacklist").getList();
+        return getList("drops.item-blacklist");
     }
 
     public ConfigList getDropItemOnePer() {
-        return map.get("drops.one-per-stack").getList();
+        return getList("drops.one-per-stack");
     }
 
     public boolean isExpMultiEnabled() {
-        return map.get( "experience.enabled").getBoolean();
+        return getBoolean( "experience.enabled");
     }
 
     public boolean isExpTypeBlacklist() {
-        return map.get("experience.type-blacklist").getList().contains(type.toString());
+        return getList("experience.type-blacklist").contains(type.toString());
     }
 
     public double getExpMinBound() {
-        return map.get("experience.multiplier-min").getDouble();
+        return getDouble("experience.multiplier-min");
     }
 
     public double getExpMaxBound() {
-        return map.get("experience.multiplier-max").getDouble();
+        return getDouble("experience.multiplier-max");
     }
 
     public boolean isPlayerStatMulti() {
-        return map.get( "player-stats").getBoolean();
+        return getBoolean( "player-stats");
     }
 
     public boolean isWaitingEnabled() {
-        return map.get( "wait-to-stack.enabled").getBoolean();
+        return getBoolean( "wait-to-stack.enabled");
     }
 
     public boolean isWaitingTypes() {
@@ -158,50 +200,42 @@ public class EntityConfig {
     }
 
     public boolean isWaitingReasons(CreatureSpawnEvent.SpawnReason spawnReason) {
-        return map.get("wait-to-stack.reasons-whitelist").getList().contains(spawnReason.toString());
+        return getList("wait-to-stack.reasons-whitelist").contains(spawnReason.toString());
     }
 
     public int getWaitingTime() {
-        return map.get("wait-to-stack.wait-time").getInt();
+        return getInt("wait-to-stack.wait-time");
     }
 
     public int getMaxDeathStep() {
-        return map.get( "death.STEP.max-step").getInt();
+        return getInt( "death.STEP.max-step");
     }
 
     public int getMinDeathStep() {
-        return map.get( "death.STEP.min-step").getInt();
+        return getInt( "death.STEP.min-step");
     }
 
-    public boolean isListenerEnabled(String eventKey) {
-        return map.get("events." + eventKey).getBoolean();
-    }
-
-    public boolean removeStackDataOnDivide(String reasonKey) { return map.get("events.remove-stack-data." + reasonKey).getBoolean(); }
-
-    public boolean isTargetingDisabled() {
-        return map.get( "disable-targeting.enabled").getBoolean();
-    }
+    public boolean removeStackDataOnDivide(String reasonKey) { return getBoolean("events.remove-stack-data." + reasonKey); }
 
     public boolean isTargetingDisabledTypes() {
         return isEntityTypeInList("disable-targeting.type-blacklist");
     }
 
     public boolean isTargetingDisabledReasons(CreatureSpawnEvent.SpawnReason spawnReason) {
-        return map.get("disable-targeting.reason-blacklist").getList().contains(spawnReason.toString());
+        return getList("disable-targeting.reason-blacklist").contains(spawnReason.toString());
     }
 
     public ListenerMode getListenerMode(EventType eventType) {
-        return ListenerMode.valueOf(map.get("events." + eventType.getConfigKey() + ".mode").getString());
+        return ListenerMode.valueOf(getString("events." + eventType.getConfigKey() + ".mode"));
     }
 
     public int getEventMultiplyLimit(EventType eventType, int stackSize) {
-        int limit = map.get( "events." + eventType.getConfigKey() + ".limit").getInt();
+        int limit = getInt( "events." + eventType.getConfigKey() + ".limit");
         return limit == -1 ? stackSize : Math.min(stackSize, limit);
     }
 
     public boolean isWorldBlacklisted(World world) {
-        return map.get("worlds-blacklist").getList().contains(world.getName());
+        return getList("worlds-blacklist").contains(world.getName());
     }
 
     public boolean isEntityBlacklisted(LivingEntity entity) {
@@ -213,7 +247,7 @@ public class EntityConfig {
         if (isEntityTypeInList("types-blacklist")) {
             return true;
         }
-        if (map.get("reason-blacklist").getList().contains(reason.toString())) {
+        if (getList("reason-blacklist").contains(reason.toString())) {
             return true;
         }
         return isWorldBlacklisted(entity.getWorld());
@@ -221,11 +255,11 @@ public class EntityConfig {
 
     public DeathType getDeathType(LivingEntity dead) {
         for (DeathType type : getDeathSection()) {
-            ConfigList reasons = map.get("death." + type + ".reason-blacklist").getList();
+            ConfigList reasons = getList("death." + type + ".reason-blacklist");
             if (dead.getLastDamageCause() != null && reasons.contains(dead.getLastDamageCause().getCause().toString())) {
                 continue;
             }
-            ConfigList spawnReasons = map.get("death." + type + ".spawn-reason-blacklist").getList();
+            ConfigList spawnReasons = getList("death." + type + ".spawn-reason-blacklist");
             if (Utilities.isPaper() && spawnReasons.contains(dead.getEntitySpawnReason().toString())) {
                 continue;
             }
@@ -240,25 +274,25 @@ public class EntityConfig {
     private Collection<DeathType> getDeathSection() {
         TreeMap<Integer, DeathType> array = new TreeMap<>();
         for (DeathType type : DeathType.values()) {
-            array.put(map.get("death." + type + ".priority").getInt(), type);
+            array.put(getInt("death." + type + ".priority"), type);
         }
         return array.values();
     }
 
     public boolean isSkipDeathAnimation() {
-        return map.get( "death.skip-animation").getBoolean() && Utilities.isPaper();
+        return getBoolean( "death.skip-animation") && Utilities.isPaper();
     }
 
     public StackEntity.EquipItemMode getEquipItemMode() {
-        return StackEntity.EquipItemMode.valueOf(map.get("events.equip.mode").getString());
+        return StackEntity.EquipItemMode.valueOf(getString("events.equip.mode"));
     }
 
     public boolean isStackOnSpawn() {
-        return map.get("stack.on-spawn").getBoolean();
+        return getBoolean("stack.on-spawn");
     }
 
     private boolean isEntityTypeInList(String path) {
-        ConfigList list = map.get(path).getList();
+        ConfigList list = getList(path);
         if (list.isInverted() && list.rawContains(type.toString())) {
             return false;
         }
@@ -284,7 +318,8 @@ public class EntityConfig {
         RAIDER(Raider.class),
         BOSS(Boss.class);
 
-        Class<? extends Entity>[] classes;
+        final Class<? extends Entity>[] classes;
+        @SafeVarargs
         EntityGrouping(Class<? extends Entity>... classes) {
             this.classes = classes;
         }
@@ -309,7 +344,7 @@ public class EntityConfig {
         EXPLOSION("explosion"),
         SHEAR("shear");
 
-        String configKey;
+        final String configKey;
         EventType(String configKey) {
             this.configKey = configKey;
         }

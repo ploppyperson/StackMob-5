@@ -50,6 +50,6 @@ public class ConfigValue {
     }
 
     public List<Integer> asIntList() {
-        return getList().asIntList();
+        return configFile == null ? Collections.emptyList() : getList().asIntList();
     }
 }

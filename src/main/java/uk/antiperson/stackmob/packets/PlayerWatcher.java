@@ -71,7 +71,7 @@ public class PlayerWatcher {
     }
 
     private Set<StackEntity> getNearbyStacks() {
-        Integer[] searchRadius = sm.getMainConfig().getConfig().getTagNeabyRadius();
+        Integer[] searchRadius = sm.getMainConfig().getConfig().getTagNearbyRadius();
         double searchX = searchRadius[0];
         double searchY = searchRadius[1];
         double searchZ = searchRadius[2];

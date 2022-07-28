@@ -18,22 +18,22 @@ public class ConfigList {
 
     /**
      * List contains method which supports inverting lists.
-     * @param tocheck object to check is in the list
+     * @param item object to check is in the list
      * @return whether this object is in the list.
      */
-    public boolean contains(String tocheck) {
+    public boolean contains(String item) {
         if (inverted){
-            return !rawContains(tocheck);
+            return !rawContains(item);
         }
-        return rawContains(tocheck);
+        return rawContains(item);
     }
 
     public boolean isInverted() {
         return inverted;
     }
 
-    public boolean rawContains(String toCheck) {
-        return list.contains(toCheck);
+    public boolean rawContains(String item) {
+        return list.contains(item);
     }
 
     public List<Integer> asIntList() {
