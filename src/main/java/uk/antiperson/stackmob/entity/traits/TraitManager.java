@@ -7,11 +7,13 @@ import uk.antiperson.stackmob.entity.traits.trait.*;
 import uk.antiperson.stackmob.utils.Utilities;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.HashSet;
 
 public class TraitManager {
 
-    private final HashSet<Trait> traits;
+    private final HashSet<Trait<LivingEntity>> traits;
     private final StackMob sm;
     public TraitManager(StackMob sm) {
         this.sm = sm;
@@ -59,10 +61,10 @@ public class TraitManager {
      * @throws NoSuchMethodException if class constructor can not be found
      * @throws InvocationTargetException if instanciation fails
      */
-    private void registerTrait(Class<? extends Trait> trait) throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
+    private <T extends Trait<? extends LivingEntity>> void registerTrait(Class<T> trait) throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
         final TraitMetadata traitMetadata = trait.getAnnotation(TraitMetadata.class);
         if (sm.getMainConfig().getConfig().isTraitEnabled(traitMetadata.path()) || sm.getMainConfig().getConfig().isTraitEnabled(traitMetadata.path())) {
-            traits.add(trait.getDeclaredConstructor().newInstance());
+            traits.add((Trait<LivingEntity>) trait.getDeclaredConstructor().newInstance());
         }
     }
 
@@ -73,7 +75,7 @@ public class TraitManager {
      * @return if these entities have any not matching characteristics (traits.)
      */
     public boolean checkTraits(StackEntity first, StackEntity nearby) {
-        for (Trait trait : traits) {
+        for (Trait<LivingEntity> trait : traits) {
             if (isTraitApplicable(trait, first.getEntity())) {
                 if (trait.checkTrait(first.getEntity(), nearby.getEntity())) {
                     return true;
@@ -89,7 +91,7 @@ public class TraitManager {
      * @param dead the entity which traits should be copied from.
      */
     public void applyTraits(StackEntity spawned, StackEntity dead) {
-        for (Trait trait : traits) {
+        for (Trait<LivingEntity> trait : traits) {
             if (isTraitApplicable(trait, spawned.getEntity())) {
                 trait.applyTrait(spawned.getEntity(), dead.getEntity());
             }
@@ -102,8 +104,9 @@ public class TraitManager {
      * @param entity the entity to check.
      * @return if the trait is applicable to the given entity.
      */
-    private boolean isTraitApplicable(Trait trait, LivingEntity entity) {
-        TraitMetadata traitMetadata = trait.getClass().getAnnotation(TraitMetadata.class);
-        return traitMetadata.entity().isAssignableFrom(entity.getClass());
+    private boolean isTraitApplicable(Trait<? extends LivingEntity> trait, LivingEntity entity) {
+        ParameterizedType parameterizedType = (ParameterizedType) trait.getClass().getGenericInterfaces()[0];
+        Class<?> typeArgument = (Class<?>) parameterizedType.getActualTypeArguments()[0];
+        return typeArgument.isAssignableFrom(entity.getClass());
     }
 }

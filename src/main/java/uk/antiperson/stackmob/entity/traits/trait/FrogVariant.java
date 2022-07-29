@@ -5,16 +5,16 @@ import org.bukkit.entity.LivingEntity;
 import uk.antiperson.stackmob.entity.traits.Trait;
 import uk.antiperson.stackmob.entity.traits.TraitMetadata;
 
-@TraitMetadata(entity = Frog.class, path = "frog-variant")
-public class FrogVariant implements Trait {
+@TraitMetadata(path = "frog-variant")
+public class FrogVariant implements Trait<Frog> {
 
     @Override
-    public boolean checkTrait(LivingEntity first, LivingEntity nearby) {
-        return ((Frog) first).getVariant() != ((Frog) nearby).getVariant();
+    public boolean checkTrait(Frog first, Frog nearby) {
+        return first.getVariant() != nearby.getVariant();
     }
 
     @Override
-    public void applyTrait(LivingEntity spawned, LivingEntity dead) {
-        ((Frog) spawned).setVariant(((Frog) dead).getVariant());
+    public void applyTrait(Frog spawned, Frog dead) {
+        spawned.setVariant(dead.getVariant());
     }
 }

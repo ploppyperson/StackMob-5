@@ -1,15 +1,14 @@
 package uk.antiperson.stackmob.entity.traits.trait;
 
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Mob;
 import uk.antiperson.stackmob.entity.traits.Trait;
 import uk.antiperson.stackmob.entity.traits.TraitMetadata;
 
-@TraitMetadata(entity = Mob.class, path = "leashed")
-public class Leash implements Trait {
+@TraitMetadata(path = "leashed")
+public class Leash implements Trait<Mob> {
 
     @Override
-    public boolean checkTrait(LivingEntity first, LivingEntity nearby) {
+    public boolean checkTrait(Mob first, Mob nearby) {
         if (first.isLeashed() != nearby.isLeashed()) {
             return true;
         }
@@ -17,7 +16,7 @@ public class Leash implements Trait {
     }
 
     @Override
-    public void applyTrait(LivingEntity spawned, LivingEntity dead) {
+    public void applyTrait(Mob spawned, Mob dead) {
         if (!dead.isLeashed()) {
             return;
         }
