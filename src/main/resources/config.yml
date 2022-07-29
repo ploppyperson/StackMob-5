@@ -76,6 +76,7 @@ display-name:
 
 # Whether entity specific traits (eg. profession, colour) should be segregated (*)
 traits:
+  allay-owner: true
   frog-variant: true
   sheep-color: true
   sheep-sheared: true

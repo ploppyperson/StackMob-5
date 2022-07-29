@@ -46,6 +46,7 @@ public class TraitManager {
         if (Utilities.isVersionAtLeast(Utilities.MinecraftVersion.V1_19_R1)) {
             registerTrait(FrogVariant.class);
         }
+        registerTrait(AllayOwner.class);
     }
 
     /**
