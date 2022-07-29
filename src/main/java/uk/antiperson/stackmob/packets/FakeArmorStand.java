@@ -23,10 +23,11 @@ public interface FakeArmorStand {
 
     private boolean shouldAdjust(Entity entity) {
         if (Utilities.isPaper()) {
-            if (entity.customName() == null || !(entity.customName() instanceof TextComponent)) {
+            Component component = entity.customName();
+            if (!(component instanceof TextComponent)) {
                 return false;
             }
-            return ((TextComponent) entity.customName()).content().length() != 0;
+            return ((TextComponent) component).content().length() != 0;
         }
         return entity.getCustomName() != null && entity.getCustomName().length() != 0;
     }
