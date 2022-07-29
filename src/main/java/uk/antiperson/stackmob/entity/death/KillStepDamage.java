@@ -27,7 +27,7 @@ public class KillStepDamage extends DeathMethod {
         double healthBefore = ((LivingEntity)getDead().getEntity().getLastDamageCause().getEntity()).getHealth();
         double damageDone = getEntity().getLastDamageCause().getFinalDamage();
         double maxHealth = getEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
-        if (getStackMob().getMainConfig().getConfig().isTraitEnabled(Potion.class.getAnnotation(TraitMetadata.class).path())) {
+        if (getDead().getEntityConfig().isTraitEnabled(Potion.class.getAnnotation(TraitMetadata.class).path())) {
             if (getDead().getEntity().getPotionEffect(PotionEffectType.HEALTH_BOOST) != null) {
                 maxHealth = getEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue();
             }

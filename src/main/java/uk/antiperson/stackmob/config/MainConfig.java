@@ -68,14 +68,28 @@ public class MainConfig {
         sm.getEntityManager().getStackEntities().forEach(StackEntity::refreshConfig);
     }
 
+    /**
+     * Returns the EntityConfig for the specified entity type
+     * @param type the type to check
+     * @return the EntityConfig for the specified entity type
+     */
     public EntityConfig getConfig(EntityType type) {
         return map.get(type);
     }
 
+    /**
+     * Returns the EntityConfig for the specified entity
+     * @param entity the entity to check
+     * @return the EntityConfig for the specified entity
+     */
     public EntityConfig getConfig(Entity entity) {
         return getConfig(entity.getType());
     }
 
+    /**
+     * Returns the EntityConfig whenever there is no entity present
+     * @return the EntityConfig whenever there is no entity present
+     */
     public EntityConfig getConfig() {
         return map.get(EntityType.UNKNOWN);
     }

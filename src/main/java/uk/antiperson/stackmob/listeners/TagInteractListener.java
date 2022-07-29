@@ -41,7 +41,7 @@ public class TagInteractListener implements Listener {
         if (!stackEntity.isSingle()) {
             stackEntity.slice();
         }
-        if (sm.getMainConfig().getConfig().removeStackDataOnDivide("nametag")) {
+        if (stackEntity.getEntityConfig().removeStackDataOnDivide("nametag")) {
             stackEntity.removeStackData();
         }
     }

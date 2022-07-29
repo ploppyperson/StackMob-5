@@ -44,7 +44,7 @@ public class SpawnListener implements Listener {
             }
             sm.getHookManager().onSpawn(original);
             original.setSize(1);
-            if (!sm.getMainConfig().getConfig().isStackOnSpawn()) {
+            if (!original.getEntityConfig().isStackOnSpawn()) {
                 return;
             }
             Integer[] searchRadius = original.getEntityConfig().getStackRadius();

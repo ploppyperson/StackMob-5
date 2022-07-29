@@ -88,7 +88,7 @@ public class StackEntity {
      * @return the location of the entity where it was last checked for stacking, null if 'stack.check-location' is disabled.
      */
     public Location getLastLocation() {
-        if (lastLocation == null && sm.getMainConfig().getConfig().isCheckHasMoved()) {
+        if (lastLocation == null && getEntityConfig().isCheckHasMoved()) {
             lastLocation = entity.getLocation();
         }
         return lastLocation;
@@ -318,7 +318,7 @@ public class StackEntity {
     }
 
     public void mergePotionEffects(StackEntity toKeep, StackEntity toRemove) {
-        if (!sm.getMainConfig().getConfig().isTraitEnabled("potion-effect")) {
+        if (!getEntityConfig().isTraitEnabled("potion-effect")) {
             return;
         }
         for (PotionEffect potionEffect : toRemove.getEntity().getActivePotionEffects()) {
@@ -509,7 +509,7 @@ public class StackEntity {
             format = StringUtils.replace(format, "%type%", getEntityName());
             format = StringUtils.replace(format, "%size%", getSize() + "");
             displayName = Utilities.createComponent(format);
-            if (sm.getMainConfig().getConfig().isUseArmorStand() && getEntityConfig().getTagMode() == TagMode.NEARBY) {
+            if (getEntityConfig().isUseArmorStand() && getEntityConfig().getTagMode() == TagMode.NEARBY) {
                 return;
             }
             updateName(displayName);
