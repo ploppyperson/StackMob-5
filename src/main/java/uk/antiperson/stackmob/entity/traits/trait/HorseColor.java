@@ -1,11 +1,11 @@
 package uk.antiperson.stackmob.entity.traits.trait;
 
 import org.bukkit.entity.Horse;
-import uk.antiperson.stackmob.entity.traits.Trait;
+import uk.antiperson.stackmob.entity.traits.EntityTrait;
 import uk.antiperson.stackmob.entity.traits.TraitMetadata;
 
 @TraitMetadata(path = "horse-color")
-public class HorseColor implements Trait<Horse> {
+public class HorseColor extends EntityTrait<Horse> {
 
     @Override
     public boolean checkTrait(Horse first, Horse nearby) {

@@ -1,11 +1,11 @@
 package uk.antiperson.stackmob.entity.traits.trait;
 
 import org.bukkit.entity.Mob;
-import uk.antiperson.stackmob.entity.traits.Trait;
+import uk.antiperson.stackmob.entity.traits.EntityTrait;
 import uk.antiperson.stackmob.entity.traits.TraitMetadata;
 
 @TraitMetadata(path = "leashed")
-public class Leash implements Trait<Mob> {
+public class Leash extends EntityTrait<Mob> {
 
     @Override
     public boolean checkTrait(Mob first, Mob nearby) {

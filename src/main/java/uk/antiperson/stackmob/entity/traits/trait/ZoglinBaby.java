@@ -1,11 +1,11 @@
 package uk.antiperson.stackmob.entity.traits.trait;
 
 import org.bukkit.entity.Zoglin;
-import uk.antiperson.stackmob.entity.traits.Trait;
+import uk.antiperson.stackmob.entity.traits.EntityTrait;
 import uk.antiperson.stackmob.entity.traits.TraitMetadata;
 
 @TraitMetadata(path = "zoglin-baby")
-public class ZoglinBaby implements Trait<Zoglin> {
+public class ZoglinBaby extends EntityTrait<Zoglin> {
 
     @Override
     public boolean checkTrait(Zoglin first, Zoglin nearby) {

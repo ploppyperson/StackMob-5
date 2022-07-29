@@ -1,11 +1,11 @@
 package uk.antiperson.stackmob.entity.traits.trait;
 
 import org.bukkit.entity.Slime;
-import uk.antiperson.stackmob.entity.traits.Trait;
+import uk.antiperson.stackmob.entity.traits.EntityTrait;
 import uk.antiperson.stackmob.entity.traits.TraitMetadata;
 
 @TraitMetadata(path = "slime-size")
-public class SlimeSize implements Trait<Slime> {
+public class SlimeSize extends EntityTrait<Slime> {
 
     @Override
     public boolean checkTrait(Slime first, Slime nearby) {

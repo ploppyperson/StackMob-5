@@ -1,13 +1,11 @@
 package uk.antiperson.stackmob.entity.traits.trait;
 
 import org.bukkit.entity.Cat;
-import org.bukkit.entity.LivingEntity;
-import org.checkerframework.checker.units.qual.C;
-import uk.antiperson.stackmob.entity.traits.Trait;
+import uk.antiperson.stackmob.entity.traits.EntityTrait;
 import uk.antiperson.stackmob.entity.traits.TraitMetadata;
 
 @TraitMetadata(path = "cat-type")
-public class CatType implements Trait<Cat> {
+public class CatType extends EntityTrait<Cat> {
 
     @Override
     public boolean checkTrait(Cat first, Cat nearby) {

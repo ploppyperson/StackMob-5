@@ -1,11 +1,11 @@
 package uk.antiperson.stackmob.entity.traits.trait;
 
 import org.bukkit.entity.Turtle;
-import uk.antiperson.stackmob.entity.traits.Trait;
+import uk.antiperson.stackmob.entity.traits.EntityTrait;
 import uk.antiperson.stackmob.entity.traits.TraitMetadata;
 
 @TraitMetadata(path = "has-egg")
-public class TurtleHasEgg implements Trait<Turtle> {
+public class TurtleHasEgg extends EntityTrait<Turtle> {
 
     @Override
     public boolean checkTrait(Turtle first, Turtle nearby) {

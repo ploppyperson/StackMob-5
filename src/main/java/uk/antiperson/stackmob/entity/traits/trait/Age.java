@@ -1,11 +1,11 @@
 package uk.antiperson.stackmob.entity.traits.trait;
 
 import org.bukkit.entity.Ageable;
-import uk.antiperson.stackmob.entity.traits.Trait;
+import uk.antiperson.stackmob.entity.traits.EntityTrait;
 import uk.antiperson.stackmob.entity.traits.TraitMetadata;
 
 @TraitMetadata(path = "age")
-public class Age implements Trait<Ageable> {
+public class Age extends EntityTrait<Ageable> {
 
     @Override
     public boolean checkTrait(Ageable first, Ageable nearby) {

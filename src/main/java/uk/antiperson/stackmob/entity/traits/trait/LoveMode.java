@@ -1,11 +1,11 @@
 package uk.antiperson.stackmob.entity.traits.trait;
 
 import org.bukkit.entity.Animals;
-import uk.antiperson.stackmob.entity.traits.Trait;
+import uk.antiperson.stackmob.entity.traits.EntityTrait;
 import uk.antiperson.stackmob.entity.traits.TraitMetadata;
 
 @TraitMetadata(path = "love-mode")
-public class LoveMode implements Trait<Animals> {
+public class LoveMode extends EntityTrait<Animals> {
 
     @Override
     public boolean checkTrait(Animals first, Animals nearby) {
