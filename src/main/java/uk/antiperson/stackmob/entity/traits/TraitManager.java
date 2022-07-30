@@ -50,8 +50,8 @@ public class TraitManager {
         registerTrait(PiglinBaby.class);
         if (Utilities.isVersionAtLeast(Utilities.MinecraftVersion.V1_19_R1)) {
             registerTrait(FrogVariant.class);
+            registerTrait(AllayOwner.class);
         }
-        registerTrait(AllayOwner.class);
     }
 
     /**
