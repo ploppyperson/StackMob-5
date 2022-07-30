@@ -2,11 +2,11 @@ package uk.antiperson.stackmob.entity.traits.trait;
 
 import org.bukkit.entity.Allay;
 import org.bukkit.entity.memory.MemoryKey;
-import uk.antiperson.stackmob.entity.traits.EntityTrait;
+import uk.antiperson.stackmob.entity.traits.Trait;
 import uk.antiperson.stackmob.entity.traits.TraitMetadata;
 
 @TraitMetadata(path = "allay-owner")
-public class AllayOwner extends EntityTrait<Allay> {
+public class AllayOwner implements Trait<Allay> {
 
     @Override
     public boolean checkTrait(Allay first, Allay nearby) {

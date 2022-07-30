@@ -1,11 +1,11 @@
 package uk.antiperson.stackmob.entity.traits.trait;
 
 import org.bukkit.entity.Llama;
-import uk.antiperson.stackmob.entity.traits.EntityTrait;
+import uk.antiperson.stackmob.entity.traits.Trait;
 import uk.antiperson.stackmob.entity.traits.TraitMetadata;
 
 @TraitMetadata(path = "llama-color")
-public class LlamaColor extends EntityTrait<Llama> {
+public class LlamaColor implements Trait<Llama> {
 
     @Override
     public boolean checkTrait(Llama first, Llama nearby) {

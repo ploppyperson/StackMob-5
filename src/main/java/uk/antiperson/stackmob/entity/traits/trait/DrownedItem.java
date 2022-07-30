@@ -3,12 +3,12 @@ package uk.antiperson.stackmob.entity.traits.trait;
 import org.bukkit.entity.Drowned;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-import uk.antiperson.stackmob.entity.traits.EntityTrait;
+import uk.antiperson.stackmob.entity.traits.Trait;
 import uk.antiperson.stackmob.entity.traits.TraitMetadata;
 import uk.antiperson.stackmob.utils.Utilities;
 
 @TraitMetadata(path = "drowned-hand-item")
-public class DrownedItem extends EntityTrait<Drowned> {
+public class DrownedItem implements Trait<Drowned> {
     
     @Override
     public boolean checkTrait (Drowned first, Drowned nearby) {

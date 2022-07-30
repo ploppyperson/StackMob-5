@@ -1,11 +1,12 @@
 package uk.antiperson.stackmob.entity.traits.trait;
 
 import org.bukkit.entity.Frog;
-import uk.antiperson.stackmob.entity.traits.EntityTrait;
+import org.bukkit.entity.LivingEntity;
+import uk.antiperson.stackmob.entity.traits.Trait;
 import uk.antiperson.stackmob.entity.traits.TraitMetadata;
 
 @TraitMetadata(path = "frog-variant")
-public class FrogVariant extends EntityTrait<Frog> {
+public class FrogVariant implements Trait<Frog> {
 
     @Override
     public boolean checkTrait(Frog first, Frog nearby) {
