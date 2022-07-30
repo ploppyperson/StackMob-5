@@ -79,7 +79,11 @@ public class TraitManager {
      * @return if these entities have any not matching characteristics (traits.)
      */
     public boolean checkTraits(StackEntity first, StackEntity nearby) {
-        for (Trait<LivingEntity> trait : traits.get(first.getEntity().getType())) {
+        Set<Trait<LivingEntity>> set = traits.get(first.getEntity().getType());
+        if (set == null) {
+            return false;
+        }
+        for (Trait<LivingEntity> trait : set) {
             if (trait.checkTrait(first.getEntity(), nearby.getEntity())) {
                 return true;
             }
@@ -93,7 +97,11 @@ public class TraitManager {
      * @param dead the entity which traits should be copied from.
      */
     public void applyTraits(StackEntity spawned, StackEntity dead) {
-        for (Trait<LivingEntity> trait : traits.get(spawned.getEntity().getType())) {
+        Set<Trait<LivingEntity>> set = traits.get(spawned.getEntity().getType());
+        if (set == null) {
+            return;
+        }
+        for (Trait<LivingEntity> trait : set) {
             trait.applyTrait(spawned.getEntity(), dead.getEntity());
         }
     }
