@@ -7,7 +7,7 @@ import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.StackEntity;
 
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 
 public class MainConfig {
@@ -18,35 +18,44 @@ public class MainConfig {
 
     public MainConfig(StackMob sm) {
         this.sm = sm;
-        this.map = new HashMap<>();
+        this.map = new EnumMap<>(EntityType.class);
         this.configFile = new MainConfigFile(sm);
     }
 
     public void init() throws IOException {
         configFile.load();
+        // iterate every entity type
         for (EntityType entityType : EntityType.values()) {
+            // create new EntityConfig for this entity type
             EntityConfig entityConfig = new EntityConfig(sm, entityType);
+            // populate  with config contents
             for (String key : configFile.getKeys(true)) {
                 if (key.startsWith("custom")) {
                     continue;
                 }
                 entityConfig.put(key, new ConfigValue(configFile, key, configFile.get(key)));
             }
+            // store
             map.put(entityType, entityConfig);
         }
+        // now find which config items have been overridden
         ConfigurationSection custom = configFile.getConfigurationSection("custom");
         if (custom == null) {
             return;
         }
+        // get all the top level keys in the custom section
         for (String key : custom.getKeys(false)) {
             EntityType toRead = EntityType.valueOf(key);
+            // determine if we are cloning another section
             EntityType cloneType = null;
             String clone = custom.getString(toRead + ".clone", null);
             if (clone != null && clone.length() > 0) {
                 cloneType = EntityType.valueOf(clone);
             }
-            EntityType[] array = new EntityType[]{cloneType, toRead};
+            // get the entity config for this section
             EntityConfig entityConfig = map.get(toRead);
+            // load all custom values (from the cloned entity type and this entity type) into the entity config
+            EntityType[] array = new EntityType[]{cloneType, toRead}; // order is important - cloned values may be overridden
             for (EntityType type : array) {
                 if (type == null) {
                     continue;
