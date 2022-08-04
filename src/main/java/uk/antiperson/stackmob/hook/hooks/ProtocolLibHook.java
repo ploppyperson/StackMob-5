@@ -70,11 +70,8 @@ public class ProtocolLibHook extends Hook {
         watcher.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(2, WrappedDataWatcher.Registry.getChatComponentSerializer(true)), Optional.of(WrappedChatComponent.fromJson(GsonComponentSerializer.gson().serialize(name)).getHandle()));
         watcher.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(3, WrappedDataWatcher.Registry.get(Boolean.class)), true);
         watcher.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(5, WrappedDataWatcher.Registry.get(Boolean.class)), true);
-        if (Utilities.getMinecraftVersion() == Utilities.MinecraftVersion.V1_16_R1) {
-            watcher.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(14, WrappedDataWatcher.Registry.get(Byte.class)), (byte) 0x10);
-        } else {
-            watcher.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(15, WrappedDataWatcher.Registry.get(Byte.class)), (byte) 0x10);
-        }
+        int markerPacketId = Utilities.getMinecraftVersion() == Utilities.MinecraftVersion.V1_16_R1 ? 14 : 15;
+        watcher.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(markerPacketId, WrappedDataWatcher.Registry.get(Byte.class)), (byte) 0x10);
         packetContainer1.getIntegers().write(0, entityIdCounter);
         packetContainer1.getWatchableCollectionModifier().write(0, watcher.getWatchableObjects());
         entityIdCounter += 1;
