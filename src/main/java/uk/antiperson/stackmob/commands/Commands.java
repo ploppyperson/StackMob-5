@@ -151,6 +151,9 @@ public class Commands implements CommandExecutor, TabCompleter {
     private Set<String> getExpectedArguments(String[] strings) {
         SubCommand subCommand = subCommands.get(strings[0].toLowerCase());
         if (subCommand == null) {
+            if (strings.length > 1) {
+                return Collections.emptySet();
+            }
             return new HashSet<>(subCommands.keySet());
         }
         // the subcommand is correct, so length of arguments is length of string array - 1
