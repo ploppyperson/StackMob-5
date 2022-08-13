@@ -45,7 +45,7 @@ public class TagHandler {
     }
 
     public void playerInRange() {
-        if (stackEntity.getEntityConfig().isTagNearbyRayTrace() && !rayTrace((Mob) stackEntity.getEntity(), player)) {
+        if (stackEntity.getEntityConfig().isTagNearbyRayTrace() && !stackEntity.rayTrace(player)) {
             if (tagVisible) {
                 playerOutRange();
             }
@@ -86,19 +86,6 @@ public class TagHandler {
             return;
         }
         NMSHelper.sendVisibilityPacket(player, entity, tagVisible);
-    }
-
-    private boolean rayTrace(Mob entity, Player player) {
-        if (entity.getEyeLocation().getWorld() != player.getWorld()) {
-            return false;
-        }
-        Vector resultant = entity.getEyeLocation().toVector().subtract(player.getEyeLocation().toVector());
-        double distance = player.getEyeLocation().distance(entity.getEyeLocation());
-        if (distance == 0 || resultant.lengthSquared() == 0) {
-            return true;
-        }
-        RayTraceResult result = player.getWorld().rayTraceBlocks(player.getEyeLocation(), resultant, distance, FluidCollisionMode.NEVER, true);
-        return result == null || result.getHitBlock() == null;
     }
 
     public boolean isTagVisible() {

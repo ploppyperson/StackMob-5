@@ -4,17 +4,22 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
+import org.bukkit.FluidCollisionMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Mob;
+import org.bukkit.entity.Player;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.util.RayTraceResult;
+import org.bukkit.util.Vector;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.config.EntityConfig;
 import uk.antiperson.stackmob.events.EventHelper;
@@ -479,6 +484,24 @@ public class StackEntity {
             refreshConfig();
         }
         return entityConfig;
+    }
+
+    /**
+     * Return whether this stack entity can be seen by the supplied player
+     * @param player the player
+     * @return whether this stack entity can be seen by the supplied player
+     */
+    public boolean rayTrace(Player player) {
+        if (getEntity().getEyeLocation().getWorld() != player.getWorld()) {
+            return false;
+        }
+        Vector resultant = getEntity().getEyeLocation().toVector().subtract(player.getEyeLocation().toVector());
+        double distance = player.getEyeLocation().distance(getEntity().getEyeLocation());
+        if (distance == 0 || resultant.lengthSquared() == 0) {
+            return true;
+        }
+        RayTraceResult result = player.getWorld().rayTraceBlocks(player.getEyeLocation(), resultant, distance, FluidCollisionMode.NEVER, true);
+        return result == null || result.getHitBlock() == null;
     }
 
     public enum EquipItemMode {
