@@ -34,6 +34,9 @@ public class SpawnListener implements Listener {
             if (sm.getMainConfig().getConfig(event.getEntity().getType()).isEntityBlacklisted(event.getEntity(), event.getSpawnReason())) {
                 return;
             }
+            if (sm.getHookManager().spawnCheck(event.getEntity())) {
+                return;
+            }
             if (EventHelper.callStackSpawnEvent(event.getEntity()).isCancelled()) {
                 return;
             }

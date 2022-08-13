@@ -7,12 +7,12 @@ import org.bukkit.entity.LivingEntity;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.hook.Hook;
 import uk.antiperson.stackmob.hook.HookMetadata;
-import uk.antiperson.stackmob.hook.SegregatedMobHook;
+import uk.antiperson.stackmob.hook.PreventStackHook;
 
 import java.util.Optional;
 
 @HookMetadata(name = "MyPet", config = "mypet")
-public class MyPetHook extends Hook implements SegregatedMobHook {
+public class MyPetHook extends Hook implements PreventStackHook {
 
     public MyPetHook(StackMob sm) {
         super(sm);

@@ -5,10 +5,10 @@ import org.bukkit.entity.LivingEntity;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.hook.Hook;
 import uk.antiperson.stackmob.hook.HookMetadata;
-import uk.antiperson.stackmob.hook.SegregatedMobHook;
+import uk.antiperson.stackmob.hook.PreventStackHook;
 
 @HookMetadata(name = "MythicMobs", config = "mythicmobs.prevent-stack")
-public class MythicMobsNoStackHook extends Hook implements SegregatedMobHook {
+public class MythicMobsNoStackHook extends Hook implements PreventStackHook {
 
     private MythicBukkit mythicMobs;
     public MythicMobsNoStackHook(StackMob sm) {

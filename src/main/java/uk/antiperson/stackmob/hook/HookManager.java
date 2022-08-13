@@ -111,8 +111,8 @@ public class HookManager {
                 if (!ph.canStack(first.getEntity()) || !ph.canStack(nearby.getEntity())) {
                     return true;
                 }
-            } else if (hook instanceof SegregatedMobHook) {
-                SegregatedMobHook smh = (SegregatedMobHook) hook;
+            } else if (hook instanceof PreventStackHook) {
+                PreventStackHook smh = (PreventStackHook) hook;
                 if (smh.isCustomMob(first.getEntity()) || smh.isCustomMob(nearby.getEntity())) {
                     return true;
                 }
@@ -122,6 +122,18 @@ public class HookManager {
                     if (!smh.isMatching(first.getEntity(), nearby.getEntity())) {
                         return true;
                     }
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean spawnCheck(LivingEntity stackEntity) {
+        for (Hook hook : hooks) {
+            if (hook instanceof PreventStackHook) {
+                PreventStackHook smh = (PreventStackHook) hook;
+                if (smh.isCustomMob(stackEntity)) {
+                    return true;
                 }
             }
         }
