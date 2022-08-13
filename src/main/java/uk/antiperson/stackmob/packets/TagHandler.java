@@ -94,6 +94,9 @@ public class TagHandler {
         }
         Vector resultant = entity.getEyeLocation().toVector().subtract(player.getEyeLocation().toVector());
         double distance = player.getEyeLocation().distance(entity.getEyeLocation());
+        if (distance == 0 || resultant.lengthSquared() == 0) {
+            return true;
+        }
         RayTraceResult result = player.getWorld().rayTraceBlocks(player.getEyeLocation(), resultant, distance, FluidCollisionMode.NEVER, true);
         return result == null || result.getHitBlock() == null;
     }
