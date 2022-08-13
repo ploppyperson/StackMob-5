@@ -45,7 +45,7 @@ public class TagHandler {
     }
 
     public void playerInRange() {
-        if (stackEntity.getEntityConfig().isTagNearbyRayTrace() && !stackEntity.rayTrace(player)) {
+        if (stackEntity.getEntityConfig().isTagNearbyRayTrace() && !stackEntity.rayTracePlayer(player)) {
             if (tagVisible) {
                 playerOutRange();
             }

@@ -284,7 +284,10 @@ public class StackEntity {
         if (sm.getTraitManager().checkTraits(this, nearby)) {
             return false;
         }
-        return !sm.getHookManager().checkHooks(this, nearby);
+        if (sm.getHookManager().checkHooks(this, nearby)) {
+            return false;
+        }
+        return getEntityConfig().isCheckCanSee() && rayTraceStack(nearby);
     }
 
     public boolean canStack() {
@@ -486,21 +489,29 @@ public class StackEntity {
         return entityConfig;
     }
 
+    public boolean rayTraceStack(StackEntity stackEntity) {
+        return rayTrace(stackEntity.getEntity());
+    }
+
+    public boolean rayTracePlayer(Player player) {
+        return rayTrace(player);
+    }
+
     /**
-     * Return whether this stack entity can be seen by the supplied player
-     * @param player the player
-     * @return whether this stack entity can be seen by the supplied player
+     * Return whether this stack entity can be seen by the supplied entity
+     * @param livingEntity the living entity
+     * @return whether this stack entity can be seen by the supplied entity
      */
-    public boolean rayTrace(Player player) {
-        if (getEntity().getEyeLocation().getWorld() != player.getWorld()) {
+    private boolean rayTrace(LivingEntity livingEntity) {
+        if (getEntity().getEyeLocation().getWorld() != livingEntity.getWorld()) {
             return false;
         }
-        Vector resultant = getEntity().getEyeLocation().toVector().subtract(player.getEyeLocation().toVector());
-        double distance = player.getEyeLocation().distance(getEntity().getEyeLocation());
+        Vector resultant = getEntity().getEyeLocation().toVector().subtract(livingEntity.getEyeLocation().toVector());
+        double distance = livingEntity.getEyeLocation().distance(getEntity().getEyeLocation());
         if (distance == 0 || resultant.lengthSquared() == 0) {
             return true;
         }
-        RayTraceResult result = player.getWorld().rayTraceBlocks(player.getEyeLocation(), resultant, distance, FluidCollisionMode.NEVER, true);
+        RayTraceResult result = livingEntity.getWorld().rayTraceBlocks(livingEntity.getEyeLocation(), resultant, distance, FluidCollisionMode.NEVER, true);
         return result == null || result.getHitBlock() == null;
     }
 

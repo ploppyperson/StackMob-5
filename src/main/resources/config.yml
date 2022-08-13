@@ -33,6 +33,8 @@ stack:
     distance: 1.0
   # Stack entities when they spawn. (*)
   on-spawn: false
+  # Only stack when two stacks can directly see each other
+  line-of-sight: true
 
 # Names of worlds where there should be no stacking
 worlds-blacklist: []

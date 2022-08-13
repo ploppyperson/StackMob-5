@@ -307,6 +307,10 @@ public class EntityConfig {
         return list.contains(type.toString());
     }
 
+    public boolean isCheckCanSee() {
+        return getBoolean("stack.line-of-sight");
+    }
+
     public EntityType getType() {
         return type;
     }
