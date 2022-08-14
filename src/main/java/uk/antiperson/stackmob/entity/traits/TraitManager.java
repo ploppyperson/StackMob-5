@@ -69,7 +69,13 @@ public class TraitManager {
             return;
         }
         Trait<LivingEntity> trait = (Trait<LivingEntity>) traitClass.getDeclaredConstructor().newInstance();
-        traits.computeIfAbsent(getEntityType(trait), entityType -> new HashSet<>()).add(trait);
+        ParameterizedType parameterizedType = (ParameterizedType) trait.getClass().getGenericInterfaces()[0];
+        Class<? extends LivingEntity> typeArgument = (Class<? extends LivingEntity>) parameterizedType.getActualTypeArguments()[0];
+        for (EntityType entityType : EntityType.values()) {
+            if (entityType.getEntityClass() != null && typeArgument.isAssignableFrom(entityType.getEntityClass())) {
+                traits.computeIfAbsent(entityType, type -> new HashSet<>()).add(trait);
+            }
+        }
     }
 
     /**
@@ -104,16 +110,5 @@ public class TraitManager {
         for (Trait<LivingEntity> trait : set) {
             trait.applyTrait(spawned.getEntity(), dead.getEntity());
         }
-    }
-
-    private EntityType getEntityType(Trait<LivingEntity> trait) {
-        ParameterizedType parameterizedType = (ParameterizedType) trait.getClass().getGenericInterfaces()[0];
-        Class<? extends LivingEntity> typeArgument = (Class<? extends LivingEntity>) parameterizedType.getActualTypeArguments()[0];
-        for (EntityType entityType : EntityType.values()) {
-            if (entityType.getEntityClass() != null && typeArgument.isAssignableFrom(entityType.getEntityClass())) {
-                return entityType;
-            }
-        }
-        return null;
     }
 }
