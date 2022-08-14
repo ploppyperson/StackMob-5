@@ -149,18 +149,19 @@ public abstract class ConfigFile implements Config {
             if (fileCon.isSet(key)) {
                 continue;
             }
+            fileCon.set(key, includedConfig.get(key));
             if (Utilities.isVersionAtLeast(Utilities.MinecraftVersion.V1_18_R2)) {
                 fileCon.setComments(key, includedConfig.getComments(key));
             }
-            fileCon.set(key, includedConfig.get(key));
             updated = true;
         }
         if (!updated) {
             return;
         }
         fileCon.options().header(includedConfig.options().header());
+        sm.getLogger().info("Config file " + file.getName() + " has been updated with new values.");
         if (!Utilities.isVersionAtLeast(Utilities.MinecraftVersion.V1_18_R2)) {
-            sm.getLogger().warning("Config file " + file.getName() + " has been updated. This means that comments have been removed.");
+            sm.getLogger().warning("This means that comments have been removed.");
             sm.getLogger().info("If you need comments, you access a version with them at " + Utilities.GITHUB_DEFAULT_CONFIG);
         }
         save();
