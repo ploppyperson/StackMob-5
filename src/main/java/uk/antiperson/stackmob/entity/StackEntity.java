@@ -383,6 +383,13 @@ public class StackEntity {
         StackEntity cloneStack = sm.getEntityManager().registerStackedEntity(clone);
         cloneStack.setSize(1);
         duplicateTraits(cloneStack);
+        if (getEntityConfig().isUseArmorStand() && getEntityConfig().getTagMode() == TagMode.NEARBY) {
+            if (Utilities.isPaper()) {
+                clone.customName(getEntity().customName());
+            } else {
+                clone.setCustomName(getEntity().getCustomName());
+            }
+        }
         return cloneStack;
     }
 
@@ -563,6 +570,9 @@ public class StackEntity {
             LivingEntity entity = getEntity();
             int threshold = getEntityConfig().getTagThreshold();
             if (getSize() <= threshold) {
+                if (getEntityConfig().isUseArmorStand() && getEntityConfig().getTagMode() == TagMode.NEARBY) {
+                    return;
+                }
                 entity.setCustomName(null);
                 entity.setCustomNameVisible(false);
                 return;
