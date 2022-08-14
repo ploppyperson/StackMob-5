@@ -9,9 +9,10 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import uk.antiperson.stackmob.StackMob;
+import uk.antiperson.stackmob.config.EntityConfig;
 import uk.antiperson.stackmob.entity.StackEntity;
 
-@ListenerMetadata(config = "events.divide.nametag")
+@ListenerMetadata(config = "events.nametag.enabled")
 public class TagInteractListener implements Listener {
 
     private final StackMob sm;
@@ -38,11 +39,17 @@ public class TagInteractListener implements Listener {
         if (stackEntity == null) {
             return;
         }
-        if (!stackEntity.isSingle()) {
-            stackEntity.slice();
-        }
-        if (stackEntity.getEntityConfig().removeStackDataOnDivide("nametag")) {
-            stackEntity.removeStackData();
+        EntityConfig.NameTagInteractMode nameTagInteractMode = stackEntity.getEntityConfig().getNameTagInteractMode();
+        switch (nameTagInteractMode) {
+            case PREVENT:
+                event.setCancelled(true);
+                break;
+            case SLICE:
+                if (!stackEntity.isSingle()) {
+                    stackEntity.slice();
+                }
+                stackEntity.removeStackData();
+                break;
         }
     }
 }

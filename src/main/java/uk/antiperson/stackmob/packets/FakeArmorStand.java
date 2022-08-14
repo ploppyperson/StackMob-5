@@ -27,7 +27,9 @@ public interface FakeArmorStand {
             if (!(component instanceof TextComponent)) {
                 return false;
             }
-            return ((TextComponent) component).content().length() != 0;
+            if (((TextComponent) component).content().length() != 0) {
+                return true;
+            }
         }
         return entity.getCustomName() != null && entity.getCustomName().length() != 0;
     }

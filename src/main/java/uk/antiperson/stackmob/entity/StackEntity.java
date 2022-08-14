@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.RayTraceResult;
@@ -320,9 +321,36 @@ public class StackEntity {
             return null;
         }
         mergePotionEffects(biggest, smallest);
+        dropNameTag(biggest, smallest);
         biggest.incrementSize(smallest.getSize());
         smallest.remove(unregister);
         return smallest;
+    }
+
+    public void dropNameTag(StackEntity keep, StackEntity removed) {
+        if (removed.getEntity().getCustomName() == null) {
+            return;
+        }
+        switch (getEntityConfig().getNameTagStackMode()) {
+            case IGNORE:
+                break;
+            case DROP:
+                ItemStack itemStack = new ItemStack(Material.NAME_TAG);
+                ItemMeta itemMeta = itemStack.getItemMeta();
+                itemMeta.setDisplayName(removed.getEntity().getCustomName());
+                itemStack.setItemMeta(itemMeta);
+                getWorld().dropItemNaturally(removed.getEntity().getLocation(), itemStack);
+                break;
+            case JOIN:
+                String customName = keep.getEntity().getCustomName();
+                if (customName == null || customName.length() == 0) {
+                    keep.getEntity().setCustomName(removed.getEntity().getCustomName());
+                    break;
+                }
+                customName += " - " + removed.getEntity().getCustomName();
+                keep.getEntity().setCustomName(customName);
+                break;
+        }
     }
 
     public void mergePotionEffects(StackEntity toKeep, StackEntity toRemove) {

@@ -35,6 +35,13 @@ stack:
   on-spawn: false
   # Only stack when two stacks can directly see each other
   line-of-sight: true
+  # What should be done if a nametagged entity is removed when stacking?
+  # DROP - drop a nametag
+  # JOIN - make it so that the value of the nametag is added to the remaining entity
+  #        NOTE: this will only work if display-name.mode is NEARBY amd display-name.nearby.use-armorstand is enabled!
+  # IGNORE - do nothing
+  # Also see events.nametag where you can define what happens when stacks are nametagged
+  nametag-mode: JOIN
 
 # Names of worlds where there should be no stacking
 worlds-blacklist: []
@@ -116,6 +123,12 @@ disable-targeting:
 
 # What should be done when these entity actions occur. (*)
 events:
+  # When a nametag is used to rename a mob (see nametag)
+  nametag:
+    enabled: true
+    # SLICE - slice off an entity so that a single entity is named and becomes unstackable
+    # PREVENT - prevent nametags from working with stacked mobs
+    mode: SLICE
   # When an entity picks up armor or other equipment
   equip:
     enabled: true
@@ -160,16 +173,11 @@ events:
     drops: true
     slime-split: true
   divide:
-    nametag: false
     tame: true
     # Only bees currently.
     enter-block: true
     # Only fish currently.
     bucket-fill: true
-  remove-stack-data:
-    # Should we remove the stack data of an entity that was unstacked as a result of nametag division/split?
-    # Setting this to false will cause entities that were nametagged to potentially become stacked again.
-    nametag: true
 
 # How entities should die
 death:

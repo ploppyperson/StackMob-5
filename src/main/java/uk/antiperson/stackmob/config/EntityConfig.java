@@ -215,8 +215,6 @@ public class EntityConfig {
         return getInt( "death.STEP.min-step");
     }
 
-    public boolean removeStackDataOnDivide(String reasonKey) { return getBoolean("events.remove-stack-data." + reasonKey); }
-
     public boolean isTargetingDisabledTypes() {
         return isEntityTypeInList("disable-targeting.type-blacklist");
     }
@@ -307,6 +305,18 @@ public class EntityConfig {
         return list.contains(type.toString());
     }
 
+    public NameTagInteractMode getNameTagInteractMode() {
+        return NameTagInteractMode.valueOf(getString("events.nametag.mode"));
+    }
+
+    public NameTagStackMode getNameTagStackMode() {
+        NameTagStackMode nameTagStackMode = NameTagStackMode.valueOf(getString("stack.nametag-mode"));
+        if (nameTagStackMode == NameTagStackMode.JOIN && !(getTagMode() == StackEntity.TagMode.NEARBY && isUseArmorStand())) {
+            return NameTagStackMode.IGNORE;
+        }
+        return nameTagStackMode;
+    }
+
     public boolean isCheckCanSee() {
         return getBoolean("stack.line-of-sight");
     }
@@ -344,7 +354,6 @@ public class EntityConfig {
     public enum EventType {
         BREED("breed"),
         DYE("dye"),
-        EQUIP("equip"),
         EXPLOSION("explosion"),
         SHEAR("shear");
 
@@ -361,5 +370,16 @@ public class EntityConfig {
     public enum ListenerMode {
         MULTIPLY,
         SPLIT
+    }
+
+    public enum NameTagInteractMode {
+        SLICE,
+        PREVENT
+    }
+
+    public enum NameTagStackMode {
+        IGNORE,
+        DROP,
+        JOIN
     }
 }
