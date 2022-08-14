@@ -1,6 +1,6 @@
 # StackMob-5
 
-StackMob redefined for 1.16 and 1.17. StackMob 5 uses Bukkit's PersistentDataContainer API so performance will be greatly improved from previous versions.
+StackMob for 1.16.5+. StackMob 5 uses Bukkit's PersistentDataContainer API so performance will be greatly improved from previous versions.
 
 Spigot: https://www.spigotmc.org/resources/stackmob-enhance-your-servers-performance-without-the-sacrifice.29999/
 
@@ -31,6 +31,6 @@ Maven:
 <dependency>
     <groupId>uk.antiperson.stackmob</groupId>
     <artifactId>StackMob</artifactId>
-    <version>5.5.3</version>
+    <version>5.8.2</version>
 </dependency>
 ```
