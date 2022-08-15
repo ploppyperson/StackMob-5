@@ -56,6 +56,10 @@
                             <pattern>org.bstats</pattern>
                             <shadedPattern>uk.antiperson.stackmob</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>net.kyori.adventure</pattern>
+                            <shadedPattern>uk.antiperson.stackmob</shadedPattern>
+                        </relocation>
                     </relocations>
                 </configuration>
                 <executions>
@@ -182,7 +186,6 @@
             <groupId>net.kyori</groupId>
             <artifactId>adventure-platform-bukkit</artifactId>
             <version>4.1.1</version>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 
