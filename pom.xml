@@ -54,13 +54,14 @@
                     <relocations>
                         <relocation>
                             <pattern>org.bstats</pattern>
-                            <shadedPattern>uk.antiperson.stackmob</shadedPattern>
+                            <shadedPattern>uk.antiperson.stackmob.libs.bstats</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>net.kyori.adventure</pattern>
-                            <shadedPattern>uk.antiperson.stackmob</shadedPattern>
+                            <shadedPattern>uk.antiperson.stackmob.libs.adventure</shadedPattern>
                         </relocation>
                     </relocations>
+                    <minimizeJar>true</minimizeJar>
                 </configuration>
                 <executions>
                     <execution>

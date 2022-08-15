@@ -384,11 +384,7 @@ public class StackEntity {
         cloneStack.setSize(1);
         duplicateTraits(cloneStack);
         if (getEntityConfig().isUseArmorStand() && getEntityConfig().getTagMode() == TagMode.NEARBY) {
-            if (Utilities.isPaper()) {
-                clone.customName(getEntity().customName());
-            } else {
-                clone.setCustomName(getEntity().getCustomName());
-            }
+            clone.setCustomName(getEntity().getCustomName());
         }
         return cloneStack;
     }
@@ -591,10 +587,6 @@ public class StackEntity {
         }
 
         private void updateName(Component component) {
-            if (Utilities.isPaper()) {
-                entity.customName(component);
-                return;
-            }
             entity.setCustomName(LegacyComponentSerializer.legacySection().serialize(component));
         }
 

@@ -3,13 +3,16 @@ package uk.antiperson.stackmob.commands;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.entity.Player;
 import uk.antiperson.stackmob.utils.Utilities;
 
 public class User {
 
     private final Audience sender;
-    public User(Audience sender) {
+    private final Player player;
+    public User(Audience sender, Player player) {
         this.sender = sender;
+        this.player = player;
     }
 
     public void sendRawMessage(String message) {
@@ -28,8 +31,8 @@ public class User {
         sendMessage(MessageType.SUCCESS, message);
     }
 
-    public Audience getSender() {
-        return sender;
+    public Player getSender() {
+        return player;
     }
 
     private void sendMessage(MessageType type, String string) {
