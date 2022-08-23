@@ -89,7 +89,7 @@ public class Commands implements CommandExecutor, TabCompleter {
             sender.sendMessage(subCommand.buildComponent(cmd));
             return false;
         }
-        subCommand.onCommand(new User(sm.getAdventure().sender(commandSender), (Player) commandSender), subCmdArgs);
+        subCommand.onCommand(new User(sm.getAdventure().sender(commandSender), commandSender), subCmdArgs);
         return false;
     }
 
