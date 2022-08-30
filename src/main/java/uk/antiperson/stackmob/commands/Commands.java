@@ -99,18 +99,11 @@ public class Commands implements CommandExecutor, TabCompleter {
     }
 
     public boolean validateArgs(CommandArgument[] argumentTypes, String[] args) {
-        if (args.length < argumentTypes.length) {
-            if (argumentTypes.length == (args.length + 1)) {
-                CommandArgument argument = argumentTypes[argumentTypes.length - 1];
-                return argument.isOptional();
-            }
-            return false;
-        }
-        for (int i = 0; i < argumentTypes.length; i++) {
+        for (int i = 0; i < args.length; i++) {
             CommandArgument argument = argumentTypes[i];
             switch (argument.getType()) {
                 case BOOLEAN:
-                    if (!(args[i].equals("true") || args[i+1].equals("false"))) return false;
+                    if (!(args[i].equals("true") || args[i].equals("false"))) return false;
                     break;
                 case INTEGER:
                     try {
@@ -136,6 +129,13 @@ public class Commands implements CommandExecutor, TabCompleter {
                         return false;
                     }
             }
+        }
+        if (args.length < argumentTypes.length) {
+            if (argumentTypes.length == (args.length + 1)) {
+                CommandArgument argument = argumentTypes[argumentTypes.length - 1];
+                return argument.isOptional();
+            }
+            return false;
         }
         return true;
     }
