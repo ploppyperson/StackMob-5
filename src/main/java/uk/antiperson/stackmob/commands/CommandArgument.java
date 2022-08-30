@@ -3,6 +3,7 @@ package uk.antiperson.stackmob.commands;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Mob;
+import uk.antiperson.stackmob.utils.Utilities;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -63,7 +64,7 @@ public class CommandArgument {
         } else if (getName() != null) {
             options.append(getName());
         } else {
-            options.append(getType());
+            options.append(Utilities.filter(getType().toString()).toLowerCase());
         }
         return options.toString();
     }

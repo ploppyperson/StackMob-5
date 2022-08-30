@@ -123,6 +123,10 @@ public class Utilities {
         ERROR
     }
 
+    public static String filter(String string) {
+        return string.replaceAll("[^A-Za-z\\d]", " ");
+    }
+
     public enum MinecraftVersion {
         V1_16_R1("v1_16_R1"),
         V1_17_R1("v1_17_R1"),

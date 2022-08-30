@@ -599,7 +599,7 @@ public class StackEntity {
             StackableMobHook smh = sm.getHookManager().getApplicableHook(StackEntity.this);
             typeString = smh != null ? smh.getDisplayName(entity) : entity.getType().toString();
             typeString = typeString == null ? entity.getType().toString() : typeString;
-            return WordUtils.capitalizeFully(typeString.replaceAll("[^A-Za-z0-9]", " "));
+            return WordUtils.capitalizeFully(Utilities.filter(typeString));
         }
 
         public Component getDisplayName() {
