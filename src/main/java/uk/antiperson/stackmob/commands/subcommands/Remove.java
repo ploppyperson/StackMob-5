@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 
-@CommandMetadata(command = "remove", playerReq = false, desc = "Remove entities")
+@CommandMetadata(command = "remove", playerReq = false, desc = "Remove entities.")
 public class Remove extends SubCommand {
 
     private final StackMob sm;

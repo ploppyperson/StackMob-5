@@ -12,7 +12,7 @@ import uk.antiperson.stackmob.packets.TagHandler;
 
 import java.util.Arrays;
 
-@CommandMetadata(command = "stats", playerReq = false, desc = "View plugin statistics")
+@CommandMetadata(command = "stats", playerReq = false, desc = "View plugin statistics.")
 public class Stats extends SubCommand {
 
     private final StackMob sm;

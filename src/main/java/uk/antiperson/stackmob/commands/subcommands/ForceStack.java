@@ -14,7 +14,7 @@ import uk.antiperson.stackmob.utils.Utilities;
 import java.util.Arrays;
 import java.util.function.Predicate;
 
-@CommandMetadata(command = "forcestack", playerReq = false, desc = "Force all currently loaded entities to stack")
+@CommandMetadata(command = "forcestack", playerReq = false, desc = "Force all currently loaded entities to stack.")
 public class ForceStack extends SubCommand {
 
     private final StackMob sm;
