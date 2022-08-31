@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Mob;
+import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import uk.antiperson.stackmob.StackMob;
@@ -18,7 +19,7 @@ public class ForceStack extends SubCommand {
 
     private final StackMob sm;
     public ForceStack(StackMob sm) {
-        super(CommandArgument.construct(ArgumentType.STRING, true, Arrays.asList("named", "tamed")));
+        super(CommandArgument.construct(ArgumentType.STRING, true, Arrays.asList("named", "tamed", "chunk")));
         this.sm = sm;
     }
 
@@ -33,6 +34,13 @@ public class ForceStack extends SubCommand {
                     break;
                 case "tamed":
                     predicate = pEntity -> (pEntity instanceof Tameable) && ((Tameable) pEntity).isTamed();
+                    break;
+                case "chunk":
+                    if (!(sender.getSender() instanceof Player)) {
+                        sender.sendError("You need to be a player!");
+                        return false;
+                    }
+                    predicate = pEntity -> pEntity.getLocation().getChunk() == ((Player) sender.getSender()).getLocation().getChunk();
                     break;
             }
         }
