@@ -29,10 +29,10 @@ public class NmsFakeArmorStand implements FakeArmorStand {
         this.player = player;
     }
 
-    public void spawnFakeArmorStand(Entity owner, Location location, Component name) {
+    public void spawnFakeArmorStand(Entity owner, Location location, Component name, double offset) {
         WorldServer worldServer = ((CraftWorld) location.getWorld()).getHandle();
         // spawn armor stand
-        Location adjusted = adjustLocation(owner);
+        Location adjusted = adjustLocation(owner, offset);
         entityArmorStand = new EntityArmorStand(worldServer, adjusted.getX(), adjusted.getY(), adjusted.getZ());
         // metadata for armour stand
         // send spawn packet
@@ -57,8 +57,8 @@ public class NmsFakeArmorStand implements FakeArmorStand {
         ((CraftPlayer) player).getHandle().b.a(packetPlayOutEntityMetadata);
     }
 
-    public void teleport(Entity entity) {
-        Location adjusted = adjustLocation(entity);
+    public void teleport(Entity entity, double offset) {
+        Location adjusted = adjustLocation(entity, offset);
         entityArmorStand.g(adjusted.getX(), adjusted.getY(), adjusted.getZ());
         PacketPlayOutEntityTeleport teleport = new PacketPlayOutEntityTeleport(entityArmorStand);
         ((CraftPlayer) player).getHandle().b.a(teleport);

@@ -38,7 +38,7 @@ public class TagHandler {
     public void newlyInRange() {
         tagVisible = true;
         if (stackEntity.getEntityConfig().isUseArmorStand()) {
-            fakeArmorStand.spawnFakeArmorStand(stackEntity.getEntity(), stackEntity.getEntity().getLocation(), stackEntity.getTag().getDisplayName());
+            fakeArmorStand.spawnFakeArmorStand(stackEntity.getEntity(), stackEntity.getEntity().getLocation(), stackEntity.getTag().getDisplayName(), stackEntity.getEntityConfig().getArmorstandOffset());
             return;
         }
         sendPacket(stackEntity.getEntity(), player, true);
@@ -60,7 +60,7 @@ public class TagHandler {
         if (!stackEntity.getEntityConfig().isUseArmorStand()) {
             return;
         }
-        fakeArmorStand.teleport(stackEntity.getEntity());
+        fakeArmorStand.teleport(stackEntity.getEntity(), stackEntity.getEntityConfig().getArmorstandOffset());
         if (stackEntity.getTag().getDisplayName().equals(lastTag)) {
             return;
         }

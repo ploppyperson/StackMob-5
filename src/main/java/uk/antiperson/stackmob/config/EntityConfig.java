@@ -132,7 +132,11 @@ public class EntityConfig {
     }
 
     public boolean isUseArmorStand() {
-        return getBoolean("display-name.nearby.use-armorstand");
+        return getBoolean("display-name.nearby.armorstand.enabled");
+    }
+
+    public double getArmorstandOffset() {
+        return getDouble("display-name.nearby.armorstand.offset");
     }
 
     public boolean isTraitEnabled(String traitKey) {
