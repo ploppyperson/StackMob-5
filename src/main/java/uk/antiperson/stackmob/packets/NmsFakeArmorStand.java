@@ -13,16 +13,19 @@ import net.minecraft.network.syncher.DataWatcherRegistry;
 import net.minecraft.server.level.WorldServer;
 import net.minecraft.world.entity.decoration.EntityArmorStand;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_19_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_19_R2.CraftWorld;
+import org.bukkit.craftbukkit.v1_19_R2.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 public class NmsFakeArmorStand implements FakeArmorStand {
 
     private EntityArmorStand entityArmorStand;
+    private int id;
     private final Player player;
 
     public NmsFakeArmorStand(Player player) {
@@ -34,26 +37,25 @@ public class NmsFakeArmorStand implements FakeArmorStand {
         // spawn armor stand
         Location adjusted = adjustLocation(owner, offset);
         entityArmorStand = new EntityArmorStand(worldServer, adjusted.getX(), adjusted.getY(), adjusted.getZ());
+        id = entityArmorStand.ah();
         // metadata for armour stand
         // send spawn packet
         PacketPlayOutSpawnEntity packetPlayOutSpawn = new PacketPlayOutSpawnEntity(entityArmorStand);
         ((CraftPlayer) player).getHandle().b.a(packetPlayOutSpawn);
-        DataWatcher watcher = new DataWatcher(entityArmorStand);
-        watcher.a(new DataWatcherObject<>(0, DataWatcherRegistry.a), (byte) 0x20);
-        watcher.a(new DataWatcherObject<>(2, DataWatcherRegistry.f), Optional.ofNullable(IChatBaseComponent.ChatSerializer.a(GsonComponentSerializer.gson().serializeToTree(name))));
-        watcher.a(new DataWatcherObject<>(3, DataWatcherRegistry.i), true);
-        watcher.a(new DataWatcherObject<>(5, DataWatcherRegistry.i), true);
-        watcher.a(new DataWatcherObject<>(15, DataWatcherRegistry.a), (byte) 0x10);
+        DataWatcher.b<Byte> ab = DataWatcher.b.a(new DataWatcherObject<>(0, DataWatcherRegistry.a), (byte) 0x20);
+        DataWatcher.b<Optional<IChatBaseComponent>> ac = DataWatcher.b.a(new DataWatcherObject<>(2, DataWatcherRegistry.g), Optional.of(IChatBaseComponent.ChatSerializer.a(GsonComponentSerializer.gson().serializeToTree(name))));
+        DataWatcher.b<Boolean> ad = DataWatcher.b.a(new DataWatcherObject<>(3, DataWatcherRegistry.j), true);
+        DataWatcher.b<Boolean> ae = DataWatcher.b.a(new DataWatcherObject<>(5, DataWatcherRegistry.j), true);
+        DataWatcher.b<Byte> af = DataWatcher.b.a(new DataWatcherObject<>(15, DataWatcherRegistry.a), (byte) 0x10);
         // send metadata packet for armor stand
-        PacketPlayOutEntityMetadata packetPlayOutEntityMetadata = new PacketPlayOutEntityMetadata(entityArmorStand.ae(), watcher, true);
+        PacketPlayOutEntityMetadata packetPlayOutEntityMetadata = new PacketPlayOutEntityMetadata(id, List.of(ab, ac, ad, ae, af));
         ((CraftPlayer) player).getHandle().b.a(packetPlayOutEntityMetadata);
     }
 
     @Override
     public void updateName(Component newName) {
-        DataWatcher watcher = new DataWatcher(entityArmorStand);
-        watcher.a(new DataWatcherObject<>(2, DataWatcherRegistry.f), Optional.ofNullable(IChatBaseComponent.ChatSerializer.a(GsonComponentSerializer.gson().serializeToTree(newName))));
-        PacketPlayOutEntityMetadata packetPlayOutEntityMetadata = new PacketPlayOutEntityMetadata(entityArmorStand.ae(), watcher, true);
+        DataWatcher.b<Optional<IChatBaseComponent>> ad = DataWatcher.b.a(new DataWatcherObject<>(2, DataWatcherRegistry.g), Optional.of(IChatBaseComponent.ChatSerializer.a(GsonComponentSerializer.gson().serializeToTree(newName))));
+        PacketPlayOutEntityMetadata packetPlayOutEntityMetadata = new PacketPlayOutEntityMetadata(id, Collections.singletonList(ad));
         ((CraftPlayer) player).getHandle().b.a(packetPlayOutEntityMetadata);
     }
 
@@ -65,7 +67,7 @@ public class NmsFakeArmorStand implements FakeArmorStand {
     }
 
     public void removeFakeArmorStand() {
-        PacketPlayOutEntityDestroy entityDestroy = new PacketPlayOutEntityDestroy(entityArmorStand.ae());
+        PacketPlayOutEntityDestroy entityDestroy = new PacketPlayOutEntityDestroy();
         ((CraftPlayer) player).getHandle().b.a(entityDestroy);
     }
 
