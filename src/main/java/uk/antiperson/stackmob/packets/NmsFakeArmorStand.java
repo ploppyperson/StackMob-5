@@ -61,13 +61,13 @@ public class NmsFakeArmorStand implements FakeArmorStand {
 
     public void teleport(Entity entity, double offset) {
         Location adjusted = adjustLocation(entity, offset);
-        entityArmorStand.g(adjusted.getX(), adjusted.getY(), adjusted.getZ());
+        entityArmorStand.b(adjusted.getX(), adjusted.getY(), adjusted.getZ());
         PacketPlayOutEntityTeleport teleport = new PacketPlayOutEntityTeleport(entityArmorStand);
         ((CraftPlayer) player).getHandle().b.a(teleport);
     }
 
     public void removeFakeArmorStand() {
-        PacketPlayOutEntityDestroy entityDestroy = new PacketPlayOutEntityDestroy();
+        PacketPlayOutEntityDestroy entityDestroy = new PacketPlayOutEntityDestroy(id);
         ((CraftPlayer) player).getHandle().b.a(entityDestroy);
     }
 
