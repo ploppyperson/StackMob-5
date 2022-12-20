@@ -96,11 +96,11 @@ public class StackMob extends JavaPlugin {
         command.setTabCompleter(commands);
         commands.registerSubCommands();
         int stackInterval = getMainConfig().getConfig().getStackInterval();
-        new MergeTask(this).runTaskTimer(this, 5, stackInterval);
+        new MergeTask(this).runTaskTimer(this, 20, stackInterval);
         int tagInterval = getMainConfig().getConfig().getTagNearbyInterval();
-        new TagCheckTask(this).runTaskTimer(this, 10, tagInterval);
+        new TagCheckTask(this).runTaskTimer(this, 30, tagInterval);
         if (getMainConfig().getConfig().isUseArmorStand()) {
-            new TagMoveTask(this).runTaskTimer(this, 0, 1);
+            new TagMoveTask(this).runTaskTimer(this, 10, 1);
         }
         if (Utilities.getMinecraftVersion() != Utilities.NMS_VERSION && getHookManager().getProtocolLibHook() == null) {
             getLogger().warning("You are not running the plugins native version and ProtocolLib could not be found (or has been disabled).");
