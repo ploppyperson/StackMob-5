@@ -302,8 +302,14 @@ hooks:
   citizens: true
   # Prevent stacked entities from giving mcmmo experience.
   mcmmo: true
-  # Prevent stacked entities from giving job payments.
-  jobs: true
+  # Options relating to the Jobs Reborn plugin
+  jobs:
+    enabled: true
+    # Modes:
+    # PREVENT - Do not give Jobs rewards for stacked mobs.
+    # IGNORE - Make it so StackMob doesn't touch Jobs.
+    # MULTIPLY - Multiply rewards for stacked mobs.
+    mode: PREVENT
   # Allows the use of ProtocolLib, which is used when the server version is not the native one of the plugin.
   protocollib: true
   # Make it so that ClearLagg removes stacked entities.

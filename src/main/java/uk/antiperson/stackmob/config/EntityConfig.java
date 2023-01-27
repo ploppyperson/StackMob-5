@@ -16,6 +16,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.StackEntity;
 import uk.antiperson.stackmob.entity.death.DeathType;
+import uk.antiperson.stackmob.hook.hooks.JobsHook;
 import uk.antiperson.stackmob.utils.Utilities;
 
 import java.util.Collection;
@@ -145,6 +146,10 @@ public class EntityConfig {
 
     public boolean isHookEnabled(String traitKey) {
         return getBoolean("hooks." + traitKey);
+    }
+
+    public JobsHook.JobHookMode getJobHookMode() {
+        return JobsHook.JobHookMode.valueOf(getString("hooks.jobs.mode"));
     }
 
     public boolean isDropMultiEnabled() {
