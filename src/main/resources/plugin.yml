@@ -6,8 +6,6 @@ softdepend: [WorldGuard, MythicMobs, ProtocolLib, ClearLag, MyPet, mcMMO, Jobs, 
 author: antiPerson
 website: https://www.spigotmc.org/resources/stackmob-enhance-your-servers-performance-without-the-sacrifice.29999/
 description: A plugin that aims to improve performance by 'stacking' entities together, with attempts to perserve game mechanics.
-libraries:
-  - org.apache.commons:commons-lang3:3.12.0
 commands:
   stackmob:
     aliases: [sm]

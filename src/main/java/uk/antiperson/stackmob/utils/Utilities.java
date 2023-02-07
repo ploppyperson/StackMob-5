@@ -4,7 +4,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -19,6 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -155,6 +155,33 @@ public class Utilities {
         } catch (final NumberFormatException nfe) {
             return defaultValue;
         }
+    }
+
+    public static String[] removeFirst(String[] array) {
+        String[] newArray = new String[array.length - 1];
+        for (int i = 0; i < array.length - 1; i++) {
+            newArray[i] = array[i + 1];
+        }
+        return newArray;
+    }
+
+    public static String capitalizeString(String string) {
+        String work = string.toLowerCase();
+        char[] chars = work.toCharArray();
+        boolean shouldCapitalize = true;
+        for (int i = 0; i < chars.length; i++) {
+            if (shouldCapitalize) {
+                if (Character.isAlphabetic(chars[i])) {
+                    chars[i] = Character.toTitleCase(chars[i]);
+                }
+                shouldCapitalize = false;
+                continue;
+            }
+            if (Character.isSpaceChar(chars[i])) {
+                shouldCapitalize = true;
+            }
+        }
+        return new String(chars);
     }
 
     public enum MinecraftVersion {

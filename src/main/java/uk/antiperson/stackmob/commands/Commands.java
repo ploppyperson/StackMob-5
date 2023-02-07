@@ -4,8 +4,6 @@ import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
-import net.md_5.bungee.api.ChatColor;
-import org.apache.commons.lang3.ArrayUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -83,7 +81,8 @@ public class Commands implements CommandExecutor, TabCompleter {
             sendError(sender, "This subcommand requires a player!");
             return false;
         }
-        String[] subCmdArgs = ArrayUtils.remove(strings, 0);
+        String[] subCmdArgs = Utilities.removeFirst(strings);
+        Arrays.stream(subCmdArgs).forEach(string -> System.out.println("fir " + string));
         if (!validateArgs(subCommand.getArguments(), subCmdArgs)) {
             sendError(sender, "Invalid arguments for '" + subCommand.getCommand() + "'. Usage:");
             sender.sendMessage(subCommand.buildComponent(cmd));

@@ -2,8 +2,6 @@ package uk.antiperson.stackmob.entity;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.text.WordUtils;
 import org.bukkit.FluidCollisionMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -574,8 +572,8 @@ public class StackEntity {
                 return;
             }
             String format = getEntityConfig().getTagFormat();
-            format = StringUtils.replace(format, "%type%", getEntityName());
-            format = StringUtils.replace(format, "%size%", getSize() + "");
+            format = format.replace("%type%", getEntityName());
+            format = format.replace("%size%", getSize() + "");
             displayName = Utilities.createComponent(format);
             if (getEntityConfig().isUseArmorStand() && getEntityConfig().getTagMode() == TagMode.NEARBY) {
                 return;
@@ -599,7 +597,7 @@ public class StackEntity {
             StackableMobHook smh = sm.getHookManager().getApplicableHook(StackEntity.this);
             typeString = smh != null ? smh.getDisplayName(entity) : entity.getType().toString();
             typeString = typeString == null ? entity.getType().toString() : typeString;
-            return WordUtils.capitalizeFully(Utilities.filter(typeString));
+            return Utilities.capitalizeString(Utilities.filter(typeString));
         }
 
         public Component getDisplayName() {
