@@ -82,7 +82,6 @@ public class Commands implements CommandExecutor, TabCompleter {
             return false;
         }
         String[] subCmdArgs = Utilities.removeFirst(strings);
-        Arrays.stream(subCmdArgs).forEach(string -> System.out.println("fir " + string));
         if (!validateArgs(subCommand.getArguments(), subCmdArgs)) {
             sendError(sender, "Invalid arguments for '" + subCommand.getCommand() + "'. Usage:");
             sender.sendMessage(subCommand.buildComponent(cmd));
