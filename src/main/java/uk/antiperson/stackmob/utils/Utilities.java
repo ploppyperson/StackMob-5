@@ -35,7 +35,7 @@ public class Utilities {
     public static final List<Material> DROWNED_MATERIALS = Arrays.asList(Material.NAUTILUS_SHELL, Material.TRIDENT);
     public static final List<EquipmentSlot> HAND_SLOTS = Arrays.asList(EquipmentSlot.HAND, EquipmentSlot.OFF_HAND);
     private static MinecraftVersion minecraftVersion;
-    public static final MinecraftVersion NMS_VERSION = MinecraftVersion.V1_19_R2;
+    public static final MinecraftVersion NMS_VERSION = MinecraftVersion.V1_19_R3;
     private static final LegacyComponentSerializer legacyComponentSerializer = LegacyComponentSerializer.builder().character('&').hexColors().hexCharacter('#').build();
 
     static {
@@ -159,9 +159,7 @@ public class Utilities {
 
     public static String[] removeFirst(String[] array) {
         String[] newArray = new String[array.length - 1];
-        for (int i = 0; i < array.length - 1; i++) {
-            newArray[i] = array[i + 1];
-        }
+        System.arraycopy(array, 1, newArray, 0, array.length - 1);
         return newArray;
     }
 
@@ -190,9 +188,10 @@ public class Utilities {
         V1_18_R1("v1_18_R1"),
         V1_18_R2("v1_18_R2"),
         V1_19_R1("v1_19_R1"),
-        V1_19_R2("v1_19_R2");
+        V1_19_R2("v1_19_R2"),
+        V1_19_R3("v1_19_R3");
 
-        String internalName;
+        final String internalName;
 
         MinecraftVersion(String internalName) {
             this.internalName = internalName;

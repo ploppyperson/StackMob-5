@@ -13,8 +13,8 @@ import net.minecraft.network.syncher.DataWatcherRegistry;
 import net.minecraft.server.level.WorldServer;
 import net.minecraft.world.entity.decoration.EntityArmorStand;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_19_R2.CraftWorld;
-import org.bukkit.craftbukkit.v1_19_R2.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_19_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_19_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
@@ -37,15 +37,15 @@ public class NmsFakeArmorStand implements FakeArmorStand {
         // spawn armor stand
         Location adjusted = adjustLocation(owner, offset);
         entityArmorStand = new EntityArmorStand(worldServer, adjusted.getX(), adjusted.getY(), adjusted.getZ());
-        id = entityArmorStand.ah();
+        id = entityArmorStand.af();
         // metadata for armour stand
         // send spawn packet
         PacketPlayOutSpawnEntity packetPlayOutSpawn = new PacketPlayOutSpawnEntity(entityArmorStand);
         ((CraftPlayer) player).getHandle().b.a(packetPlayOutSpawn);
         DataWatcher.b<Byte> ab = DataWatcher.b.a(new DataWatcherObject<>(0, DataWatcherRegistry.a), (byte) 0x20);
         DataWatcher.b<Optional<IChatBaseComponent>> ac = DataWatcher.b.a(new DataWatcherObject<>(2, DataWatcherRegistry.g), Optional.of(IChatBaseComponent.ChatSerializer.a(GsonComponentSerializer.gson().serializeToTree(name))));
-        DataWatcher.b<Boolean> ad = DataWatcher.b.a(new DataWatcherObject<>(3, DataWatcherRegistry.j), true);
-        DataWatcher.b<Boolean> ae = DataWatcher.b.a(new DataWatcherObject<>(5, DataWatcherRegistry.j), true);
+        DataWatcher.b<Boolean> ad = DataWatcher.b.a(new DataWatcherObject<>(3, DataWatcherRegistry.k), true);
+        DataWatcher.b<Boolean> ae = DataWatcher.b.a(new DataWatcherObject<>(5, DataWatcherRegistry.k), true);
         DataWatcher.b<Byte> af = DataWatcher.b.a(new DataWatcherObject<>(15, DataWatcherRegistry.a), (byte) 0x10);
         // send metadata packet for armor stand
         PacketPlayOutEntityMetadata packetPlayOutEntityMetadata = new PacketPlayOutEntityMetadata(id, List.of(ab, ac, ad, ae, af));
