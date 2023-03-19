@@ -7,7 +7,6 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import com.comphenix.protocol.wrappers.WrappedDataValue;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
-import com.google.common.collect.Lists;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.bukkit.Location;
@@ -19,9 +18,7 @@ import uk.antiperson.stackmob.hook.Hook;
 import uk.antiperson.stackmob.hook.HookMetadata;
 import uk.antiperson.stackmob.utils.Utilities;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -45,9 +42,9 @@ public class ProtocolLibHook extends Hook {
     /* https://github.com/Ste3et/FurnitureLib/commit/2f7c9adbe90716811ecc620c021bed0c727b10f0#diff-0f3b41bd8ab636343d5689cbcc1e2d008aa3b65454e5af09cba8059a4ac51bed */
     private void writeWatchableObjects(WrappedDataWatcher watcher, PacketContainer packetContainer) {
         if (Utilities.isVersionAtLeast(Utilities.MinecraftVersion.V1_19_R1)) {
-            final List<WrappedDataValue> wrappedDataValueList = Lists.newArrayList();
+            List<WrappedDataValue> wrappedDataValueList = new ArrayList<>();
             watcher.getWatchableObjects().stream().filter(Objects::nonNull).forEach(entry -> {
-                final WrappedDataWatcher.WrappedDataWatcherObject dataWatcherObject = entry.getWatcherObject();
+                WrappedDataWatcher.WrappedDataWatcherObject dataWatcherObject = entry.getWatcherObject();
                 wrappedDataValueList.add(new WrappedDataValue(dataWatcherObject.getIndex(), dataWatcherObject.getSerializer(), entry.getRawValue()));
             });
             packetContainer.getDataValueCollectionModifier().write(0, wrappedDataValueList);
