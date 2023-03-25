@@ -40,7 +40,7 @@ public class StackMob extends JavaPlugin {
     static {
         boolean f = false;
         try {
-            Class.forName("io.papermc.paper.threadedregions.scheduler.RegionisedScheduler");
+            Class.forName("io.papermc.paper.threadedregions.scheduler.RegionScheduler");
             f = true;
         } catch (ClassNotFoundException ignored) {}
         IS_FOLIA = f;
