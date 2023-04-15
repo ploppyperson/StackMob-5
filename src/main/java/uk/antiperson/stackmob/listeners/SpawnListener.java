@@ -1,5 +1,6 @@
 package uk.antiperson.stackmob.listeners;
 
+import org.bukkit.entity.Bee;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Mob;
@@ -22,6 +23,11 @@ public class SpawnListener implements Listener {
     public void onSpawn(CreatureSpawnEvent event) {
         if (!(event.getEntity() instanceof Mob)) {
             return;
+        }
+        if (event.getEntity() instanceof Bee) {
+            if (event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.BEEHIVE) {
+                return;
+            }
         }
         sm.getServer().getScheduler().runTask(sm, () -> {
             if (sm.getEntityManager().isStackedEntity(event.getEntity())) {
