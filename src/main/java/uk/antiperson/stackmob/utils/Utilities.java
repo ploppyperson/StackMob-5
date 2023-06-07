@@ -35,7 +35,7 @@ public class Utilities {
     public static final List<Material> DROWNED_MATERIALS = Arrays.asList(Material.NAUTILUS_SHELL, Material.TRIDENT);
     public static final List<EquipmentSlot> HAND_SLOTS = Arrays.asList(EquipmentSlot.HAND, EquipmentSlot.OFF_HAND);
     private static MinecraftVersion minecraftVersion;
-    public static final MinecraftVersion NMS_VERSION = MinecraftVersion.V1_19_R3;
+    public static final MinecraftVersion NMS_VERSION = MinecraftVersion.V1_20_R1;
     private static final LegacyComponentSerializer legacyComponentSerializer = LegacyComponentSerializer.builder().character('&').hexColors().hexCharacter('#').build();
 
     static {
@@ -189,7 +189,8 @@ public class Utilities {
         V1_18_R2("v1_18_R2"),
         V1_19_R1("v1_19_R1"),
         V1_19_R2("v1_19_R2"),
-        V1_19_R3("v1_19_R3");
+        V1_19_R3("v1_19_R3"),
+        V1_20_R1("v1_20_R1");
 
         final String internalName;
 
