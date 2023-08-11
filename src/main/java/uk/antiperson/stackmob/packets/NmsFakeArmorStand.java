@@ -13,8 +13,8 @@ import net.minecraft.network.syncher.DataWatcherRegistry;
 import net.minecraft.server.level.WorldServer;
 import net.minecraft.world.entity.decoration.EntityArmorStand;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_19_R3.CraftWorld;
-import org.bukkit.craftbukkit.v1_19_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_20_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_20_R1.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
@@ -41,7 +41,7 @@ public class NmsFakeArmorStand implements FakeArmorStand {
         // metadata for armour stand
         // send spawn packet
         PacketPlayOutSpawnEntity packetPlayOutSpawn = new PacketPlayOutSpawnEntity(entityArmorStand);
-        ((CraftPlayer) player).getHandle().b.a(packetPlayOutSpawn);
+        ((CraftPlayer) player).getHandle().c.a(packetPlayOutSpawn);
         DataWatcher.b<Byte> ab = DataWatcher.b.a(new DataWatcherObject<>(0, DataWatcherRegistry.a), (byte) 0x20);
         DataWatcher.b<Optional<IChatBaseComponent>> ac = DataWatcher.b.a(new DataWatcherObject<>(2, DataWatcherRegistry.g), Optional.of(IChatBaseComponent.ChatSerializer.a(GsonComponentSerializer.gson().serializeToTree(name))));
         DataWatcher.b<Boolean> ad = DataWatcher.b.a(new DataWatcherObject<>(3, DataWatcherRegistry.k), true);
@@ -49,26 +49,26 @@ public class NmsFakeArmorStand implements FakeArmorStand {
         DataWatcher.b<Byte> af = DataWatcher.b.a(new DataWatcherObject<>(15, DataWatcherRegistry.a), (byte) 0x10);
         // send metadata packet for armor stand
         PacketPlayOutEntityMetadata packetPlayOutEntityMetadata = new PacketPlayOutEntityMetadata(id, List.of(ab, ac, ad, ae, af));
-        ((CraftPlayer) player).getHandle().b.a(packetPlayOutEntityMetadata);
+        ((CraftPlayer) player).getHandle().c.a(packetPlayOutEntityMetadata);
     }
 
     @Override
     public void updateName(Component newName) {
         DataWatcher.b<Optional<IChatBaseComponent>> ad = DataWatcher.b.a(new DataWatcherObject<>(2, DataWatcherRegistry.g), Optional.of(IChatBaseComponent.ChatSerializer.a(GsonComponentSerializer.gson().serializeToTree(newName))));
         PacketPlayOutEntityMetadata packetPlayOutEntityMetadata = new PacketPlayOutEntityMetadata(id, Collections.singletonList(ad));
-        ((CraftPlayer) player).getHandle().b.a(packetPlayOutEntityMetadata);
+        ((CraftPlayer) player).getHandle().c.a(packetPlayOutEntityMetadata);
     }
 
     public void teleport(Entity entity, double offset) {
         Location adjusted = adjustLocation(entity, offset);
         entityArmorStand.b(adjusted.getX(), adjusted.getY(), adjusted.getZ());
         PacketPlayOutEntityTeleport teleport = new PacketPlayOutEntityTeleport(entityArmorStand);
-        ((CraftPlayer) player).getHandle().b.a(teleport);
+        ((CraftPlayer) player).getHandle().c.a(teleport);
     }
 
     public void removeFakeArmorStand() {
         PacketPlayOutEntityDestroy entityDestroy = new PacketPlayOutEntityDestroy(id);
-        ((CraftPlayer) player).getHandle().b.a(entityDestroy);
+        ((CraftPlayer) player).getHandle().c.a(entityDestroy);
     }
 
 }

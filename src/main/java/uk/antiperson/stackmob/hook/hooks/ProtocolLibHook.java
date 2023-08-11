@@ -41,7 +41,7 @@ public class ProtocolLibHook extends Hook {
 
     /* https://github.com/Ste3et/FurnitureLib/commit/2f7c9adbe90716811ecc620c021bed0c727b10f0#diff-0f3b41bd8ab636343d5689cbcc1e2d008aa3b65454e5af09cba8059a4ac51bed */
     private void writeWatchableObjects(WrappedDataWatcher watcher, PacketContainer packetContainer) {
-        if (Utilities.isVersionAtLeast(Utilities.MinecraftVersion.V1_19_R1)) {
+        if (Utilities.isVersionAtLeast(Utilities.MinecraftVersion.V1_19_R2)) {
             List<WrappedDataValue> wrappedDataValueList = new ArrayList<>();
             watcher.getWatchableObjects().stream().filter(Objects::nonNull).forEach(entry -> {
                 WrappedDataWatcher.WrappedDataWatcherObject dataWatcherObject = entry.getWatcherObject();

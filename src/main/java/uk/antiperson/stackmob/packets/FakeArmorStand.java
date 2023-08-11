@@ -25,7 +25,8 @@ public interface FakeArmorStand {
     }
 
     private boolean shouldAdjust(Entity entity) {
-        return entity.getCustomName() != null && entity.getCustomName().length() != 0;
+        String name = entity.getCustomName();
+        return name != null && name.length() != 0;
     }
 
 
