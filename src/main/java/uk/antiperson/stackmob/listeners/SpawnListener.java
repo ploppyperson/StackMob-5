@@ -24,7 +24,6 @@ public class SpawnListener implements Listener {
         if (!(event.getEntity() instanceof Mob)) {
             return;
         }
-        sm.getServer().getScheduler().runTask(sm, () -> {
         sm.getScheduler().runTask(sm, event.getEntity(), () -> {
             if (sm.getEntityManager().isStackedEntity(event.getEntity())) {
                 StackEntity stackEntity = sm.getEntityManager().getStackEntity(event.getEntity());
