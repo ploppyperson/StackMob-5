@@ -396,11 +396,13 @@ public class StackEntity {
             kid = sm.getEntityManager().registerStackedEntity(tadpole);
             kid.setSize(1);
             duplicateTraits(kid);
-        } else {
+        } else if(Utilities.isVersionAtLeast(Utilities.MinecraftVersion.V1_20_R1) && getEntity().getType() == EntityType.SNIFFER){
+            Drops.dropItem(entity.getLocation(), new ItemStack(Material.SNIFFER_EGG), kidAmount);
+        }else {
             kid = duplicate();
             ((Animals) kid.getEntity()).setBaby();
         }
-        kid.setSize(kidAmount);
+        if(!(kid == null)) kid.setSize(kidAmount);
     }
 
     private void duplicateTraits(StackEntity cloneStack) {
