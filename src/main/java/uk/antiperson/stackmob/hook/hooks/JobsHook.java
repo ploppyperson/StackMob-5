@@ -29,7 +29,7 @@ public class JobsHook extends Hook implements SpawnHook, Listener {
 
     @EventHandler
     public void onJobsPrePayment(JobsPrePaymentEvent event) {
-        if (event.getLivingEntity() == null) {
+        if (event.getLivingEntity() == null || StackMob.IS_FOLIA) { // TODO: Make this work with Folia.
             return;
         }
         stackEntity = sm.getEntityManager().getStackEntity(event.getLivingEntity());
