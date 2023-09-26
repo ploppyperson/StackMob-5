@@ -169,9 +169,7 @@ public class Utilities {
         boolean shouldCapitalize = true;
         for (int i = 0; i < chars.length; i++) {
             if (shouldCapitalize) {
-                if (Character.isAlphabetic(chars[i])) {
-                    chars[i] = Character.toTitleCase(chars[i]);
-                }
+                chars[i] = Character.toTitleCase(chars[i]);
                 shouldCapitalize = false;
                 continue;
             }
