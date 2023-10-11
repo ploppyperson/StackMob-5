@@ -174,12 +174,10 @@
             <version>4.17.2</version>
             <scope>provided</scope>
         </dependency>
-    </dependency>
-    <!-- ProtocolLib -->
     <dependency>
         <groupId>com.comphenix.protocol</groupId>
         <artifactId>ProtocolLib</artifactId>
-        <version>5.1.0</version>
+        <version>4.8.0</version>
         <scope>provided</scope>
         </dependency>
         <dependency>
