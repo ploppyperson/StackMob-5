@@ -28,7 +28,7 @@ public class TagHandler {
     }
 
     public void init() {
-        if (Utilities.getMinecraftVersion() != Utilities.NMS_VERSION) {
+        if (Utilities.getMinecraftVersion() != Utilities.NMS_VERSION || true) { // force protocollib for 1.20.2
             this.fakeArmorStand = new ProtocolLibFakeArmorStand(sm, player);
             return;
         }

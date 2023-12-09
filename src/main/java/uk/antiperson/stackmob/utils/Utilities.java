@@ -18,7 +18,6 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -35,7 +34,7 @@ public class Utilities {
     public static final List<Material> DROWNED_MATERIALS = Arrays.asList(Material.NAUTILUS_SHELL, Material.TRIDENT);
     public static final List<EquipmentSlot> HAND_SLOTS = Arrays.asList(EquipmentSlot.HAND, EquipmentSlot.OFF_HAND);
     private static MinecraftVersion minecraftVersion;
-    public static final MinecraftVersion NMS_VERSION = MinecraftVersion.V1_20_R1;
+    public static final MinecraftVersion NMS_VERSION = MinecraftVersion.V1_20_R2;
     private static final LegacyComponentSerializer legacyComponentSerializer = LegacyComponentSerializer.builder().character('&').hexColors().hexCharacter('#').build();
 
     static {
@@ -169,9 +168,7 @@ public class Utilities {
         boolean shouldCapitalize = true;
         for (int i = 0; i < chars.length; i++) {
             if (shouldCapitalize) {
-                if (Character.isAlphabetic(chars[i])) {
-                    chars[i] = Character.toTitleCase(chars[i]);
-                }
+                chars[i] = Character.toTitleCase(chars[i]);
                 shouldCapitalize = false;
                 continue;
             }
@@ -190,7 +187,8 @@ public class Utilities {
         V1_19_R1("v1_19_R1"),
         V1_19_R2("v1_19_R2"),
         V1_19_R3("v1_19_R3"),
-        V1_20_R1("v1_20_R1");
+        V1_20_R1("v1_20_R1"),
+        V1_20_R2("v1_20_R2");
 
         final String internalName;
 

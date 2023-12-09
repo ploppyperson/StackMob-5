@@ -10,11 +10,12 @@ import net.minecraft.network.protocol.game.PacketPlayOutSpawnEntity;
 import net.minecraft.network.syncher.DataWatcher;
 import net.minecraft.network.syncher.DataWatcherObject;
 import net.minecraft.network.syncher.DataWatcherRegistry;
-import net.minecraft.server.level.WorldServer;
 import net.minecraft.world.entity.decoration.EntityArmorStand;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_20_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_20_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_20_R2.CraftWorld;
+import org.bukkit.craftbukkit.v1_20_R2.entity.CraftPlayer;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
@@ -33,11 +34,11 @@ public class NmsFakeArmorStand implements FakeArmorStand {
     }
 
     public void spawnFakeArmorStand(Entity owner, Location location, Component name, double offset) {
-        WorldServer worldServer = ((CraftWorld) location.getWorld()).getHandle();
         // spawn armor stand
+        System.out.println("SPAWNING");
         Location adjusted = adjustLocation(owner, offset);
-        entityArmorStand = new EntityArmorStand(worldServer, adjusted.getX(), adjusted.getY(), adjusted.getZ());
-        id = entityArmorStand.af();
+        id = Bukkit.getUnsafe().nextEntityId();
+        entityArmorStand = (EntityArmorStand) ((CraftWorld) location.getWorld()).createEntity(adjusted, ArmorStand.class);
         // metadata for armour stand
         // send spawn packet
         PacketPlayOutSpawnEntity packetPlayOutSpawn = new PacketPlayOutSpawnEntity(entityArmorStand);
