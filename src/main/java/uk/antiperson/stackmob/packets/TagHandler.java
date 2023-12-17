@@ -28,11 +28,8 @@ public class TagHandler {
     }
 
     public void init() {
-        if (Utilities.getMinecraftVersion() != Utilities.NMS_VERSION || true) { // force protocollib for 1.20.2
-            this.fakeArmorStand = new ProtocolLibFakeArmorStand(sm, player);
-            return;
-        }
-        this.fakeArmorStand = new NmsFakeArmorStand(player);
+        // force protocollib for 1.20.2
+        this.fakeArmorStand = new ProtocolLibFakeArmorStand(sm, player);
     }
 
     public void newlyInRange() {
@@ -77,15 +74,11 @@ public class TagHandler {
     }
 
     private void sendPacket(Entity entity, Player player, boolean tagVisible) {
-        if (Utilities.getMinecraftVersion() != Utilities.NMS_VERSION) {
-            ProtocolLibHook protocolLibHook = sm.getHookManager().getProtocolLibHook();
-            if (protocolLibHook == null) {
-                return;
-            }
-            protocolLibHook.sendPacket(player, entity, tagVisible);
+        ProtocolLibHook protocolLibHook = sm.getHookManager().getProtocolLibHook();
+        if (protocolLibHook == null) {
             return;
         }
-        NMSHelper.sendVisibilityPacket(player, entity, tagVisible);
+        protocolLibHook.sendPacket(player, entity, tagVisible);
     }
 
     public boolean isTagVisible() {
