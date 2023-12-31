@@ -36,8 +36,10 @@ public class MergeTask extends BukkitRunnable {
             }
             if (checkHasMoved) {
                 if (original.getEntity().getWorld().equals(original.getLastLocation().getWorld())) {
-                    if (original.getEntity().getLocation().distance(original.getLastLocation()) < checkHasMovedDistance) {
-                        continue;
+                    if (!original.skipLastLocation()) {
+                        if (original.getEntity().getLocation().distance(original.getLastLocation()) < checkHasMovedDistance) {
+                            continue;
+                        }
                     }
                 }
                 original.setLastLocation(original.getEntity().getLocation());

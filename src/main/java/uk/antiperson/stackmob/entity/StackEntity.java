@@ -40,6 +40,7 @@ public class StackEntity {
     private Location lastLocation;
     private int waitCount;
     private int stackSize;
+    private int lastLocationTimeout;
     private Set<ItemStack> equiptItems;
     private Tag tag;
     private EntityConfig entityConfig;
@@ -104,6 +105,15 @@ public class StackEntity {
      */
     public void setLastLocation(Location lastLocation) {
         this.lastLocation = lastLocation;
+    }
+
+    public boolean skipLastLocation() {
+        if (lastLocationTimeout == 0) {
+            lastLocationTimeout = getEntityConfig().getCheckHasMovedTimeout();
+            return true;
+        }
+        lastLocationTimeout--;
+        return false;
     }
 
     /**

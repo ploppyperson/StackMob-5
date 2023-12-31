@@ -109,6 +109,10 @@ public class EntityConfig {
         return getDouble("stack.check-location.distance");
     }
 
+    public int getCheckHasMovedTimeout() {
+        return getInt("stack.check-location.timeout");
+    }
+
     public String getTagFormat() {
         return getString("display-name.format");
     }
