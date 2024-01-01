@@ -60,6 +60,10 @@
                             <pattern>net.kyori.adventure</pattern>
                             <shadedPattern>uk.antiperson.stackmob.libs.adventure</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>net.kyori.option</pattern>
+                            <shadedPattern>uk.antiperson.stackmob.libs.option</shadedPattern>
+                        </relocation>
                     </relocations>
                     <minimizeJar>true</minimizeJar>
                 </configuration>
