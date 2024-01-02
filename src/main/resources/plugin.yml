@@ -3,7 +3,6 @@ main: uk.antiperson.stackmob.StackMob
 version: ${project.version}
 api-version: 1.16
 folia-supported: true
-softdepend: [WorldGuard, MythicMobs, ProtocolLib, ClearLag, MyPet, mcMMO, Jobs, Citizens]
 depend: [ProtocolLib]
 softdepend: [WorldGuard, MythicMobs, ClearLag, MyPet, mcMMO, Jobs, Citizens]
 author: antiPerson
