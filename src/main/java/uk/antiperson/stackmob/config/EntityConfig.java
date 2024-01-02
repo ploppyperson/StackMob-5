@@ -13,6 +13,7 @@ import org.bukkit.entity.Raider;
 import org.bukkit.entity.WaterMob;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.stringtemplate.v4.ST;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.StackEntity;
 import uk.antiperson.stackmob.entity.death.DeathType;
@@ -108,6 +109,10 @@ public class EntityConfig {
         return getDouble("stack.check-location.distance");
     }
 
+    public int getCheckHasMovedTimeout() {
+        return getInt("stack.check-location.timeout");
+    }
+
     public String getTagFormat() {
         return getString("display-name.format");
     }
@@ -117,7 +122,11 @@ public class EntityConfig {
     }
 
     public StackEntity.TagMode getTagMode() {
-        return StackEntity.TagMode.valueOf(getString("display-name.visibility"));
+        StackEntity.TagMode tagMode = StackEntity.TagMode.valueOf(getString("display-name.visibility"));
+        if (sm.getHookManager().getProtocolLibHook() == null && tagMode == StackEntity.TagMode.NEARBY) {
+            tagMode = StackEntity.TagMode.HOVER;
+        }
+        return tagMode;
     }
 
     public Integer[] getTagNearbyRadius() {
