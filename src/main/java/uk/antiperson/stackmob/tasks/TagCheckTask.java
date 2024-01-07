@@ -2,11 +2,10 @@ package uk.antiperson.stackmob.tasks;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.packets.PlayerWatcher;
 
-public class TagCheckTask extends BukkitRunnable {
+public class TagCheckTask implements Runnable {
 
     private final StackMob sm;
     public TagCheckTask(StackMob sm) {
@@ -16,8 +15,16 @@ public class TagCheckTask extends BukkitRunnable {
     @Override
     public void run() {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            PlayerWatcher playerWatcher = sm.getPlayerManager().createPlayerWatcher(player);
-            playerWatcher.checkPlayer();
+            Runnable runnable = () -> {
+                PlayerWatcher playerWatcher = sm.getPlayerManager().createPlayerWatcher(player);
+                playerWatcher.checkPlayer();
+            };
+
+            if (StackMob.IS_FOLIA) {
+                sm.getScheduler().runTask(sm, player, runnable);
+            } else {
+                runnable.run();
+            }
         }
     }
 

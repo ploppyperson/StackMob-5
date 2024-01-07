@@ -20,9 +20,6 @@ import uk.antiperson.stackmob.packets.PlayerManager;
 import uk.antiperson.stackmob.scheduler.BukkitScheduler;
 import uk.antiperson.stackmob.scheduler.FoliaScheduler;
 import uk.antiperson.stackmob.scheduler.Scheduler;
-import uk.antiperson.stackmob.tasks.FoliaMergeTask;
-import uk.antiperson.stackmob.tasks.FoliaTagCheckTask;
-import uk.antiperson.stackmob.tasks.FoliaTagMoveTask;
 import uk.antiperson.stackmob.tasks.MergeTask;
 import uk.antiperson.stackmob.tasks.TagCheckTask;
 import uk.antiperson.stackmob.tasks.TagMoveTask;
@@ -113,21 +110,14 @@ public class StackMob extends JavaPlugin {
         command.setTabCompleter(commands);
         commands.registerSubCommands();
         int stackInterval = getMainConfig().getConfig().getStackInterval();
-        getScheduler().runGlobalTaskTimer(this, IS_FOLIA ? new FoliaMergeTask(this) : new MergeTask(this), 20, stackInterval);
+        getScheduler().runGlobalTaskTimer(this, new MergeTask(this), 20, stackInterval);
         int tagInterval = getMainConfig().getConfig().getTagNearbyInterval();
-        getScheduler().runGlobalTaskTimer(this, IS_FOLIA ? new FoliaTagCheckTask(this) : new TagCheckTask(this), 30, tagInterval);
+        getScheduler().runGlobalTaskTimer(this, new TagCheckTask(this), 30, tagInterval);
         if (getMainConfig().getConfig().isUseArmorStand()) {
-            getScheduler().runGlobalTaskTimer(this, IS_FOLIA ? new FoliaTagMoveTask(this) : new TagMoveTask(this), 10, 1);
+            getScheduler().runGlobalTaskTimer(this, new TagMoveTask(this), 10, 1);
         }
-        getLogger().info("Detected CraftBukkit NMS version " + Utilities.getMinecraftVersion() +
-                (Utilities.getMinecraftVersion() != Utilities.NMS_VERSION ? ", native version is " + Utilities.NMS_VERSION : ""));
-        if (Utilities.getMinecraftVersion() != Utilities.NMS_VERSION) {
-            if (getHookManager().getProtocolLibHook() == null) {
-                getLogger().warning("You are not running the plugins native version and ProtocolLib could not be found (or has been disabled).");
-                getLogger().warning("The display name visibility setting 'NEARBY' will not work unless this is fixed.");
-            } else {
-                getLogger().info("You are not using the native version for this plugin (" + Utilities.NMS_VERSION + "). Using ProtocolLib.");
-            }
+        if (getHookManager().getProtocolLibHook() == null) {
+            getLogger().warning("ProtocolLib could not be found (or has been disabled). The display name visibility setting 'NEARBY' will not work unless this is fixed.");
         }
         getEntityManager().registerAllEntities();
         getUpdater().checkUpdate().whenComplete(((updateResult, throwable) -> {

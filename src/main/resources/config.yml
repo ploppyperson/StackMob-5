@@ -25,12 +25,13 @@ stack:
     enabled: true
     amount: 5
   # Only find matches for this mob if it has moved from the last time nearby mobs were checked. (*)
-  # This may break grinders etc, which is why for now it is disabled by default.
-  # Please give feedback at https://github.com/Nathat23/StackMob-5/issues/198
+  # This may have unintended effects, so you should do some testing when modifying this section.
   check-location:
     enabled: true
     # The distance threshold for the check
     distance: 1.0
+    # Even if the entity hasn't moved, after (x) attempts then attempt a merge.
+    timeout: 20
   # Stack entities when they spawn. (*)
   on-spawn: false
   # Only stack when two stacks can directly see each other
@@ -66,7 +67,7 @@ display-name:
   # Mode:
   # ALWAYS - The tag will always be visible as long as the entity is loaded.
   # HOVER - The tag will only be visible when the player hovers their crosshair on the entity.
-  # NEARBY - The tag will only be visible when the player is in range of the entity. (more resource intensive, requires ProtocolLib on 1.16 servers)
+  # NEARBY - The tag will only be visible when the player is in range of the entity. (more resource intensive)
   visibility: NEARBY
   # Options for when 'NEARBY' is used above. (*)
   nearby:
