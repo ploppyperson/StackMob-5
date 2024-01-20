@@ -33,15 +33,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 
 public class StackMob extends JavaPlugin {
-    public static final boolean IS_FOLIA;
-    static {
-        boolean f = false;
-        try {
-            Class.forName("io.papermc.paper.threadedregions.RegionizedServer");
-            f = true;
-        } catch (ClassNotFoundException ignored) {}
-        IS_FOLIA = f;
-    }
 
     private final NamespacedKey stackKey = new NamespacedKey(this, "stack-size");
     private final NamespacedKey toolKey = new NamespacedKey(this, "stack-tool");
@@ -68,7 +59,7 @@ public class StackMob extends JavaPlugin {
             getLogger().log(Level.SEVERE, "There was a problem registering hooks. Features won't work.");
             e.printStackTrace();
         }
-        scheduler = IS_FOLIA ? new FoliaScheduler() : new BukkitScheduler();
+        scheduler = Utilities.IS_FOLIA ? new FoliaScheduler() : new BukkitScheduler();
     }
 
     @Override

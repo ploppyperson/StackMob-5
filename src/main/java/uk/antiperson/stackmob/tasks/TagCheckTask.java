@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.packets.PlayerWatcher;
+import uk.antiperson.stackmob.utils.Utilities;
 
 public class TagCheckTask implements Runnable {
 
@@ -20,7 +21,7 @@ public class TagCheckTask implements Runnable {
                 playerWatcher.checkPlayer();
             };
 
-            if (StackMob.IS_FOLIA) {
+            if (Utilities.IS_FOLIA) {
                 sm.getScheduler().runTask(sm, player, runnable);
             } else {
                 runnable.run();

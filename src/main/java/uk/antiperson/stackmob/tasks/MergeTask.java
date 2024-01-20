@@ -103,7 +103,7 @@ public class MergeTask implements Runnable {
         double checkHasMovedDistance = sm.getMainConfig().getConfig().getCheckHasMovedDistance();
         for (StackEntity original : sm.getEntityManager().getStackEntities()) {
             Runnable runnable = () -> checkEntity(original, checkHasMoved, checkHasMovedDistance);
-            if (StackMob.IS_FOLIA) {
+            if (Utilities.IS_FOLIA) {
                 sm.getScheduler().runTask(sm, original.getEntity(), runnable);
             } else {
                 runnable.run();
