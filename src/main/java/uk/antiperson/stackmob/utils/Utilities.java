@@ -34,7 +34,6 @@ public class Utilities {
     public static final List<Material> DROWNED_MATERIALS = Arrays.asList(Material.NAUTILUS_SHELL, Material.TRIDENT);
     public static final List<EquipmentSlot> HAND_SLOTS = Arrays.asList(EquipmentSlot.HAND, EquipmentSlot.OFF_HAND);
     private static MinecraftVersion minecraftVersion;
-    public static final MinecraftVersion NMS_VERSION = MinecraftVersion.V1_20_R2;
     private static final LegacyComponentSerializer legacyComponentSerializer = LegacyComponentSerializer.builder().character('&').hexColors().hexCharacter('#').build();
 
     static {
@@ -87,11 +86,11 @@ public class Utilities {
 
     public static MinecraftVersion getMinecraftVersion() {
         if (minecraftVersion == null) {
-            minecraftVersion = MinecraftVersion.V1_16_R1;
-            String packageName = Bukkit.getServer().getClass().getPackage().getName();
-            String ending = packageName.substring(packageName.lastIndexOf('.') + 1);
+            minecraftVersion = MinecraftVersion.V1_16;
+            String packageName = Bukkit.getServer().getBukkitVersion();
+            String ending = packageName.substring(0, packageName.indexOf('-'));
             for (MinecraftVersion version: MinecraftVersion.values()) {
-                if (version.getInternalName().equals(ending)){
+                if (ending.contains(version.getInternalName())){
                     minecraftVersion = version;
                 }
             }
@@ -180,16 +179,12 @@ public class Utilities {
     }
 
     public enum MinecraftVersion {
-        V1_16_R1("v1_16_R1"),
-        V1_17_R1("v1_17_R1"),
-        V1_18_R1("v1_18_R1"),
-        V1_18_R2("v1_18_R2"),
-        V1_19_R1("v1_19_R1"),
-        V1_19_R2("v1_19_R2"),
-        V1_19_R3("v1_19_R3"),
-        V1_20_R1("v1_20_R1"),
-        V1_20_R2("v1_20_R2"),
-        V1_20_R3("v1_20_R3");
+        V1_16("1.16"),
+        V1_17("1.17"),
+        V1_18("1.18"),
+        V1_18_2("1.18.2"),
+        V1_19_4("1.19.4"),
+        V1_20_4("1.20.4");
 
         final String internalName;
 
