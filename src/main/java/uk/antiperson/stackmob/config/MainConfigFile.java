@@ -17,8 +17,9 @@ public class MainConfigFile extends ConfigFile {
     public void updateFile() throws IOException {
         if (isSet("check-area.x")) {
             sm.getLogger().info("Old config detected. Renaming to config.old and making a new one.");
+            sm.getLogger().warning("You are going to loose mob stack data!!!");
+            sm.getLogger().info("I would suggest either running an older version of StackMob and use the StackMobBridge plugin to covert starts. Or just replace stacks manually.");
             makeOld();
-            sm.downloadBridge();
             return;
         }
         super.updateFile();

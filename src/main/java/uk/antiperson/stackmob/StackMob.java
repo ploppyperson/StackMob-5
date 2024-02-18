@@ -171,28 +171,6 @@ public class StackMob extends JavaPlugin {
         getServer().getPluginManager().registerEvents(listener, this);
     }
 
-    public void downloadBridge() {
-        getLogger().info("Installing StackMobBridge (utility to convert legacy mob stacks)...");
-        File file = new File(getDataFolder().getParent(), "StackMobBridge.jar");
-        String bridgeUrl = "http://aqua.api.spiget.org/v2/resources/45495/download";
-        Utilities.downloadFile(file, bridgeUrl).whenComplete(((downloadResult, throwable) -> {
-            if (downloadResult == Utilities.DownloadResult.ERROR) {
-                getLogger().log(Level.SEVERE,"There was an issue while downloading StackMobBridge.");
-                getLogger().log(Level.SEVERE, "This means that mob stacks will not be converted to the newer format.");
-                return;
-            }
-            if (getServer().getPluginManager().getPlugin("StackMobBridge") != null) {
-                return;
-            }
-            try {
-                Plugin plugin = getPluginLoader().loadPlugin(file);
-                getPluginLoader().enablePlugin(plugin);
-            } catch (InvalidPluginException e) {
-                e.printStackTrace();
-            }
-        }));
-    }
-
     public EntityTranslation getEntityTranslation() {
         return entityTranslation;
     }
