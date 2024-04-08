@@ -11,6 +11,7 @@
 # (2) https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/CreatureSpawnEvent.SpawnReason.html
 # (3) https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html
 # (4) https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html
+# (5) https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/event/entity/EntityKnockbackEvent.KnockbackCause.html
 
 stack:
   # The maximum size that a stack can have.
@@ -125,6 +126,20 @@ disable-targeting:
   # If the entity's spawns reason is listed below, do not disable targeting (**) (2)
   reason-blacklist: []
   reason-blacklist-invert: false
+
+# Prevent stacked mobs from taking knockback.
+# Stacked mobs will still be able to move, but will stay still if knockback occurs
+disable-knockback:
+  enabled: false
+  # If the entity's type is listed below, do not disable knockback. (3) (***)
+  type-blacklist: []
+  type-blacklist-invert: false
+  # If the entity's spawns reason is listed below, do not disable knockback (**) (2)
+  reason-blacklist: []
+  reason-blacklist-invert: false
+  # If the cause of knockback is listed below, do not disable knockback (**) (5)
+  cause-blacklist: []
+  cause-blacklist-invert: false
 
 # What should be done when these entity actions occur. (*)
 events:
