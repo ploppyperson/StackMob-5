@@ -26,7 +26,7 @@ public class ItemTools {
 
     public ItemStack createStackingTool() {
         ItemStack is = new ItemStack(Material.BONE, 1);
-        is.addUnsafeEnchantment(Enchantment.ARROW_KNOCKBACK, 100);
+        is.addUnsafeEnchantment(Enchantment.CHANNELING, 100);
         ItemMeta itemMeta = is.getItemMeta();
         itemMeta.setDisplayName(ITEM_NAME);
         itemMeta.setLore(ITEM_LORE);

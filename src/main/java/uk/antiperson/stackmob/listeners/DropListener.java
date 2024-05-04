@@ -10,6 +10,7 @@ import org.bukkit.event.entity.EntityDropItemEvent;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.Drops;
 import uk.antiperson.stackmob.entity.StackEntity;
+import uk.antiperson.stackmob.utils.Utilities;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -26,7 +27,7 @@ public class DropListener implements Listener {
     public void onDropListener(EntityDropItemEvent event) {
         if (!(event.getEntity() instanceof Villager) &&
                 event.getItemDrop().getItemStack().getType() != Material.EGG &&
-                event.getItemDrop().getItemStack().getType() != Material.SCUTE) {
+                event.getItemDrop().getItemStack().getType() != Utilities.getScuteMaterial()) {
             return;
         }
         if (!sm.getEntityManager().isStackedEntity((LivingEntity) event.getEntity())) {
