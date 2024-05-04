@@ -13,6 +13,7 @@ import org.bukkit.entity.Raider;
 import org.bukkit.entity.WaterMob;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityKnockbackEvent;
 import org.stringtemplate.v4.ST;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.StackEntity;
@@ -239,6 +240,18 @@ public class EntityConfig {
 
     public boolean isTargetingDisabledReasons(CreatureSpawnEvent.SpawnReason spawnReason) {
         return getList("disable-targeting.reason-blacklist").contains(spawnReason.toString());
+    }
+
+    public boolean isKnockbackDisabledTypes() {
+        return isEntityTypeInList("disable-knockback.type-blacklist");
+    }
+
+    public boolean isKnockbackDisabledReasons(CreatureSpawnEvent.SpawnReason spawnReason) {
+        return getList("disable-knockback.reason-blacklist").contains(spawnReason.toString());
+    }
+
+    public boolean isKnockbackDisabledCause(EntityKnockbackEvent.KnockbackCause cause) {
+        return getList("disable-knockback.cause-blacklist").contains(cause.toString());
     }
 
     public ListenerMode getListenerMode(EventType eventType) {
