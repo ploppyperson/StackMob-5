@@ -3,6 +3,7 @@ package uk.antiperson.stackmob.config;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Mob;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.StackEntity;
 
@@ -26,6 +27,9 @@ public class MainConfig {
         configFile.load();
         // iterate every entity type
         for (EntityType entityType : EntityType.values()) {
+            if (entityType.getEntityClass() == null || !Mob.class.isAssignableFrom(entityType.getEntityClass())) {
+                continue;
+            }
             // create new EntityConfig for this entity type
             EntityConfig entityConfig = new EntityConfig(sm, entityType);
             // populate  with config contents
