@@ -9,6 +9,7 @@ import com.comphenix.protocol.wrappers.WrappedDataValue;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -64,7 +65,7 @@ public class ProtocolLibHook extends Hook {
 
     public int spawnFakeArmorStand(Player player, Location location, Component name) {
         // spawn packet
-        int entityId = entityIdCounter;
+        int entityId = Utilities.isPaper() ? Bukkit.getUnsafe().nextEntityId() : entityIdCounter;
         PacketContainer packetContainer = new PacketContainer(PacketType.Play.Server.SPAWN_ENTITY);
         packetContainer.getIntegers().write(0, entityId);
         packetContainer.getEntityTypeModifier().write(0, EntityType.ARMOR_STAND);
