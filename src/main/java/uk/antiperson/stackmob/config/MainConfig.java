@@ -28,7 +28,9 @@ public class MainConfig {
         // iterate every entity type
         for (EntityType entityType : EntityType.values()) {
             if (entityType.getEntityClass() == null || !Mob.class.isAssignableFrom(entityType.getEntityClass())) {
-                continue;
+                if (entityType != EntityType.UNKNOWN) {
+                    continue;
+                }
             }
             // create new EntityConfig for this entity type
             EntityConfig entityConfig = new EntityConfig(sm, entityType);
