@@ -5,7 +5,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityKnockbackEvent;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.entity.StackEntity;
-import uk.antiperson.stackmob.utils.Utilities;
 
 @ListenerMetadata(config = "disable-knockback.enabled")
 public class KnockbackListener implements Listener {
@@ -24,7 +23,7 @@ public class KnockbackListener implements Listener {
         if (!stackEntity.getEntityConfig().isKnockbackDisabledTypes()) {
             return;
         }
-        if (!(Utilities.isPaper() && stackEntity.getEntityConfig().isKnockbackDisabledReasons(event.getEntity().getEntitySpawnReason()))) {
+        if (!stackEntity.getEntityConfig().isKnockbackDisabledReasons(event.getEntity().getEntitySpawnReason())) {
             return;
         }
         if (!stackEntity.getEntityConfig().isKnockbackDisabledCause(event.getCause())) {

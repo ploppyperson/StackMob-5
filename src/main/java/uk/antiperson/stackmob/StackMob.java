@@ -155,6 +155,9 @@ public class StackMob extends JavaPlugin {
         registerEvent(BeeListener.class);
         registerEvent(LeashListener.class);
         registerEvent(EquipListener.class);
+        if (Utilities.isVersionAtLeast(Utilities.MinecraftVersion.V1_20_4)) {
+            registerEvent(KnockbackListener.class);
+        }
         if (Utilities.isPaper()) {
             registerEvent(RemoveListener.class);
             return;
