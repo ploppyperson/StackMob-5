@@ -65,9 +65,9 @@ public class ProtocolLibHook extends Hook {
 
     public int spawnFakeArmorStand(Player player, Location location, Component name) {
         // spawn packet
-        int entityId = Utilities.isPaper() ? Bukkit.getUnsafe().nextEntityId() : entityIdCounter;
+        entityIdCounter = Utilities.isPaper() ? Bukkit.getUnsafe().nextEntityId() : entityIdCounter + 1;
         PacketContainer packetContainer = new PacketContainer(PacketType.Play.Server.SPAWN_ENTITY);
-        packetContainer.getIntegers().write(0, entityId);
+        packetContainer.getIntegers().write(0, entityIdCounter);
         packetContainer.getEntityTypeModifier().write(0, EntityType.ARMOR_STAND);
         packetContainer.getUUIDs().write(0, UUID.randomUUID());
         packetContainer.getDoubles().write(0, location.getX());
@@ -85,10 +85,9 @@ public class ProtocolLibHook extends Hook {
         watcher.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(markerPacketId, WrappedDataWatcher.Registry.get(Byte.class)), (byte) 0x10);
         packetContainer1.getIntegers().write(0, entityIdCounter);
         writeWatchableObjects(watcher, packetContainer1);
-        entityIdCounter += 1;
         protocolManager.sendServerPacket(player, packetContainer);
         protocolManager.sendServerPacket(player, packetContainer1);
-        return entityId;
+        return entityIdCounter;
     }
 
     public void updateTag(Player player, int id, Component newName) {
