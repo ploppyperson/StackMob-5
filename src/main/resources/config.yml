@@ -302,15 +302,13 @@ wait-to-stack:
     - SPAWNER
   reasons-whitelist-invert: false
 
-# Enable the system based on mspt
+# Enable the system based on MSPT. The MSPT will be updated as often as stack.interval
 mspt-reactive:
   enabled: false
   # Above what MSPT should the reactive mode be triggered?
   trigger-mspt-threshold: 65.0
   # Below what MSPT should the reactive mode be untriggered?
   untrigger-mspt-threshold: 45.0
-  # Over how many ticks should we collect tick durations for getting the MSPT?
-  check-period: 1200
 
 
 # Enable/disable integration with other plugins. (*)

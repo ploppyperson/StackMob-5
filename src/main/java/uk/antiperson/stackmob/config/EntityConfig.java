@@ -130,10 +130,6 @@ public class EntityConfig {
         return getDouble("mspt-reactive.untrigger-mspt-threshold");
     }
 
-    public int getMsptReactiveCollectionPeriod() {
-        return getInt("mspt-reactive.check-period");
-    }
-
     public int getTagThreshold() {
         return getInt( "display-name.threshold");
     }
