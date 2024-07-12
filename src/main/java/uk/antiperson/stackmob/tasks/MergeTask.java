@@ -19,6 +19,23 @@ public class MergeTask implements Runnable {
     }
 
     private void checkEntity(StackEntity original, boolean checkHasMoved, double checkHasMovedDistance) {
+        if(original.getEntityConfig().isMsptReactiveEnabled()){
+            if (sm.getMsptProvider().isUnderLoad()){
+                if (sm.getMsptProvider().getMspt()<=original.getEntityConfig().getMsptReactiveUntriggerThreshold()){
+                    // mspt was under heavy load, but no longer is, reset its status and skip stacking
+                    sm.getMsptProvider().setUnderLoad(false);
+                    return;
+                }
+            } else {
+                if (sm.getMsptProvider().getMspt()>=original.getEntityConfig().getMsptReactiveTriggerThreshold()){
+                    // mspt is considered to be under heavy load, set under load to keep hysteresis status
+                    sm.getMsptProvider().setUnderLoad(true);
+                } else {
+                    // mspt is lower than the trigger threshold, skip stacking
+                    return;
+                }
+            }
+        }
         if (original.isWaiting()) {
             original.incrementWait();
             return;
