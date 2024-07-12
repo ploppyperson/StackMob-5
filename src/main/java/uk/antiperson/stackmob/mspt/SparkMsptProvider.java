@@ -4,7 +4,7 @@ import me.lucko.spark.api.Spark;
 import me.lucko.spark.api.SparkProvider;
 import me.lucko.spark.api.statistic.StatisticWindow;
 
-public class SparkMsptProvider implements MsptProvider {
+public class SparkMsptProvider extends MsptProvider {
 
     Spark spark;
     boolean underLoad;
@@ -19,15 +19,5 @@ public class SparkMsptProvider implements MsptProvider {
             return 0;
         }
         return this.spark.mspt().poll(StatisticWindow.MillisPerTick.SECONDS_10).mean();
-    }
-
-    @Override
-    public void setUnderLoad(boolean underLoad) {
-        this.underLoad = underLoad;
-    }
-
-    @Override
-    public boolean isUnderLoad() {
-        return this.underLoad;
     }
 }

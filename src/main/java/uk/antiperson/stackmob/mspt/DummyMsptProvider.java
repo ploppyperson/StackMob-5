@@ -1,6 +1,6 @@
 package uk.antiperson.stackmob.mspt;
 
-public class DummyMsptProvider implements MsptProvider {
+public class DummyMsptProvider extends MsptProvider {
 
     @Override
     public double getMspt() {

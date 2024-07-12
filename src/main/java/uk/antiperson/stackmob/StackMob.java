@@ -18,6 +18,7 @@ import uk.antiperson.stackmob.hook.HookManager;
 import uk.antiperson.stackmob.listeners.*;
 import uk.antiperson.stackmob.mspt.DummyMsptProvider;
 import uk.antiperson.stackmob.mspt.MsptProvider;
+import uk.antiperson.stackmob.mspt.PaperMsptProvider;
 import uk.antiperson.stackmob.mspt.SparkMsptProvider;
 import uk.antiperson.stackmob.packets.PlayerManager;
 import uk.antiperson.stackmob.scheduler.BukkitScheduler;
@@ -129,6 +130,8 @@ public class StackMob extends JavaPlugin {
         }
         if (this.getServer().getPluginManager().getPlugin("Spark") != null){
             this.msptProvider = new SparkMsptProvider();
+        } else if (Utilities.isPaper()) {
+            this.msptProvider = new PaperMsptProvider();
         } else {
             this.msptProvider = new DummyMsptProvider();
         }
