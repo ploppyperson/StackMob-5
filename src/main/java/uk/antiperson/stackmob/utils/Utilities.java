@@ -48,6 +48,7 @@ public class Utilities {
     static {
         boolean usingPaper1;
         try {
+            Bukkit.class.getMethod("spigot");
             Bukkit.spigot().getClass().getMethod("getPaperConfig");
             usingPaper1 = true;
         } catch (NoSuchMethodException e) {
