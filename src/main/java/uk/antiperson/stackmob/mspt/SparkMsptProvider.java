@@ -6,8 +6,7 @@ import me.lucko.spark.api.statistic.StatisticWindow;
 
 public class SparkMsptProvider extends MsptProvider {
 
-    Spark spark;
-    boolean underLoad;
+    private final Spark spark;
 
     public SparkMsptProvider(){
         this.spark = SparkProvider.get();
