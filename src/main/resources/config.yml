@@ -303,7 +303,7 @@ wait-to-stack:
   reasons-whitelist-invert: false
 
 # Enable the system based on MSPT. The MSPT will be updated as often as stack.interval
-# you should use paper or install Spark for this feature to work!
+# you should use paper or install Spark for this feature to work! (**)
 mspt-reactive:
   enabled: false
   # Above what MSPT should the reactive mode be triggered?
