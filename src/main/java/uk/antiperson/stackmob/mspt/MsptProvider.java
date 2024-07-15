@@ -2,7 +2,7 @@ package uk.antiperson.stackmob.mspt;
 
 public abstract class MsptProvider {
 
-    boolean underLoad;
+    private boolean underLoad;
 
     public abstract double getMspt();
     public void setUnderLoad(boolean underLoad) {
