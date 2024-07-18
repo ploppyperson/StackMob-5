@@ -19,6 +19,7 @@ import uk.antiperson.stackmob.events.StackDeathEvent;
 import uk.antiperson.stackmob.utils.Utilities;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 import java.util.Map;
 
 public class DeathListener implements Listener {
@@ -63,9 +64,18 @@ public class DeathListener implements Listener {
         if (toMultiply == 0) {
             return;
         }
+        event.getDrops().forEach(item -> sm.getLogger().info(item.toString()));
         int experience = stackEntity.getDrops().calculateDeathExperience(toMultiply, event.getDroppedExp());
-        Map<ItemStack, Integer> drops = stackEntity.getDrops().calculateDrops(toMultiply, event.getDrops());
-        Drops.dropItems(event.getEntity().getLocation(), drops);
+        // Workaround for craftbukkit bug?/change
+        // Enchantment effects are now applied after the death event is fired....
+        // Should probably investigate more...? How are the drops in the event correct.
+        if (Utilities.isVersionAtLeast(Utilities.MinecraftVersion.V1_21) && stackEntity.getEntityConfig().isDropLootTables()) {
+            int finalToMultiply = toMultiply;
+            Runnable runnable = () -> doDrops(stackEntity, finalToMultiply, event.getDrops());
+            sm.getScheduler().runTaskLater(sm, stackEntity.getEntity(), runnable, 1);
+        } else {
+            doDrops(stackEntity, toMultiply, event.getDrops());
+        }
         event.setDroppedExp(experience);
         if (Utilities.isPaper() && event.isCancelled()) {
             ExperienceOrb orb = (ExperienceOrb) event.getEntity().getWorld().spawnEntity(event.getEntity().getLocation(), EntityType.EXPERIENCE_ORB);
@@ -90,5 +100,9 @@ public class DeathListener implements Listener {
         }
     }
 
+    private void doDrops(StackEntity stackEntity, int toMultiply, List<ItemStack> drops) {
+        Map<ItemStack, Integer> map = stackEntity.getDrops().calculateDrops(toMultiply, drops);
+        Drops.dropItems(stackEntity.getEntity().getLocation(), map);
+    }
 
 }
