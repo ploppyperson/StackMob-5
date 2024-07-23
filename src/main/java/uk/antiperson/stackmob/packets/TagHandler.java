@@ -29,7 +29,7 @@ public class TagHandler {
 
     public void init() {
         // force protocollib for 1.20.2
-        this.fakeArmorStand = new ProtocolLibFakeArmorStand(sm, player);
+        this.fakeArmorStand = new DisplayEntity(sm);
     }
 
     public void newlyInRange() {
