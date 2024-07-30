@@ -64,7 +64,6 @@ public class DeathListener implements Listener {
         if (toMultiply == 0) {
             return;
         }
-        event.getDrops().forEach(item -> sm.getLogger().info(item.toString()));
         int experience = stackEntity.getDrops().calculateDeathExperience(toMultiply, event.getDroppedExp());
         // Workaround for craftbukkit bug?/change
         // Enchantment effects are now applied after the death event is fired....
