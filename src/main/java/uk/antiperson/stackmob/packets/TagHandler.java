@@ -2,6 +2,7 @@ package uk.antiperson.stackmob.packets;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.FluidCollisionMode;
+import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
@@ -35,7 +36,8 @@ public class TagHandler {
     public void newlyInRange() {
         tagVisible = true;
         if (stackEntity.getEntityConfig().isUseArmorStand()) {
-            fakeArmorStand.spawnFakeArmorStand(stackEntity.getEntity(), stackEntity.getEntity().getLocation(), stackEntity.getTag().getDisplayName(), stackEntity.getEntityConfig().getArmorstandOffset());
+            Location adj = adjustLocation(stackEntity.getEntity(), stackEntity.getEntityConfig().getArmorstandOffset());
+            fakeArmorStand.spawnFakeArmorStand(stackEntity.getEntity(), adj, stackEntity.getTag().getDisplayName());
             return;
         }
         sendPacket(stackEntity.getEntity(), player, true);
@@ -57,7 +59,7 @@ public class TagHandler {
         if (!stackEntity.getEntityConfig().isUseArmorStand()) {
             return;
         }
-        fakeArmorStand.teleport(stackEntity.getEntity(), stackEntity.getEntityConfig().getArmorstandOffset());
+        fakeArmorStand.teleport(stackEntity.getEntity(), adjustLocation(stackEntity.getEntity(), stackEntity.getEntityConfig().getArmorstandOffset()));
         if (stackEntity.getTag().getDisplayName().equals(lastTag)) {
             return;
         }
@@ -79,6 +81,19 @@ public class TagHandler {
             return;
         }
         protocolLibHook.sendPacket(player, entity, tagVisible);
+    }
+
+    private Location adjustLocation(Entity entity, double offset) {
+        double adjustment = shouldAdjust(entity) ? 0.3 : 0.1;
+        if (offset > 0) {
+            adjustment = offset;
+        }
+        return entity.getLocation().add(0, entity.getHeight() + adjustment, 0);
+    }
+
+    private boolean shouldAdjust(Entity entity) {
+        String name = entity.getCustomName();
+        return name != null && name.length() != 0;
     }
 
     public boolean isTagVisible() {

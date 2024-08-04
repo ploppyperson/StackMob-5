@@ -19,8 +19,8 @@ public class DisplayEntity implements FakeArmorStand {
 
 
     @Override
-    public void spawnFakeArmorStand(Entity owner, Location location, Component name, double offset) {
-        display = (Display) owner.getWorld().spawnEntity(adjustLocation(owner, offset), EntityType.TEXT_DISPLAY);
+    public void spawnFakeArmorStand(Entity owner, Location location, Component name) {
+        display = (Display) owner.getWorld().spawnEntity(location, EntityType.TEXT_DISPLAY);
         display.setDisplayHeight(50);
         display.setDisplayWidth(100);
         display.setCustomNameVisible(true);
@@ -35,8 +35,8 @@ public class DisplayEntity implements FakeArmorStand {
     }
 
     @Override
-    public void teleport(Entity entity, double offset) {
-        display.teleport(adjustLocation(entity, offset));
+    public void teleport(Entity entity, Location offset) {
+        display.teleport(offset);
     }
 
     @Override
