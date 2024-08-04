@@ -19,7 +19,7 @@ public class TagMoveTask extends BukkitRunnable {
     @Override
     public void run() {
         ArrayList<Player> playerArrayList = new ArrayList<>(Bukkit.getOnlinePlayers());
-        sm.getScheduler().runTaskAsynchronously(sm, () -> {
+        sm.getScheduler().runTaskAsynchronously(() -> {
             for (Player player : playerArrayList) {
                 PlayerWatcher playerWatcher = sm.getPlayerManager().getPlayerWatcher(player);
                 if (playerWatcher == null) {
@@ -28,7 +28,7 @@ public class TagMoveTask extends BukkitRunnable {
 
                 Runnable runnable = playerWatcher::updateTagLocations;
                 if (Utilities.IS_FOLIA) {
-                    sm.getScheduler().runTask(sm, player, runnable);
+                    sm.getScheduler().runTask(player, runnable);
                 } else {
                     runnable.run();
                 }

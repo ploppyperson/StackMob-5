@@ -5,6 +5,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
@@ -117,6 +118,9 @@ public class Utilities {
     }
 
     public static void removeHandItem(Player player, int itemAmount) {
+        if (player.getGameMode() == GameMode.CREATIVE) {
+            return;
+        }
         if (itemAmount == player.getInventory().getItemInMainHand().getAmount()) {
            player.getInventory().setItemInMainHand(null);
            return;

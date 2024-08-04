@@ -54,7 +54,7 @@ public class DeathListener implements Listener {
             } else {
                 stackEntity.removeStackData();
                 int finalDeathStep = deathStep;
-                sm.getScheduler().runTask(sm, event.getEntity(), () -> {
+                sm.getScheduler().runTask(event.getEntity(), () -> {
                     StackEntity spawned = stackEntity.duplicate();
                     spawned.setSize(stackEntity.getSize() - finalDeathStep);
                     deathMethod.onSpawn(spawned);
@@ -71,7 +71,7 @@ public class DeathListener implements Listener {
         if (Utilities.isVersionAtLeast(Utilities.MinecraftVersion.V1_21) && stackEntity.getEntityConfig().isDropLootTables()) {
             int finalToMultiply = toMultiply;
             Runnable runnable = () -> doDrops(stackEntity, finalToMultiply, event.getDrops());
-            sm.getScheduler().runTaskLater(sm, stackEntity.getEntity(), runnable, 1);
+            sm.getScheduler().runTaskLater(stackEntity.getEntity(), runnable, 1);
         } else {
             doDrops(stackEntity, toMultiply, event.getDrops());
         }

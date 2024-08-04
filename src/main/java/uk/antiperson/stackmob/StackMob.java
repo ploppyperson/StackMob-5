@@ -59,7 +59,7 @@ public class StackMob extends JavaPlugin {
             getLogger().log(Level.SEVERE, "There was a problem registering hooks. Features won't work.");
             e.printStackTrace();
         }
-        scheduler = Utilities.IS_FOLIA ? new FoliaScheduler() : new BukkitScheduler();
+        scheduler = Utilities.IS_FOLIA ? new FoliaScheduler(this) : new BukkitScheduler(this);
     }
 
     @Override
@@ -101,11 +101,11 @@ public class StackMob extends JavaPlugin {
         command.setTabCompleter(commands);
         commands.registerSubCommands();
         int stackInterval = getMainConfig().getConfig().getStackInterval();
-        getScheduler().runGlobalTaskTimer(this, new MergeTask(this), 20, stackInterval);
+        getScheduler().runGlobalTaskTimer(new MergeTask(this), 20, stackInterval);
         int tagInterval = getMainConfig().getConfig().getTagNearbyInterval();
-        getScheduler().runGlobalTaskTimer(this, new TagCheckTask(this), 30, tagInterval);
+        getScheduler().runGlobalTaskTimer(new TagCheckTask(this), 30, tagInterval);
         if (getMainConfig().getConfig().isUseArmorStand()) {
-            getScheduler().runGlobalTaskTimer(this, new TagMoveTask(this), 10, 1);
+            getScheduler().runGlobalTaskTimer(new TagMoveTask(this), 10, 1);
         }
         getLogger().info("Detected server version " + Utilities.getMinecraftVersion());
         if (getHookManager().getProtocolLibHook() == null) {

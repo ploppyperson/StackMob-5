@@ -22,7 +22,7 @@ public class TagCheckTask implements Runnable {
             };
 
             if (Utilities.IS_FOLIA) {
-                sm.getScheduler().runTask(sm, player, runnable);
+                sm.getScheduler().runTask(player, runnable);
             } else {
                 runnable.run();
             }

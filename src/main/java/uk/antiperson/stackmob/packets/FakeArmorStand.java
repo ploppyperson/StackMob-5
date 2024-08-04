@@ -8,26 +8,13 @@ import uk.antiperson.stackmob.utils.Utilities;
 
 public interface FakeArmorStand {
 
-    void spawnFakeArmorStand(Entity owner, Location location, Component name, double offset);
+    void spawnFakeArmorStand(Entity owner, Location location, Component name);
 
     void updateName(Component newName);
 
-    void teleport(Entity entity, double offset);
+    void teleport(Entity owner, Location location);
 
     void removeFakeArmorStand();
-
-    default Location adjustLocation(Entity entity, double offset) {
-        double adjustment = shouldAdjust(entity) ? 0.3 : 0.1;
-        if (offset > 0) {
-            adjustment = offset;
-        }
-        return entity.getLocation().add(0, entity.getHeight() + adjustment, 0);
-    }
-
-    private boolean shouldAdjust(Entity entity) {
-        String name = entity.getCustomName();
-        return name != null && name.length() != 0;
-    }
 
 
 }
