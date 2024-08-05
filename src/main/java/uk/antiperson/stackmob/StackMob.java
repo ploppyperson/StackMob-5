@@ -16,6 +16,10 @@ import uk.antiperson.stackmob.entity.EntityManager;
 import uk.antiperson.stackmob.entity.traits.TraitManager;
 import uk.antiperson.stackmob.hook.HookManager;
 import uk.antiperson.stackmob.listeners.*;
+import uk.antiperson.stackmob.mspt.DummyMsptProvider;
+import uk.antiperson.stackmob.mspt.MsptProvider;
+import uk.antiperson.stackmob.mspt.PaperMsptProvider;
+import uk.antiperson.stackmob.mspt.SparkMsptProvider;
 import uk.antiperson.stackmob.packets.PlayerManager;
 import uk.antiperson.stackmob.scheduler.BukkitScheduler;
 import uk.antiperson.stackmob.scheduler.FoliaScheduler;
@@ -47,6 +51,7 @@ public class StackMob extends JavaPlugin {
     private PlayerManager playerManager;
     private BukkitAudiences adventure;
     private Scheduler scheduler;
+    private MsptProvider msptProvider;
 
     private boolean stepDamageError;
 
@@ -123,6 +128,13 @@ public class StackMob extends JavaPlugin {
             getLogger().warning("It has been detected that you are not using Paper (https://papermc.io).");
             getLogger().warning("StackMob makes use of Paper's API, which means you're missing out on features.");
         }
+        if (this.getServer().getPluginManager().getPlugin("Spark") != null){
+            this.msptProvider = new SparkMsptProvider();
+        } else if (Utilities.isPaper()) {
+            this.msptProvider = new PaperMsptProvider();
+        } else {
+            this.msptProvider = new DummyMsptProvider();
+        }
         new Metrics(this, 522);
     }
 
@@ -177,6 +189,10 @@ public class StackMob extends JavaPlugin {
         }
         Listener listener = clazz.getDeclaredConstructor(StackMob.class).newInstance(this);
         getServer().getPluginManager().registerEvents(listener, this);
+    }
+
+    public MsptProvider getMsptProvider() {
+        return msptProvider;
     }
 
     public EntityTranslation getEntityTranslation() {
