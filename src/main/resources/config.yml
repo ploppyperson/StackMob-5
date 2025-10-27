@@ -94,6 +94,7 @@ traits:
   frog-variant: true
   sheep-color: true
   sheep-sheared: true
+  snowman-sheared: true
   slime-size: true
   horse-color: true
   llama-color: true

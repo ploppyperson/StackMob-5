@@ -26,6 +26,7 @@ public class TraitManager {
     public void registerTraits() throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         registerTrait(SheepColor.class);
         registerTrait(SheepShear.class);
+        registerTrait(SnowmanShear.class);
         registerTrait(HorseColor.class);
         registerTrait(SlimeSize.class);
         registerTrait(LlamaColor.class);

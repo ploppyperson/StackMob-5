@@ -11,7 +11,6 @@ import org.bukkit.event.player.PlayerShearEntityEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.loot.LootContext;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.config.EntityConfig;
@@ -31,7 +30,7 @@ public class ShearListener implements Listener {
     }
 
     @EventHandler
-    public void onShearSheep(PlayerShearEntityEvent event) {
+    public void onShearEntity(PlayerShearEntityEvent event) {
         if (event.isCancelled()) {
             return;
         }
@@ -48,7 +47,7 @@ public class ShearListener implements Listener {
     }
 
     @EventHandler
-    public void onShearSheep(BlockShearEntityEvent event) {
+    public void onShearEntity(BlockShearEntityEvent event) {
         if (event.isCancelled()) {
             return;
         }
@@ -78,7 +77,7 @@ public class ShearListener implements Listener {
     }
 
     private ItemStack shearLogic(LivingEntity entity, ItemStack item) {
-        if (!((entity instanceof Sheep) || (entity instanceof MushroomCow))) {
+        if (!(entity instanceof Shearable)) {
             return null;
         }
         StackEntity stackEntity = sm.getEntityManager().getStackEntity(entity);
@@ -101,12 +100,11 @@ public class ShearListener implements Listener {
         int damage = health - amount;
         if (damage > 0) {
             damageable.setDamage(damageable.getDamage() + amount);
-            item.setItemMeta((ItemMeta) damageable);
+            item.setItemMeta(damageable);
         } else {
             item = new ItemStack(Material.AIR);
         }
-        if (entity instanceof Sheep) {
-            Sheep sheared = (Sheep) entity;
+        if (entity instanceof Sheep sheared) {
             LootContext lootContext = new LootContext.Builder(sheared.getLocation()).lootedEntity(sheared).build();
             Collection<ItemStack> loot = sheared.getLootTable().populateLoot(ThreadLocalRandom.current(), lootContext);
             for (ItemStack itemStack : loot) {
@@ -116,15 +114,20 @@ public class ShearListener implements Listener {
                 }
             }
             return item;
+        } else if (entity instanceof MushroomCow mushroomCow) {
+            ItemStack mushrooms = new ItemStack(getMaterial(mushroomCow), 1);
+            Drops.dropItem(mushroomCow.getLocation(), mushrooms, (amount - 1) * 5, true);
+            // Spawn separate normal cow for the rest of the stack.
+            Entity cow = mushroomCow.getWorld().spawnEntity(mushroomCow.getLocation(), EntityType.COW);
+            StackEntity stackCow = sm.getEntityManager().registerStackedEntity((LivingEntity) cow);
+            stackCow.setSize(amount - 1);
+            return item;
+        } else if (entity instanceof Snowman snowman) {
+            ItemStack carvedPumpkin = new ItemStack(Material.CARVED_PUMPKIN, 1);
+            Drops.dropItem(snowman.getLocation(), carvedPumpkin, (amount - 1), true);
+            return item;
         }
-        MushroomCow mushroomCow = (MushroomCow) entity;
-        ItemStack mushrooms = new ItemStack(getMaterial(mushroomCow), 1);
-        Drops.dropItem(mushroomCow.getLocation(), mushrooms, (amount - 1) * 5, true);
-        // Spawn separate normal cow for the rest of the stack.
-        Entity cow = mushroomCow.getWorld().spawnEntity(mushroomCow.getLocation(), EntityType.COW);
-        StackEntity stackCow = sm.getEntityManager().registerStackedEntity((LivingEntity) cow);
-        stackCow.setSize(amount - 1);
-        return item;
+        return null;
     }
 
     private Material getMaterial(MushroomCow mushroomCow) {
