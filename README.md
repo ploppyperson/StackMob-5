@@ -1,6 +1,6 @@
 # StackMob-5
 
-StackMob for 1.20.4+. StackMob 5 uses Bukkit's PersistentDataContainer API so performance will be greatly improved from previous versions.
+StackMob for 1.21+. StackMob 5 uses Bukkit's PersistentDataContainer API so performance will be greatly improved from previous versions.
 
 Spigot: https://www.spigotmc.org/resources/stackmob-enhance-your-servers-performance-without-the-sacrifice.29999/
 

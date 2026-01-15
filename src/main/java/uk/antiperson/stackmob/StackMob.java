@@ -50,7 +50,7 @@ public class StackMob extends JavaPlugin {
             getLogger().severe("StackMob makes use of Paper's API, which means this version of the plugin will not work. Disabling.");
             getServer().getPluginManager().disablePlugin(this);
         }
-        if (!Utilities.isVersionAtLeast(Utilities.MinecraftVersion.V1_20_4)) {
+        if (!Utilities.isVersionAtLeast(Utilities.MinecraftVersion.V1_21)) {
             getLogger().severe("Unsupported Minecraft version: " + Utilities.getMinecraftVersion());
             getLogger().severe("We are now disabling. Please find the appropriate plugin version for your server setup.");
             getServer().getPluginManager().disablePlugin(this);
