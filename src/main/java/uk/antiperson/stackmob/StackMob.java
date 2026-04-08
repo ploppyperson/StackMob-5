@@ -51,9 +51,8 @@ public class StackMob extends JavaPlugin {
             getServer().getPluginManager().disablePlugin(this);
         }
         if (!Utilities.isVersionAtLeast(Utilities.MinecraftVersion.V1_21)) {
-            getLogger().severe("Unsupported Minecraft version: " + Utilities.getMinecraftVersion());
-            getLogger().severe("We are now disabling. Please find the appropriate plugin version for your server setup.");
-            getServer().getPluginManager().disablePlugin(this);
+            getLogger().severe("Unsupported server version: " + getServer().getBukkitVersion());
+            getLogger().severe("Please find the appropriate plugin version for your server setup.");
         }
         hookManager = new HookManager(this);
         try {
