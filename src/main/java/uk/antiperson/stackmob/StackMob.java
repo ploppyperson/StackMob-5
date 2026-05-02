@@ -1,5 +1,6 @@
 package uk.antiperson.stackmob;
 
+import java.util.List;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
@@ -95,11 +96,15 @@ public class StackMob extends JavaPlugin {
         } catch (InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
-        PluginCommand command = getCommand("stackmob");
-        Commands commands = new Commands(this);
-        command.setExecutor(commands);
-        command.setTabCompleter(commands);
-        commands.registerSubCommands();
+
+        Bukkit.getScheduler().runTaskLater(this, () -> {
+            PluginCommand command = getCommand("stackmob");
+            Commands commands = new Commands(this);
+            command.setExecutor(commands);
+            command.setTabCompleter(commands);
+            commands.registerSubCommands();
+        }, 20L);
+
         int stackInterval = getMainConfig().getConfig().getStackInterval();
         getScheduler().runGlobalTaskTimer(new MergeTask(this), 20, stackInterval);
         if (getMainConfig().getConfig().isUseArmorStand() && getMainConfig().getConfig().getTagMode() == StackEntity.TagMode.NEARBY) {
