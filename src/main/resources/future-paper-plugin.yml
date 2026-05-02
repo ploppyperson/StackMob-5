@@ -1,0 +1,28 @@
+name: StackMob
+version: ${project.version}
+main: uk.antiperson.stackmob.StackMob
+api-version: '1.20.6'
+authors: [antiPerson]
+description:  A plugin that aims to improve performance by 'stacking' entities together, with attempts to preserve game mechanics.
+website: https://modrinth.com/plugin/stackmob
+dependencies:
+  server:
+    WorldGuard:
+      load: BEFORE
+      required: false
+      join-classpath: true
+    ClearLagg:
+      load: BEFORE
+      required: false
+    MyPet:
+      load: BEFORE
+      required: false
+    mcMMO:
+      load: BEFORE
+      required: false
+    Jobs:
+      load: BEFORE
+      required: false
+    Citizens:
+      load: BEFORE
+      required: false
