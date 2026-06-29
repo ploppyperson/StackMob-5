@@ -84,9 +84,15 @@ public class MergeTask implements Runnable {
         if (size + original.getSize() > original.getMaxSize()) {
             final int toCompleteStack = (original.getMaxSize() - original.getSize());
             original.incrementSize(toCompleteStack);
-            for (int stackSize : Utilities.split(size - toCompleteStack, original.getMaxSize())) {
+            int ans = size - toCompleteStack;
+            while (ans > 0) {
                 StackEntity stackEntity = original.duplicate();
-                stackEntity.setSize(stackSize);
+                if (ans > original.getMaxSize()) {
+                    ans -= original.getMaxSize();
+                    stackEntity.setSize(original.getMaxSize());
+                    continue;
+                }
+                stackEntity.setSize(ans);
             }
             return;
         }

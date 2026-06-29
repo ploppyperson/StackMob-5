@@ -62,19 +62,6 @@ public class Utilities {
         return legacyComponentSerializer.deserialize(toTranslate);
     }
 
-    public static List<Integer> split(int dividend, int divisor) {
-        int fullAmount = dividend / divisor;
-        int remainder = dividend % divisor;
-        List<Integer> numbers = new ArrayList<>(fullAmount + 1);
-        for (int i = 0; i < fullAmount; i++) {
-            numbers.add(divisor);
-        }
-        if (remainder > 0) {
-            numbers.add(remainder);
-        }
-        return numbers;
-    }
-
     public static DownloadResult downloadFile(File filePath, String url) {
         try {
             URL webPath = new URL(url);
