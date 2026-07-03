@@ -1,5 +1,8 @@
 package uk.antiperson.stackmob.commands.subcommands;
 
+import com.mojang.brigadier.Command;
+import com.mojang.brigadier.context.CommandContext;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.entity.Player;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.commands.CommandMetadata;
@@ -14,10 +17,9 @@ public class GiveTool extends SubCommand {
         this.sm = sm;
     }
 
-    @Override
-    public boolean onCommand(User sender, String[] args) {
+    public int onCommand(CommandContext<CommandSourceStack> ctx, User sender) {
         sm.getItemTools().giveStackingTool((Player) sender.getSender());
         sender.sendInfo("The stacking tool has been added to your inventory.");
-        return false;
+        return Command.SINGLE_SUCCESS;
     }
 }

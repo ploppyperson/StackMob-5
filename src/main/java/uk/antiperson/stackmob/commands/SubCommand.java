@@ -1,13 +1,18 @@
 package uk.antiperson.stackmob.commands;
 
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
+import io.papermc.paper.command.brigadier.Commands;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 
-public abstract class SubCommand implements Command {
+public abstract class SubCommand implements SubCommandInterface {
 
     private final CommandArgument[] arguments;
+    private final LiteralArgumentBuilder<CommandSourceStack> subCmd;
     public SubCommand(CommandArgument... arguments) {
+        this.subCmd = Commands.literal(getCommand()).executes(context -> onCommand(context, new User(context.getSource().getSender())));
         this.arguments = arguments;
     }
 
@@ -25,6 +30,10 @@ public abstract class SubCommand implements Command {
 
     public boolean isPlayerRequired() {
         return getCommandMetadata().playerReq();
+    }
+
+    public LiteralArgumentBuilder<CommandSourceStack> getSubCmd() {
+        return subCmd;
     }
 
     private CommandMetadata getCommandMetadata() {

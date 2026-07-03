@@ -1,11 +1,15 @@
 package uk.antiperson.stackmob.commands.subcommands;
 
+import com.mojang.brigadier.context.CommandContext;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.commands.CommandMetadata;
 import uk.antiperson.stackmob.commands.SubCommand;
 import uk.antiperson.stackmob.commands.User;
 
 import java.io.IOException;
+
+import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
 
 @CommandMetadata(command = "reload", playerReq = false, desc = "Reloads the config files.")
 public class Reload extends SubCommand {
@@ -15,8 +19,7 @@ public class Reload extends SubCommand {
         this.sm = sm;
     }
 
-    @Override
-    public boolean onCommand(User sender, String[] args) {
+    public int onCommand(CommandContext<CommandSourceStack> ctx, User sender) {
         try {
             sm.getEntityTranslation().reloadConfig();
             sm.getMainConfig().reload();
@@ -27,6 +30,6 @@ public class Reload extends SubCommand {
             sender.sendError("An error occurred while attempting to reload the config files.");
             sender.sendInfo("Check console for more information.");
         }
-        return false;
+        return SINGLE_SUCCESS;
     }
 }

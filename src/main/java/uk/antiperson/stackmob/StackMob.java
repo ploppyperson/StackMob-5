@@ -1,12 +1,15 @@
 package uk.antiperson.stackmob;
 
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
+import io.papermc.paper.command.brigadier.Commands;
+import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bstats.bukkit.Metrics;
-import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-import uk.antiperson.stackmob.commands.Commands;
+import uk.antiperson.stackmob.commands.CommandHandler;
 import uk.antiperson.stackmob.config.EntityTranslation;
 import uk.antiperson.stackmob.config.MainConfig;
 import uk.antiperson.stackmob.entity.EntityManager;
@@ -95,11 +98,8 @@ public class StackMob extends JavaPlugin {
         } catch (InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
-        PluginCommand command = getCommand("stackmob");
-        Commands commands = new Commands(this);
-        command.setExecutor(commands);
-        command.setTabCompleter(commands);
-        commands.registerSubCommands();
+        CommandHandler commandHandler = new CommandHandler(this);
+        commandHandler.register();
         int stackInterval = getMainConfig().getConfig().getStackInterval();
         getScheduler().runGlobalTaskTimer(new MergeTask(this), 20, stackInterval);
         if (getMainConfig().getConfig().isUseArmorStand() && getMainConfig().getConfig().getTagMode() == StackEntity.TagMode.NEARBY) {

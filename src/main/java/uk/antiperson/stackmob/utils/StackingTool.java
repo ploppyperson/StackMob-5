@@ -70,7 +70,7 @@ public class StackingTool {
     }
 
     public void performAction(LivingEntity clicked) {
-        User user = new User(player, player);
+        User user = new User(player);
         if (!sm.getEntityManager().isStackedEntity(clicked)) {
             if (getMode() != ToolMode.MODIFY) {
                 user.sendError("You cannot use " + getMode() + " on an unstacked entity!");

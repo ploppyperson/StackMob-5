@@ -1,5 +1,8 @@
 package uk.antiperson.stackmob.commands.subcommands;
 
+import com.mojang.brigadier.Command;
+import com.mojang.brigadier.context.CommandContext;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import uk.antiperson.stackmob.StackMob;
 import uk.antiperson.stackmob.commands.CommandMetadata;
 import uk.antiperson.stackmob.commands.SubCommand;
@@ -14,10 +17,9 @@ public class Stats extends SubCommand {
         this.sm = sm;
     }
 
-    @Override
-    public boolean onCommand(User sender, String[] args) {
+    public int onCommand(CommandContext<CommandSourceStack> ctx, User sender) {
         sendMobStats(sender);
-        return false;
+        return Command.SINGLE_SUCCESS;
     }
 
     private void sendMobStats(User sender) {

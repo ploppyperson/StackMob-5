@@ -1,5 +1,9 @@
 package uk.antiperson.stackmob.commands.subcommands;
 
+import com.mojang.brigadier.Command;
+import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.context.CommandContext;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.LivingEntity;
@@ -19,16 +23,15 @@ public class ForceStack extends SubCommand {
 
     private final StackMob sm;
     public ForceStack(StackMob sm) {
-        super(CommandArgument.construct(ArgumentType.STRING, true, Arrays.asList("named", "tamed", "chunk")));
+        super(CommandArgument.construct(StringArgumentType.greedyString(), true, Arrays.asList("named", "tamed", "chunk")));
         this.sm = sm;
     }
 
-    @Override
-    public boolean onCommand(User sender, String[] args) {
+    public int onCommand(CommandContext<CommandSourceStack> ctx, User sender) {
         int count = 0;
         Predicate<LivingEntity> predicate = null;
-        if (args.length > 0) {
-            switch (args[0].toLowerCase()) {
+        if (1 > 0) {
+            switch (ctx.getArgument("stc", String.class).toLowerCase()) {
                 case "named":
                     predicate = pEntity -> pEntity.getCustomName() != null;
                     break;
@@ -38,7 +41,7 @@ public class ForceStack extends SubCommand {
                 case "chunk":
                     if (!(sender.getSender() instanceof Player)) {
                         sender.sendError("You need to be a player!");
-                        return false;
+                        return 2;
                     }
                     predicate = pEntity -> pEntity.getLocation().getChunk() == ((Player) sender.getSender()).getLocation().getChunk();
                     break;
@@ -59,8 +62,8 @@ public class ForceStack extends SubCommand {
                 count++;
             }
         }
-        String entityType = predicate != null ? args[0].toLowerCase() + " " : "";
+        String entityType = predicate != null ? ctx.getArgument("stc", String.class).toLowerCase() + " " : "";
         sender.sendSuccess(count + " " + entityType + "entities have been forced to stack!");
-        return false;
+        return Command.SINGLE_SUCCESS;
     }
 }

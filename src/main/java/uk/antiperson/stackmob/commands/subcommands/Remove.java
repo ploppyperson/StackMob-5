@@ -1,5 +1,9 @@
 package uk.antiperson.stackmob.commands.subcommands;
 
+import com.mojang.brigadier.Command;
+import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.context.CommandContext;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Animals;
@@ -24,16 +28,17 @@ public class Remove extends SubCommand {
 
     private final StackMob sm;
     public Remove(StackMob sm) {
-        super(CommandArgument.construct(ArgumentType.STRING, false, Arrays.asList("chunk", "world", "all")),
-                CommandArgument.construct(ArgumentType.STRING, true, Arrays.asList("animals", "hostile")));
+        super(CommandArgument.construct(StringArgumentType.greedyString(), false, Arrays.asList("chunk", "world", "all")),
+                CommandArgument.construct(StringArgumentType.greedyString(), true, Arrays.asList("animals", "hostile")));
         this.sm = sm;
     }
 
-    @Override
-    public boolean onCommand(User sender, String[] args) {
+    public int onCommand(CommandContext<CommandSourceStack> ctx, User sender) {
+        String type = ctx.getArgument("type", String.class);
+        String area = ctx.getArgument("area", String.class);
         Function<Entity, Boolean> function = entity -> entity instanceof Mob;
-        if (args.length == 2) {
-            switch (args[1]) {
+        if (type.length() > 0) {
+            switch (type) {
                 case "animals":
                     function = entity -> entity instanceof Animals;
                     break;
@@ -43,18 +48,18 @@ public class Remove extends SubCommand {
             }
         }
         Set<Chunk> chunks = new HashSet<>();
-        switch (args[0]) {
+        switch (area) {
             case "chunk":
                 if (!(sender.getSender() instanceof Player)) {
                     sender.sendError("You need to be a player!");
-                    return false;
+                    return Command.SINGLE_SUCCESS;
                 }
                 chunks.add(((Player) sender.getSender()).getLocation().getChunk());
                 break;
             case "world":
                 if (!(sender.getSender() instanceof Player)) {
                     sender.sendError("You need to be a player!");
-                    return false;
+                    return Command.SINGLE_SUCCESS;
                 }
                 chunks.addAll(List.of(((Player) sender.getSender()).getWorld().getLoadedChunks()));
                 break;
@@ -74,8 +79,8 @@ public class Remove extends SubCommand {
                 stackEntity.remove();
             }
         }
-        sender.sendSuccess(Utilities.capitalizeString(args[0]) + " entities matching your criteria have been removed.");
-        return false;
+        sender.sendSuccess(Utilities.capitalizeString(area) + " entities matching your criteria have been removed.");
+        return Command.SINGLE_SUCCESS;
     }
 
 }

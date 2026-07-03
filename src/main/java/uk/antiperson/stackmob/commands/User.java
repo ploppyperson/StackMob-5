@@ -8,16 +8,14 @@ import uk.antiperson.stackmob.utils.Utilities;
 
 public class User {
 
-    private final Audience sender;
     private final CommandSender cmdSender;
 
-    public User(Audience sender, CommandSender cmdSender) {
-        this.sender = sender;
+    public User(CommandSender cmdSender) {
         this.cmdSender = cmdSender;
     }
 
     public void sendRawMessage(String message) {
-        sender.sendMessage(Component.text(message));
+        cmdSender.sendMessage(Component.text(message));
     }
 
     public void sendInfo(String message) {
@@ -52,7 +50,7 @@ public class User {
                 component = component.color(NamedTextColor.GREEN);
                 break;
         }
-        sender.sendMessage(Utilities.PREFIX.append(component));
+        cmdSender.sendMessage(Utilities.PREFIX.append(component));
     }
 
     enum MessageType {
