@@ -303,7 +303,10 @@ public class StackEntity {
         if (sm.getHookManager().checkHooks(this, nearby)) {
             return false;
         }
-        return getEntityConfig().isCheckCanSee() && rayTraceStack(nearby);
+        if (getEntityConfig().isCheckCanSee()) {
+            return rayTraceStack(nearby);
+        }
+        return true;
     }
 
     public boolean canStack() {
