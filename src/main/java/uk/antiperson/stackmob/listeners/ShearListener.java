@@ -95,6 +95,10 @@ public class ShearListener implements Listener {
         int limit = stackEntity.getEntityConfig().getEventMultiplyLimit(EntityConfig.EventType.SHEAR, stackEntity.getSize());
         Damageable damageable = (Damageable) item.getItemMeta();
         int health = item.getType().getMaxDurability() - damageable.getDamage();
+        if (health < 1) {
+            sm.getLogger().info("Shearing item had item health less than one? Clamping damage - item will break.");
+            health = 1;
+        }
         int amount = Math.min(health, limit);
         stackEntity.splitIfNotEnough(amount);
         int damage = health - amount;
