@@ -7,17 +7,31 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public abstract class SubCommand implements SubCommandInterface {
 
-    private final CommandArgument[] arguments;
+    private final List<CommandArgument> arguments;
     private final LiteralArgumentBuilder<CommandSourceStack> subCmd;
-    public SubCommand(CommandArgument... arguments) {
-        this.subCmd = Commands.literal(getCommand()).executes(context -> onCommand(context, new User(context.getSource().getSender())));
-        this.arguments = arguments;
+
+    public SubCommand() {
+        this.subCmd = Commands.literal(getCommand());
+        this.arguments = new ArrayList<>();
     }
 
-    public CommandArgument[] getArguments() {
-        return arguments;
+    @Override
+    public void construct() {
+
+    }
+
+    public void addCommandArgument(CommandArgument commandArgument) {
+        arguments.add(commandArgument);
+    }
+
+    public List<CommandArgument> getArguments() {
+        return Collections.unmodifiableList(arguments);
     }
 
     public String getCommand() {

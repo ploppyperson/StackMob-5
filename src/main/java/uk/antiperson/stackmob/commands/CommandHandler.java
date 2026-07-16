@@ -1,5 +1,6 @@
 package uk.antiperson.stackmob.commands;
 
+import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
@@ -55,9 +56,27 @@ public class CommandHandler {
             LiteralArgumentBuilder<CommandSourceStack> cmd = Commands.literal("stackmob");
             cmd.executes(this::onCommand);
             for (SubCommand subCommand : subCommands.values()) {
-                LiteralArgumentBuilder<CommandSourceStack> subCmd = subCommand.getSubCmd();
-                for (CommandArgument argument : subCommand.getArguments()) {
-                    subCmd.then(Commands.argument(argument.getName(), argument.getType()));
+                subCommand.construct();
+                ArgumentBuilder<CommandSourceStack, ?> subCmd = subCommand.getSubCmd();
+                ArgumentBuilder<CommandSourceStack, ?> first = null;
+                ArgumentBuilder<CommandSourceStack, ?> last = null;
+                sm.getLogger().info("Registering " + subCommand.getCommand() + " has " + subCommand.getArguments().size() + " arguments.");
+                for (int i = 0; i < subCommand.getArguments().size(); i++) {
+                    CommandArgument argument = subCommand.getArguments().get(i);
+                    RequiredArgumentBuilder<CommandSourceStack, ?> o = Commands.argument(argument.getLabel(), argument.getType());
+                    if (first == null) {
+                        first = o;
+                    }
+                    if (last != null) {
+                        last.then(o);
+                    }
+                    last = o;
+                }
+                if (first != null) {
+                    last.executes(context -> subCommand.onCommand(context, new User(context.getSource().getSender())));
+                    subCmd.then(first);
+                } else {
+                    subCmd.executes(context -> subCommand.onCommand(context, new User(context.getSource().getSender())));
                 }
                 cmd.then(subCmd);
             }

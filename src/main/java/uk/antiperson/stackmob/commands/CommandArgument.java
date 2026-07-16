@@ -15,12 +15,14 @@ public class CommandArgument {
     private final ArgumentType<?> type;
     private final boolean optional;
     private final List<String> expectedArguments;
-    private final String name;
-    private CommandArgument(ArgumentType<?> type, boolean optional, List<String> expectedArguments, String name) {
+    private final String label;
+    private final String descriptor;
+    private CommandArgument(ArgumentType<?> type, boolean optional, List<String> expectedArguments, String label, String descriptor) {
         this.type = type;
         this.optional = optional;
         this.expectedArguments = expectedArguments;
-        this.name = name;
+        this.label = label;
+        this.descriptor = descriptor;
     }
 
     public ArgumentType<?> getType() {
@@ -36,31 +38,24 @@ public class CommandArgument {
         if (expectedArguments != null && expectedArguments.size() <= 3) {
             expectedArguments.forEach(argument -> options.append(argument).append("/"));
             options.deleteCharAt(options.length() - 1);
-        } else if (getName() != null) {
-            options.append(getName());
+        } else if (getDescriptor() != null) {
+            options.append(getDescriptor());
         } else {
-            options.append(Utilities.filter(getType().toString()).toLowerCase());
+            options.append(Utilities.filter(getLabel()).toLowerCase());
         }
         return options.toString();
     }
 
-    public String getName() {
-        if (name == null) {
-            return "placeholder";
-        }
-        return name;
+    public String getDescriptor() {
+        return descriptor;
     }
 
-    public static CommandArgument construct(ArgumentType<?> type, boolean optional) {
-        return new CommandArgument(type, optional, null, null);
+    public String getLabel() {
+        return label;
     }
 
-    public static CommandArgument construct(ArgumentType<?> type, boolean optional, String name) {
-        return new CommandArgument(type, optional,null, name);
-    }
-
-    public static CommandArgument construct(ArgumentType<?> type, boolean optional, List<String> expectedArguments) {
-        return new CommandArgument(type, optional, expectedArguments, null);
+    public static CommandArgument construct(ArgumentType<?> type, boolean optional, String label, String descriptor) {
+        return new CommandArgument(type, optional,null, label, descriptor);
     }
 
 }
