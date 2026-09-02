@@ -26,13 +26,14 @@ public class DropListener implements Listener {
         if (!(event.getEntity() instanceof LivingEntity)) {
             return;
         }
-        if (!(event.getEntity() instanceof Villager)) {
-            if (event.getEntity() instanceof Chicken && !Tag.ITEMS_EGGS.isTagged(event.getItemDrop().getItemStack().getType())) {
-                return;
-            }
-            if (event.getEntity() instanceof Turtle && event.getItemDrop().getItemStack().getType() != Utilities.getScuteMaterial()) {
-                return;
-            }
+        if (!(event.getEntity() instanceof Chicken || event.getEntity() instanceof Turtle)) {
+            return;
+        }
+        if (event.getEntity() instanceof Chicken && !Tag.ITEMS_EGGS.isTagged(event.getItemDrop().getItemStack().getType())) {
+            return;
+        }
+        if (event.getEntity() instanceof Turtle && event.getItemDrop().getItemStack().getType() != Utilities.getScuteMaterial()) {
+            return;
         }
         if (!sm.getEntityManager().isStackedEntity((LivingEntity) event.getEntity())) {
             return;
