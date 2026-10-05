@@ -93,21 +93,24 @@ public class ShearListener implements Listener {
             return null;
         }
         int limit = stackEntity.getEntityConfig().getEventMultiplyLimit(EntityConfig.EventType.SHEAR, stackEntity.getSize());
+        int amount = limit;
         Damageable damageable = (Damageable) item.getItemMeta();
-        int health = item.getType().getMaxDurability() - damageable.getDamage();
-        if (health < 1) {
-            sm.getLogger().info("Shearing item had item health less than one? Clamping damage - item will break.");
-            health = 1;
+        if (!damageable.isUnbreakable()) {
+            int health = item.getType().getMaxDurability() - damageable.getDamage();
+            if (health < 1) {
+                sm.getLogger().info("Shearing item had item health less than one? Clamping damage - item will break.");
+                health = 1;
+            }
+            amount = Math.min(health, limit);
+            int damage = health - amount;
+            if (damage > 0) {
+                damageable.setDamage(damageable.getDamage() + amount);
+                item.setItemMeta(damageable);
+            } else {
+                item = new ItemStack(Material.AIR);
+            }
         }
-        int amount = Math.min(health, limit);
         stackEntity.splitIfNotEnough(amount);
-        int damage = health - amount;
-        if (damage > 0) {
-            damageable.setDamage(damageable.getDamage() + amount);
-            item.setItemMeta(damageable);
-        } else {
-            item = new ItemStack(Material.AIR);
-        }
         if (entity instanceof Sheep sheared) {
             LootContext lootContext = new LootContext.Builder(sheared.getLocation()).lootedEntity(sheared).build();
             Collection<ItemStack> loot = sheared.getLootTable().populateLoot(ThreadLocalRandom.current(), lootContext);
