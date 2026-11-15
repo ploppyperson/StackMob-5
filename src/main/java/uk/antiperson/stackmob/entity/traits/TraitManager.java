@@ -49,10 +49,8 @@ public class TraitManager {
         }
         registerTrait(ZoglinBaby.class);
         registerTrait(PiglinBaby.class);
-        if (Utilities.isVersionAtLeast(Utilities.MinecraftVersion.V1_19_4)) {
-            registerTrait(FrogVariant.class);
-            registerTrait(AllayOwner.class);
-        }
+        registerTrait(FrogVariant.class);
+        registerTrait(AllayOwner.class);
     }
 
     /**

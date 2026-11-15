@@ -72,18 +72,6 @@ public enum EntityFood {
     }
 
     public static boolean isCorrectFood(Entity entity, Material type) {
-        if (Utilities.isVersionAtLeast(Utilities.MinecraftVersion.V1_17)) {
-            return ((Animals) entity).isBreedItem(type);
-        }
-        EntityFood food = matchFood(entity.getType());
-        if (food.getPredicate() != null && !food.getPredicate().getClass().isAssignableFrom(entity.getClass())) {
-            return false;
-        }
-        for (Material material : food.getFoods()) {
-            if (material == type) {
-                return true;
-            }
-        }
-        return false;
+        return ((Animals) entity).isBreedItem(type);
     }
 }

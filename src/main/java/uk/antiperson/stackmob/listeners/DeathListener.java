@@ -71,7 +71,7 @@ public class DeathListener implements Listener {
         // Workaround for craftbukkit bug?/change
         // Enchantment effects are now applied after the death event is fired....
         // Should probably investigate more...? How are the drops in the event correct.
-        if (Utilities.isVersionAtLeast(Utilities.MinecraftVersion.V1_21) && stackEntity.getEntityConfig().isDropLootTables()) {
+        if (stackEntity.getEntityConfig().isDropLootTables()) {
             int finalToMultiply = toMultiply;
             Runnable runnable = () -> doDrops(stackEntity, finalToMultiply, event.getDrops(), event);
             sm.getScheduler().runTaskLater(stackEntity.getEntity(), runnable, 1);

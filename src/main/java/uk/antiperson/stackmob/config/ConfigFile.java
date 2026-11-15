@@ -150,9 +150,7 @@ public abstract class ConfigFile implements Config {
                 continue;
             }
             fileCon.set(key, includedConfig.get(key));
-            if (Utilities.isVersionAtLeast(Utilities.MinecraftVersion.V1_18_2)) {
-                fileCon.setComments(key, includedConfig.getComments(key));
-            }
+            fileCon.setComments(key, includedConfig.getComments(key));
             updated = true;
         }
         if (!updated) {
@@ -160,10 +158,8 @@ public abstract class ConfigFile implements Config {
         }
         fileCon.options().header(includedConfig.options().header());
         sm.getLogger().info("Config file " + file.getName() + " has been updated with new values.");
-        if (!Utilities.isVersionAtLeast(Utilities.MinecraftVersion.V1_18_2)) {
-            sm.getLogger().warning("This means that comments have been removed.");
-            sm.getLogger().info("If you need comments, you access a version with them at " + Utilities.GITHUB_DEFAULT_CONFIG);
-        }
+        sm.getLogger().warning("This means that comments have been removed.");
+        sm.getLogger().info("If you need comments, you access a version with them at " + Utilities.GITHUB_DEFAULT_CONFIG);
         save();
     }
 

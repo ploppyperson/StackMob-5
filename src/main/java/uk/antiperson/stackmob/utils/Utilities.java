@@ -95,7 +95,7 @@ public class Utilities {
 
     public static MinecraftVersion getMinecraftVersion() {
         if (minecraftVersion == null) {
-            minecraftVersion = MinecraftVersion.V1_16;
+            minecraftVersion = MinecraftVersion.V1_20_6;
             String packageName = Bukkit.getServer().getBukkitVersion();
             String ending = packageName.substring(0, packageName.indexOf('-'));
             for (MinecraftVersion version: MinecraftVersion.values()) {
@@ -191,20 +191,15 @@ public class Utilities {
     }
 
     public static Material getScuteMaterial() {
-        return isVersionAtLeast(MinecraftVersion.V1_20_6) ? Material.getMaterial("TURTLE_SCUTE") : Material.getMaterial("SCUTE");
+        return Material.TURTLE_SCUTE;
     }
 
     public enum MinecraftVersion {
-        V1_16("1.16"),
-        V1_17("1.17"),
-        V1_18("1.18"),
-        V1_18_2("1.18.2"),
-        V1_19_4("1.19.4"),
-        V1_20_4("1.20.4"),
         V1_20_6("1.20.6"),
         V1_21("1.21"),
         MC26_1("26.1"),
-        MC26_2("26.2");
+        MC26_2("26.2"),
+        MC26_3("26.3");
 
         final String internalName;
 
