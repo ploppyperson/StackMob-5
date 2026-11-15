@@ -96,10 +96,9 @@ public class Utilities {
     public static MinecraftVersion getMinecraftVersion() {
         if (minecraftVersion == null) {
             minecraftVersion = MinecraftVersion.V1_20_6;
-            String packageName = Bukkit.getServer().getBukkitVersion();
-            String ending = packageName.substring(0, packageName.indexOf('-'));
+            String release = Bukkit.getServer().getMinecraftVersion();
             for (MinecraftVersion version: MinecraftVersion.values()) {
-                if (ending.contains(version.getInternalName())){
+                if (release.equals(version.getInternalName()) || release.startsWith(version.getInternalName() + ".")) {
                     minecraftVersion = version;
                 }
             }

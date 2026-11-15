@@ -12,6 +12,7 @@ It is recommended to use StackMob in conjunction with a farm limiter plugin for 
 # Building
 In order to build StackMob, you will need to do the following.
 - Clone the repository.
+- Use JDK 25.
 - Run 'mvn clean install' to compile.
 
 # Contributing
